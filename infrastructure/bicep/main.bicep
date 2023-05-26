@@ -111,58 +111,18 @@ module webAppBlazor './modules/webAppBlazor.bicep' = {
   }
 }
 
-// Deploy OpenAI resources for each region
-var openAiResourceDeployments = [
-  {
-    location: 'EastUS'
-    name: 'eus1-oai'
-  }
-  {
-    location: 'EastUS'
-    name: 'eus2-oai'
-  }
-  {
-    location: 'EastUS'
-    name: 'eus3-oai'
-  }
-  // {
-  //   location: 'FranceCentral'
-  //   name: 'fc1-oai'
-  // }
-  // {
-  //   location: 'FranceCentral'
-  //   name: 'fc2-oai'
-  // }
-  // {
-  //   location: 'FranceCentral'
-  //   name: 'fc3-oai'
-  // }
-  {
-    location: 'WestEurope'
-    name: 'we1-oai'
-  }
-  {
-    location: 'WestEurope'
-    name: 'we2-oai'
-  }
-  {
-    location: 'WestEurope'
-    name: 'we3-oai'
-  }
-]
-
-module openAiService './modules/openAiService.bicep' = [for (resource, i) in openAiResourceDeployments: {
-  name: 'openAiService${resource.name}'
+module openAiService './modules/openAiService.bicep' = {
+  name: 'openAiService'
   scope: rg
   dependsOn: [
     monitoring
   ]
   params: {
-    location: resource.location
-    openAiServiceName: '${baseResourceName}-${resource.name}'
+    location: location
+    openAiServiceName: '${baseResourceName}-oai'
     openAiModeldeployments: openAiModelDeployments
   }
-}]
+}
 
 output webAppName string = webAppBlazor.outputs.webAppName
 output webAppHostName  string = webAppBlazor.outputs.webAppHostName
