@@ -1,0 +1,60 @@
+name: continuous-deployment
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  lint-bicep:
+    uses: ./.github/workflows/lint-bicep.yml
+
+  validate-infrastructure:
+    needs:
+      - lint-bicep
+    uses: ./.github/workflows/validate-infrastructure.yml
+    with:
+      LOCATION: ${{ vars.LOCATION }}
+      BASE_RESOURCE_NAME: ${{ vars.BASE_RESOURCE_NAME }}
+      RESOURCE_GROUP_NAME: ${{ vars.RESOURCE_GROUP_NAME }}
+      APPSERVICEPLAN_CONFIGURATION: ${{ vars.APPSERVICEPLAN_CONFIGURATION }}
+    secrets:
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+  
+  deploy-infrastructure:
+    needs:
+      - validate-infrastructure
+    uses: ./.github/workflows/deploy-infrastructure.yml
+    with:
+      LOCATION: ${{ vars.LOCATION }}
+      BASE_RESOURCE_NAME: ${{ vars.BASE_RESOURCE_NAME }}
+      RESOURCE_GROUP_NAME: ${{ vars.RESOURCE_GROUP_NAME }}
+      APPSERVICEPLAN_CONFIGURATION: ${{ vars.APPSERVICEPLAN_CONFIGURATION }}
+    secrets:
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+
+  build-dmcserver:
+    uses: ./.github/workflows/build-dmcserver.yml
+  
+  publish-dmcserver:
+    needs:
+      - build-dmcserver
+      - deploy-infrastructure
+    uses: ./.github/workflows/publish-dmcserver.yml
+    with:
+      RESOURCE_GROUP_NAME: ${{ vars.RESOURCE_GROUP_NAME }}
+      WEBAPPNAME: ${{ needs.deploy-infrastructure.outputs.WEBAPPNAME }}
+    secrets:
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+    

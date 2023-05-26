@@ -1,0 +1,53 @@
+name: validate-infrastructure
+
+on:
+  workflow_call:
+    inputs:
+      LOCATION:
+        required: true
+        type: string
+      BASE_RESOURCE_NAME:
+        required: true
+        type: string
+      RESOURCE_GROUP_NAME:
+        required: true
+        type: string
+      APPSERVICEPLAN_CONFIGURATION:
+        required: true
+        type: string
+    secrets:
+      AZURE_TENANT_ID:
+        required: true
+      AZURE_SUBSCRIPTION_ID:
+        required: true
+      AZURE_CLIENT_ID:
+        required: true
+
+jobs:
+  validate-infrastructure:
+    name: Validate Infrastructure Deployment
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+      - name: Run what-if
+        uses: azure/arm-deploy@v1
+        with:
+          failOnStdErr: false
+          resourceGroupName: ${{ inputs.RESOURCE_GROUP_NAME }}
+          template: ./infrastructure/bicep/main.bicep
+          region: ${{ inputs.LOCATION }}
+          scope: subscription
+          parameters: >
+            location=${{ inputs.LOCATION }}
+            baseResourceName=${{ inputs.BASE_RESOURCE_NAME }}
+            resourceGroupName=${{ inputs.RESOURCE_GROUP_NAME }}
+            appServicePlanConfiguration=${{ inputs.APPSERVICEPLAN_CONFIGURATION }}
+          additionalArguments: --what-if

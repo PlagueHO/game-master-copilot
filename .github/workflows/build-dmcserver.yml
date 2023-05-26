@@ -1,0 +1,33 @@
+name: build-dmcserver
+
+on:
+  workflow_call:
+
+jobs:
+  build-dmcserver:
+    name: Build DMC server
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install .NET 7
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 7
+
+      - name: Build publishable DMC server
+        run: |
+          dotnet publish --configuration Release
+        working-directory: ./src/dungeon-master-copilot/dungeon-master-copilot-server/
+
+      - name: Zip publishable DMC server
+        run: |
+          zip -r dmcserverpublish.zip .
+        working-directory: ./src/dungeon-master-copilot/dungeon-master-copilot-server/bin/Release/net7.0/publish
+
+      - name: Upload DMC server as workflow artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: dmcserver
+          path: ./src/dungeon-master-copilot/dungeon-master-copilot-server/bin/Release/net7.0/publish/dmcserverpublish.zip
