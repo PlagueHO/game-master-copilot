@@ -58,8 +58,8 @@ resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
 }
 
 // OpenAI Resource required for Blazor App
-module openAiServiceBlazor './modules/openAiService.bicep' = {
-  name: 'openAiServiceBlazor'
+module openAiService './modules/openAiService.bicep' = {
+  name: 'openAiService'
   scope: rg
   dependsOn: [
     monitoring
@@ -111,21 +111,8 @@ module webAppBlazor './modules/webAppBlazor.bicep' = {
   }
 }
 
-module openAiService './modules/openAiService.bicep' = {
-  name: 'openAiService'
-  scope: rg
-  dependsOn: [
-    monitoring
-  ]
-  params: {
-    location: location
-    openAiServiceName: '${baseResourceName}-oai'
-    openAiModeldeployments: openAiModelDeployments
-  }
-}
-
 output webAppName string = webAppBlazor.outputs.webAppName
 output webAppHostName  string = webAppBlazor.outputs.webAppHostName
 output webAppStagingName string = webAppBlazor.outputs.webAppStagingName
 output webAppStagingHostName  string = webAppBlazor.outputs.webAppStagingHostName
-output openAiServiceEndpoint string = openAiServiceBlazor.outputs.openAiServiceEndpoint
+output openAiServiceEndpoint string = openAiService.outputs.openAiServiceEndpoint
