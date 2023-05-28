@@ -57,7 +57,6 @@ resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-// OpenAI Resource required for Blazor App
 module openAiService './modules/openAiService.bicep' = {
   name: 'openAiService'
   scope: rg

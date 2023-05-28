@@ -37,11 +37,13 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
+
       - name: Run what-if
         uses: azure/arm-deploy@v1
         with:
           failOnStdErr: false
           resourceGroupName: ${{ inputs.RESOURCE_GROUP_NAME }}
+          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           template: ./infrastructure/bicep/main.bicep
           region: ${{ inputs.LOCATION }}
           scope: subscription
