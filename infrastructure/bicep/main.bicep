@@ -110,6 +110,15 @@ module webAppBlazor './modules/webAppBlazor.bicep' = {
   }
 }
 
+module storageAccount './modules/storageAccount.bicep' = {
+  name: 'storageAccount'
+  scope: rg
+  params: {
+    location: location
+    storageAccountName: '${baseResourceName}data'
+  }
+}
+
 output webAppName string = webAppBlazor.outputs.webAppName
 output webAppHostName  string = webAppBlazor.outputs.webAppHostName
 output webAppStagingName string = webAppBlazor.outputs.webAppStagingName
