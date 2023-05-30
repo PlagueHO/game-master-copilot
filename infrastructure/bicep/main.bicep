@@ -52,6 +52,16 @@ var openAiModelDeployments = [
   }
 ]
 
+module monitoring './modules/monitoring.bicep' = {
+  name: 'monitoring'
+  scope: rg
+  params: {
+    location: location
+    logAnalyticsWorkspaceName: '${baseResourceName}-law'
+    applicationInsightsName: '${baseResourceName}-ai'
+  }
+}
+
 resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   name: resourceGroupName
   location: location
@@ -67,16 +77,8 @@ module openAiService './modules/openAiService.bicep' = {
     location: location
     openAiServiceName: '${baseResourceName}-oai'
     openAiModeldeployments: openAiModelDeployments
-  }
-}
-
-module monitoring './modules/monitoring.bicep' = {
-  name: 'monitoring'
-  scope: rg
-  params: {
-    location: location
+    logAnalyticsWorkspaceId: monitoring.outputs.logAnalyticsWorkspaceId
     logAnalyticsWorkspaceName: '${baseResourceName}-law'
-    applicationInsightsName: '${baseResourceName}-ai'
   }
 }
 
