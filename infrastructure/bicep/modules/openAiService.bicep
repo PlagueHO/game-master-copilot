@@ -51,7 +51,15 @@ resource openAiServiceDiagnosticSetting 'Microsoft.Insights/diagnosticSettings@2
         }
       }
       {
-        category: 'allLogs'
+        category: 'RequestResponse'
+        enabled: true
+        retentionPolicy: {
+          days: 0
+          enabled: false 
+        }
+      }
+      {
+        category: 'Trace'
         enabled: true
         retentionPolicy: {
           days: 0
