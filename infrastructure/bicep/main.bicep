@@ -115,7 +115,7 @@ module storageAccount './modules/storageAccount.bicep' = {
   scope: rg
   params: {
     location: location
-    storageAccountName: '${baseResourceName}data'
+    storageAccountName: replace('${baseResourceName}data','-','')
   }
 }
 
