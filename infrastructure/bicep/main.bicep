@@ -93,7 +93,7 @@ module cognitiveSearch './modules/cognitiveSearch.bicep' = {
     cognitiveSearchName: '${baseResourceName}-cog'
     sku: 'basic'
     replicaCount: 1
-    partitionCount: 2
+    partitionCount: 1
     hostingMode: 'default'
     logAnalyticsWorkspaceId: monitoring.outputs.logAnalyticsWorkspaceId
     logAnalyticsWorkspaceName: '${baseResourceName}-law'
