@@ -82,6 +82,24 @@ module openAiService './modules/openAiService.bicep' = {
   }
 }
 
+module cognitiveSearch './modules/cognitiveSearch.bicep' = {
+  name: 'cognitiveSearch'
+  scope: rg
+  dependsOn: [
+    monitoring
+  ]
+  params: {
+    location: location
+    cognitiveSearchName: '${baseResourceName}-cog'
+    sku: 'basic'
+    replicaCount: 1
+    partitionCount: 2
+    hostingMode: 'default'
+    logAnalyticsWorkspaceId: monitoring.outputs.logAnalyticsWorkspaceId
+    logAnalyticsWorkspaceName: '${baseResourceName}-law'
+  }
+}
+
 module appServicePlan './modules/appServicePlan.bicep' = {
   name: 'appServicePlan'
   scope: rg
