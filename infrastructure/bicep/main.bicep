@@ -31,6 +31,27 @@ param baseResourceName string
 ])
 param appServicePlanConfiguration string = 'P0V3'
 
+var openAiModelDeployments = [
+  {
+    name: 'text-davinci-003'
+    modelName: 'text-davinci-003'
+    modelVersion: '1'
+    scaleType: 'Standard'
+  }
+  {
+    name: 'text-embedding-ada-002'
+    modelName: 'text-embedding-ada-002'
+    modelVersion: '2'
+    scaleType: 'Standard'
+  }
+  {
+    name: 'gpt-35-turbo'
+    modelName: 'gpt-35-turbo'
+    modelVersion: '0301'
+    scaleType: 'Standard'
+  }
+]
+
 module monitoring './modules/monitoring.bicep' = {
   name: 'monitoring'
   scope: rg
@@ -55,6 +76,7 @@ module openAiService './modules/openAiService.bicep' = {
   params: {
     location: location
     openAiServiceName: '${baseResourceName}-oai'
+    openAiModeldeployments: openAiModelDeployments
     logAnalyticsWorkspaceId: monitoring.outputs.logAnalyticsWorkspaceId
     logAnalyticsWorkspaceName: '${baseResourceName}-law'
   }
