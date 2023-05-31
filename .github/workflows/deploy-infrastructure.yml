@@ -22,6 +22,22 @@ on:
         required: true
       AZURE_CLIENT_ID:
         required: true
+    outputs:
+      webAppName:
+        description: "The name of the deployed web app"
+        value: ${{ jobs.deploy.outputs.webAppName }}
+      webAppHostName:
+        description: "The hostname of the deployed web app"
+        value: ${{ jobs.deploy.outputs.webAppHostName }}
+      webAppStagingName:
+        description: "The name of the deployed web app staging slot"
+        value: ${{ jobs.deploy.outputs.webAppStagingName }}
+      webAppStagingHostName:
+        description: "The hostname of the deployed web app staging slot"
+        value: ${{ jobs.deploy.outputs.webAppStagingHostName }}
+      openAiServiceEndpoint:
+        description: "The endpoint of the deployed OpenAI service"
+        value: ${{ jobs.deploy.outputs.openAiServiceEndpoint }}
 
 jobs:
   deploy:
@@ -33,7 +49,6 @@ jobs:
       webAppStagingName: ${{ steps.deploy.outputs.webAppStagingName }}
       webAppStagingHostName: ${{ steps.deploy.outputs.webAppStagingHostName }}
       openAiServiceEndpoint: ${{ steps.deploy.outputs.openAiServiceEndpoint }}
-      openAiServiceDeployment: ${{ steps.deploy.outputs.openAiServiceDeployment }}
 
     steps:
       - name: Checkout Repository
