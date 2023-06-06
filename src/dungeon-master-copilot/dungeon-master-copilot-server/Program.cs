@@ -1,12 +1,15 @@
-using dungeon_master_copilot_server.Data;
+using Azure.Identity;
+using dungeon_master_copilot_server.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
+using Microsoft.SemanticKernel;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,7 +33,30 @@ builder.Services.AddAuthorization(options =>
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor()
     .AddMicrosoftIdentityConsentHandler();
-builder.Services.AddSingleton<WeatherForecastService>();
+
+// Get an Azure AD token for the application to use to authenticate to services in Azure
+var azureCredential = new DefaultAzureCredential();
+
+var semanticKernel = new KernelBuilder()
+    .WithAzureTextCompletionService(
+        builder.Configuration["AzureOpenAI:Deployment:Text"],
+        builder.Configuration["AzureOpenAI:Endpoint"],
+        azureCredential)
+    .WithAzureChatCompletionService(
+        builder.Configuration["AzureOpenAI:Deployment:Chat"],
+        builder.Configuration["AzureOpenAI:Endpoint"],
+        azureCredential)
+    .WithAzureTextEmbeddingGenerationService(
+        builder.Configuration["AzureOpenAI:Deployment:TextEmbedding"],
+        builder.Configuration["AzureOpenAI:Endpoint"],
+        azureCredential)
+    .Build();
+
+// Add the singleton service the abstracts the Semantic Kernel
+builder.Services.AddSingleton<ISemanticKernelService>((svc) =>
+{
+    return new SemanticKernelService(semanticKernel);
+});
 
 var app = builder.Build();
 

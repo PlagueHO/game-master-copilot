@@ -3,6 +3,10 @@ param appServicePlanId string
 param webAppName string
 param appInsightsInstrumentationKey string
 param appInsightsConnectionString string
+param azureOpenAiEndpoint string
+param azureOpenAiDeploymentText string
+param azureOpenAiDeploymentChat string
+param azureOpenAiDeploymentTextEmbedding string
 
 resource webApp 'Microsoft.Web/sites@2021-01-15' = {
   name: webAppName
@@ -62,6 +66,22 @@ resource webApp 'Microsoft.Web/sites@2021-01-15' = {
         {
           name: 'XDT_MicrosoftApplicationInsights_PreemptSdk'
           value: 'disabled'
+        }
+        {
+          name: 'AZUREOPENAI_ENDPOINT'
+          value: azureOpenAiEndpoint
+        }
+        {
+          name: 'AZUREOPENAI_DEPLOYMENT_TEXT'
+          value: azureOpenAiDeploymentText
+        }
+        {
+          name: 'AZUREOPENAI_DEPLOYMENT_CHAT'
+          value: azureOpenAiDeploymentChat
+        }
+        {
+          name: 'AZUREOPENAI_DEPLOYMENT_TEXTEMBEDDING'
+          value: azureOpenAiDeploymentTextEmbedding
         }
       ]
     }

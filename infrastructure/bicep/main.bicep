@@ -39,15 +39,15 @@ var openAiModelDeployments = [
     scaleType: 'Standard'
   }
   {
-    name: 'text-embedding-ada-002'
-    modelName: 'text-embedding-ada-002'
-    modelVersion: '2'
-    scaleType: 'Standard'
-  }
-  {
     name: 'gpt-35-turbo'
     modelName: 'gpt-35-turbo'
     modelVersion: '0301'
+    scaleType: 'Standard'
+  }
+  {
+    name: 'text-embedding-ada-002'
+    modelName: 'text-embedding-ada-002'
+    modelVersion: '2'
     scaleType: 'Standard'
   }
 ]
@@ -127,6 +127,10 @@ module webAppBlazor './modules/webAppBlazor.bicep' = {
     webAppName: baseResourceName
     appInsightsInstrumentationKey: monitoring.outputs.applicationInsightsInstrumentationKey
     appInsightsConnectionString: monitoring.outputs.applicationInsightsConnectionString
+    azureOpenAiEndpoint: openAiService.outputs.openAiServiceEndpoint
+    azureOpenAiDeploymentText: openAiModelDeployments[0].name
+    azureOpenAiDeploymentChat: openAiModelDeployments[1].name
+    azureOpenAiDeploymentTextEmbedding: openAiModelDeployments[2].name
   }
 }
 
