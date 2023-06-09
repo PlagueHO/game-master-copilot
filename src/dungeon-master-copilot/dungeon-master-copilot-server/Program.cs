@@ -1,4 +1,5 @@
 using Azure.Identity;
+using dungeon_master_copilot_server.Data;
 using dungeon_master_copilot_server.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -10,80 +11,121 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 using Microsoft.SemanticKernel;
+using System.Text.Json;
 
-var builder = WebApplication.CreateBuilder(args);
-
-var initialScopes = builder.Configuration["DownstreamApi:Scopes"]?.Split(' ') ?? builder.Configuration["MicrosoftGraph:Scopes"]?.Split(' ');
-
-// Add services to the container.
-builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
-    .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"))
-        .EnableTokenAcquisitionToCallDownstreamApi(initialScopes)
-.AddMicrosoftGraph(builder.Configuration.GetSection("MicrosoftGraph"))
-            .AddInMemoryTokenCaches();
-builder.Services.AddControllersWithViews()
-    .AddMicrosoftIdentityUI();
-
-builder.Services.AddAuthorization(options =>
+internal class Program
 {
-    // By default, all incoming requests will be authorized according to the default policy
-    options.FallbackPolicy = options.DefaultPolicy;
-});
+    private static void Main(string[] args)
+    {
+        var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddRazorPages();
-builder.Services.AddServerSideBlazor()
-    .AddMicrosoftIdentityConsentHandler();
+        var initialScopes = builder.Configuration["DownstreamApi:Scopes"]?.Split(' ') ?? builder.Configuration["MicrosoftGraph:Scopes"]?.Split(' ');
 
-// Get an Azure AD token for the application to use to authenticate to services in Azure
-var azureCredential = new DefaultAzureCredential();
+        // Add services to the container.
+        builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+            .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"))
+                .EnableTokenAcquisitionToCallDownstreamApi(initialScopes)
+        .AddMicrosoftGraph(builder.Configuration.GetSection("MicrosoftGraph"))
+                    .AddInMemoryTokenCaches();
+        builder.Services.AddControllersWithViews()
+            .AddMicrosoftIdentityUI();
 
-var semanticKernel = new KernelBuilder()
-    .WithAzureTextCompletionService(
-        builder.Configuration["AzureOpenAI:Deployment:Text"],
-        builder.Configuration["AzureOpenAI:Endpoint"],
-        azureCredential,
-        "TextCompletion")
-    .WithAzureChatCompletionService(
-        builder.Configuration["AzureOpenAI:Deployment:Chat"],
-        builder.Configuration["AzureOpenAI:Endpoint"],
-        azureCredential,
-        false,
-        "ChatCompletion")
-    .WithAzureTextEmbeddingGenerationService(
-        builder.Configuration["AzureOpenAI:Deployment:TextEmbedding"],
-        builder.Configuration["AzureOpenAI:Endpoint"],
-        azureCredential,
-        "Embeddings")
-    .Build();
+        builder.Services.AddAuthorization(options =>
+        {
+            // By default, all incoming requests will be authorized according to the default policy
+            options.FallbackPolicy = options.DefaultPolicy;
+        });
 
-// Add the singleton service the abstracts the Semantic Kernel
-builder.Services.AddSingleton<ISemanticKernelService>((svc) =>
-{
-    return new SemanticKernelService(semanticKernel);
-});
+        builder.Services.AddRazorPages();
+        builder.Services.AddServerSideBlazor()
+            .AddMicrosoftIdentityConsentHandler();
 
-var app = builder.Build();
+        // Create the Semantic Kernel and add it as a singleton service
+        var semanticKernelBuilder = CreateSemanticKernel(builder);
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+        builder.Services.AddSingleton<ISemanticKernelService>((svc) =>
+        {
+            return new SemanticKernelService(semanticKernelBuilder);
+        });
+
+        var app = builder.Build();
+
+        // Configure the HTTP request pipeline.
+        if (!app.Environment.IsDevelopment())
+        {
+            app.UseExceptionHandler("/Error");
+            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+            app.UseHsts();
+        }
+
+        app.UseHttpsRedirection();
+
+        app.UseStaticFiles();
+
+        app.UseRouting();
+
+        app.UseAuthentication();
+
+        app.UseAuthorization();
+
+        app.MapControllers();
+        app.MapBlazorHub();
+        app.MapFallbackToPage("/_Host");
+
+        app.Run();
+    }
+
+    private static IKernel CreateSemanticKernel(WebApplicationBuilder builder)
+    {
+        Console.WriteLine("Creating Semantic Kernel");
+
+        // Get an Azure AD token for the application to use to authenticate to services in Azure
+        var azureCredential = new DefaultAzureCredential();
+
+        var semanticKernel = new KernelBuilder();
+
+        // Get the Semantic Kernel configuration from appsettings.json
+        var semanticKernelConfiguration = builder.Configuration
+            .GetSection("SemanticKernel")
+            .Get<SemanticKernelConfiguration>();
+        if (semanticKernelConfiguration == null)
+        {
+            throw new Exception("Semantic Kernel configuration is null");
+        }
+
+        Console.WriteLine(semanticKernelConfiguration.Services.Count);
+
+        var serviceActions = new Dictionary<SemanticKernelConfigurationServiceType, Action<SemanticKernelConfigurationService>>()
+        {
+            { SemanticKernelConfigurationServiceType.AzureOpenAIServiceTextCompletion, (service) => semanticKernel.WithAzureTextCompletionService(service.Deployment,
+                                                                                                                                service.Endpoint,
+                                                                                                                                azureCredential,
+                                                                                                                                service.Id) },
+            { SemanticKernelConfigurationServiceType.AzureOpenAIServiceChatCompletion, (service) => semanticKernel.WithAzureTextCompletionService(service.Deployment,
+                                                                                                                                service.Endpoint,
+                                                                                                                                azureCredential,
+                                                                                                                                service.Id) },
+            { SemanticKernelConfigurationServiceType.AzureOpenAIServiceEmbedding, (service) => semanticKernel.WithAzureTextEmbeddingGenerationService(service.Deployment,
+                                                                                                                                     service.Endpoint,
+                                                                                                                                     azureCredential,
+                                                                                                                                     service.Id) }
+        };
+
+        foreach (var service in semanticKernelConfiguration.Services)
+        {
+            Console.WriteLine($"Adding service {service.Id} using deployment {service.Deployment} on endpoint {service.Endpoint} to Semantic Kernel");
+
+
+            if (serviceActions.TryGetValue(service.Type, out var action))
+            {
+                action(service);
+            }
+            else
+            {
+                throw new ArgumentException("Invalid Semantic Kernel service type");
+            }
+        }
+
+        return semanticKernel.Build();
+    }
 }
-
-app.UseHttpsRedirection();
-
-app.UseStaticFiles();
-
-app.UseRouting();
-
-app.UseAuthentication();
-
-app.UseAuthorization();
-
-app.MapControllers();
-app.MapBlazorHub();
-app.MapFallbackToPage("/_Host");
-
-app.Run();

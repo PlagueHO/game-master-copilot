@@ -68,19 +68,51 @@ resource webApp 'Microsoft.Web/sites@2021-01-15' = {
           value: 'disabled'
         }
         {
-          name: 'AZUREOPENAI_ENDPOINT'
+          name: 'SemanticKernel__Services__0__Id'
+          value: 'TextCompletion'
+        }
+        {
+          name: 'SemanticKernel__Services__0__Type'
+          value: 'AzureOpenAIServiceTextCompletion'
+        }
+        {
+          name: 'SemanticKernel__Services__0__Endpoint'
           value: azureOpenAiEndpoint
         }
         {
-          name: 'AZUREOPENAI_DEPLOYMENT_TEXT'
+          name: 'SemanticKernel__Services__0__Deployment'
           value: azureOpenAiDeploymentText
         }
         {
-          name: 'AZUREOPENAI_DEPLOYMENT_CHAT'
+          name: 'SemanticKernel__Services__1__Id'
+          value: 'TextCompletion'
+        }
+        {
+          name: 'SemanticKernel__Services__1__Type'
+          value: 'AzureOpenAIServiceChatCompletion'
+        }
+        {
+          name: 'SemanticKernel__Services__1__Endpoint'
+          value: azureOpenAiEndpoint
+        }
+        {
+          name: 'SemanticKernel__Services__1__Deployment'
           value: azureOpenAiDeploymentChat
         }
         {
-          name: 'AZUREOPENAI_DEPLOYMENT_TEXTEMBEDDING'
+          name: 'SemanticKernel__Services__2__Id'
+          value: 'TextCompletion'
+        }
+        {
+          name: 'SemanticKernel__Services__2__Type'
+          value: 'AzureOpenAIServiceChatCompletion'
+        }
+        {
+          name: 'SemanticKernel__Services__2__Endpoint'
+          value: azureOpenAiEndpoint
+        }
+        {
+          name: 'SemanticKernel__Services__2__Deployment'
           value: azureOpenAiDeploymentTextEmbedding
         }
       ]
