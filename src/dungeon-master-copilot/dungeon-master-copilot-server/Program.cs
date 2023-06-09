@@ -41,15 +41,19 @@ var semanticKernel = new KernelBuilder()
     .WithAzureTextCompletionService(
         builder.Configuration["AzureOpenAI:Deployment:Text"],
         builder.Configuration["AzureOpenAI:Endpoint"],
-        azureCredential)
+        azureCredential,
+        "TextCompletion")
     .WithAzureChatCompletionService(
         builder.Configuration["AzureOpenAI:Deployment:Chat"],
         builder.Configuration["AzureOpenAI:Endpoint"],
-        azureCredential)
+        azureCredential,
+        false,
+        "ChatCompletion")
     .WithAzureTextEmbeddingGenerationService(
         builder.Configuration["AzureOpenAI:Deployment:TextEmbedding"],
         builder.Configuration["AzureOpenAI:Endpoint"],
-        azureCredential)
+        azureCredential,
+        "Embeddings")
     .Build();
 
 // Add the singleton service the abstracts the Semantic Kernel
