@@ -11,13 +11,13 @@ public enum SemanticKernelConfigurationServiceType
 }
 public class SemanticKernelConfiguration
 {
-    public List<SemanticKernelConfigurationService> Services { get; set; }
+    public List<SemanticKernelConfigurationService>? Services { get; set; }
 }
 
 public class SemanticKernelConfigurationService
 {
-    public string Id { get; set; }
+    public required string Id { get; set; }
     public SemanticKernelConfigurationServiceType Type { get; set; }
-    public string Endpoint { get; set; }
-    public string Deployment { get; set; }
+    public required string Endpoint { get; set; }
+    public required string Deployment { get; set; }
 }
