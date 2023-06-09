@@ -93,8 +93,6 @@ internal class Program
             throw new Exception("Semantic Kernel configuration is null");
         }
 
-        Console.WriteLine(semanticKernelConfiguration.Services.Count);
-
         var serviceActions = new Dictionary<SemanticKernelConfigurationServiceType, Action<SemanticKernelConfigurationService>>()
         {
             { SemanticKernelConfigurationServiceType.AzureOpenAIServiceTextCompletion, (service) => semanticKernel.WithAzureTextCompletionService(service.Deployment,
@@ -110,6 +108,11 @@ internal class Program
                                                                                                                                      azureCredential,
                                                                                                                                      service.Id) }
         };
+
+        if (semanticKernelConfiguration.Services == null)
+        {
+            throw new Exception("Semantic Kernel configuration services are null");
+        }
 
         foreach (var service in semanticKernelConfiguration.Services)
         {
