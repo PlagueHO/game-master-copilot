@@ -1,0 +1,24 @@
+{
+    "name": "dungeon-master-copilot",
+    "image": "mcr.microsoft.com/devcontainers/dotnet:0-7.0",
+    "workspaceFolder": "/workspaces/dungeon-master-copilot",
+
+    // "onCreateCommand": "bash ./.devcontainer/on-setup.sh",
+  
+    // Features to add to the dev container. More info: https://containers.dev/features.
+    "features": {
+      "ghcr.io/devcontainers/features/docker-in-docker:1": {}
+    },
+  
+    // Configure tool-specific properties.
+    "customizations": {
+      // Configure properties specific to VS Code.
+      "vscode": {
+        "settings": {},
+        "extensions": [
+          "ms-dotnettools.csharp",
+          "ms-azuretools.vscode-docker"
+        ]
+      }
+    }
+  }
