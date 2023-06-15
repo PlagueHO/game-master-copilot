@@ -1,4 +1,5 @@
-﻿using Microsoft.SemanticKernel;
+﻿using Microsoft.IdentityModel.Protocols;
+using Microsoft.SemanticKernel;
 
 namespace dungeon_master_copilot_server.Services
 {
@@ -7,10 +8,11 @@ namespace dungeon_master_copilot_server.Services
         private readonly IKernel _semanticKernel;
         private readonly string _skillDirectory = "\\Skills";
 
-        public SemanticKernelService(IKernel semanticKernel, string? skillDirectory)
+        public SemanticKernelService(IKernel semanticKernel, IConfiguration configuration)
         {
             _semanticKernel = semanticKernel;
-            if (skillDirectory != null)
+            var skillDirectory = configuration["SemanticKernel:SkillsDirectory"];
+            if(skillDirectory != null)
                 _skillDirectory = skillDirectory;
             _semanticKernel.ImportSemanticSkillFromDirectory(_skillDirectory);
         }

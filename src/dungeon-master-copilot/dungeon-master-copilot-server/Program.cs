@@ -45,7 +45,7 @@ internal class Program
 
         builder.Services.AddSingleton<ISemanticKernelService>((svc) =>
         {
-            return new SemanticKernelService(semanticKernelBuilder,builder.Configuration["SemanticKernel:SkillDirectory"]);
+            return new SemanticKernelService(semanticKernelBuilder,builder.Configuration);
         });
 
         var app = builder.Build();
