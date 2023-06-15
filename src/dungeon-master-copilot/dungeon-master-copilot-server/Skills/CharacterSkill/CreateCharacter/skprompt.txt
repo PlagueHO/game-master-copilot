@@ -1,0 +1,11 @@
+Generate a character for Dugneons and Dragons 5th edition based on the Character information below.
+
+Character Information:A male hill dwarf shopkeeper for a general store in Neverwinter.
+Name:Grimock Stoneheft
+Age:90
+Class:None
+Race:Hill Dwarf
+Height:4"3'
+Weigth:150lb
+
+Character Information:{{$input}}
