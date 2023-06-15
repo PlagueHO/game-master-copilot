@@ -2,8 +2,7 @@
     "name": "dungeon-master-copilot",
     "image": "mcr.microsoft.com/devcontainers/dotnet:0-7.0",
     "workspaceFolder": "/workspaces/dungeon-master-copilot",
-
-    // "onCreateCommand": "bash ./.devcontainer/on-setup.sh",
+    "onCreateCommand": "bash ./.devcontainer/on-setup.sh",
   
     // Features to add to the dev container. More info: https://containers.dev/features.
     "features": {
