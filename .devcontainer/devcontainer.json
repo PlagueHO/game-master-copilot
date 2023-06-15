@@ -27,7 +27,8 @@
 			"ms-dotnettools.csdevkit",
 			"ms-azuretools.vscode-bicep",
 			"ms-vscode.azure-account",
-			"ms-vscode.azurecli"
+			"ms-vscode.azurecli",
+			"ms-vscode-remote.remote-containers"
 		]
       }
     }
