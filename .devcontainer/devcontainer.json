@@ -10,7 +10,6 @@
       "ghcr.io/devcontainers/features/azure-cli:1": {},
       "ghcr.io/devcontainers/features/dotnet:1": {},
       "ghcr.io/devcontainers/features/powershell:1": {}
-      
     },
   
     // Configure tool-specific properties.
@@ -19,16 +18,17 @@
       "vscode": {
         "settings": {},
         "extensions": [
-			"ms-dotnettools.csharp",
-			"ms-azuretools.vscode-docker",
-			"GitHub.copilot-nightly",
-			"GitHub.copilot-chat",
-			"ms-dotnettools.csdevkit",
-			"ms-azuretools.vscode-bicep",
-			"ms-vscode.azure-account",
-			"ms-vscode.azurecli",
-			"ms-vscode-remote.remote-containers"
-		]
+          "ms-dotnettools.csharp",
+          "ms-azuretools.vscode-docker",
+          "GitHub.copilot-nightly",
+          "GitHub.copilot-chat",
+          "ms-dotnettools.csdevkit",
+          "ms-azuretools.vscode-bicep",
+          "ms-vscode.azure-account",
+          "ms-vscode.azurecli",
+          "ms-vscode-remote.remote-containers",
+          "ms-semantic-kernel.semantic-kernel"
+        ]
       }
     }
   }
