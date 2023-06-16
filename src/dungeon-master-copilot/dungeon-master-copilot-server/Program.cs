@@ -45,7 +45,7 @@ internal class Program
 
         builder.Services.AddSingleton<ISemanticKernelService>((svc) =>
         {
-            return new SemanticKernelService(semanticKernelBuilder,builder.Configuration);
+            return new SemanticKernelService(semanticKernelBuilder, builder.Configuration);
         });
 
         var app = builder.Build();
@@ -75,6 +75,11 @@ internal class Program
         app.Run();
     }
 
+    /// <summary>
+    /// Creates a new instance of the Semantic Kernel service.
+    /// </summary>
+    /// <param name="builder">The WebApplicationBuilder used to configure the application.</param>
+    /// <returns>A new instance of the Semantic Kernel service.</returns>
     private static IKernel CreateSemanticKernel(WebApplicationBuilder builder)
     {
         Console.WriteLine("Creating Semantic Kernel");
