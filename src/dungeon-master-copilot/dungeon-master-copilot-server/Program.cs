@@ -92,12 +92,7 @@ internal class Program
         // Get the Semantic Kernel configuration from appsettings.json
         var semanticKernelConfiguration = builder.Configuration
             .GetSection("SemanticKernel")
-            .Get<SemanticKernelConfiguration>();
-        if (semanticKernelConfiguration == null)
-        {
-            throw new Exception("Semantic Kernel configuration is null");
-        }
-
+            .Get<SemanticKernelConfiguration>() ?? throw new Exception("Semantic Kernel configuration is null");
         var serviceActions = new Dictionary<SemanticKernelConfigurationServiceType, Action<SemanticKernelConfigurationService>>()
         {
             { SemanticKernelConfigurationServiceType.AzureOpenAIServiceTextCompletion, (service) => semanticKernel.WithAzureTextCompletionService(service.Deployment,
