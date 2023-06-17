@@ -7,6 +7,7 @@
     <UserSecretsId>aspnet-dungeon_master_copilot_server-dad4b7d6-ed24-4336-880b-eb9f3c89fa08</UserSecretsId>
     <WebProject_DirectoryAccessLevelKey>0</WebProject_DirectoryAccessLevelKey>
     <RootNamespace>dungeon_master_copilot_server</RootNamespace>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,6 +17,7 @@
     <PackageReference Include="Microsoft.Identity.Web.MicrosoftGraph" Version="1.25.3" />
     <PackageReference Include="Microsoft.Identity.Web.UI" Version="1.25.3" />
     <PackageReference Include="Microsoft.SemanticKernel" Version="0.15.230531.5-preview" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1" />
   </ItemGroup>
 
   <ItemGroup>
