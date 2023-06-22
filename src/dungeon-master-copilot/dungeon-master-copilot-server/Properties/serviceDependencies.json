@@ -3,6 +3,11 @@
     "identityapp1": {
       "type": "identityapp",
       "connectionId": "AzureAD:ClientSecret"
+    },
+    "cosmosdb1": {
+      "type": "cosmosdb",
+      "connectionId": "cosmosDbAccount",
+      "dynamicId": null
     }
   }
 }

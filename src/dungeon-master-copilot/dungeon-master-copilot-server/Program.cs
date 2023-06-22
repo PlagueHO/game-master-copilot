@@ -1,4 +1,5 @@
 using Azure.Identity;
+using dungeon_master_copilot_server.Data.Character;
 using dungeon_master_copilot_server.Data.Configuration;
 using dungeon_master_copilot_server.Services;
 using Microsoft.AspNetCore.Authentication;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
@@ -47,6 +49,20 @@ internal class Program
         {
             return new SemanticKernelService(semanticKernelBuilder, builder.Configuration);
         });
+        
+        // Add the Cosmos DB client as a singleton service
+        builder.Services.AddSingleton<CosmosClient>(sp =>
+            {
+                var connectionString = builder.Configuration.GetConnectionString("cosmosDbAccount");
+                return new CosmosClient(connectionString);
+            });
+
+        // Add the Character repository as a scoped service
+        builder.Services.AddScoped<ICharacterRepository>(sp =>
+            {
+                var cosmosClient = sp.GetService<CosmosClient>();
+                return new CharacterRepository(cosmosClient, "dungeon-master-copilot", "Characters");
+            });
 
         var app = builder.Build();
 
