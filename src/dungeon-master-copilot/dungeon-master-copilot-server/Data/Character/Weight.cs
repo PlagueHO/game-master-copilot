@@ -10,13 +10,17 @@
         /// </summary>
         public double Value { get; set; }
 
+        const double OUNCES_PER_GRAM = 0.03527396;
+        const double POUNDS_PER_GRAM = 0.00220462;
+        const double KILOGRAMS_PER_GRAM = 0.001;
+
         /// <summary>
         /// Returns the weight in ounces, calculated from the <see cref="Value"/> property.
         /// </summary>
         /// <returns>The weight in ounces</returns>
         public double GetOunces()
         {
-            return Value * 0.035274;
+            return Value * OUNCES_PER_GRAM;
         }
 
         /// <summary>
@@ -25,7 +29,7 @@
         /// <returns>The weight in pounds</returns>
         public double GetPounds()
         {
-            return Value * 0.00220462;
+            return Value * POUNDS_PER_GRAM;
         }
 
         /// <summary>
@@ -34,7 +38,7 @@
         /// <returns>The weight in kilograms</returns>
         public double GetKilograms()
         {
-            return Value * 0.001;
+            return Value * KILOGRAMS_PER_GRAM;
         }
 
         /// <summary>

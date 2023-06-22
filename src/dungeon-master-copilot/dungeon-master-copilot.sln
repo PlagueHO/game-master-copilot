@@ -22,6 +22,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{805C
 		..\..\infrastructure\bicep\modules\webAppBlazor.bicep = ..\..\infrastructure\bicep\modules\webAppBlazor.bicep
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dungeon-master-copilot-server.Test", "dungeon-master-copilot-server.Test\dungeon-master-copilot-server.Test.csproj", "{F8EF7652-5DC7-4DFF-BD9A-CA27E93CBC2E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +34,10 @@ Global
 		{48D62070-7356-4DED-A602-52730176F572}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{48D62070-7356-4DED-A602-52730176F572}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{48D62070-7356-4DED-A602-52730176F572}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8EF7652-5DC7-4DFF-BD9A-CA27E93CBC2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8EF7652-5DC7-4DFF-BD9A-CA27E93CBC2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8EF7652-5DC7-4DFF-BD9A-CA27E93CBC2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8EF7652-5DC7-4DFF-BD9A-CA27E93CBC2E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
