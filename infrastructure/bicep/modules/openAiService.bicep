@@ -26,14 +26,14 @@ resource openAiServiceDeployment 'Microsoft.CognitiveServices/accounts/deploymen
   name: model.name
   parent: openAiService
   sku: {
-    name: 'Standard'
+    name: model.sku
     capacity: model.capacity
   }
   properties: {
     model: {
       format: 'OpenAI'
       name: model.modelName
-      version: model.modelVersion
+      version: model.version
     }
   }
 }]
