@@ -1,5 +1,7 @@
 # Dungeon Master Copilot
 
+[![continuous-deployment](https://github.com/PlagueHO/dungeon-master-copilot/actions/workflows/continuous-deployment.yml/badge.svg)](https://github.com/PlagueHO/dungeon-master-copilot/actions/workflows/continuous-deployment.yml)
+
 Dungeon Master Copilot is an AI enabled copilot to help dungeon masters create content.
 
 The application is a work-in-progress and is being used as both a test platform for various technologies and services, including:
