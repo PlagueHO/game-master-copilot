@@ -1,5 +1,11 @@
 @page "/character/builder"
 
+@using dungeon_master_copilot_server.Services
+@using dungeon_master_copilot_server.Data
+
+@inject SemanticKernelService semanticKernelService
+@inject CharacterRepository characterRepository
+
 <h1>Character Builder</h1>
 
 <!-- An input text box for entering basic details about character to create -->
