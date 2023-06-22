@@ -40,7 +40,7 @@ resource cosmosDbDatabase 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@20
     }
     options: {
       autoscaleSettings: {
-        maxThroughput: 400
+        maxThroughput: 1000
       }
     }
   }
