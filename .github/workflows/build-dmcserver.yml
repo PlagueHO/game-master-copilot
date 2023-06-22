@@ -16,10 +16,16 @@ jobs:
         with:
           dotnet-version: 7
 
-      - name: Test DMC server
+      - name: Run unit tests on DMC server
         run: |
           dotnet test --configuration Release
-        working-directory: ./src/dungeon-master-copilot/dungeon-master-copilot-server/
+        working-directory: ./src/dungeon-master-copilot/dungeon-master-copilot-server.Test/
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: dungeon-master-copilot-server.Test
+          path: ./src/dungeon-master-copilot/dungeon-master-copilot-server.Test/TestResults/*.trx
 
       - name: Build publishable DMC server
         run: |
