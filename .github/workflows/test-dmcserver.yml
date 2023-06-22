@@ -26,3 +26,10 @@ jobs:
         with:
           name: dungeon-master-copilot-server.Test
           path: ./src/dungeon-master-copilot/dungeon-master-copilot-server.Test/TestResults/*.trx
+
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+            files: |
+              ./src/dungeon-master-copilot/dungeon-master-copilot-server.Test/TestResults/*.trx
