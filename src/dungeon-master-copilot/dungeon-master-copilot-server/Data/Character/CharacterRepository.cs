@@ -17,11 +17,11 @@ namespace dungeon_master_copilot_server.Data.Character
             _container = cosmosClient.GetContainer(databaseName, containerName);
         }
 
-        public async Task<CharacterData> GetCharacterAsync(Guid id)
+        public async Task<Character> GetCharacterAsync(Guid id)
         {
             try
             {
-                var response = await _container.ReadItemAsync<CharacterData>(id.ToString(), new PartitionKey(id.ToString()));
+                var response = await _container.ReadItemAsync<Character>(id.ToString(), new PartitionKey(id.ToString()));
                 return response.Resource;
             }
             catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
@@ -30,10 +30,10 @@ namespace dungeon_master_copilot_server.Data.Character
             }
         }
 
-        public async Task<IEnumerable<CharacterData>> GetCharactersAsync()
+        public async Task<IEnumerable<Character>> GetCharactersAsync()
         {
-            var query = _container.GetItemQueryIterator<CharacterData>();
-            var results = new List<CharacterData>();
+            var query = _container.GetItemQueryIterator<Character>();
+            var results = new List<Character>();
             while (query.HasMoreResults)
             {
                 var response = await query.ReadNextAsync();
@@ -42,22 +42,22 @@ namespace dungeon_master_copilot_server.Data.Character
             return results;
         }
 
-        public async Task<CharacterData> CreateCharacterAsync(CharacterData characterData)
+        public async Task<Character> CreateCharacterAsync(Character character)
         {
-            characterData.Id = Guid.NewGuid();
-            var response = await _container.CreateItemAsync(characterData, new PartitionKey(characterData.Id.ToString()));
+            character.Id = Guid.NewGuid();
+            var response = await _container.CreateItemAsync(character, new PartitionKey(character.Id.ToString()));
             return response.Resource;
         }
 
-        public async Task<CharacterData> UpdateCharacterAsync(Guid id, CharacterData characterData)
+        public async Task<Character> UpdateCharacterAsync(Guid id, Character character)
         {
             var existingCharacter = await GetCharacterAsync(id);
             if (existingCharacter == null)
             {
                 return null;
             }
-            characterData.Id = existingCharacter.Id;
-            var response = await _container.ReplaceItemAsync(characterData, existingCharacter.Id.ToString(), new PartitionKey(existingCharacter.Id.ToString()));
+            character.Id = existingCharacter.Id;
+            var response = await _container.ReplaceItemAsync(character, existingCharacter.Id.ToString(), new PartitionKey(existingCharacter.Id.ToString()));
             return response.Resource;
         }
 
@@ -68,7 +68,7 @@ namespace dungeon_master_copilot_server.Data.Character
             {
                 return false;
             }
-            var response = await _container.DeleteItemAsync<CharacterData>(id.ToString(), new PartitionKey(id.ToString()));
+            var response = await _container.DeleteItemAsync<Character>(id.ToString(), new PartitionKey(id.ToString()));
             return response.StatusCode == System.Net.HttpStatusCode.NoContent;
         }
     }
