@@ -26,7 +26,7 @@ resource openAiServiceDeployment 'Microsoft.CognitiveServices/accounts/deploymen
   name: model.name
   parent: openAiService
   sku: {
-    name: 'S0'
+    name: 'Standard'
     capacity: model.capacity
   }
   properties: {
