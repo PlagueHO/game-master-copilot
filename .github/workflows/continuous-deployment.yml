@@ -42,7 +42,12 @@ jobs:
       AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
 
+  test-dmcserver:
+    uses: ./.github/workflows/test-dmcserver.yml
+
   build-dmcserver:
+    needs:
+      - test-dmcserver
     uses: ./.github/workflows/build-dmcserver.yml
   
   publish-dmcserver:
