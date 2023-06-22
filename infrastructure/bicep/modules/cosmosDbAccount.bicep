@@ -72,7 +72,8 @@ resource cosmosDbCampaignContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDat
           '/TenantId'
           '/CampaignId'
         ]
-        kind: 'Hash'
+        kind: 'MultiHash'
+        version: 2
       }
     }
   }
@@ -90,7 +91,8 @@ resource cosmosDbCharactersContainer 'Microsoft.DocumentDB/databaseAccounts/sqlD
           '/CampaignId'
           '/CharacterId'
         ]
-        kind: 'Hash'
+        kind: 'MultiHash'
+        version: 2
       }
     }
   }
