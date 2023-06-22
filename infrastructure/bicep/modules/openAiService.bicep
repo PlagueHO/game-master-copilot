@@ -33,6 +33,7 @@ resource openAiServiceDeployment 'Microsoft.CognitiveServices/accounts/deploymen
     }
     scaleSettings: {
       scaleType: model.scaleType
+      capacity: model.capacity
     }
   }
 }]
