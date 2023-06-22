@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json;
 
-namespace dungeon_master_copilot_server.Data;
+namespace dungeon_master_copilot_server.Data.Configuration;
 
 public enum SemanticKernelConfigurationServiceType
 {

@@ -1,5 +1,5 @@
 using Azure.Identity;
-using dungeon_master_copilot_server.Data;
+using dungeon_master_copilot_server.Data.Configuration;
 using dungeon_master_copilot_server.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;

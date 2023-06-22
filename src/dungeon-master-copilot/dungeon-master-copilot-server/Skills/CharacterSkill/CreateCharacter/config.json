@@ -3,7 +3,7 @@
     "description": "Create a character",
     "type": "completion",
     "completion": {
-      "max_tokens": 400,
+      "max_tokens": 800,
       "temperature": 0.75,
       "top_p": 0.0,
       "presence_penalty": 0.0,
