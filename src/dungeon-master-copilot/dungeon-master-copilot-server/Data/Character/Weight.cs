@@ -1,4 +1,6 @@
-﻿namespace dungeon_master_copilot_server.Data.Character
+﻿using System.Security.Cryptography.X509Certificates;
+
+namespace dungeon_master_copilot_server.Data.Character
 {
     /// <summary>
     /// Represents a weight measurement in grams.
@@ -15,10 +17,35 @@
         const double KILOGRAMS_PER_GRAM = 0.001;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="Weight"/> class.
+        /// </summary>
+        public Weight()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Weight"/> class with the specified weight in pounds.
+        /// </summary>
+        /// <param name="lbs">The weight in pounds.</param>
+        public Weight(double lbs)
+        {
+            SetWeightPounds(lbs);
+        }
+
+        /// <summary>
+        /// Sets the weight value in grams based on a weight value measured in pounds.
+        /// </summary>
+        /// <param name="lbs">The weight in pounds.</param>
+        public void SetWeightPounds(double lbs)
+        {
+            Value = lbs / POUNDS_PER_GRAM;
+        }
+
+        /// <summary>
         /// Returns the weight in ounces, calculated from the <see cref="Value"/> property.
         /// </summary>
         /// <returns>The weight in ounces</returns>
-        public double GetOunces()
+        public double ConvertToOunces()
         {
             return Value * OUNCES_PER_GRAM;
         }
@@ -27,7 +54,7 @@
         /// Returns the weight in pounds, calculated from the <see cref="Value"/> property.
         /// </summary>
         /// <returns>The weight in pounds</returns>
-        public double GetPounds()
+        public double ConvertToPounds()
         {
             return Value * POUNDS_PER_GRAM;
         }
@@ -36,7 +63,7 @@
         /// Returns the weight in kilograms, calculated from the <see cref="Value"/> property.
         /// </summary>
         /// <returns>The weight in kilograms</returns>
-        public double GetKilograms()
+        public double ConvertToKilograms()
         {
             return Value * KILOGRAMS_PER_GRAM;
         }
