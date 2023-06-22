@@ -6,6 +6,7 @@ targetScope = 'subscription'
   'FranceCentral'
   'SouthCentralUS'
   'WestEurope'
+  'UKSouth'
 ])
 param location string = 'SouthCentralUS'
 
@@ -67,6 +68,15 @@ resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
+module cosmosDbAccount './modules/cosmosDbAccount.bicep' = {
+  name: 'cosmosDbAccount'
+  scope: rg
+  params: {
+    location: location
+    cosmosDbAccountName: '${baseResourceName}-cdb'
+  }
+}
+
 module openAiService './modules/openAiService.bicep' = {
   name: 'openAiService'
   scope: rg
@@ -103,10 +113,6 @@ module cognitiveSearch './modules/cognitiveSearch.bicep' = {
 module appServicePlan './modules/appServicePlan.bicep' = {
   name: 'appServicePlan'
   scope: rg
-  dependsOn: [
-    openAiService
-    monitoring
-  ]
   params: {
     location: location
     appServicePlanName: '${baseResourceName}-asp'
@@ -119,6 +125,8 @@ module webAppBlazor './modules/webAppBlazor.bicep' = {
   scope: rg
   dependsOn: [
     appServicePlan
+    cosmosDbAccount
+    openAiService
     monitoring
   ]
   params: {
@@ -131,6 +139,7 @@ module webAppBlazor './modules/webAppBlazor.bicep' = {
     azureOpenAiDeploymentText: openAiModelDeployments[0].name
     azureOpenAiDeploymentChat: openAiModelDeployments[1].name
     azureOpenAiDeploymentTextEmbedding: openAiModelDeployments[2].name
+    cosmosDbAccountName: cosmosDbAccount.outputs.cosmosDbAccountName
   }
 }
 

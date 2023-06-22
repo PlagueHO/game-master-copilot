@@ -7,7 +7,13 @@ param azureOpenAiEndpoint string
 param azureOpenAiDeploymentText string
 param azureOpenAiDeploymentChat string
 param azureOpenAiDeploymentTextEmbedding string
+param cosmosDbAccountName string
 
+resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' existing = {
+  name: cosmosDbAccountName
+}
+
+var cosmosDbAccountConnectionString = format('AccountEndpoint={0};AccountKey={1};', cosmosDbAccount.properties.documentEndpoint, listKeys(cosmosDbAccount.id, '2023-04-15').primaryMasterKey)
 resource webApp 'Microsoft.Web/sites@2021-01-15' = {
   name: webAppName
   location: location
@@ -114,6 +120,13 @@ resource webApp 'Microsoft.Web/sites@2021-01-15' = {
         {
           name: 'SemanticKernel__Services__2__Deployment'
           value: azureOpenAiDeploymentTextEmbedding
+        }
+      ]
+      connectionStrings: [
+        {
+          name: 'cosmosDbAccount'
+          connectionString: cosmosDbAccountConnectionString
+          type: 'DocDb'
         }
       ]
     }
