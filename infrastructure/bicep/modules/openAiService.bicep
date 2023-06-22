@@ -25,15 +25,15 @@ resource openAiService 'Microsoft.CognitiveServices/accounts@2023-05-01' = {
 resource openAiServiceDeployment 'Microsoft.CognitiveServices/accounts/deployments@2023-05-01' = [for (model, i) in openAiModeldeployments: {
   name: model.name
   parent: openAiService
+  sku: {
+    name: 'S0'
+    capacity: model.capacity
+  }
   properties: {
     model: {
       format: 'OpenAI'
       name: model.modelName
       version: model.modelVersion
-    }
-    scaleSettings: {
-      scaleType: model.scaleType
-      capacity: model.capacity
     }
   }
 }]
