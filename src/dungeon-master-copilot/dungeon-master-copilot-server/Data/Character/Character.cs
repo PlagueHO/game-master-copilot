@@ -1,4 +1,4 @@
-﻿namespace dungeon_master_copilot_server.Data.Character
+﻿namespace dungeon_master_copilot_server.Data
 {
     /// <summary>
     /// Class to represent a character in the game.

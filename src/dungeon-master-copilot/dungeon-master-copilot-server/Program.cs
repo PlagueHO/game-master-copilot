@@ -1,5 +1,5 @@
 using Azure.Identity;
-using dungeon_master_copilot_server.Data.Character;
+using dungeon_master_copilot_server.Data;
 using dungeon_master_copilot_server.Data.Configuration;
 using dungeon_master_copilot_server.Services;
 using Microsoft.AspNetCore.Authentication;
@@ -38,12 +38,15 @@ internal class Program
             options.FallbackPolicy = options.DefaultPolicy;
         });
 
+        // Get an Azure AD token for the application to use to authenticate to services in Azure
+        var azureCredential = new DefaultAzureCredential();
+
         builder.Services.AddRazorPages();
         builder.Services.AddServerSideBlazor()
             .AddMicrosoftIdentityConsentHandler();
 
         // Create the Semantic Kernel and add it as a singleton service
-        var semanticKernelBuilder = CreateSemanticKernel(builder);
+        var semanticKernelBuilder = CreateSemanticKernel(builder, azureCredential);
 
         builder.Services.AddSingleton<ISemanticKernelService>((svc) =>
         {
@@ -53,8 +56,19 @@ internal class Program
         // Add the Cosmos DB client as a singleton service
         builder.Services.AddSingleton<CosmosClient>(sp =>
             {
-                var connectionString = builder.Configuration.GetConnectionString("cosmosDbAccount");
-                return new CosmosClient(connectionString);
+                var cosmosDbEndpointUri = builder.Configuration.GetConnectionString("cosmosDbEndpointUri");
+                if (string.IsNullOrEmpty(cosmosDbEndpointUri))
+                {
+                    throw new ArgumentNullException("cosmosDbEndpointUri");
+                }
+                return new CosmosClient(cosmosDbEndpointUri, azureCredential);
+            });
+
+        // Add the Tenant repository as a scoped service
+        builder.Services.AddScoped<ITenantRepository>(sp =>
+            {
+                var cosmosClient = sp.GetService<CosmosClient>();
+                return new TenantRepository(cosmosClient, "dungeon-master-copilot", "Tenants");
             });
 
         // Add the Character repository as a scoped service
@@ -96,12 +110,9 @@ internal class Program
     /// </summary>
     /// <param name="builder">The WebApplicationBuilder used to configure the application.</param>
     /// <returns>A new instance of the Semantic Kernel service.</returns>
-    private static IKernel CreateSemanticKernel(WebApplicationBuilder builder)
+    private static IKernel CreateSemanticKernel(WebApplicationBuilder builder, DefaultAzureCredential azureCredential)
     {
         Console.WriteLine("Creating Semantic Kernel");
-
-        // Get an Azure AD token for the application to use to authenticate to services in Azure
-        var azureCredential = new DefaultAzureCredential();
 
         var semanticKernel = new KernelBuilder();
 
@@ -127,7 +138,7 @@ internal class Program
 
         if (semanticKernelConfiguration.Services == null)
         {
-            throw new Exception("Semantic Kernel configuration services are null");
+            throw new ArgumentException("Semantic Kernel configuration services are null");
         }
 
         foreach (var service in semanticKernelConfiguration.Services)

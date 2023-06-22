@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using dungeon_master_copilot_server.Data.Character;
+using dungeon_master_copilot_server.Data;
 using Microsoft.Azure.Cosmos;
 
-namespace dungeon_master_copilot_server.Data.Tenant
+namespace dungeon_master_copilot_server.Data
 {
     public class TenantRepository : ITenantRepository
     {
@@ -48,8 +48,8 @@ namespace dungeon_master_copilot_server.Data.Tenant
 
         public async Task<Tenant> UpdateTenantAsync(Guid id, Tenant tenant)
         {
-            tenant.Id = id.ToString();
-            var response = await _container.UpsertItemAsync(tenant, new PartitionKey(tenant.Id));
+            tenant.Id = id;
+            var response = await _container.UpsertItemAsync(tenant, new PartitionKey(tenant.Id.ToString()));
             return response.Resource;
         }
 

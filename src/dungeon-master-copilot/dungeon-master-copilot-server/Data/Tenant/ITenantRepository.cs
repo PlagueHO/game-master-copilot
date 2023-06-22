@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace dungeon_master_copilot_server.Data.Character
+namespace dungeon_master_copilot_server.Data
 {
     public interface ITenantRepository
     {

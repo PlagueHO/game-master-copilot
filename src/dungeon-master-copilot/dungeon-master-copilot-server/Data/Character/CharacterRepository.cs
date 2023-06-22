@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Azure.Cosmos;
 
-namespace dungeon_master_copilot_server.Data.Character
+namespace dungeon_master_copilot_server.Data
 {
     public class CharacterRepository : ICharacterRepository
     {

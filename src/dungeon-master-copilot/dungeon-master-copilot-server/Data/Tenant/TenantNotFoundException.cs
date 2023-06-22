@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace dungeon_master_copilot_server.Data.Tenant
+namespace dungeon_master_copilot_server.Data
 {
     [Serializable]
     internal class TenantNotFoundException : Exception

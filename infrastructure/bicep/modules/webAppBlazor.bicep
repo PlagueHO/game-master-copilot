@@ -122,6 +122,10 @@ resource webApp 'Microsoft.Web/sites@2021-01-15' = {
           name: 'SemanticKernel__Services__2__Deployment'
           value: azureOpenAiDeploymentTextEmbedding
         }
+        {
+          name: 'cosmosDbEndpointUri'
+          value: cosmosDbAccount.properties.documentEndpoint
+        }
       ]
       connectionStrings: [
         {

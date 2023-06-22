@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography.X509Certificates;
 
-namespace dungeon_master_copilot_server.Data.Character
+namespace dungeon_master_copilot_server.Data
 {
     /// <summary>
     /// Represents a weight measurement in grams.

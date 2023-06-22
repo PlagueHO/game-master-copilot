@@ -1,4 +1,4 @@
-﻿namespace dungeon_master_copilot_server.Data.Character
+﻿namespace dungeon_master_copilot_server.Data
 {
     /// <summary>
     /// Represents the height of a character.
