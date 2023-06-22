@@ -11,12 +11,15 @@ permissions:
   contents: read
 
 jobs:
-  lint-bicep:
-    uses: ./.github/workflows/lint-bicep.yml
+  # We are building an ARM template rather than submitting the Bicep directly
+  # because this allows us to use the latest version of the Bicep compiler.
+
+  build-armtemplate:
+    uses: ./.github/workflows/build-armtemplate.yml
 
   validate-infrastructure:
     needs:
-      - lint-bicep
+      - build-armtemplate
     uses: ./.github/workflows/validate-infrastructure.yml
     with:
       LOCATION: ${{ vars.LOCATION }}

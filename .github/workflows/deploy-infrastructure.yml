@@ -51,8 +51,8 @@ jobs:
       openAiServiceEndpoint: ${{ steps.deploy.outputs.openAiServiceEndpoint }}
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
 
       - name: Azure Login
         uses: azure/login@v1
@@ -69,7 +69,7 @@ jobs:
           deploymentName: '${{ github.action_ref }}-${{ github.run_number }}'
           resourceGroupName: ${{ inputs.RESOURCE_GROUP_NAME }}
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          template: ./infrastructure/bicep/main.bicep
+          template: ./armtemplate/main.json
           region: ${{ inputs.LOCATION }}
           scope: subscription
           parameters: >

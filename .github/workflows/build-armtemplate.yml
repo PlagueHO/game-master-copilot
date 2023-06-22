@@ -1,4 +1,4 @@
-name: lint-bicep
+name: build-armtemplate
 
 on:
   workflow_call:
@@ -17,6 +17,12 @@ jobs:
         sudo mv ./bicepinstall /usr/local/bin/bicep
         bicep --help
      
-    - name: Lint Bicep
+    - name: Build Bicep
       run: |
         bicep build ./infrastructure/bicep/main.bicep
+
+    - name: Upload ARM Template as workflow artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: armtemplate
+        path: ./infrastructure/bicep/main.json
