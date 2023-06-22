@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using dungeon_master_copilot_server.Data.Character;
+using dungeon_master_copilot_server.Data;
 
 namespace dungeon_master_copilot_server_test.Data.Character
 {
