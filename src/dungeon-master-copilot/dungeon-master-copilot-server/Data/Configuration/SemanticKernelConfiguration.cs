@@ -11,6 +11,7 @@ public enum SemanticKernelConfigurationServiceType
 }
 public class SemanticKernelConfiguration
 {
+    public string? PluginsDirectory { get; set; }
     public List<SemanticKernelConfigurationService>? Services { get; set; }
 }
 

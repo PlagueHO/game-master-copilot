@@ -28,6 +28,23 @@ namespace dungeon_master_copilot_server.Data
             }
         }
 
+        public async Task<Tenant> GetTenantByNameAsync(string name)
+        {
+            var queryDefinition = new QueryDefinition("SELECT * FROM c WHERE c.Name = @name")
+            .WithParameter("@name", name);
+
+            var query = _container.GetItemQueryIterator<Tenant>(queryDefinition);
+            if (query.HasMoreResults)
+            {
+                var response = await query.ReadNextAsync();
+                if (response != null && response.Count > 0)
+                {
+                    return response.FirstOrDefault();
+                }
+            }
+            return null;
+        }
+
         public async Task<IEnumerable<Tenant>> GetTenantsAsync()
         {
             var query = _container.GetItemQueryIterator<Tenant>(new QueryDefinition("SELECT * FROM c"));

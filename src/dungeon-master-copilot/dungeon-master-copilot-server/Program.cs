@@ -44,14 +44,6 @@ internal class Program
         builder.Services.AddRazorPages();
         builder.Services.AddServerSideBlazor()
             .AddMicrosoftIdentityConsentHandler();
-
-        // Create the Semantic Kernel and add it as a singleton service
-        var semanticKernelBuilder = CreateSemanticKernel(builder, azureCredential);
-
-        builder.Services.AddSingleton<ISemanticKernelService>((svc) =>
-        {
-            return new SemanticKernelService(semanticKernelBuilder, builder.Configuration);
-        });
         
         // Add the Cosmos DB client as a singleton service
         builder.Services.AddSingleton<CosmosClient>(sp =>
@@ -77,6 +69,9 @@ internal class Program
                 var cosmosClient = sp.GetService<CosmosClient>();
                 return new CharacterRepository(cosmosClient, "dungeon-master-copilot", "Characters");
             });
+
+        // Initalize the Semantic Kernel
+        InitSemanticKernel(builder, azureCredential);
 
         var app = builder.Build();
 
@@ -106,11 +101,11 @@ internal class Program
     }
 
     /// <summary>
-    /// Creates a new instance of the Semantic Kernel service.
+    /// Creates a new instance of the Semantic Kernel service and adds it to the WebApplicationBuilder.
     /// </summary>
     /// <param name="builder">The WebApplicationBuilder used to configure the application.</param>
     /// <returns>A new instance of the Semantic Kernel service.</returns>
-    private static IKernel CreateSemanticKernel(WebApplicationBuilder builder, DefaultAzureCredential azureCredential)
+    private static void InitSemanticKernel(WebApplicationBuilder builder, DefaultAzureCredential azureCredential)
     {
         Console.WriteLine("Creating Semantic Kernel");
 
@@ -120,6 +115,7 @@ internal class Program
         var semanticKernelConfiguration = builder.Configuration
             .GetSection("SemanticKernel")
             .Get<SemanticKernelConfiguration>() ?? throw new Exception("Semantic Kernel configuration is null");
+
         var serviceActions = new Dictionary<SemanticKernelConfigurationServiceType, Action<SemanticKernelConfigurationService>>()
         {
             { SemanticKernelConfigurationServiceType.AzureOpenAIServiceTextCompletion, (service) => semanticKernel.WithAzureTextCompletionService(service.Deployment,
@@ -156,6 +152,11 @@ internal class Program
             }
         }
 
-        return semanticKernel.Build();
+        var semanticKernelBuilder = semanticKernel.Build();
+
+        builder.Services.AddSingleton<ISemanticKernelService>((svc) =>
+        {
+            return new SemanticKernelService(semanticKernelBuilder, semanticKernelConfiguration);
+        });
     }
 }
