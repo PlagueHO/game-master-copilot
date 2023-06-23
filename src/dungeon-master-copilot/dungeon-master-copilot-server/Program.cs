@@ -48,7 +48,7 @@ internal class Program
         // Add the Cosmos DB client as a singleton service
         builder.Services.AddSingleton<CosmosClient>(sp =>
             {
-                var cosmosDbEndpointUri = builder.Configuration.GetConnectionString("cosmosDbEndpointUri");
+                var cosmosDbEndpointUri = builder.Configuration["cosmosDbEndpointUri"];
                 if (string.IsNullOrEmpty(cosmosDbEndpointUri))
                 {
                     throw new ArgumentNullException("cosmosDbEndpointUri");
