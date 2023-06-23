@@ -9,8 +9,9 @@ namespace dungeon_master_copilot_server.Services
     public class SemanticKernelService : ISemanticKernelService
     {
         private readonly IKernel _semanticKernel;
-        private readonly string _pluginsDirectory = "\\Plugins";
-        private readonly IDictionary<string, Microsoft.SemanticKernel.SkillDefinition.ISKFunction> _skills;
+        private readonly string _pluginsDirectory;
+        private readonly IDictionary<string, Microsoft.SemanticKernel.SkillDefinition.ISKFunction> _functions;
+
 
         public SemanticKernelService(IKernel semanticKernel, SemanticKernelConfiguration configuration)
         {
@@ -18,30 +19,28 @@ namespace dungeon_master_copilot_server.Services
 
             // Set the class-level private field _skillDirectory to a value that 
             // corresponds to the value retrieved from the configuration or the default 
-            // value specified in the code block, which is "\Skills".
+            // value specified in the code block, which is "\Plugins".
             var pluginsDirectory = configuration.PluginsDirectory;
-            if (pluginsDirectory != null)
-                _pluginsDirectory = pluginsDirectory;
-
-            // Import a Semantic Skill from the specified directory and output a console message to confirm it.
-            _skills = _semanticKernel.ImportSemanticSkillFromDirectory(_pluginsDirectory);
-            Console.WriteLine($"Imported {_skills.Count()} Semantic Skill from {_pluginsDirectory}.");
-        }
-
-        public async Task<SKContext> InvokeSkillAsync(string skill, string input)
-        {
-            if (_semanticKernel.Skills.TryGetFunction(skill, out ISKFunction? function))
+            if (pluginsDirectory == null)
             {
-                var context = _semanticKernel.CreateNewContext();
-                context["input"] = input;
-                var result = await function.InvokeAsync(context);
-                return result;
+                _pluginsDirectory = Path.Combine(Directory.GetCurrentDirectory(), "\\Plugins");
             }
             else
             {
-                throw new Exception($"Skill {skill} not found.");
+                _pluginsDirectory = Path.IsPathRooted(pluginsDirectory) ? pluginsDirectory : Path.Combine(Directory.GetCurrentDirectory(), pluginsDirectory);
             }
-            // Process the input using the Semantic Kernel and output the result.
+
+            // Import a Semantic Skill from the specified directory and output a console message to confirm it.
+            _functions = _semanticKernel.ImportSemanticSkillFromDirectory(_pluginsDirectory, "CharacterPlugin");
+            Console.WriteLine($"Imported {_functions.Count()} Semantic Skill from '{_pluginsDirectory}'.");
+        }
+
+        public async Task<SKContext> InvokeFunctionAsync(string function, string input)
+        {
+            var context = _semanticKernel.CreateNewContext();
+            context["input"] = input;
+            var result = await _functions[function].InvokeAsync(context);
+            return result;
         }
     }
 }

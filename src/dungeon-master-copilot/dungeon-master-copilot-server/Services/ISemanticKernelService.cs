@@ -5,7 +5,7 @@ namespace dungeon_master_copilot_server.Services
 {
     public interface ISemanticKernelService
     {
-        public Task<SKContext> InvokeSkillAsync(string skill, string input);
+        public Task<SKContext> InvokeFunctionAsync(string function, string input);
     }
 }
 

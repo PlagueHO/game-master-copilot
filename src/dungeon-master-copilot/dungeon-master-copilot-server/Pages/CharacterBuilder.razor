@@ -32,7 +32,7 @@
     private async Task CreateCharacter()
     {
         // Call the semanticKernelService with the character details
-        var result = await semanticKernelService.InvokeSkillAsync("CreateCharacter", characterDetails);
+        var result = await semanticKernelService.InvokeFunctionAsync("CreateCharacter", characterDetails);
 
         // Use the result in some way
         Console.WriteLine(result);
