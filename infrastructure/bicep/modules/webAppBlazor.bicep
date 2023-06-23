@@ -13,7 +13,104 @@ resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' exis
   name: cosmosDbAccountName
 }
 
-var cosmosDbAccountConnectionString = format('AccountEndpoint={0};AccountKey={1};', cosmosDbAccount.properties.documentEndpoint, cosmosDbAccount.listKeys().primaryMasterKey)
+var appSettings =  [
+  {
+    name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
+    value: appInsightsInstrumentationKey
+  }
+  {
+    name: 'APPINSIGHTS_PROFILERFEATURE_VERSION'
+    value: '1.0.0'
+  }
+  {
+    name: 'APPINSIGHTS_SNAPSHOTFEATURE_VERSION'
+    value: '1.0.0'
+  }
+  {
+    name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
+    value: appInsightsConnectionString
+  }
+  {
+    name: 'ApplicationInsightsAgent_EXTENSION_VERSION'
+    value: '~2'
+  }
+  {
+    name: 'DiagnosticServices_EXTENSION_VERSION'
+    value: '~3'
+  }
+  {
+    name: 'InstrumentationEngine_EXTENSION_VERSION'
+    value: 'disabled'
+  }
+  {
+    name: 'SnapshotDebugger_EXTENSION_VERSION'
+    value: 'disabled'
+  }
+  {
+    name: 'XDT_MicrosoftApplicationInsights_BaseExtensions'
+    value: 'disabled'
+  }
+  {
+    name: 'XDT_MicrosoftApplicationInsights_Mode'
+    value: 'recommended'
+  }
+  {
+    name: 'XDT_MicrosoftApplicationInsights_PreemptSdk'
+    value: 'disabled'
+  }
+  {
+    name: 'SemanticKernel__Services__0__Id'
+    value: 'TextCompletion'
+  }
+  {
+    name: 'SemanticKernel__Services__0__Type'
+    value: 'AzureOpenAIServiceTextCompletion'
+  }
+  {
+    name: 'SemanticKernel__Services__0__Endpoint'
+    value: azureOpenAiEndpoint
+  }
+  {
+    name: 'SemanticKernel__Services__0__Deployment'
+    value: azureOpenAiDeploymentText
+  }
+  {
+    name: 'SemanticKernel__Services__1__Id'
+    value: 'TextCompletion'
+  }
+  {
+    name: 'SemanticKernel__Services__1__Type'
+    value: 'AzureOpenAIServiceChatCompletion'
+  }
+  {
+    name: 'SemanticKernel__Services__1__Endpoint'
+    value: azureOpenAiEndpoint
+  }
+  {
+    name: 'SemanticKernel__Services__1__Deployment'
+    value: azureOpenAiDeploymentChat
+  }
+  {
+    name: 'SemanticKernel__Services__2__Id'
+    value: 'TextCompletion'
+  }
+  {
+    name: 'SemanticKernel__Services__2__Type'
+    value: 'AzureOpenAIServiceChatCompletion'
+  }
+  {
+    name: 'SemanticKernel__Services__2__Endpoint'
+    value: azureOpenAiEndpoint
+  }
+  {
+    name: 'SemanticKernel__Services__2__Deployment'
+    value: azureOpenAiDeploymentTextEmbedding
+  }
+  {
+    name: 'cosmosDbEndpointUri'
+    value: cosmosDbAccount.properties.documentEndpoint
+  }
+]
 
 resource webApp 'Microsoft.Web/sites@2021-01-15' = {
   name: webAppName
@@ -29,111 +126,7 @@ resource webApp 'Microsoft.Web/sites@2021-01-15' = {
       numberOfWorkers: 1
       linuxFxVersion: 'DOTNETCORE|7.0'
       healthCheckPath: '/'
-      appSettings: [
-        {
-          name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
-          value: appInsightsInstrumentationKey
-        }
-        {
-          name: 'APPINSIGHTS_PROFILERFEATURE_VERSION'
-          value: '1.0.0'
-        }
-        {
-          name: 'APPINSIGHTS_SNAPSHOTFEATURE_VERSION'
-          value: '1.0.0'
-        }
-        {
-          name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
-          value: appInsightsConnectionString
-        }
-        {
-          name: 'ApplicationInsightsAgent_EXTENSION_VERSION'
-          value: '~2'
-        }
-        {
-          name: 'DiagnosticServices_EXTENSION_VERSION'
-          value: '~3'
-        }
-        {
-          name: 'InstrumentationEngine_EXTENSION_VERSION'
-          value: 'disabled'
-        }
-        {
-          name: 'SnapshotDebugger_EXTENSION_VERSION'
-          value: 'disabled'
-        }
-        {
-          name: 'XDT_MicrosoftApplicationInsights_BaseExtensions'
-          value: 'disabled'
-        }
-        {
-          name: 'XDT_MicrosoftApplicationInsights_Mode'
-          value: 'recommended'
-        }
-        {
-          name: 'XDT_MicrosoftApplicationInsights_PreemptSdk'
-          value: 'disabled'
-        }
-        {
-          name: 'SemanticKernel__Services__0__Id'
-          value: 'TextCompletion'
-        }
-        {
-          name: 'SemanticKernel__Services__0__Type'
-          value: 'AzureOpenAIServiceTextCompletion'
-        }
-        {
-          name: 'SemanticKernel__Services__0__Endpoint'
-          value: azureOpenAiEndpoint
-        }
-        {
-          name: 'SemanticKernel__Services__0__Deployment'
-          value: azureOpenAiDeploymentText
-        }
-        {
-          name: 'SemanticKernel__Services__1__Id'
-          value: 'TextCompletion'
-        }
-        {
-          name: 'SemanticKernel__Services__1__Type'
-          value: 'AzureOpenAIServiceChatCompletion'
-        }
-        {
-          name: 'SemanticKernel__Services__1__Endpoint'
-          value: azureOpenAiEndpoint
-        }
-        {
-          name: 'SemanticKernel__Services__1__Deployment'
-          value: azureOpenAiDeploymentChat
-        }
-        {
-          name: 'SemanticKernel__Services__2__Id'
-          value: 'TextCompletion'
-        }
-        {
-          name: 'SemanticKernel__Services__2__Type'
-          value: 'AzureOpenAIServiceChatCompletion'
-        }
-        {
-          name: 'SemanticKernel__Services__2__Endpoint'
-          value: azureOpenAiEndpoint
-        }
-        {
-          name: 'SemanticKernel__Services__2__Deployment'
-          value: azureOpenAiDeploymentTextEmbedding
-        }
-        {
-          name: 'cosmosDbEndpointUri'
-          value: cosmosDbAccount.properties.documentEndpoint
-        }
-      ]
-      connectionStrings: [
-        {
-          name: 'cosmosDbAccount'
-          connectionString: cosmosDbAccountConnectionString
-          type: 'DocDb'
-        }
-      ]
+      appSettings: appSettings
     }
     clientAffinityEnabled: true
   }
@@ -164,52 +157,7 @@ resource WebAppStaging 'Microsoft.Web/sites/slots@2022-03-01' = {
       numberOfWorkers: 1
       linuxFxVersion: 'DOTNETCORE|7.0'
       healthCheckPath: '/'
-      appSettings: [
-        {
-          name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
-          value: appInsightsInstrumentationKey
-        }
-        {
-          name: 'APPINSIGHTS_PROFILERFEATURE_VERSION'
-          value: '1.0.0'
-        }
-        {
-          name: 'APPINSIGHTS_SNAPSHOTFEATURE_VERSION'
-          value: '1.0.0'
-        }
-        {
-          name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
-          value: appInsightsConnectionString
-        }
-        {
-          name: 'ApplicationInsightsAgent_EXTENSION_VERSION'
-          value: '~2'
-        }
-        {
-          name: 'DiagnosticServices_EXTENSION_VERSION'
-          value: '~3'
-        }
-        {
-          name: 'InstrumentationEngine_EXTENSION_VERSION'
-          value: 'disabled'
-        }
-        {
-          name: 'SnapshotDebugger_EXTENSION_VERSION'
-          value: 'disabled'
-        }
-        {
-          name: 'XDT_MicrosoftApplicationInsights_BaseExtensions'
-          value: 'disabled'
-        }
-        {
-          name: 'XDT_MicrosoftApplicationInsights_Mode'
-          value: 'recommended'
-        }
-        {
-          name: 'XDT_MicrosoftApplicationInsights_PreemptSdk'
-          value: 'disabled'
-        }
-      ]
+      appSettings: appSettings
     }
     clientAffinityEnabled: true
   }
