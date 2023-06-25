@@ -155,6 +155,42 @@ module storageAccount './modules/storageAccount.bicep' = {
   }
 }
 
+var roles = {
+    'Cognitive Services OpenAI User': '5e0bd9bd-7b93-4f28-af87-19fc36ad61bd'
+    'Storage Blob Data Contributor': 'ba92f5b4-2d11-453d-a403-e96b0029c9fe'
+    'Cosmos DB Account Reader Role': 'fbdf93bf-df7d-467e-a4d2-9458aa1360c8'
+}
+
+module openAiRoleUser 'modules/roleAssignment.bicep' = {
+  scope: rg
+  name: 'openai-role-user'
+  params: {
+    principalId: webAppBlazor.outputs.webAppIdentityPrincipalId
+    roleDefinitionId: roles['Cognitive Services OpenAI User']
+    principalType: 'ServicePrincipal'
+  }
+}
+
+module cosmosDbRoleUser 'modules/roleAssignment.bicep' = {
+  scope: rg
+  name: 'cosmosdb-role-user'
+  params: {
+    principalId: webAppBlazor.outputs.webAppIdentityPrincipalId
+    roleDefinitionId: roles['Cosmos DB Account Reader Role']
+    principalType: 'ServicePrincipal'
+  }
+}
+
+module storageRoleUser 'modules/roleAssignment.bicep' = {
+  scope: rg
+  name: 'storage-role-user'
+  params: {
+    principalId: webAppBlazor.outputs.webAppIdentityPrincipalId
+    roleDefinitionId: roles['Storage Blob Data Contributor']
+    principalType: 'ServicePrincipal'
+  }
+}
+
 output webAppName string = webAppBlazor.outputs.webAppName
 output webAppHostName  string = webAppBlazor.outputs.webAppHostName
 output webAppStagingName string = webAppBlazor.outputs.webAppStagingName

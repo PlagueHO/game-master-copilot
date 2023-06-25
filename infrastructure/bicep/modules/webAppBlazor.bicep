@@ -177,3 +177,4 @@ output webAppName string = webApp.name
 output webAppStagingName string = WebAppStaging.name
 output webAppHostName  string = webApp.properties.defaultHostName
 output webAppStagingHostName  string = WebAppStaging.properties.defaultHostName
+output webAppIdentityPrincipalId string = webApp.identity.principalId
