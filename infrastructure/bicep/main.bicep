@@ -155,15 +155,25 @@ module storageAccount './modules/storageAccount.bicep' = {
   }
 }
 
+module keyVault './modules/keyVault.bicep' = {
+  name: 'keyVault'
+  scope: rg
+  params: {
+    location: location
+    keyVaultName: '${baseResourceName}-akv'
+  }
+}
+
 var roles = {
     'Cognitive Services OpenAI User': '5e0bd9bd-7b93-4f28-af87-19fc36ad61bd'
     'Storage Blob Data Contributor': 'ba92f5b4-2d11-453d-a403-e96b0029c9fe'
     'Cosmos DB Account Reader Role': 'fbdf93bf-df7d-467e-a4d2-9458aa1360c8'
+    'Key Vault Secrets User': '4633458b-17de-408a-b874-0445c86b69e6'
 }
 
-module openAiRoleUser 'modules/roleAssignment.bicep' = {
+module openAiServiceRoleServicePrincipal 'modules/roleAssignment.bicep' = {
   scope: rg
-  name: 'openai-role-user'
+  name: 'openAiServiceRoleServicePrincipal'
   params: {
     principalId: webAppBlazor.outputs.webAppIdentityPrincipalId
     roleDefinitionId: roles['Cognitive Services OpenAI User']
@@ -171,9 +181,9 @@ module openAiRoleUser 'modules/roleAssignment.bicep' = {
   }
 }
 
-module cosmosDbRoleUser 'modules/roleAssignment.bicep' = {
+module cosmosDbRoleServicePrincipal 'modules/roleAssignment.bicep' = {
   scope: rg
-  name: 'cosmosdb-role-user'
+  name: 'cosmosDbRoleServicePrincipal'
   params: {
     principalId: webAppBlazor.outputs.webAppIdentityPrincipalId
     roleDefinitionId: roles['Cosmos DB Account Reader Role']
@@ -181,12 +191,22 @@ module cosmosDbRoleUser 'modules/roleAssignment.bicep' = {
   }
 }
 
-module storageRoleUser 'modules/roleAssignment.bicep' = {
+module storageAccountRoleServicePrincipal 'modules/roleAssignment.bicep' = {
   scope: rg
-  name: 'storage-role-user'
+  name: 'storageAccountRoleServicePrincipal'
   params: {
     principalId: webAppBlazor.outputs.webAppIdentityPrincipalId
     roleDefinitionId: roles['Storage Blob Data Contributor']
+    principalType: 'ServicePrincipal'
+  }
+}
+
+module keyVaultRoleServicePrincipal 'modules/roleAssignment.bicep' = {
+  scope: rg
+  name: 'keyVaultRoleServicePrincipal'
+  params: {
+    principalId: webAppBlazor.outputs.webAppIdentityPrincipalId
+    roleDefinitionId: roles['Key Vault Secrets User']
     principalType: 'ServicePrincipal'
   }
 }
