@@ -1,0 +1,50 @@
+name: publish-dmcopilotbackend
+
+on:
+  workflow_call:
+    inputs:
+      RESOURCE_GROUP_NAME:
+        required: true
+        type: string
+      WEBAPPNAME:
+        required: true
+        type: string
+    secrets:
+      AZURE_TENANT_ID:
+        required: true
+      AZURE_SUBSCRIPTION_ID:
+        required: true
+      AZURE_CLIENT_ID:
+        required: true
+
+jobs:
+  publish-dmcopilotbackend:
+    name: Publish DMC backend
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+
+      - name: Deploy DMC backend to staging slot
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ inputs.WEBAPPNAME }}
+          package: dmcopilot/dmcopilotbackend.zip
+          slot-name: 'staging'
+
+      - name: Swap staging slot
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az webapp deployment slot swap \
+            --name ${{ inputs.WEBAPPNAME }} \
+            --resource-group ${{ inputs.RESOURCE_GROUP_NAME }} \
+            --slot staging

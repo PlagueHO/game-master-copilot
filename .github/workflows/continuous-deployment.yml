@@ -47,19 +47,19 @@ jobs:
       AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
 
-  test-dmcserver:
-    uses: ./.github/workflows/test-dmcserver.yml
+  test-dmcopilotbackend:
+    uses: ./.github/workflows/test-dmcopilotbackend.yml
 
-  build-dmcserver:
+  build-dmcopilotbackend:
     needs:
-      - test-dmcserver
-    uses: ./.github/workflows/build-dmcserver.yml
+      - test-dmcopilotbackend
+    uses: ./.github/workflows/build-dmcopilotbackend.yml
   
-  publish-dmcserver:
+  publish-dmcopilotbackend:
     needs:
-      - build-dmcserver
+      - build-dmcopilotbackend
       - deploy-infrastructure
-    uses: ./.github/workflows/publish-dmcserver.yml
+    uses: ./.github/workflows/publish-dmcopilotbackend.yml
     with:
       RESOURCE_GROUP_NAME: ${{ vars.RESOURCE_GROUP_NAME }}
       WEBAPPNAME: ${{ needs.deploy-infrastructure.outputs.WEBAPPNAME }}

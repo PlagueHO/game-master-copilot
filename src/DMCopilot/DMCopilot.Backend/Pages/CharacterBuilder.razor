@@ -1,0 +1,40 @@
+@page "/character/builder"
+
+@using DMCopilot.Services
+@using DMCopilot.Data
+
+@inject ISemanticKernelService semanticKernelService
+@inject ICharacterRepository characterRepository
+
+<h1>Character Builder</h1>
+
+<!-- An input text box for entering basic details about character to create -->
+<div class="form-group d-flex">
+    <label for="characterDetails">Character Details</label>
+    @characterDetails
+    <input type="text" @bind="@characterDetails" @oninput="@((e) => { characterDetails=(string)e.Value;})" class="form-control" id="characterDetails" placeholder="A hill dwarf merchant who runs a general store in Baldurs Gate.">
+    <button type="button" class="btn btn-primary ml-2" @onclick="CreateCharacter">Create</button>
+</div>
+
+<table class="table table-striped table-condensed" style="font-family: monospace">
+    <tr>
+        <th>Property</th>
+        <th>Value</th>
+    </tr>
+    <tr>
+        <td>Name</td>
+        <td>Value</td>
+    </tr>
+</table>
+
+@code {
+    private string characterDetails { get; set; } = "A hill dwarf merchant who runs a general store in Baldurs Gate.";
+    private async Task CreateCharacter()
+    {
+        // Call the semanticKernelService with the character details
+        var result = await semanticKernelService.InvokeFunctionAsync("CreateCharacter", characterDetails);
+
+        // Use the result in some way
+        Console.WriteLine(result);
+    }
+}

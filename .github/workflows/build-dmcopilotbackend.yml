@@ -1,0 +1,33 @@
+name: build-dmcopilotbackend
+
+on:
+  workflow_call:
+
+jobs:
+  build-dmcopilotbackend:
+    name: Build DMC backend
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install .NET 7
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 7
+
+      - name: Build publishable DMC backend
+        run: |
+          dotnet publish --configuration Release
+        working-directory: ./src/DMCopilot/DMCopilot.Backend/
+
+      - name: Zip publishable DMC backend
+        run: |
+          zip -r dmcopilotbackend.zip .
+        working-directory: ./src/DMCopilot/DMCopilot.Backend/bin/Release/net7.0/publish
+
+      - name: Upload DMC backend as workflow artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: dmcbackend
+          path: ./src/DMCopilot/DMCopilot.Backend/bin/Release/net7.0/publish/dmcopilotbackend.zip

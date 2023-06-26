@@ -1,0 +1,35 @@
+name: test-dmcopilotbackend
+
+on:
+  workflow_call:
+
+jobs:
+  build-dmcopilotbackend:
+    name: Test DMC backend
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install .NET 7
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 7
+
+      - name: Run unit tests on DMC backend
+        run: |
+          dotnet test --configuration Release --logger trx
+        working-directory: ./src/DMCopilot/DMCopilot.Backend.Test/
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: DMCopilot.Backend.Test
+          path: ./src/DMCopilot/DMCopilot.Backend.Test/TestResults/*.trx
+
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+            files: |
+              ./src/DMCopilot/DMCopilot.Backend.Test/TestResults/*.trx
