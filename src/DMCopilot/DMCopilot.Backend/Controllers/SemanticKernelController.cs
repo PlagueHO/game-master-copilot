@@ -1,7 +1,7 @@
-﻿using DMCopilot.Services;
+﻿using DMCopilot.Backend.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DMCopilot.Controllers
+namespace DMCopilot.Backend.Controllers
 {
     public class SemanticKernelController : Controller
     {

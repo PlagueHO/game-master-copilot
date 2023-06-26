@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Azure.Cosmos;
 
-namespace DMCopilot.Data
+namespace DMCopilot.Backend.Data
 {
     public class CharacterRepository : ICharacterRepository
     {

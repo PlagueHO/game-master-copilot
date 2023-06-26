@@ -1,7 +1,7 @@
 ﻿using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Orchestration;
 
-namespace DMCopilot.Services
+namespace DMCopilot.Backend.Services
 {
     public interface ISemanticKernelService
     {

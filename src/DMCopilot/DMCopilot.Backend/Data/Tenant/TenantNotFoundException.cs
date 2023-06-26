@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace DMCopilot.Data
+namespace DMCopilot.Backend.Data
 {
     [Serializable]
     internal class TenantNotFoundException : Exception

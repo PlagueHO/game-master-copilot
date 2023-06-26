@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using DMCopilot.Data;
 using Microsoft.Azure.Cosmos;
 
-namespace DMCopilot.Data
+namespace DMCopilot.Backend.Data
 {
     public class TenantRepository : ITenantRepository
     {

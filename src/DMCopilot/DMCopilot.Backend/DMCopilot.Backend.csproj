@@ -4,7 +4,7 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>aspnet-DMCopilot.backend-dad4b7d6-ed24-4336-880b-eb9f3c89fa08</UserSecretsId>
+    <UserSecretsId>aspnet-DMCopilot.Backend-dad4b7d6-ed24-4336-880b-eb9f3c89fa08</UserSecretsId>
     <WebProject_DirectoryAccessLevelKey>0</WebProject_DirectoryAccessLevelKey>
     <RootNamespace>DMCopilot.Backend</RootNamespace>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>

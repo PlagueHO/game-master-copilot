@@ -56,17 +56,6 @@ var openAiModelDeployments = [
   }
 ]
 
-module b2c './modules/b2c.bicep' = {
-  name: 'b2c'
-  scope: rg
-  params: {
-    location: 'global'
-    tenantName: '${baseResourceName}-b2c'
-    tenantDisplayName: 'Dungeon Master Copilot ({$baseResourceName})'
-    countryCode: 'US'
-  }
-}
-
 module monitoring './modules/monitoring.bicep' = {
   name: 'monitoring'
   scope: rg

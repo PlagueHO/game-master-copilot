@@ -1,9 +1,5 @@
 {
   "dependencies": {
-    "identityapp1": {
-      "type": "identityapp",
-      "connectionId": "AzureAD:ClientSecret"
-    },
     "cosmosdb1": {
       "type": "cosmosdb",
       "connectionId": "cosmosDbAccount",
@@ -12,6 +8,11 @@
     "appInsights1": {
       "type": "appInsights",
       "connectionId": "APPLICATIONINSIGHTS_CONNECTION_STRING",
+      "dynamicId": null
+    },
+    "identityapp1": {
+      "type": "identityapp",
+      "connectionId": "AzureAD:ClientSecret",
       "dynamicId": null
     }
   }

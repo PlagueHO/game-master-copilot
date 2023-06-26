@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace DMCopilot.Data
+namespace DMCopilot.Backend.Data
 {
     public interface ICharacterRepository
     {

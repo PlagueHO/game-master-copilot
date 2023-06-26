@@ -1,4 +1,4 @@
-﻿namespace DMCopilot.Data
+﻿namespace DMCopilot.Backend.Data
 {
     /// <summary>
     /// Represents a tenant in the application.

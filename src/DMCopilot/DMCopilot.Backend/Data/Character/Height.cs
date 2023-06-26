@@ -1,4 +1,4 @@
-﻿namespace DMCopilot.Data
+﻿namespace DMCopilot.Backend.Data
 {
     /// <summary>
     /// Represents the height of a character.

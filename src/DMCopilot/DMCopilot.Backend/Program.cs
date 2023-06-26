@@ -1,7 +1,7 @@
 using Azure.Identity;
-using DMCopilot.Data;
-using DMCopilot.Data.Configuration;
-using DMCopilot.Services;
+using DMCopilot.Backend.Data;
+using DMCopilot.Backend.Data.Configuration;
+using DMCopilot.Backend.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;

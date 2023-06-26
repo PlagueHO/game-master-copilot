@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using DMCopilot.Data;
+using DMCopilot.Backend.Data;
 
-namespace DMCopilot.Test.Data.Character
+namespace DMCopilot.Backend.Test.Data.Character
 {
     [TestClass]
     public class WeightTests

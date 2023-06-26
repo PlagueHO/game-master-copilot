@@ -1,10 +1,10 @@
-﻿using DMCopilot.Data.Configuration;
+﻿using DMCopilot.Backend.Data.Configuration;
 using Microsoft.IdentityModel.Protocols;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Orchestration;
 using Microsoft.SemanticKernel.SkillDefinition;
 
-namespace DMCopilot.Services
+namespace DMCopilot.Backend.Services
 {
     public class SemanticKernelService : ISemanticKernelService
     {

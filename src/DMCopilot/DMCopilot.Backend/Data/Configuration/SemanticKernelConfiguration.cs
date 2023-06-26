@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json;
 
-namespace DMCopilot.Data.Configuration;
+namespace DMCopilot.Backend.Data.Configuration;
 
 public enum SemanticKernelConfigurationServiceType
 {
