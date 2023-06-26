@@ -60,7 +60,7 @@ module b2c './modules/b2c.bicep' = {
   name: 'b2c'
   scope: rg
   params: {
-    location: location
+    location: 'global'
     tenantName: '${baseResourceName}-b2c'
     tenantDisplayName: 'Dungeon Master Copilot ({$baseResourceName})'
     countryCode: 'US'
