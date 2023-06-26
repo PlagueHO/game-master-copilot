@@ -29,5 +29,5 @@ jobs:
       - name: Upload DMC backend as workflow artifact
         uses: actions/upload-artifact@v3
         with:
-          name: dmcbackend
+          name: dmcopilot
           path: ./src/DMCopilot/DMCopilot.Backend/bin/Release/net7.0/publish/dmcopilotbackend.zip
