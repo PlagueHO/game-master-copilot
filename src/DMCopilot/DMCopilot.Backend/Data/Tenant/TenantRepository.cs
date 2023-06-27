@@ -14,16 +14,16 @@ namespace DMCopilot.Backend.Data
             _container = client.GetContainer(databaseName, containerName);
         }
 
-        public async Task<Tenant> GetTenantAsync(Guid id)
+        public async Task<Tenant> GetTenantAsync(Guid tenantId)
         {
             try
             {
-                var response = await _container.ReadItemAsync<Tenant>(id.ToString(), new PartitionKey(id.ToString()));
+                var response = await _container.ReadItemAsync<Tenant>(tenantId.ToString(), new PartitionKey(tenantId.ToString()));
                 return response.Resource;
             }
             catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
-                throw new TenantNotFoundException(id.ToString());
+                throw new TenantNotFoundException(tenantId.ToString());
             }
         }
 
@@ -62,18 +62,18 @@ namespace DMCopilot.Backend.Data
             return response.Resource;
         }
 
-        public async Task<Tenant> UpdateTenantAsync(Guid id, Tenant tenant)
+        public async Task<Tenant> UpdateTenantAsync(Guid tenantId, Tenant tenant)
         {
-            tenant.Id = id;
-            var response = await _container.UpsertItemAsync(tenant, new PartitionKey(tenant.Id.ToString()));
+            tenant.TenantId = tenantId;
+            var response = await _container.UpsertItemAsync(tenant, new PartitionKey(tenant.TenantId.ToString()));
             return response.Resource;
         }
 
-        public async Task<bool> DeleteTenantAsync(Guid id)
+        public async Task<bool> DeleteTenantAsync(Guid tenantId)
         {
             try
             {
-                await _container.DeleteItemAsync<Tenant>(id.ToString(), new PartitionKey(id.ToString()));
+                await _container.DeleteItemAsync<Tenant>(tenantId.ToString(), new PartitionKey(tenantId.ToString()));
                 return true;
             }
             catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)

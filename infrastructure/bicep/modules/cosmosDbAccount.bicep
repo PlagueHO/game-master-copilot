@@ -46,7 +46,7 @@ resource cosmosDbDatabase 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@20
   }
 }
 
-resource cosmosDbTenantContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2023-04-15' = {
+resource cosmosDbTenantsContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2023-04-15' = {
   name: 'tenants'
   parent: cosmosDbDatabase
   properties: {
@@ -61,7 +61,26 @@ resource cosmosDbTenantContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatab
     }
   }
 }
-resource cosmosDbCampaignContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2023-04-15' = {
+
+resource cosmosDbWorldsContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2023-04-15' = {
+  name: 'worlds'
+  parent: cosmosDbDatabase
+  properties: {
+    resource: {
+      id: 'worlds'
+      partitionKey: {
+        paths: [
+          '/TenantId'
+          '/WorldId'
+        ]
+        kind: 'MultiHash'
+        version: 2
+      }
+    }
+  }
+}
+
+resource cosmosDbCampaignsContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2023-04-15' = {
   name: 'campaigns'
   parent: cosmosDbDatabase
   properties: {
@@ -70,6 +89,7 @@ resource cosmosDbCampaignContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDat
       partitionKey: {
         paths: [
           '/TenantId'
+          '/WorldId'
           '/CampaignId'
         ]
         kind: 'MultiHash'
@@ -88,6 +108,7 @@ resource cosmosDbCharactersContainer 'Microsoft.DocumentDB/databaseAccounts/sqlD
       partitionKey: {
         paths: [
           '/TenantId'
+          '/WorldId'
           '/CampaignId'
           '/CharacterId'
         ]

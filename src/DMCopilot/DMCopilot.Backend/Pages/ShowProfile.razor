@@ -2,8 +2,12 @@
 
 @using Microsoft.Identity.Web
 @using Microsoft.Graph
+@using DMCopilot.Backend.Services
+@using DMCopilot.Backend.Data
+
 @inject Microsoft.Graph.GraphServiceClient GraphServiceClient
 @inject MicrosoftIdentityConsentAndConditionalAccessHandler ConsentHandler
+@inject ITenantRepository tenantRepository
 
 <h1>Me</h1>
 
@@ -23,6 +27,10 @@ else
         <tr>
             <td>Name</td>
             <td>@user.DisplayName</td>
+        </tr>
+        <tr>
+            <td>UPN</td>
+            <td>@user.UserPrincipalName</td>
         </tr>
     </table>
 }

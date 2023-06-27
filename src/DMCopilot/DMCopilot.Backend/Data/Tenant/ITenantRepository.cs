@@ -6,11 +6,11 @@ namespace DMCopilot.Backend.Data
 {
     public interface ITenantRepository
     {
-        Task<Tenant> GetTenantAsync(Guid id);
+        Task<Tenant> GetTenantAsync(Guid tenantId);
         Task<Tenant> GetTenantByNameAsync(string name);
         Task<IEnumerable<Tenant>> GetTenantsAsync();
         Task<Tenant> CreateTenantAsync(Tenant tenant);
-        Task<Tenant> UpdateTenantAsync(Guid id, Tenant tenant);
-        Task<bool> DeleteTenantAsync(Guid id);
+        Task<Tenant> UpdateTenantAsync(Guid tenantId, Tenant tenant);
+        Task<bool> DeleteTenantAsync(Guid tenantId);
     }
 }
