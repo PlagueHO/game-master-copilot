@@ -28,10 +28,15 @@ jobs:
       BASE_RESOURCE_NAME: ${{ vars.BASE_RESOURCE_NAME }}
       RESOURCE_GROUP_NAME: ${{ vars.RESOURCE_GROUP_NAME }}
       APPSERVICEPLAN_CONFIGURATION: ${{ vars.APPSERVICEPLAN_CONFIGURATION }}
+      AZUREAD_INSTANCE: ${{ vars.AZUREAD_INSTANCE }}
     secrets:
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
       AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZUREAD_DOMAIN: ${{ secrets.AZUREAD_DOMAIN }}
+      AZUREAD_TENANT_ID: ${{ secrets.AZUREAD_TENANT_ID }}
+      AZUREAD_CLIENT_ID: ${{ secrets.AZUREAD_CLIENT_ID }}
+      AZUREAD_CLIENTSECRET: ${{ secrets.AZUREAD_CLIENTSECRET }}
   
   deploy-infrastructure:
     needs:
@@ -42,10 +47,15 @@ jobs:
       BASE_RESOURCE_NAME: ${{ vars.BASE_RESOURCE_NAME }}
       RESOURCE_GROUP_NAME: ${{ vars.RESOURCE_GROUP_NAME }}
       APPSERVICEPLAN_CONFIGURATION: ${{ vars.APPSERVICEPLAN_CONFIGURATION }}
+      AZUREAD_INSTANCE: ${{ vars.AZUREAD_INSTANCE }}
     secrets:
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
       AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZUREAD_DOMAIN: ${{ secrets.AZUREAD_DOMAIN }}
+      AZUREAD_TENANT_ID: ${{ secrets.AZUREAD_TENANT_ID }}
+      AZUREAD_CLIENT_ID: ${{ secrets.AZUREAD_CLIENT_ID }}
+      AZUREAD_CLIENTSECRET: ${{ secrets.AZUREAD_CLIENTSECRET }}
 
   test-dmcopilotbackend:
     uses: ./.github/workflows/test-dmcopilotbackend.yml

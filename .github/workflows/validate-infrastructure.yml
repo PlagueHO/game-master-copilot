@@ -15,6 +15,9 @@ on:
       APPSERVICEPLAN_CONFIGURATION:
         required: true
         type: string
+      AZUREAD_INSTANCE:
+        required: true
+        type: string
     secrets:
       AZURE_TENANT_ID:
         required: true
@@ -22,7 +25,15 @@ on:
         required: true
       AZURE_CLIENT_ID:
         required: true
-
+      AZUREAD_DOMAIN:
+        required: true
+      AZUREAD_TENANT_ID:
+        required: true
+      AZUREAD_CLIENT_ID:
+        required: true
+      AZUREAD_CLIENTSECRET:
+        required: true
+  
 jobs:
   validate-infrastructure:
     name: Validate Infrastructure Deployment
@@ -52,4 +63,9 @@ jobs:
             baseResourceName=${{ inputs.BASE_RESOURCE_NAME }}
             resourceGroupName=${{ inputs.RESOURCE_GROUP_NAME }}
             appServicePlanConfiguration=${{ inputs.APPSERVICEPLAN_CONFIGURATION }}
+            azureAdInstance=${{ inputs.AZUREAD_INSTANCE }}
+            azureAdDomain=${{ secrets.AZUREAD_DOMAIN }}
+            azureAdTenantId=${{ secrets.AZUREAD_TENANT_ID }}
+            azureAdClientId=${{ secrets.AZUREAD_CLIENT_ID }}
+            azureAdClientSecret=${{ secrets.AZUREAD_CLIENTSECRET }}
           additionalArguments: --what-if

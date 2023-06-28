@@ -32,6 +32,24 @@ param baseResourceName string
 ])
 param appServicePlanConfiguration string = 'P0V3'
 
+@description('The Azure AD instance to use for authentication.')
+param azureAdInstance string = environment().authentication.loginEndpoint
+
+@description('The Azure AD domain to use for authentication.')
+param azureAdDomain string
+
+@description('The Azure AD tenant ID to use for authentication.')
+@secure()
+param azureAdTenantId string
+
+@description('The Azure AD client ID to use for authentication.')
+@secure()
+param azureAdClientId string
+
+@description('The Azure AD client secret to use for authentication.')
+@secure()
+param azureAdClientSecret string
+
 var openAiModelDeployments = [
   {
     name: 'text-davinci-003'
@@ -56,6 +74,11 @@ var openAiModelDeployments = [
   }
 ]
 
+resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
+  name: resourceGroupName
+  location: location
+}
+
 module monitoring './modules/monitoring.bicep' = {
   name: 'monitoring'
   scope: rg
@@ -66,10 +89,18 @@ module monitoring './modules/monitoring.bicep' = {
   }
 }
 
-resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
-  name: resourceGroupName
-  location: location
+module keyVault './modules/keyVault.bicep' = {
+  name: 'keyVault'
+  scope: rg
+  params: {
+    location: location
+    keyVaultName: '${baseResourceName}-akv'
+    logAnalyticsWorkspaceId: monitoring.outputs.logAnalyticsWorkspaceId
+    logAnalyticsWorkspaceName: '${baseResourceName}-law'
+    azureAdClientSecret: azureAdClientSecret
+  }
 }
+
 
 module cosmosDbAccount './modules/cosmosDbAccount.bicep' = {
   name: 'cosmosDbAccount'
@@ -143,6 +174,11 @@ module webAppBlazor './modules/webAppBlazor.bicep' = {
     azureOpenAiDeploymentChat: openAiModelDeployments[1].name
     azureOpenAiDeploymentTextEmbedding: openAiModelDeployments[2].name
     cosmosDbAccountName: cosmosDbAccount.outputs.cosmosDbAccountName
+    azureAdInstance: azureAdInstance
+    azureAdDomain: azureAdDomain
+    azureAdTenantId: azureAdTenantId
+    azureAdClientId: azureAdClientId
+    keyVaultName: keyVault.outputs.keyVaultName
   }
 }
 
@@ -152,15 +188,6 @@ module storageAccount './modules/storageAccount.bicep' = {
   params: {
     location: location
     storageAccountName: replace('${baseResourceName}data','-','')
-  }
-}
-
-module keyVault './modules/keyVault.bicep' = {
-  name: 'keyVault'
-  scope: rg
-  params: {
-    location: location
-    keyVaultName: '${baseResourceName}-akv'
   }
 }
 

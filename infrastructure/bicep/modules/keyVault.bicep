@@ -1,6 +1,10 @@
 param location string
 param keyVaultName string
-
+param logAnalyticsWorkspaceId string
+param logAnalyticsWorkspaceName string
+@secure()
+param azureAdClientSecret string
+  
 resource keyVault 'Microsoft.KeyVault/vaults@2023-02-01' = {
   name: keyVaultName
   location: location
@@ -20,4 +24,43 @@ resource keyVault 'Microsoft.KeyVault/vaults@2023-02-01' = {
   }
 }
 
+// Add the diagnostic settings to send logs and metrics to Log Analytics
+resource keyVaultDiagnosticSetting 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
+  name: 'send-to-${logAnalyticsWorkspaceName}'
+  scope: keyVault
+  properties: {
+    workspaceId: logAnalyticsWorkspaceId
+    logs: [
+      {
+        category: 'Audit'
+        enabled: true
+        retentionPolicy: {
+          days: 0
+          enabled: false 
+        }
+      }
+    ]
+    metrics:[
+      {
+        category: 'AllMetrics'
+        enabled: true
+        retentionPolicy: {
+          enabled: false
+          days: 0
+        }
+      }
+    ]
+  }
+}
+
+resource keyVaultAzureAdClientSecret 'Microsoft.KeyVault/vaults/secrets@2023-02-01' = {
+  name: 'AzureAd__ClientSecret'
+  parent: keyVault
+  properties: {
+    value: azureAdClientSecret
+    contentType: 'text/plain'
+  }
+}
+
 output keyVaultId string = keyVault.id
+output keyVaultName string = keyVault.name

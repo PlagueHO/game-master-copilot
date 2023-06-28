@@ -8,12 +8,39 @@ param azureOpenAiDeploymentText string
 param azureOpenAiDeploymentChat string
 param azureOpenAiDeploymentTextEmbedding string
 param cosmosDbAccountName string
+param azureAdInstance string
+param azureAdDomain string
+@secure()
+param azureAdTenantId string
+@secure()
+param azureAdClientId string
+param keyVaultName string
 
 resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' existing = {
   name: cosmosDbAccountName
 }
 
 var appSettings =  [
+  {
+    name: 'AzureAd__Instance'
+    value: azureAdInstance
+  }
+  {
+    name: 'AzureAd__Domain'
+    value: azureAdDomain
+  }
+  {
+    name: 'AzureAd__TenantId'
+    value: azureAdTenantId
+  }
+  {
+    name: 'AzureAd__ClientId'
+    value: azureAdClientId
+  }
+  {
+    name: 'AzureAd__ClientSecret'
+    value: '@Microsoft.KeyVault(${keyVaultName}=keyVaultName;SecretName=AzureAd__ClientSecret)'
+  }
   {
     name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
     value: appInsightsInstrumentationKey
