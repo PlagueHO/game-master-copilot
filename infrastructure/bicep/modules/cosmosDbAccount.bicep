@@ -109,7 +109,6 @@ resource cosmosDbCharactersContainer 'Microsoft.DocumentDB/databaseAccounts/sqlD
         paths: [
           '/TenantId'
           '/WorldId'
-          '/CampaignId'
           '/CharacterId'
         ]
         kind: 'MultiHash'
