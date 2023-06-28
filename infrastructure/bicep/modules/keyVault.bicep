@@ -4,7 +4,7 @@ param logAnalyticsWorkspaceId string
 param logAnalyticsWorkspaceName string
 @secure()
 param azureAdClientSecret string
-  
+
 resource keyVault 'Microsoft.KeyVault/vaults@2023-02-01' = {
   name: keyVaultName
   location: location
@@ -24,6 +24,31 @@ resource keyVault 'Microsoft.KeyVault/vaults@2023-02-01' = {
   }
 }
 
+var roles = {
+  'Key Vault Secrets User': '4633458b-17de-408a-b874-0445c86b69e6'
+}
+
+module keyVaultRoleSecretsUser 'roleAssignment.bicep' = {
+  name: 'keyVaultRoleSecretsUser'
+  params: {
+    principalId: reference(resourceId(subscription().id, 'Microsoft.Authorization/deployments', deployment().name), '2019-10-01').identity.principalId
+    roleDefinitionId: roles['Key Vault Secrets User']
+    principalType: 'User'
+  }
+}
+
+resource keyVaultAzureAdClientSecret 'Microsoft.KeyVault/vaults/secrets@2023-02-01' = {
+  name: 'AzureAd__ClientSecret'
+  parent: keyVault
+  dependsOn: [
+    keyVaultRoleSecretsUser
+  ]
+  properties: {
+    value: azureAdClientSecret
+    contentType: 'text/plain'
+  }
+}
+
 // Add the diagnostic settings to send logs and metrics to Log Analytics
 resource keyVaultDiagnosticSetting 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
   name: 'send-to-${logAnalyticsWorkspaceName}'
@@ -32,7 +57,7 @@ resource keyVaultDiagnosticSetting 'Microsoft.Insights/diagnosticSettings@2021-0
     workspaceId: logAnalyticsWorkspaceId
     logs: [
       {
-        category: 'Audit'
+        category: 'AuditLogs'
         enabled: true
         retentionPolicy: {
           days: 0
@@ -50,15 +75,6 @@ resource keyVaultDiagnosticSetting 'Microsoft.Insights/diagnosticSettings@2021-0
         }
       }
     ]
-  }
-}
-
-resource keyVaultAzureAdClientSecret 'Microsoft.KeyVault/vaults/secrets@2023-02-01' = {
-  name: 'AzureAd__ClientSecret'
-  parent: keyVault
-  properties: {
-    value: azureAdClientSecret
-    contentType: 'text/plain'
   }
 }
 

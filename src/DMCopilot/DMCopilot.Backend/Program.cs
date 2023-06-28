@@ -32,6 +32,12 @@ internal class Program
         builder.Services.AddControllersWithViews()
             .AddMicrosoftIdentityUI();
 
+        // Add Application Insights services into service collection
+        builder.Services.AddApplicationInsightsTelemetry();
+
+        // Add Logging services into service collection
+        builder.Services.AddLogging();
+
         builder.Services.AddAuthorization(options =>
         {
             // By default, all incoming requests will be authorized according to the default policy
@@ -70,8 +76,15 @@ internal class Program
                 return new CharacterRepository(cosmosClient, "dungeon-master-copilot", "Characters");
             });
 
-        // Initalize the Semantic Kernel
-        InitSemanticKernel(builder, azureCredential);
+        // Add the Semantic Kernel service
+        builder.Services.AddSingleton<ISemanticKernelService>((svc) =>
+        {
+            // Get the Semantic Kernel configuration from appsettings.json
+            var semanticKernelConfiguration = builder.Configuration
+                .GetSection("SemanticKernel")
+                .Get<SemanticKernelConfiguration>() ?? throw new Exception("Semantic Kernel configuration is null");
+            return new SemanticKernelService(azureCredential, semanticKernelConfiguration);
+        });
 
         var app = builder.Build();
 
@@ -98,65 +111,5 @@ internal class Program
         app.MapFallbackToPage("/_Host");
 
         app.Run();
-    }
-
-    /// <summary>
-    /// Creates a new instance of the Semantic Kernel service and adds it to the WebApplicationBuilder.
-    /// </summary>
-    /// <param name="builder">The WebApplicationBuilder used to configure the application.</param>
-    /// <returns>A new instance of the Semantic Kernel service.</returns>
-    private static void InitSemanticKernel(WebApplicationBuilder builder, DefaultAzureCredential azureCredential)
-    {
-        Console.WriteLine("Creating Semantic Kernel");
-
-        var semanticKernel = new KernelBuilder();
-
-        // Get the Semantic Kernel configuration from appsettings.json
-        var semanticKernelConfiguration = builder.Configuration
-            .GetSection("SemanticKernel")
-            .Get<SemanticKernelConfiguration>() ?? throw new Exception("Semantic Kernel configuration is null");
-
-        var serviceActions = new Dictionary<SemanticKernelConfigurationServiceType, Action<SemanticKernelConfigurationService>>()
-        {
-            { SemanticKernelConfigurationServiceType.AzureOpenAIServiceTextCompletion, (service) => semanticKernel.WithAzureTextCompletionService(service.Deployment,
-                                                                                                                                service.Endpoint,
-                                                                                                                                azureCredential,
-                                                                                                                                service.Id) },
-            { SemanticKernelConfigurationServiceType.AzureOpenAIServiceChatCompletion, (service) => semanticKernel.WithAzureTextCompletionService(service.Deployment,
-                                                                                                                                service.Endpoint,
-                                                                                                                                azureCredential,
-                                                                                                                                service.Id) },
-            { SemanticKernelConfigurationServiceType.AzureOpenAIServiceEmbedding, (service) => semanticKernel.WithAzureTextEmbeddingGenerationService(service.Deployment,
-                                                                                                                                     service.Endpoint,
-                                                                                                                                     azureCredential,
-                                                                                                                                     service.Id) }
-        };
-
-        if (semanticKernelConfiguration.Services == null)
-        {
-            throw new ArgumentException("Semantic Kernel configuration services are null");
-        }
-
-        foreach (var service in semanticKernelConfiguration.Services)
-        {
-            Console.WriteLine($"Adding service {service.Id} using deployment {service.Deployment} on endpoint {service.Endpoint} to Semantic Kernel");
-
-
-            if (serviceActions.TryGetValue(service.Type, out var action))
-            {
-                action(service);
-            }
-            else
-            {
-                throw new ArgumentException("Invalid Semantic Kernel service type");
-            }
-        }
-
-        var semanticKernelBuilder = semanticKernel.Build();
-
-        builder.Services.AddSingleton<ISemanticKernelService>((svc) =>
-        {
-            return new SemanticKernelService(semanticKernelBuilder, semanticKernelConfiguration);
-        });
     }
 }
