@@ -20,6 +20,10 @@
       "type": "identityapp.secretStore",
       "connectionId": "AzureAD:ClientSecret",
       "dynamicId": null
+    },
+    "secrets1": {
+      "type": "secrets.user",
+      "dynamicId": null
     }
   }
 }

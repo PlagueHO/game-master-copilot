@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Azure.Cosmos;
+using Microsoft.Graph;
 
 namespace DMCopilot.Backend.Data
 {
@@ -27,11 +28,8 @@ namespace DMCopilot.Backend.Data
             }
         }
 
-        public async Task<Tenant> GetTenantByNameAsync(string name)
+        private async Task<Tenant> GetTenantByQueryAsync(QueryDefinition queryDefinition)
         {
-            var queryDefinition = new QueryDefinition("SELECT * FROM c WHERE c.Name = @name")
-            .WithParameter("@name", name);
-
             var query = _container.GetItemQueryIterator<Tenant>(queryDefinition);
             if (query.HasMoreResults)
             {
@@ -44,9 +42,23 @@ namespace DMCopilot.Backend.Data
             return null;
         }
 
-        public async Task<IEnumerable<Tenant>> GetTenantsAsync()
+        public async Task<Tenant> GetTenantByNameAsync(string name)
         {
-            var query = _container.GetItemQueryIterator<Tenant>(new QueryDefinition("SELECT * FROM c"));
+            var queryDefinition = new QueryDefinition("SELECT * FROM c WHERE c.Name = @name")
+                .WithParameter("@name", name);
+            return await GetTenantByQueryAsync(queryDefinition);
+        }
+
+        public async Task<Tenant> GetTenantByOwnerEmailAsync(EmailAddress ownerEmail)
+        {
+            var queryDefinition = new QueryDefinition("SELECT * FROM c WHERE c.OwnerEmail = @ownerEmail")
+                .WithParameter("@ownerEmail", ownerEmail.Address);
+            return await GetTenantByQueryAsync(queryDefinition);
+        }
+
+        private async Task<IEnumerable<Tenant>> GetTenantsByQueryAsync(QueryDefinition queryDefinition)
+        {
+            var query = _container.GetItemQueryIterator<Tenant>(queryDefinition);
             var results = new List<Tenant>();
             while (query.HasMoreResults)
             {
@@ -54,6 +66,19 @@ namespace DMCopilot.Backend.Data
                 results.AddRange(response.ToList());
             }
             return results;
+        }
+
+        public async Task<IEnumerable<Tenant>> GetTenantsAsync()
+        {
+            var queryDefinition = new QueryDefinition("SELECT * FROM c");
+            return await GetTenantsByQueryAsync(queryDefinition);
+        }
+
+        public async Task<IEnumerable<Tenant>> GetTenantsByOwnerEmailAsync(EmailAddress ownerEmail)
+        {
+            var queryDefinition = new QueryDefinition("SELECT * FROM c WHERE c.OwnerEmail = @ownerEmail")
+                .WithParameter("@ownerEmail", ownerEmail.Address);
+            return await GetTenantsByQueryAsync(queryDefinition);
         }
 
         public async Task<Tenant> CreateTenantAsync(Tenant tenant)

@@ -32,11 +32,11 @@ resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' = {
 
 
 resource cosmosDbDatabase 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2023-04-15' = {
-  name: 'dungeon-master-copilot'
+  name: 'dmopilot'
   parent: cosmosDbAccount
   properties: {
     resource: {
-      id: 'dungeon-master-copilot'
+      id: 'dmcopilot'
     }
     options: {
       autoscaleSettings: {

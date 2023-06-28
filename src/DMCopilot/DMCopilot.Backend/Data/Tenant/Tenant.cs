@@ -1,4 +1,6 @@
-﻿namespace DMCopilot.Backend.Data
+﻿using Microsoft.Graph;
+
+namespace DMCopilot.Backend.Data
 {
     // Enum for the different types of tenants
     public enum TenantType
@@ -32,13 +34,16 @@
         /// <summary>
         /// Gets or sets the email of the owner of the tenant.
         /// </summary>
-        public string? OwnerEmail { get; set; }
+        public EmailAddress? OwnerEmail { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Tenant"/> class.
         /// </summary>
-        public Tenant()
+        public Tenant(Guid? tenantId = null, string? name = null, EmailAddress? ownerEmail = null)
         {
+            TenantId = tenantId;
+            Name = name;
+            OwnerEmail = ownerEmail;
         }
     }
 }
