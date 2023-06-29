@@ -1,23 +1,32 @@
 param location string
 param appServicePlanId string
 param webAppName string
+param keyVaultName string
+param cosmosDbAccountName string
 param appInsightsInstrumentationKey string
 param appInsightsConnectionString string
 param azureOpenAiEndpoint string
 param azureOpenAiDeploymentText string
 param azureOpenAiDeploymentChat string
 param azureOpenAiDeploymentTextEmbedding string
-param cosmosDbAccountName string
 param azureAdInstance string
 param azureAdDomain string
 @secure()
 param azureAdTenantId string
 @secure()
 param azureAdClientId string
-param keyVaultName string
 
 resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' existing = {
   name: cosmosDbAccountName
+}
+
+resource keyVault 'Microsoft.KeyVault/vaults@2023-02-01' existing = {
+  name: keyVaultName
+}
+
+resource keyVaultAzureAdClientSecret 'Microsoft.KeyVault/vaults/secrets@2023-02-01' existing = {
+  name: 'AzureAdClientSecret'
+  parent: keyVault
 }
 
 var appSettings = [
@@ -39,7 +48,7 @@ var appSettings = [
   }
   {
     name: 'AzureAd__ClientSecret'
-    value: '@Microsoft.KeyVault(${keyVaultName}=keyVaultName;SecretName=AzureAd__ClientSecret)'
+    value: '@Microsoft.KeyVault(SecretUri=${keyVaultAzureAdClientSecret.properties.secretUri})'
   }
   {
     name: 'APPINSIGHTS_INSTRUMENTATIONKEY'

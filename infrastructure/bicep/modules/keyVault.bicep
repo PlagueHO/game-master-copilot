@@ -23,15 +23,16 @@ resource keyVault 'Microsoft.KeyVault/vaults@2023-02-01' = {
     enablePurgeProtection: true
     enableRbacAuthorization: true
   }
-
-  resource keyVaultAzureAdClientSecret 'secrets' = {
-    name: 'AzureAdClientSecret'
-    properties: {
-      value: azureAdClientSecret
-      contentType: 'text/plain'
-    }
-  }  
 }
+
+resource keyVaultAzureAdClientSecret 'Microsoft.KeyVault/vaults/secrets@2023-02-01' = {
+  name: 'AzureAdClientSecret'
+  parent: keyVault
+  properties: {
+    value: azureAdClientSecret
+    contentType: 'text/plain'
+  }
+}  
 
 // Add the diagnostic settings to send logs and metrics to Log Analytics
 resource keyVaultDiagnosticSetting 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
@@ -64,3 +65,4 @@ resource keyVaultDiagnosticSetting 'Microsoft.Insights/diagnosticSettings@2021-0
 
 output keyVaultId string = keyVault.id
 output keyVaultName string = keyVault.name
+output keyVaultAzureAdClientSecretUri string = keyVaultAzureAdClientSecret.properties.secretUri

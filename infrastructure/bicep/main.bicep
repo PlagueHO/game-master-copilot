@@ -95,7 +95,6 @@ module keyVault './modules/keyVault.bicep' = {
   params: {
     location: location
     keyVaultName: '${baseResourceName}-akv'
-    resourceGroupName: resourceGroupName
     logAnalyticsWorkspaceId: monitoring.outputs.logAnalyticsWorkspaceId
     logAnalyticsWorkspaceName: '${baseResourceName}-law'
     azureAdClientSecret: azureAdClientSecret
@@ -167,18 +166,18 @@ module webAppBlazor './modules/webAppBlazor.bicep' = {
     location: location
     appServicePlanId: appServicePlan.outputs.appServicePlanId
     webAppName: baseResourceName
+    keyVaultName: keyVault.outputs.keyVaultName
+    cosmosDbAccountName: cosmosDbAccount.outputs.cosmosDbAccountName
     appInsightsInstrumentationKey: monitoring.outputs.applicationInsightsInstrumentationKey
     appInsightsConnectionString: monitoring.outputs.applicationInsightsConnectionString
     azureOpenAiEndpoint: openAiService.outputs.openAiServiceEndpoint
     azureOpenAiDeploymentText: openAiModelDeployments[0].name
     azureOpenAiDeploymentChat: openAiModelDeployments[1].name
     azureOpenAiDeploymentTextEmbedding: openAiModelDeployments[2].name
-    cosmosDbAccountName: cosmosDbAccount.outputs.cosmosDbAccountName
     azureAdInstance: azureAdInstance
     azureAdDomain: azureAdDomain
     azureAdTenantId: azureAdTenantId
     azureAdClientId: azureAdClientId
-    keyVaultName: keyVault.outputs.keyVaultName
   }
 }
 
