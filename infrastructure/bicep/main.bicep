@@ -102,7 +102,6 @@ module keyVault './modules/keyVault.bicep' = {
   }
 }
 
-
 module cosmosDbAccount './modules/cosmosDbAccount.bicep' = {
   name: 'cosmosDbAccount'
   scope: rg
