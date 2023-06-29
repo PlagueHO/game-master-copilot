@@ -20,7 +20,7 @@ resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' exis
   name: cosmosDbAccountName
 }
 
-var appSettings =  [
+var appSettings = [
   {
     name: 'AzureAd__Instance'
     value: azureAdInstance
