@@ -1,6 +1,5 @@
 param location string
 param keyVaultName string
-param resourceGroupName string
 param logAnalyticsWorkspaceId string
 param logAnalyticsWorkspaceName string
 @secure()
