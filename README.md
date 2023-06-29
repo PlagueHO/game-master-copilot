@@ -55,7 +55,7 @@ The following _Actions Secrets_ need to be defined so that that the resources ca
 - `AZURE_TENANT_ID`: The Tenant ID of the Service Principal used to authenticate to Azure.
 - `AZURE_SUBSCRIPTION_ID`: The Subscription ID of the Azure Subscription to deploy to.
 - `AZUREAD_DOMAIN`: The domain name of the Azure AD tenant the application will use as an authentication source.
-- `AZUREAD_TENANTID`: The Tenant ID of the Azure AD tenant the application will use as an authentication source.
+- `AZUREAD_TENANT_ID`: The Tenant ID of the Azure AD tenant the application will use as an authentication source.
 - `AZUREAD_CLIENT_ID`: The client ID of the Azure AD Application that has been created in the Azure AD tenant to be used as an authentication source.
 - `AZUREAD_CLIENTSECRET`: The client secret of the Azure AD Application that has been created in the Azure AD tenant to be used as an authentication source.
 
