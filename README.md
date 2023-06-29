@@ -2,9 +2,9 @@
 
 [![continuous-deployment](https://github.com/PlagueHO/dungeon-master-copilot/actions/workflows/continuous-deployment.yml/badge.svg)](https://github.com/PlagueHO/dungeon-master-copilot/actions/workflows/continuous-deployment.yml)
 
-Dungeon Master Copilot is an AI enabled copilot to help dungeon masters create content. It is a multitenant application that can be used to serve
+Dungeon Master Copilot is an AI enabled copilot to help dungeon masters create content. It is a multitenant application that can be used to serve users and teams (organizations).
 
-The application is a work-in-progress and is being used as both a test platform for various technologies and services. It is intended to demonstrate the use of Large Foundational Models/Generative AI using Azure OpenAI Service and [Semantic Kernel](https://aka.ms/sk/learn) as well as running [multitenant SaaS applications in Azure](https://aka.ms/multitenantarchitecture).
+The application is a work-in-progress and is being used a test platform for various technologies and services. It is intended to demonstrate the use of Large Foundational Models/Generative AI using Azure OpenAI Service and [Semantic Kernel](https://aka.ms/sk/learn) as well as a reference architecture for running [multitenant SaaS applications in Azure](https://aka.ms/multitenantarchitecture).
 
 This application uses the following Microsoft & Azure technologies, including:
 
