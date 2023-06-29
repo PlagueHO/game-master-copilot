@@ -67,7 +67,7 @@ namespace DMCopilot.Backend.Services
             var pluginsDirectory = semanticKernelConfiguration.PluginsDirectory;
             if (pluginsDirectory == null)
             {
-                _pluginsDirectory = Path.Combine(Directory.GetCurrentDirectory(), "\\Plugins");
+                _pluginsDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Plugins");
             }
             else
             {
