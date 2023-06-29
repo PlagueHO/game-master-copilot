@@ -32,7 +32,7 @@ var roles = {
 module keyVaultRoleSecretsUser 'roleAssignment.bicep' = {
   name: 'keyVaultRoleSecretsUser'
   params: {
-    principalId: reference(resourceId(subscription().id, resourceGroupName, 'Microsoft.Resources/deployments', deployment().name), '2022-09-01').identity.principalId
+    principalId: reference(resourceId('Microsoft.Resources/deployments', deployment().name), '2022-09-01').identity.principalId
     roleDefinitionId: roles['Key Vault Secrets User']
     principalType: 'ServicePrincipal'
   }
