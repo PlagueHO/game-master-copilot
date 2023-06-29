@@ -24,10 +24,11 @@ resource keyVault 'Microsoft.KeyVault/vaults@2023-02-01' = {
     enableRbacAuthorization: true
   }
 
-  resource keyVaultAzureAdClientSecret 'secrets@2023-02-01' = {
-    name: 'AzureAd__ClientSecret'
+  resource keyVaultAzureAdClientSecret 'secrets' = {
+    name: 'AzureAdClientSecret'
     properties: {
       value: azureAdClientSecret
+      contentType: 'text/plain'
     }
   }  
 }
