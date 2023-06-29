@@ -1,5 +1,6 @@
 param location string
 param keyVaultName string
+param resourceGroupName string
 param logAnalyticsWorkspaceId string
 param logAnalyticsWorkspaceName string
 @secure()
@@ -31,7 +32,7 @@ var roles = {
 module keyVaultRoleSecretsUser 'roleAssignment.bicep' = {
   name: 'keyVaultRoleSecretsUser'
   params: {
-    principalId: reference(resourceId(subscription().id, 'Microsoft.Authorization/deployments', deployment().name), '2019-10-01').identity.principalId
+    principalId: reference(resourceId(subscription().id, resourceGroupName, 'Microsoft.Authorization/deployments', deployment().name), '2019-10-01').identity.principalId
     roleDefinitionId: roles['Key Vault Secrets User']
     principalType: 'User'
   }

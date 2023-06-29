@@ -95,6 +95,7 @@ module keyVault './modules/keyVault.bicep' = {
   params: {
     location: location
     keyVaultName: '${baseResourceName}-akv'
+    resourceGroupName: resourceGroupName
     logAnalyticsWorkspaceId: monitoring.outputs.logAnalyticsWorkspaceId
     logAnalyticsWorkspaceName: '${baseResourceName}-law'
     azureAdClientSecret: azureAdClientSecret
