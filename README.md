@@ -29,12 +29,36 @@ Future features planned:
 
 ## Build and Deployment
 
-The application is built and deployed using the following:
+The application is built and deployed using:
 
-- Continuous delivery using [GitHub Actions workflow]() from the main branch. See [continuous-deployment.yml](https://github.com/PlagueHO/dungeon-master-copilot/blob/main/.github/workflows/continuous-deployment.yml)
-- Infrastrucutre as Code using [Azure Bicep](). See [main.bicep](https://github.com/PlagueHO/dungeon-master-copilot/blob/main/infrastructure/bicep/main.bicep).
+- **Continuous delivery** using [GitHub Actions workflow]() from the main branch. See [continuous-deployment.yml](https://github.com/PlagueHO/dungeon-master-copilot/blob/main/.github/workflows/continuous-deployment.yml).
+- **Infrastrucutre as Code** using [Azure Bicep](). See [main.bicep](https://github.com/PlagueHO/dungeon-master-copilot/blob/main/infrastructure/bicep/main.bicep).
 
-Planned:
+### Workload Identity
 
-- Once initial version has been deployed, main branch will be protected via branch policy and only accept PRs. PRs will require passing checks etc.
-- Add a Deployment to a Test environment before production will be enabled, which will require changes to infrastructure resource names.
+The GitHub Actions workflow has been configured to use Azure AD Workload Identity for the workflow to connect to Azure. Please see [Configuring Workload Identity Federation for GitHub Actions workflow](#configuring-workload-identity-federation-for-github-actions-workflow) for more information.
+
+The following _Actions Variables_ should be configured in the GitHub repository:
+
+- `APPSERVICEPLAN_CONFIGURATION`: The configuration of the Azure App Service Plan for running the Foundry VTT server. Must be one of `B1`, `P1V2`, `P2V2`, `P3V2`, `P0V3`,`P1V3`, `P2V3`, `P3V3`.
+- `AZUREAD_INSTANCE`: The Azure AD URL to use for authentication. For example, 'https://login.microsoftonline.com/'.
+- `LOCATION`: The Azure region to deploy the resources to. For example, `EastUS`.
+- `BASE_RESOURCE_NAME`: The base name that will prefixed to all Azure resources deployed to ensure they are unique. For example, `dsr-dmcopilot`.
+- `RESOURCE_GROUP_NAME`: The name of the Azure resource group to create and add the resources to. For example, `dsr-dmcopilot-rg`.
+
+Your variables should look similar to this:
+![Example of GitHub Variables](/images/github-variables-example.png)
+
+The following _Actions Secrets_ need to be defined so that that the resources can be deployed by the GitHub Actions workflow and that the Web Application can use Azure AD as an authentication source:
+
+- `AZURE_CLIENT_ID`: The Application (Client) ID of the Service Principal used to authenticate to Azure. This is generated as part of configuring Workload Identity Federation.
+- `AZURE_TENANT_ID`: The Tenant ID of the Service Principal used to authenticate to Azure.
+- `AZURE_SUBSCRIPTION_ID`: The Subscription ID of the Azure Subscription to deploy to.
+- `AZUREAD_DOMAIN`: The domain name of the Azure AD tenant the application will use as an authentication source.
+- `AZUREAD_TENANTID`: The Tenant ID of the Azure AD tenant the application will use as an authentication source.
+- `AZUREAD_CLIENT_ID`: The client ID of the Azure AD Application that has been created in the Azure AD tenant to be used as an authentication source.
+- `AZUREAD_CLIENTSECRET`: The client secret of the Azure AD Application that has been created in the Azure AD tenant to be used as an authentication source.
+
+These values should be kept secret and care taken to ensure they are not shared with anyone.
+Your secrets should look like this:
+![Example of GitHub Secrets](/images/github-secrets-example.png)
