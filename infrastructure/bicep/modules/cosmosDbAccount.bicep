@@ -32,7 +32,7 @@ resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' = {
 
 
 resource cosmosDbDatabase 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2023-04-15' = {
-  name: 'dmopilot'
+  name: 'dmcopilot'
   parent: cosmosDbAccount
   properties: {
     resource: {
