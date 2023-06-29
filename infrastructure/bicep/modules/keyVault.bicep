@@ -58,7 +58,7 @@ resource keyVaultDiagnosticSetting 'Microsoft.Insights/diagnosticSettings@2021-0
     workspaceId: logAnalyticsWorkspaceId
     logs: [
       {
-        category: 'AuditLogs'
+        category: 'AuditEvent'
         enabled: true
         retentionPolicy: {
           days: 0
