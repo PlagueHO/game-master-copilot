@@ -28,7 +28,6 @@ resource keyVault 'Microsoft.KeyVault/vaults@2023-02-01' = {
     name: 'AzureAd__ClientSecret'
     properties: {
       value: azureAdClientSecret
-      contentType: 'text/plain'
     }
   }  
 }
