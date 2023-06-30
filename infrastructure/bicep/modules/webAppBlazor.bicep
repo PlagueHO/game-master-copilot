@@ -95,6 +95,10 @@ var appSettings = [
     value: 'disabled'
   }
   {
+    name: 'SemanticKernel__PluginsDirectory'
+    value: 'Plugins'
+  }
+  {
     name: 'SemanticKernel__Services__0__Id'
     value: 'TextCompletion'
   }
