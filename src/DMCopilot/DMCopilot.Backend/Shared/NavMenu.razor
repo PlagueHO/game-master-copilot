@@ -1,41 +1,36 @@
-<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">Dungeon Master Copilot</a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </div>
-</div>
-
-<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-        <!--Character builder-->
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="character/builder">
-                <span class="oi oi-person" aria-hidden="true"></span> Character Builder
-            </NavLink>
-        </div>
-        <!--Show user profile-->
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="showprofile">
-                <span class="oi oi-person" aria-hidden="true"></span> Show profile
-            </NavLink>
-        </div>
-    </nav>
-</div>
-
-@code {
-    private bool collapseNavMenu = true;
-
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
-}
+<Bar Mode="BarMode.VerticalInline"
+     CollapseMode="BarCollapseMode.Small"
+     Breakpoint="Breakpoint.Desktop"
+     NavigationBreakpoint="Breakpoint.Tablet"
+     Background="Background.Transparent"
+     ThemeContrast="ThemeContrast.Dark">
+    <BarBrand Background="Background.Transparent">
+        <BarItem>
+            <BarLink To="#">
+                Dungeon Master Copilot
+            </BarLink>
+        </BarItem>
+    </BarBrand>
+     <BarMenu>
+        <BarStart>
+            <BarItem>
+                <BarLink To="showprofile">
+                    <BarIcon IconName="IconName.User" />
+                    Profile
+                </BarLink>
+            </BarItem>
+            <BarItem>
+                <BarDropdown>
+                    <BarDropdownToggle>
+                        <BarIcon IconName="IconName.Edit" />
+                        Character
+                    </BarDropdownToggle>
+                    <BarDropdownMenu Background="Background.Transparent">
+                        <BarDropdownItem To="character/builder">Builder</BarDropdownItem>
+                        <BarDropdownItem>Creator</BarDropdownItem>
+                    </BarDropdownMenu>
+                </BarDropdown>
+            </BarItem>
+        </BarStart>
+    </BarMenu>
+</Bar>
