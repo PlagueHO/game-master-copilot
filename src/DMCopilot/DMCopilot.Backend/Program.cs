@@ -14,6 +14,9 @@ using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 using Microsoft.SemanticKernel;
 using System.Text.Json;
+using Blazorise;
+using Blazorise.Bootstrap;
+using Blazorise.Icons.FontAwesome;
 
 internal class Program
 {
@@ -50,7 +53,7 @@ internal class Program
         builder.Services.AddRazorPages();
         builder.Services.AddServerSideBlazor()
             .AddMicrosoftIdentityConsentHandler();
-        
+
         // Add the Cosmos DB client as a singleton service
         builder.Services.AddSingleton<CosmosClient>(sp =>
             {
@@ -85,6 +88,14 @@ internal class Program
                 .Get<SemanticKernelConfiguration>() ?? throw new Exception("Semantic Kernel configuration is null");
             return new SemanticKernelService(azureCredential, semanticKernelConfiguration);
         });
+
+        // Add Blazorize
+        builder.Services.AddBlazorise(options =>
+            {
+                options.Immediate = true;
+            })
+            .AddBootstrapProviders()
+            .AddFontAwesomeIcons();
 
         var app = builder.Build();
 

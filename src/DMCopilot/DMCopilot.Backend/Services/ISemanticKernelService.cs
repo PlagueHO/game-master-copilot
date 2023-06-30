@@ -1,4 +1,6 @@
-﻿using Microsoft.SemanticKernel;
+﻿using Azure.Identity;
+using DMCopilot.Backend.Data.Configuration;
+using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Orchestration;
 
 namespace DMCopilot.Backend.Services

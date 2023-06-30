@@ -1,6 +1,9 @@
-﻿<AuthorizeView>
+﻿@using Blazorise
+@using Blazorise.Bootstrap
+
+<AuthorizeView>
     <Authorized>
-        Hello, @context.User.Identity?.Name!
+        @context.User.Identity?.Name!
         <a href="MicrosoftIdentity/Account/SignOut">Log out</a>
     </Authorized>
     <NotAuthorized>
