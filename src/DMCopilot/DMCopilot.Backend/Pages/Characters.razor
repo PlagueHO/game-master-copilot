@@ -1,0 +1,70 @@
+@page "/characters"
+
+@using DMCopilot.Backend.Services
+@using DMCopilot.Backend.Data
+@using DMCopilot.Backend.Models
+
+@inject ISemanticKernelService semanticKernelService
+@inject ICharacterRepository characterRepository
+
+<h1>Characters</h1>
+
+<Table FixedHeader FixedHeaderTableHeight="300px">
+    <TableHeader>
+        <TableRow>
+            <TableHeaderCell>Name</TableHeaderCell>
+            <TableHeaderCell>Age</TableHeaderCell>
+            <TableHeaderCell>Class</TableHeaderCell>
+            <TableHeaderCell>Race</TableHeaderCell>
+        </TableRow>
+    </TableHeader>
+    @if (characters == null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else
+    {
+        <TableBody>
+            @foreach (var character in characters)
+            {
+                <TableRow @key="@character.Id">
+                    <TableRowHeader>@character.Name</TableRowHeader>
+                    <TableRowCell>@character.Age</TableRowCell>
+                    <TableRowCell>@character.Class</TableRowCell>
+                    <TableRowCell>@character.Race</TableRowCell>
+                </TableRow>
+            }
+        </TableBody>
+    }
+</Table>
+
+<div class="form-group d-flex">
+    <label for="characterDetails">Character Details</label>
+    <input type="text" @bind="@characterDetails" @oninput="@((e) => { characterDetails=(string)e.Value;})" class="form-control" id="characterDetails" placeholder="A hill dwarf merchant who runs a general store in Baldurs Gate.">
+    <Button Color="Color.Primary">Create</Button>
+</div>
+
+@code {
+    private IEnumerable<Character> characters;
+    private string characterDetails { get; set; } = "A hill dwarf merchant who runs a general store in Baldurs Gate.";
+    
+    protected override async Task OnInitializedAsync()
+    {
+        await GetCharacters();
+    }
+
+    private async Task GetCharacters()
+    {
+        // Get the characters from the CharacterRepository
+        var characters = await characterRepository.GetCharactersAsync();
+    }
+
+    private async Task CreateCharacter()
+    {
+        // Call the semanticKernelService with the character details
+        var result = await semanticKernelService.InvokeFunctionAsync("Character", "CreateCharacter", characterDetails);
+
+        // Use the result in some way
+        Console.WriteLine(result);
+    }
+}
