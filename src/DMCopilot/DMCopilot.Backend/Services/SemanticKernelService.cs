@@ -1,5 +1,5 @@
 ﻿using Azure.Identity;
-using DMCopilot.Backend.Data.Configuration;
+using DMCopilot.Backend.Models.Configuration;
 using Microsoft.IdentityModel.Protocols;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Orchestration;

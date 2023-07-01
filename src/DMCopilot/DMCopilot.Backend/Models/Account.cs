@@ -1,4 +1,4 @@
-﻿namespace DMCopilot.Backend.Data
+﻿namespace DMCopilot.Backend.Models
 {
     public class Account
     {

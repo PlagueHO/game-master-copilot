@@ -1,6 +1,6 @@
 ﻿using Microsoft.Graph;
 
-namespace DMCopilot.Backend.Data
+namespace DMCopilot.Backend.Models
 {
     // Enum for the different types of tenants
     public enum TenantType

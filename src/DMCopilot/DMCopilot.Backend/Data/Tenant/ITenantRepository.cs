@@ -1,4 +1,5 @@
-﻿using Microsoft.Graph;
+﻿using DMCopilot.Backend.Models;
+using Microsoft.Graph;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

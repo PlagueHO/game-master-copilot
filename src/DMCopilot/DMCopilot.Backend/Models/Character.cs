@@ -1,4 +1,6 @@
-﻿namespace DMCopilot.Backend.Data
+﻿using DMCopilot.Backend.Data;
+
+namespace DMCopilot.Backend.Models
 {
     /// <summary>
     /// Class to represent a character in the game.

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using DMCopilot.Backend.Models;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Graph;
 

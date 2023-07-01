@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
+using DMCopilot.Backend.Models;
 using Microsoft.Azure.Cosmos;
 
 namespace DMCopilot.Backend.Data

@@ -1,6 +1,5 @@
 using Azure.Identity;
 using DMCopilot.Backend.Data;
-using DMCopilot.Backend.Data.Configuration;
 using DMCopilot.Backend.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -17,6 +16,7 @@ using System.Text.Json;
 using Blazorise;
 using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
+using DMCopilot.Backend.Models.Configuration;
 
 internal class Program
 {
