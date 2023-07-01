@@ -29,7 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Plugins\CharacterPlugin\CreateCharacter\skprompt.txt">
+    <None Update="Plugins\Character\CreateCharacter\skprompt.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

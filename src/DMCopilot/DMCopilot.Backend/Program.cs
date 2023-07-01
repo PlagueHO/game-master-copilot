@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 using Microsoft.SemanticKernel;
@@ -39,7 +40,11 @@ internal class Program
         builder.Services.AddApplicationInsightsTelemetry();
 
         // Add Logging services into service collection
-        builder.Services.AddLogging();
+        builder.Services.AddLogging(loggingBuilder =>
+        {
+            loggingBuilder.AddConsole();
+            loggingBuilder.AddApplicationInsights();
+        });
 
         builder.Services.AddAuthorization(options =>
         {
@@ -86,7 +91,7 @@ internal class Program
             var semanticKernelConfiguration = builder.Configuration
                 .GetSection("SemanticKernel")
                 .Get<SemanticKernelConfiguration>() ?? throw new Exception("Semantic Kernel configuration is null");
-            return new SemanticKernelService(azureCredential, semanticKernelConfiguration);
+            return new SemanticKernelService(azureCredential, semanticKernelConfiguration, svc.GetService<ILogger<SemanticKernelService>>());
         });
 
         // Add Blazorize

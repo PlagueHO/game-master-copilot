@@ -13,15 +13,17 @@ namespace DMCopilot.Backend.Services
         private readonly SemanticKernelConfiguration _semanticKernelConfiguration;
         private readonly DefaultAzureCredential _azureCredential;
         private readonly string _pluginsDirectory;
-        private readonly IDictionary<string, Microsoft.SemanticKernel.SkillDefinition.ISKFunction> _functions;
+        private readonly ILogger<SemanticKernelService> _logger;
+        private IDictionary<string, IDictionary<string, Microsoft.SemanticKernel.SkillDefinition.ISKFunction>> _functions;
 
-
-        public SemanticKernelService(DefaultAzureCredential azureCredential, SemanticKernelConfiguration semanticKernelConfiguration)
+        public SemanticKernelService(DefaultAzureCredential azureCredential, SemanticKernelConfiguration semanticKernelConfiguration, ILogger<SemanticKernelService> logger)
         {
-            Console.WriteLine("Creating Semantic Kernel");
-
             _azureCredential = azureCredential;
             _semanticKernelConfiguration = semanticKernelConfiguration;
+            _logger = logger;
+
+            _logger.LogInformation("Creating Semantic Kernel");
+
             var semanticKernelBuilder = new KernelBuilder();
 
             var serviceActions = new Dictionary<SemanticKernelConfigurationServiceType, Action<SemanticKernelConfigurationService>>()
@@ -47,7 +49,7 @@ namespace DMCopilot.Backend.Services
 
             foreach (var service in semanticKernelConfiguration.Services)
             {
-                Console.WriteLine($"Adding service {service.Id} using deployment {service.Deployment} on endpoint {service.Endpoint} to Semantic Kernel");
+                _logger.LogInformation($"Adding service {service.Id} using deployment {service.Deployment} on endpoint {service.Endpoint} to Semantic Kernel");
 
                 if (serviceActions.TryGetValue(service.Type, out var action))
                 {
@@ -74,16 +76,25 @@ namespace DMCopilot.Backend.Services
                 _pluginsDirectory = Path.IsPathRooted(pluginsDirectory) ? pluginsDirectory : Path.Combine(Directory.GetCurrentDirectory(), pluginsDirectory);
             }
 
-            // Import a Semantic Skill from the specified directory and output a console message to confirm it.
-            _functions = _semanticKernel.ImportSemanticSkillFromDirectory(_pluginsDirectory, "CharacterPlugin");
-            Console.WriteLine($"Imported {_functions.Count()} Semantic Skill from '{_pluginsDirectory}'.");
+            _functions = new Dictionary<string, IDictionary<string, Microsoft.SemanticKernel.SkillDefinition.ISKFunction>>();
         }
 
-        public async Task<SKContext> InvokeFunctionAsync(string function, string input)
+        public void LoadPlugin(string name)
         {
+            if (! _functions.ContainsKey(name))
+            {
+                // Import a Semantic Skill from the specified directory and output a console message to confirm it.
+                _functions.Add(name, _semanticKernel.ImportSemanticSkillFromDirectory(_pluginsDirectory, name));
+                _logger.LogInformation($"Imported {_functions.Count()} from plugin '{name} in the '{_pluginsDirectory}' directory.");
+            } 
+        }
+
+        public async Task<SKContext> InvokeFunctionAsync(string plugin, string function, string input)
+        {
+            LoadPlugin(plugin);
             var context = _semanticKernel.CreateNewContext();
             context["input"] = input;
-            var result = await _functions[function].InvokeAsync(context);
+            var result = await _functions[plugin][function].InvokeAsync(context);
             return result;
         }
     }

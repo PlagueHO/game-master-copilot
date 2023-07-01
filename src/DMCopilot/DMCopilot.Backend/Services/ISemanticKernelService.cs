@@ -7,7 +7,9 @@ namespace DMCopilot.Backend.Services
 {
     public interface ISemanticKernelService
     {
-        public Task<SKContext> InvokeFunctionAsync(string function, string input);
+        public void LoadPlugin(string name);
+        public Task<SKContext> InvokeFunctionAsync(string plugin, string function, string input);
+        
     }
 }
 
