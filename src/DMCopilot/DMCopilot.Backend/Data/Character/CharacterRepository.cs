@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using DMCopilot.Backend.Models;
+using DMCopilot.Backend.Services;
 using Microsoft.Azure.Cosmos;
 
 namespace DMCopilot.Backend.Data
@@ -12,10 +13,12 @@ namespace DMCopilot.Backend.Data
     public class CharacterRepository : ICharacterRepository
     {
         private readonly Microsoft.Azure.Cosmos.Container _container;
+        private readonly ILogger<CharacterRepository> _logger;
 
-        public CharacterRepository(CosmosClient cosmosClient, string databaseName, string containerName)
+        public CharacterRepository(CosmosClient cosmosClient, string databaseName, string containerName, ILogger<CharacterRepository> logger)
         {
             _container = cosmosClient.GetContainer(databaseName, containerName);
+            _logger = logger;
         }
 
         public async Task<Character> GetCharacterAsync(Guid id)

@@ -62,26 +62,32 @@ internal class Program
         // Add the Cosmos DB client as a singleton service
         builder.Services.AddSingleton<CosmosClient>(sp =>
             {
-                var cosmosDbEndpointUri = builder.Configuration["cosmosDbEndpointUri"];
-                if (string.IsNullOrEmpty(cosmosDbEndpointUri))
+                var cosmosDbConnectionString = builder.Configuration.GetConnectionString("CosmosDb");
+                if (string.IsNullOrEmpty(cosmosDbConnectionString))
                 {
-                    throw new ArgumentNullException("cosmosDbEndpointUri");
+                    var cosmosDbEndpoint = builder.Configuration["CosmosDb:Endpoint"] ?? throw new Exception("CosmosDb:Endpoint is null");
+                    return new CosmosClient(cosmosDbEndpoint, azureCredential);
                 }
-                return new CosmosClient(cosmosDbEndpointUri, azureCredential);
+                else
+                {
+                    return new CosmosClient(cosmosDbConnectionString);
+                }
             });
+
+        var cosmosDbDatabaseName = builder.Configuration["CosmosDb:DatabaseName"] ?? throw new Exception("CosmosDb:DatabaseName is null");
 
         // Add the Tenant repository as a scoped service
         builder.Services.AddScoped<ITenantRepository>(sp =>
             {
                 var cosmosClient = sp.GetService<CosmosClient>();
-                return new TenantRepository(cosmosClient, "dungeon-master-copilot", "Tenants");
+                return new TenantRepository(cosmosClient, cosmosDbDatabaseName, "tenants", sp.GetService<ILogger<TenantRepository>>());
             });
 
         // Add the Character repository as a scoped service
         builder.Services.AddScoped<ICharacterRepository>(sp =>
             {
                 var cosmosClient = sp.GetService<CosmosClient>();
-                return new CharacterRepository(cosmosClient, "dungeon-master-copilot", "Characters");
+                return new CharacterRepository(cosmosClient, cosmosDbDatabaseName, "characters", sp.GetService<ILogger<CharacterRepository>>());
             });
 
         // Add the Semantic Kernel service

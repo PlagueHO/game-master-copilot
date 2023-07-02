@@ -120,3 +120,4 @@ resource cosmosDbCharactersContainer 'Microsoft.DocumentDB/databaseAccounts/sqlD
 
 output cosmosDbAccountName string = cosmosDbAccount.name
 output cosmosDbAccountId string = cosmosDbAccount.id
+output cosmosDbConnectionString string = cosmosDbAccount.properties.connectionStrings[0].connectionString

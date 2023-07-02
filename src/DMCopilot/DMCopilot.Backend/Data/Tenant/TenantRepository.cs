@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DMCopilot.Backend.Models;
+using DMCopilot.Backend.Services;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Graph;
 
@@ -10,10 +11,12 @@ namespace DMCopilot.Backend.Data
     public class TenantRepository : ITenantRepository
     {
         private readonly Container _container;
+        private readonly ILogger<TenantRepository> _logger;
 
-        public TenantRepository(CosmosClient client, string databaseName, string containerName)
+        public TenantRepository(CosmosClient client, string databaseName, string containerName, ILogger<TenantRepository> logger)
         {
             _container = client.GetContainer(databaseName, containerName);
+            _logger = logger;
         }
 
         public async Task<Tenant> GetTenantAsync(Guid tenantId)

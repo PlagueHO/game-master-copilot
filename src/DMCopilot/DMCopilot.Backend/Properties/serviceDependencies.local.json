@@ -1,13 +1,5 @@
 {
   "dependencies": {
-    "cosmosdb1": {
-      "serviceConnectorResourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.ServiceLinker/locations/eastus/connectors/cosmosDbAccount_9839A0A2AE",
-      "secretStore": "LocalSecretsFile",
-      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.DocumentDB/databaseAccounts/dsr-dmcopilot-cdb",
-      "type": "cosmosdb.azure",
-      "connectionId": "cosmosDbAccount",
-      "dynamicId": null
-    },
     "appInsights1": {
       "secretStore": "LocalSecretsFile",
       "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/microsoft.insights/components/dsr-dmcopilot-ai",
@@ -26,6 +18,14 @@
       "resourceId": null,
       "type": "secrets.user",
       "connectionId": null
+    },
+    "cosmosdb1": {
+      "serviceConnectorResourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.ServiceLinker/locations/eastus/connectors/CosmosDb_D26B453C76",
+      "secretStore": "LocalSecretsFile",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.DocumentDB/databaseAccounts/dsr-dmcopilot-cdb",
+      "type": "cosmosdb.azure",
+      "connectionId": "CosmosDb",
+      "dynamicId": null
     }
   }
 }

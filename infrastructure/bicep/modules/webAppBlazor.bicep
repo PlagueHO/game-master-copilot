@@ -3,6 +3,7 @@ param appServicePlanId string
 param webAppName string
 param keyVaultName string
 param cosmosDbAccountName string
+param cosmosDbConnectionString string
 param appInsightsInstrumentationKey string
 param appInsightsConnectionString string
 param azureOpenAiEndpoint string
@@ -147,9 +148,20 @@ var appSettings = [
     value: azureOpenAiDeploymentTextEmbedding
   }
   {
-    name: 'cosmosDbEndpointUri'
+    name: 'cosmosDb__EndpointUri'
     value: cosmosDbAccount.properties.documentEndpoint
   }
+  {
+    name: 'cosmosDb__Database'
+    value: 'dmcopilot'
+  }
+]
+
+var connectionStrings = [
+    {
+        name: 'cosmosDb'
+        value: cosmosDbConnectionString
+    }
 ]
 
 resource webApp 'Microsoft.Web/sites@2021-01-15' = {
@@ -167,6 +179,7 @@ resource webApp 'Microsoft.Web/sites@2021-01-15' = {
       linuxFxVersion: 'DOTNETCORE|7.0'
       healthCheckPath: '/'
       appSettings: appSettings
+      connectionStrings: connectionStrings
     }
     clientAffinityEnabled: true
   }
@@ -198,6 +211,7 @@ resource WebAppStaging 'Microsoft.Web/sites/slots@2022-03-01' = {
       linuxFxVersion: 'DOTNETCORE|7.0'
       healthCheckPath: '/'
       appSettings: appSettings
+      connectionStrings: connectionStrings
     }
     clientAffinityEnabled: true
   }
