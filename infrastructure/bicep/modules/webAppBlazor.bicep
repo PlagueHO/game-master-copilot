@@ -158,10 +158,11 @@ var appSettings = [
 ]
 
 var connectionStrings = [
-    {
-        name: 'cosmosDb'
-        value: cosmosDbConnectionString
-    }
+  {
+    name: 'cosmosDb'
+    connectionString: cosmosDbConnectionString
+    type: 'DocDb'
+  }
 ]
 
 resource webApp 'Microsoft.Web/sites@2021-01-15' = {
