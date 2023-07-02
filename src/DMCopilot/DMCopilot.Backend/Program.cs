@@ -1,6 +1,4 @@
 using Azure.Identity;
-using DMCopilot.Backend.Data;
-using DMCopilot.Backend.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
@@ -17,7 +15,10 @@ using System.Text.Json;
 using Blazorise;
 using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
+using DMCopilot.Backend.Data;
+using DMCopilot.Backend.Services;
 using DMCopilot.Backend.Models.Configuration;
+using DMCopilot.Backend.Controllers;
 
 internal class Program
 {
@@ -107,6 +108,11 @@ internal class Program
             })
             .AddBootstrapProviders()
             .AddFontAwesomeIcons();
+
+        // Add the controllers and the Health Check
+        builder.Services.AddControllers()
+            .AddApplicationPart(typeof(HealthCheckController).Assembly)
+            .AddControllersAsServices();
 
         var app = builder.Build();
 
