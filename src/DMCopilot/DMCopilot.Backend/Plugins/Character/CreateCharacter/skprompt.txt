@@ -1,4 +1,4 @@
-Generate a character for Dugneons and Dragons 5th edition based on the Character information below.
+Generate a character for Dugneons and Dragons 5th edition based on the character information below.
 
 Character Information:A male hill dwarf shopkeeper for a general store in Neverwinter.
 Name:Grimock Stoneheft

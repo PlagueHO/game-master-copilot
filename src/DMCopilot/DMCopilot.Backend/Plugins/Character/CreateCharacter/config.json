@@ -14,7 +14,7 @@
             {
                 "name": "input",
                 "description": "The details of the character to create.",
-                "defaultValue": ""
+                "defaultValue": "A hill dwarf merchant who runs a general store in Baldurs Gate."
             }
         ]
     }

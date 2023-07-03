@@ -46,6 +46,22 @@ resource cosmosDbDatabase 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@20
   }
 }
 
+resource cosmosDbAccountsContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2023-04-15' = {
+  name: 'accounts'
+  parent: cosmosDbDatabase
+  properties: {
+    resource: {
+      id: 'accounts'
+      partitionKey: {
+        paths: [
+          '/Email'
+        ]
+        kind: 'Hash'
+      }
+    }
+  }
+}
+
 resource cosmosDbTenantsContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2023-04-15' = {
   name: 'tenants'
   parent: cosmosDbDatabase

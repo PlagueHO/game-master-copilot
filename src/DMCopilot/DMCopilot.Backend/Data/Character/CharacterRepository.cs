@@ -19,13 +19,14 @@ namespace DMCopilot.Backend.Data
         {
             _container = cosmosClient.GetContainer(databaseName, containerName);
             _logger = logger;
+            _logger.LogInformation($"Initialized {nameof(CharacterRepository)} using container '{containerName}'.");
         }
 
-        public async Task<Character> GetCharacterAsync(Guid id)
+        public async Task<Character> GetCharacterAsync(Guid characterId)
         {
             try
             {
-                var response = await _container.ReadItemAsync<Character>(id.ToString(), new PartitionKey(id.ToString()));
+                var response = await _container.ReadItemAsync<Character>(characterId.ToString(), new PartitionKey(characterId.ToString()));
                 return response.Resource;
             }
             catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
@@ -48,31 +49,31 @@ namespace DMCopilot.Backend.Data
 
         public async Task<Character> CreateCharacterAsync(Character character)
         {
-            character.Id = Guid.NewGuid();
-            var response = await _container.CreateItemAsync(character, new PartitionKey(character.Id.ToString()));
+            character.CharacterId = Guid.NewGuid();
+            var response = await _container.CreateItemAsync(character, new PartitionKey(character.CharacterId.ToString()));
             return response.Resource;
         }
 
-        public async Task<Character> UpdateCharacterAsync(Guid id, Character character)
+        public async Task<Character> UpdateCharacterAsync(Guid characterId, Character character)
         {
-            var existingCharacter = await GetCharacterAsync(id);
+            var existingCharacter = await GetCharacterAsync(characterId);
             if (existingCharacter == null)
             {
                 return null;
             }
-            character.Id = existingCharacter.Id;
-            var response = await _container.ReplaceItemAsync(character, existingCharacter.Id.ToString(), new PartitionKey(existingCharacter.Id.ToString()));
+            character.CharacterId = existingCharacter.CharacterId;
+            var response = await _container.ReplaceItemAsync(character, existingCharacter.CharacterId.ToString(), new PartitionKey(existingCharacter.CharacterId.ToString()));
             return response.Resource;
         }
 
-        public async Task<bool> DeleteCharacterAsync(Guid id)
+        public async Task<bool> DeleteCharacterAsync(Guid characterId)
         {
-            var existingCharacter = await GetCharacterAsync(id);
+            var existingCharacter = await GetCharacterAsync(characterId);
             if (existingCharacter == null)
             {
                 return false;
             }
-            var response = await _container.DeleteItemAsync<Character>(id.ToString(), new PartitionKey(id.ToString()));
+            var response = await _container.DeleteItemAsync<Character>(characterId.ToString(), new PartitionKey(characterId.ToString()));
             return response.StatusCode == System.Net.HttpStatusCode.NoContent;
         }
     }

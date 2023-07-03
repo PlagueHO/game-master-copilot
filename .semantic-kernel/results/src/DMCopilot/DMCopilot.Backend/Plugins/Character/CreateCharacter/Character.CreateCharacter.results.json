@@ -1,0 +1,41 @@
+{
+    "version": "1.0",
+    "skillName": "Character",
+    "functionName": "CreateCharacter",
+    "description": "Create a character",
+    "filePath": "src\\DMCopilot\\DMCopilot.Backend\\Plugins\\Character\\CreateCharacter\\skprompt.txt",
+    "results": [
+        {
+            "completionConfig": {
+                "label": "gpt-35-turbo",
+                "aiService": "AzureOpenAI",
+                "deploymentOrModelId": "gpt-35-turbo",
+                "endpoint": "https://dsr-dmcopilot-oai.openai.azure.com/",
+                "useCustomEndpoint": false,
+                "endpointType": "text-completion"
+            },
+            "requestSettings": {
+                "temperature": 0.75,
+                "topP": 0,
+                "presencePenalty": 0,
+                "frequencyPenalty": 0,
+                "maxTokens": 800,
+                "stopSequences": []
+            },
+            "variables": [
+                {
+                    "key": "input",
+                    "value": "A hill dwarf merchant who runs a general store in Baldurs Gate."
+                }
+            ],
+            "output": {
+                "prompt": "Generate a character for Dugneons and Dragons 5th edition based on the character information below.\r\n\r\nCharacter Information:A male hill dwarf shopkeeper for a general store in Neverwinter.\r\nName:Grimock Stoneheft\r\nAge:90\r\nClass:None\r\nRace:Hill Dwarf\r\nHeight:4\"3'\r\nWeigth:150lb\r\nPhysical Characteristics:Short, stocky, and muscular, with a long, braided beard and a bald head.\r\nVoice:Deep and gruff.\r\nClothing:Red tunic, brown pants, and a leather apron.\r\nPersonality Traits:Always trying to help those in need, even if they are strangers.\r\nIdeals:Respect. People deserve to be treated with dignity and respect.\r\nBonds:My business is my life, and I would do anything to protect it.\r\nFlaws:I am too enamored of ale, wine, and other intoxicants.\r\n\r\nCharacter Information:A hill dwarf merchant who runs a general store in Baldurs Gate.",
+                "durationInMilliseconds": 8164.7372,
+                "inputTokens": null,
+                "outputTokens": null,
+                "result": "A hill dwarf merchant who runs a general store in Baldurs Gate.",
+                "textCompletionResult": "A hill dwarf merchant who runs a general store in Baldurs Gate."
+            }
+        }
+    ]
+}

@@ -17,6 +17,7 @@ namespace DMCopilot.Backend.Data
         {
             _container = client.GetContainer(databaseName, containerName);
             _logger = logger;
+            _logger.LogInformation($"Initialized {nameof(TenantRepository)} using container '{containerName}'.");
         }
 
         public async Task<Tenant> GetTenantAsync(Guid tenantId)

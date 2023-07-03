@@ -10,7 +10,7 @@ namespace DMCopilot.Backend.Models
         /// <summary>
         /// The unique identifier for the character.
         /// </summary>
-        public Guid? Id { get; set; }
+        public Guid? CharacterId { get; set; }
 
         /// <summary>
         /// The name of the character.

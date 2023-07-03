@@ -88,19 +88,25 @@ internal class Program
                 }
             });
 
-        // Add the Tenant repository as a scoped service
-        builder.Services.AddScoped<ITenantRepository>(service =>
-            {
-                var cosmosClient = service.GetService<CosmosClient>();
-                return new TenantRepository(cosmosClient, cosmosDbConfiguration.DatabaseName, "tenants", service.GetService<ILogger<TenantRepository>>());
-            });
+        // Define an array of repository configurations
+        var repositoryConfigs = new[] {
+            new { RepositoryType = typeof(AccountRepository), RepositoryInterface = typeof(IAccountRepository), CollectionName = "accounts" },
+            new { RepositoryType = typeof(TenantRepository), RepositoryInterface = typeof(ITenantRepository), CollectionName = "tenants" },
+            new { RepositoryType = typeof(CharacterRepository), RepositoryInterface = typeof(ICharacterRepository), CollectionName = "characters" }
+        };
 
-        // Add the Character repository as a scoped service
-        builder.Services.AddScoped<ICharacterRepository>(service =>
+        // Loop through the repository configurations and register them as scoped services
+        foreach (var config in repositoryConfigs)
+        {
+            builder.Services.AddScoped(config.RepositoryInterface, service =>
             {
                 var cosmosClient = service.GetService<CosmosClient>();
-                return new CharacterRepository(cosmosClient, cosmosDbConfiguration.DatabaseName, "characters", service.GetService<ILogger<CharacterRepository>>());
+                var loggerType = typeof(ILogger<>).MakeGenericType(config.RepositoryType);
+                var logger = service.GetService(loggerType);
+                var repositoryInstance = Activator.CreateInstance(config.RepositoryType, cosmosClient, cosmosDbConfiguration.DatabaseName, config.CollectionName, logger);
+                return repositoryInstance;
             });
+        }
 
         // Add the Semantic Kernel service
         builder.Services.AddSingleton<ISemanticKernelService>((service) =>
