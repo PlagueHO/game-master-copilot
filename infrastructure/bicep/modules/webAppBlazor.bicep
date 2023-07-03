@@ -3,7 +3,6 @@ param appServicePlanId string
 param webAppName string
 param keyVaultName string
 param cosmosDbAccountName string
-param cosmosDbConnectionString string
 param appInsightsInstrumentationKey string
 param appInsightsConnectionString string
 param azureOpenAiEndpoint string
@@ -160,7 +159,7 @@ var appSettings = [
 var connectionStrings = [
   {
     name: 'cosmosDb'
-    connectionString: cosmosDbConnectionString
+    connectionString: listConnectionStrings(cosmosDbAccount.id, '2021-06-15-preview')[0].connectionString
     type: 'DocDb'
   }
 ]

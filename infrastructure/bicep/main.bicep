@@ -168,7 +168,6 @@ module webAppBlazor './modules/webAppBlazor.bicep' = {
     webAppName: baseResourceName
     keyVaultName: keyVault.outputs.keyVaultName
     cosmosDbAccountName: cosmosDbAccount.outputs.cosmosDbAccountName
-    cosmosDbConnectionString: cosmosDbAccount.outputs.cosmosDbConnectionString
     appInsightsInstrumentationKey: monitoring.outputs.applicationInsightsInstrumentationKey
     appInsightsConnectionString: monitoring.outputs.applicationInsightsConnectionString
     azureOpenAiEndpoint: openAiService.outputs.openAiServiceEndpoint
