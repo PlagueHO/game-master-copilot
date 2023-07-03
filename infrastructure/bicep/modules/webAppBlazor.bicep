@@ -147,18 +147,18 @@ var appSettings = [
     value: azureOpenAiDeploymentTextEmbedding
   }
   {
-    name: 'cosmosDb__EndpointUri'
+    name: 'CosmosDb__EndpointUri'
     value: cosmosDbAccount.properties.documentEndpoint
   }
   {
-    name: 'cosmosDb__Database'
+    name: 'CosmosDb__Database'
     value: 'dmcopilot'
   }
 ]
 
 var connectionStrings = [
   {
-    name: 'cosmosDb'
+    name: 'CosmosDb'
     connectionString: cosmosDbAccount.listConnectionStrings().connectionStrings[0].connectionString
     type: 'DocDb'
   }
