@@ -108,6 +108,14 @@ internal class Program
             });
         }
 
+        // Add the Account Serivce
+        builder.Services.AddScoped<IAccountService>((service) =>
+        {
+            var accountRepository = service.GetService<IAccountRepository>();
+            var tenantRepository = service.GetService<ITenantRepository>();
+            return new AccountService(accountRepository, tenantRepository, service.GetService<ILogger<AccountService>>());
+        });
+        
         // Add the Semantic Kernel service
         builder.Services.AddSingleton<ISemanticKernelService>((service) =>
         {
