@@ -160,7 +160,7 @@ var connectionStrings = [
   {
     name: 'CosmosDb'
     connectionString: cosmosDbAccount.listConnectionStrings().connectionStrings[0].connectionString
-    type: 'DocDb'
+    type: 'Custom'
   }
 ]
 
