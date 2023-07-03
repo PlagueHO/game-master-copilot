@@ -62,7 +62,6 @@ internal class Program
         builder.Services.AddSingleton<CosmosClient>(service =>
             {
                 var cosmosDbConnectionString = builder.Configuration.GetConnectionString("CosmosDb");
-                service.GetService<ILogger<SemanticKernelService>>().LogInformation("CosmosDb:ConnectionString: " + cosmosDbConnectionString);
                 if (string.IsNullOrEmpty(cosmosDbConnectionString))
                 {
                     var cosmosDbEndpoint = cosmosDbConfiguration.EndpointUri ?? throw new Exception("CosmosDb:EndpointUri is null");
