@@ -159,7 +159,7 @@ var appSettings = [
 var connectionStrings = [
   {
     name: 'cosmosDb'
-    connectionString: listConnectionStrings(cosmosDbAccount.id, '2021-06-15-preview')[0].connectionString
+    connectionString: cosmosDbAccount.listConnectionStrings().connectionStrings[0].connectionString
     type: 'DocDb'
   }
 ]
