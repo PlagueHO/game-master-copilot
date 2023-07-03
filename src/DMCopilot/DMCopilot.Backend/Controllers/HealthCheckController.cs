@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DMCopilot.Backend.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Cosmos;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,12 +12,15 @@ namespace DMCopilot.Backend.Controllers
     public class HealthCheckController : ControllerBase
     {
         private readonly CosmosClient _cosmosClient;
+        private readonly ILogger<HealthCheckController> _logger;
 
-        public HealthCheckController(CosmosClient cosmosClient)
+        public HealthCheckController(CosmosClient cosmosClient, ILogger<HealthCheckController> logger)
         {
             _cosmosClient = cosmosClient;
+            _logger = logger;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -30,10 +35,12 @@ namespace DMCopilot.Backend.Controllers
             // Return the health check status
             if (healthy)
             {
+                _logger.LogInformation("Healthcheck OK");
                 return Ok();
             }
             else
             {
+                _logger.LogWarning("Healthcheck failed");
                 return StatusCode(500);
             }
         }

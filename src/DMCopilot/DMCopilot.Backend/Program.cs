@@ -45,8 +45,23 @@ internal class Program
 
         builder.Services.AddAuthorization(options =>
         {
+            options.DefaultPolicy = new AuthorizationPolicyBuilder()
+                .RequireAuthenticatedUser()
+                .Build();
+
+            options.AddPolicy("AllowAnonymous", policy =>
+            {
+                policy.RequireAssertion(context =>
+                {
+                    // Allow unauthenticated access to the HealthCheck endpoint
+                    return context.Resource is Endpoint endpoint &&
+                           endpoint.Metadata.GetMetadata<IAllowAnonymous>() != null;
+                });
+            });
+
             // By default, all incoming requests will be authorized according to the default policy
             options.FallbackPolicy = options.DefaultPolicy;
+
         });
 
         // Get an Azure AD token for the application to use to authenticate to services in Azure
