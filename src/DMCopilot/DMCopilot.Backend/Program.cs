@@ -61,13 +61,16 @@ internal class Program
             .AddMicrosoftIdentityConsentHandler();
 
         // Add the Cosmos DB client as a singleton service
-        builder.Services.AddSingleton<CosmosClient>(sp =>
+        var cosmosDbConfiguration = builder.Configuration.GetSection("CosmosDb").Get<CosmosDbConfiguration>() ?? throw new Exception("CosmosDb configuration is null");
+
+        builder.Services.AddSingleton<CosmosClient>(service =>
             {
                 var cosmosDbConnectionString = builder.Configuration.GetConnectionString("CosmosDb");
+                service.GetService<ILogger<SemanticKernelService>>().LogInformation("CosmosDb:ConnectionString: " + cosmosDbConnectionString);
                 if (string.IsNullOrEmpty(cosmosDbConnectionString))
                 {
-                    var cosmosDbEndpoint = builder.Configuration["CosmosDb:Endpoint"] ?? throw new Exception("CosmosDb:Endpoint is null");
-                    return new CosmosClient(cosmosDbEndpoint, azureCredential);
+                    var cosmosDbEndpoint = cosmosDbConfiguration.EndpointUri ?? throw new Exception("CosmosDb:EndpointUri is null");
+                    return new CosmosClient(cosmosDbEndpoint.ToString(), azureCredential);
                 }
                 else
                 {
@@ -75,30 +78,28 @@ internal class Program
                 }
             });
 
-        var cosmosDbDatabaseName = builder.Configuration["CosmosDb:DatabaseName"] ?? throw new Exception("CosmosDb:DatabaseName is null");
-
         // Add the Tenant repository as a scoped service
-        builder.Services.AddScoped<ITenantRepository>(sp =>
+        builder.Services.AddScoped<ITenantRepository>(service =>
             {
-                var cosmosClient = sp.GetService<CosmosClient>();
-                return new TenantRepository(cosmosClient, cosmosDbDatabaseName, "tenants", sp.GetService<ILogger<TenantRepository>>());
+                var cosmosClient = service.GetService<CosmosClient>();
+                return new TenantRepository(cosmosClient, cosmosDbConfiguration.DatabaseName, "tenants", service.GetService<ILogger<TenantRepository>>());
             });
 
         // Add the Character repository as a scoped service
-        builder.Services.AddScoped<ICharacterRepository>(sp =>
+        builder.Services.AddScoped<ICharacterRepository>(service =>
             {
-                var cosmosClient = sp.GetService<CosmosClient>();
-                return new CharacterRepository(cosmosClient, cosmosDbDatabaseName, "characters", sp.GetService<ILogger<CharacterRepository>>());
+                var cosmosClient = service.GetService<CosmosClient>();
+                return new CharacterRepository(cosmosClient, cosmosDbConfiguration.DatabaseName, "characters", service.GetService<ILogger<CharacterRepository>>());
             });
 
         // Add the Semantic Kernel service
-        builder.Services.AddSingleton<ISemanticKernelService>((svc) =>
+        builder.Services.AddSingleton<ISemanticKernelService>((service) =>
         {
             // Get the Semantic Kernel configuration from appsettings.json
             var semanticKernelConfiguration = builder.Configuration
                 .GetSection("SemanticKernel")
                 .Get<SemanticKernelConfiguration>() ?? throw new Exception("Semantic Kernel configuration is null");
-            return new SemanticKernelService(azureCredential, semanticKernelConfiguration, svc.GetService<ILogger<SemanticKernelService>>());
+            return new SemanticKernelService(azureCredential, semanticKernelConfiguration, service.GetService<ILogger<SemanticKernelService>>());
         });
 
         // Add Blazorize
