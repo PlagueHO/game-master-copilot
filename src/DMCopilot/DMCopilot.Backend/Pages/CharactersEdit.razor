@@ -1,0 +1,58 @@
+@page "/characters/{characterId}/edit"
+@page "/characters/new"
+
+@using DMCopilot.Backend.Services
+@using DMCopilot.Backend.Data
+@using DMCopilot.Backend.Models
+
+@inject ISemanticKernelService semanticKernelService
+@inject ICharacterRepository characterRepository
+
+<h3>Character</h3>
+
+@if (_character == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="form-group d-flex">
+        <label for="_characterDetails">Character Details</label>
+        <input type="text" @bind="@_characterDetails" @oninput="@((e) => { _characterDetails=(string)e.Value;})" class="form-control" id="_characterDetails" placeholder="A hill dwarf merchant who runs a general store in Baldurs Gate.">
+        <Button Color="Color.Primary">Create</Button>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public Guid CharacterId { get; set; }
+
+    private Character _character;
+    private string _characterDetails { get; set; } = "A hill dwarf merchant who runs a general store in Baldurs Gate.";
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (! IsNewCharacter()) {
+            await LoadCharacterAsync(CharacterId);
+        }
+    }
+
+    private Boolean IsNewCharacter()
+    {
+        return CharacterId == null;
+    }
+
+    private async Task LoadCharacterAsync(Guid characterId)
+    {
+        _character = await characterRepository.GetCharacterAsync(characterId);
+    }
+
+    private async Task CreateCharacter()
+    {
+        // Call the semanticKernelService with the character details
+        var result = await semanticKernelService.InvokeFunctionAsync("Character", "CreateCharacter", _characterDetails);
+
+        // Use the result in some way
+        Console.WriteLine(result);
+    }
+}

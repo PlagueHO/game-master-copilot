@@ -4,10 +4,10 @@
 @using DMCopilot.Backend.Data
 @using DMCopilot.Backend.Models
 
-@inject ISemanticKernelService semanticKernelService
 @inject ICharacterRepository characterRepository
 
-<h1>Characters</h1>
+<h3>Characters</h3>
+
 
 <Table FixedHeader FixedHeaderTableHeight="300px">
     <TableHeader>
@@ -18,11 +18,7 @@
             <TableHeaderCell>Race</TableHeaderCell>
         </TableRow>
     </TableHeader>
-    @if (characters == null)
-    {
-        <p><em>Loading...</em></p>
-    }
-    else
+    @if (IsCharactersLoaded())
     {
         <TableBody>
             @foreach (var character in characters)
@@ -36,13 +32,11 @@
             }
         </TableBody>
     }
+    else
+    {
+        <p><em>Loading...</em></p>
+    }
 </Table>
-
-<div class="form-group d-flex">
-    <label for="characterDetails">Character Details</label>
-    <input type="text" @bind="@characterDetails" @oninput="@((e) => { characterDetails=(string)e.Value;})" class="form-control" id="characterDetails" placeholder="A hill dwarf merchant who runs a general store in Baldurs Gate.">
-    <Button Color="Color.Primary">Create</Button>
-</div>
 
 @code {
     private IEnumerable<Character> characters;
@@ -53,18 +47,14 @@
         await GetCharacters();
     }
 
+    private Boolean IsCharactersLoaded()
+    {
+        return characters != null;
+    }
+
     private async Task GetCharacters()
     {
         // Get the characters from the CharacterRepository
-        var characters = await characterRepository.GetCharactersAsync();
-    }
-
-    private async Task CreateCharacter()
-    {
-        // Call the semanticKernelService with the character details
-        var result = await semanticKernelService.InvokeFunctionAsync("Character", "CreateCharacter", characterDetails);
-
-        // Use the result in some way
-        Console.WriteLine(result);
+        this.characters = await characterRepository.GetCharactersAsync();
     }
 }
