@@ -13,7 +13,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2023-02-01' = {
       name: 'standard'
       family: 'A'
     }
-    tenantId: subscription().tenantId
+    worldId: subscription().worldId
     enabledForDeployment: true
     enabledForTemplateDeployment: true
     enabledForDiskEncryption: true

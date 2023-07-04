@@ -32,9 +32,10 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        if (! IsNewCharacter()) {
-            await LoadCharacterAsync(CharacterId);
-        }
+        if (IsNewCharacter())
+            _character = new Character();
+        else
+            _character = await LoadCharacterAsync(CharacterId);
     }
 
     private Boolean IsNewCharacter()
@@ -42,9 +43,9 @@ else
         return CharacterId == null;
     }
 
-    private async Task LoadCharacterAsync(Guid characterId)
+    private async Task<Character> LoadCharacterAsync(Guid characterId)
     {
-        _character = await characterRepository.GetCharacterAsync(characterId);
+        return await characterRepository.GetCharacterAsync(characterId);
     }
 
     private async Task CreateCharacter()

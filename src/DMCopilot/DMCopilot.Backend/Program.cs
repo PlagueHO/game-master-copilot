@@ -91,7 +91,7 @@ internal class Program
         // Define an array of repository configurations
         var repositoryConfigs = new[] {
             new { RepositoryType = typeof(AccountRepository), RepositoryInterface = typeof(IAccountRepository), CollectionName = "accounts" },
-            new { RepositoryType = typeof(TenantRepository), RepositoryInterface = typeof(ITenantRepository), CollectionName = "tenants" },
+            new { RepositoryType = typeof(TenantRepository), RepositoryInterface = typeof(IWorldRepository), CollectionName = "tenants" },
             new { RepositoryType = typeof(CharacterRepository), RepositoryInterface = typeof(ICharacterRepository), CollectionName = "characters" }
         };
 

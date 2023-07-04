@@ -18,10 +18,10 @@ namespace DMCopilot.Backend.Services
 
         public AccountService(IAccountRepository accountRepository, ITenantRepository tenantRepository, ILogger<AccountService> logger)
         {
-            _logger.LogInformation("Creating Account Service");
             _accountRepository = accountRepository;
             _tenantRepository = tenantRepository;
             _logger = logger;
+            _logger.LogInformation("Creating Account Service");
         }
 
         /// <summary>
