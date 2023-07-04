@@ -92,10 +92,10 @@ namespace DMCopilot.Backend.Data
             return response.Resource;
         }
 
-        public async Task<Tenant> UpdateTenantAsync(Guid tenantId, Tenant tenant)
+        public async Task<Tenant> UpdateTenantAsync(Guid id, Tenant tenant)
         {
-            tenant.TenantId = tenantId;
-            var response = await _container.UpsertItemAsync(tenant, new PartitionKey(tenant.TenantId.ToString()));
+            tenant.Id = id;
+            var response = await _container.UpsertItemAsync(tenant, new PartitionKey(tenant.Id.ToString()));
             return response.Resource;
         }
 

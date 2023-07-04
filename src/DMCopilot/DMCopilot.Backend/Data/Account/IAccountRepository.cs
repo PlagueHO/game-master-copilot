@@ -7,7 +7,8 @@ namespace DMCopilot.Backend.Data
 {
     public interface IAccountRepository
     {
-        Task<Account> GetAccountAsync(string email);
+        Task<Account> GetAccountAsync(Guid id);
+        Task<Account> GetAccountByEmailAsync(string email);
         Task<IEnumerable<Account>> GetAccountsAsync();
         Task<Account> CreateAccountAsync(Account account);
         Task<Account> UpdateAccountAsync(string email, Account account);

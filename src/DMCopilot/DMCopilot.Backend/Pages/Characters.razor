@@ -23,7 +23,7 @@
         <TableBody>
             @foreach (var character in characters)
             {
-                <TableRow @key="@character.CharacterId">
+                <TableRow @key="@character.Id">
                     <TableRowHeader>@character.Name</TableRowHeader>
                     <TableRowCell>@character.Age</TableRowCell>
                     <TableRowCell>@character.Class</TableRowCell>

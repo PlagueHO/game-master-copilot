@@ -89,31 +89,31 @@ internal class Program
             });
 
         // Define an array of repository configurations
-        var repositoryConfigs = new[] {
+        var repositories = new[] {
             new { RepositoryType = typeof(AccountRepository), RepositoryInterface = typeof(IAccountRepository), CollectionName = "accounts" },
-            new { RepositoryType = typeof(TenantRepository), RepositoryInterface = typeof(IWorldRepository), CollectionName = "tenants" },
+            new { RepositoryType = typeof(TenantRepository), RepositoryInterface = typeof(ITenantRepository), CollectionName = "tenants" },
             new { RepositoryType = typeof(CharacterRepository), RepositoryInterface = typeof(ICharacterRepository), CollectionName = "characters" }
         };
 
         // Loop through the repository configurations and register them as scoped services
-        foreach (var config in repositoryConfigs)
+        foreach (var repository in repositories)
         {
-            builder.Services.AddScoped(config.RepositoryInterface, service =>
+            builder.Services.AddScoped(repository.RepositoryInterface, service =>
             {
                 var cosmosClient = service.GetService<CosmosClient>();
-                var loggerType = typeof(ILogger<>).MakeGenericType(config.RepositoryType);
+                var loggerType = typeof(ILogger<>).MakeGenericType(repository.RepositoryType);
                 var logger = service.GetService(loggerType);
-                var repositoryInstance = Activator.CreateInstance(config.RepositoryType, cosmosClient, cosmosDbConfiguration.DatabaseName, config.CollectionName, logger);
+                var repositoryInstance = Activator.CreateInstance(repository.RepositoryType, cosmosClient, cosmosDbConfiguration.DatabaseName, repository.CollectionName, logger);
                 return repositoryInstance;
             });
         }
 
         // Add the Account Serivce
-        builder.Services.AddScoped<IAccountService>((service) =>
+        builder.Services.AddScoped<IAccessService>((service) =>
         {
             var accountRepository = service.GetService<IAccountRepository>();
             var tenantRepository = service.GetService<ITenantRepository>();
-            return new AccountService(accountRepository, tenantRepository, service.GetService<ILogger<AccountService>>());
+            return new AccessService(accountRepository, tenantRepository, service.GetService<ILogger<AccessService>>());
         });
         
         // Add the Semantic Kernel service

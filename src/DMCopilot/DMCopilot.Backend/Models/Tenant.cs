@@ -1,4 +1,6 @@
-﻿using Microsoft.Graph;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Graph;
+using Newtonsoft.Json;
 
 namespace DMCopilot.Backend.Models
 {
@@ -19,29 +21,34 @@ namespace DMCopilot.Backend.Models
         /// <summary>
         /// Gets or sets the unique identifier for the tenant.
         /// </summary>
-        public Guid? TenantId { get; set; }
+        [JsonProperty(PropertyName = "id")]
+        public Guid Id { get; set; }
 
         /// <summary>
         /// Gets or sets the type of the tenant.
         /// </summary>
-        public TenantType? Type { get; set; } = TenantType.Individual;
+        [JsonProperty(PropertyName = "type")]
+        public TenantType Type { get; set; } = TenantType.Individual;
 
         /// <summary>
         /// Gets or sets the name of the tenant.
         /// </summary>
-        public string? Name { get; set; }
+        [JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the email of the owner of the tenant.
         /// </summary>
-        public EmailAddress? OwnerEmail { get; set; }
+        [JsonProperty(PropertyName = "owneremail")]
+        public string OwnerEmail { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Tenant"/> class.
         /// </summary>
-        public Tenant(Guid? tenantId = null, string? name = null, EmailAddress? ownerEmail = null)
+        public Tenant(Guid id, string name, string ownerEmail, TenantType type = TenantType.Individual)
         {
-            TenantId = tenantId;
+            Id = id;
+            Type = type;
             Name = name;
             OwnerEmail = ownerEmail;
         }

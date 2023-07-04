@@ -49,8 +49,8 @@ namespace DMCopilot.Backend.Data
 
         public async Task<Character> CreateCharacterAsync(Character character)
         {
-            character.CharacterId = Guid.NewGuid();
-            var response = await _container.CreateItemAsync(character, new PartitionKey(character.CharacterId.ToString()));
+            character.Id = Guid.NewGuid();
+            var response = await _container.CreateItemAsync(character, new PartitionKey(character.Id.ToString()));
             return response.Resource;
         }
 
@@ -61,8 +61,8 @@ namespace DMCopilot.Backend.Data
             {
                 return null;
             }
-            character.CharacterId = existingCharacter.CharacterId;
-            var response = await _container.ReplaceItemAsync(character, existingCharacter.CharacterId.ToString(), new PartitionKey(existingCharacter.CharacterId.ToString()));
+            character.Id = existingCharacter.Id;
+            var response = await _container.ReplaceItemAsync(character, existingCharacter.Id.ToString(), new PartitionKey(existingCharacter.Id.ToString()));
             return response.Resource;
         }
 

@@ -2,7 +2,8 @@
 @using Blazorise.Bootstrap
 @using DMCopilot.Backend.Services
 
-@inject IAccountService AccountService
+@inject IAccessService AccessService
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <AuthorizeView>
     <Authorized>
@@ -13,3 +14,11 @@
         <a href="MicrosoftIdentity/Account/SignIn">Log in</a>
     </NotAuthorized>
 </AuthorizeView>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        var context = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        await AccessService.LoadAccountAsync(context);
+    }
+}

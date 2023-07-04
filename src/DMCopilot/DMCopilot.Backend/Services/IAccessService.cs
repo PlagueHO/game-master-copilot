@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Components.Authorization;
 
 namespace DMCopilot.Backend.Services
 {
-    public interface IAccountService
+    public interface IAccessService
     {
-        public Task<Account> GetAccountAsync(AuthenticationState context);
+        public Task<Account> LoadAccountAsync(AuthenticationState context);
     }
 }

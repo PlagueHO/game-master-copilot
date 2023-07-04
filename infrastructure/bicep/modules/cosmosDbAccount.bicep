@@ -54,7 +54,7 @@ resource cosmosDbAccountsContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDat
       id: 'accounts'
       partitionKey: {
         paths: [
-          '/Email'
+          '/email'
         ]
         kind: 'Hash'
       }
@@ -70,7 +70,7 @@ resource cosmosDbTenantsContainer 'Microsoft.DocumentDB/databaseAccounts/sqlData
       id: 'tenants'
       partitionKey: {
         paths: [
-          '/TenantId'
+          '/id'
         ]
         kind: 'Hash'
       }
@@ -86,8 +86,8 @@ resource cosmosDbWorldsContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatab
       id: 'worlds'
       partitionKey: {
         paths: [
-          '/TenantId'
-          '/WorldId'
+          '/id'
+          '/worldid'
         ]
         kind: 'MultiHash'
         version: 2
@@ -104,9 +104,9 @@ resource cosmosDbCampaignsContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDa
       id: 'campaigns'
       partitionKey: {
         paths: [
-          '/TenantId'
-          '/WorldId'
-          '/CampaignId'
+          '/tenantid'
+          '/worldid'
+          '/campaignid'
         ]
         kind: 'MultiHash'
         version: 2
@@ -123,9 +123,9 @@ resource cosmosDbCharactersContainer 'Microsoft.DocumentDB/databaseAccounts/sqlD
       id: 'characters'
       partitionKey: {
         paths: [
-          '/TenantId'
-          '/WorldId'
-          '/CharacterId'
+          '/tenantid'
+          '/worldid'
+          '/characterid'
         ]
         kind: 'MultiHash'
         version: 2

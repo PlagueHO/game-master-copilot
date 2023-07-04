@@ -1,4 +1,6 @@
-﻿using Microsoft.Graph;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Graph;
+using Newtonsoft.Json;
 
 namespace DMCopilot.Backend.Models
 {
@@ -10,29 +12,33 @@ namespace DMCopilot.Backend.Models
         /// <summary>
         /// Gets or sets the unique identifier for the world.
         /// </summary>
-        public Guid? WorldId { get; set; }
+        [JsonProperty(PropertyName = "id")] 
+        public Guid Id { get; set; }
 
         /// <summary>
         /// Gets or sets the unique identifier for the world.
         /// </summary>
-        public Guid? TenantId { get; set; }
+        [JsonProperty(PropertyName = "tenantid")]
+        public Guid TenantId { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the world.
         /// </summary>
-        public string? Name { get; set; }
+        [JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the description of the world.
         /// </summary>
+        [JsonProperty(PropertyName = "description")]
         public string? Description { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="World"/> class.
         /// </summary>
-        public World(Guid? worldId, Guid? tenantId = null, string? name = null, string? description = null)
+        public World(Guid id, Guid tenantId, string name, string? description = null)
         {
-            WorldId = worldId;
+            Id = id;
             TenantId = tenantId;
             Name = name;
             Description = description;

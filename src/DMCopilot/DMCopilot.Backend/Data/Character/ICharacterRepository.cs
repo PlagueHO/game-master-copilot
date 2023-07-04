@@ -7,10 +7,10 @@ namespace DMCopilot.Backend.Data
 {
     public interface ICharacterRepository
     {
-        Task<Character> GetCharacterAsync(Guid characterId);
+        Task<Character> GetCharacterAsync(Guid id);
         Task<IEnumerable<Character>> GetCharactersAsync();
         Task<Character> CreateCharacterAsync(Character character);
-        Task<Character> UpdateCharacterAsync(Guid characterId, Character character);
-        Task<bool> DeleteCharacterAsync(Guid characterId);
+        Task<Character> UpdateCharacterAsync(Guid id, Character character);
+        Task<bool> DeleteCharacterAsync(Guid id);
     }
 }

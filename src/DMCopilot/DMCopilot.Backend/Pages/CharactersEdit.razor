@@ -1,4 +1,4 @@
-@page "/characters/{characterId}/edit"
+@page "/characters/{CharacterId}/edit"
 @page "/characters/new"
 
 @using DMCopilot.Backend.Services
@@ -33,7 +33,7 @@ else
     protected override async Task OnInitializedAsync()
     {
         if (IsNewCharacter())
-            _character = new Character();
+            _character = new Character(Guid.NewGuid());
         else
             _character = await LoadCharacterAsync(CharacterId);
     }

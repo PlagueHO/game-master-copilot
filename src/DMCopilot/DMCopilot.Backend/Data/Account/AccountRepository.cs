@@ -16,7 +16,13 @@ namespace DMCopilot.Backend.Data
             _logger.LogInformation($"Initialized {nameof(AccountRepository)} using container '{containerName}'.");
         }
 
-        public async Task<Account> GetAccountAsync(string email)
+        public async Task<Account> GetAccountAsync(Guid id)
+        {
+            var queryDefinition = new QueryDefinition("SELECT * FROM c WHERE c.Id = @id");
+            return await GetAccountByQueryAsync(queryDefinition);
+        }
+
+        public async Task<Account> GetAccountByEmailAsync(string email)
         {
             try
             {
