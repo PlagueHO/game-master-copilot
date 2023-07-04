@@ -87,7 +87,7 @@ resource cosmosDbWorldsContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatab
       partitionKey: {
         paths: [
           '/id'
-          '/worldid'
+          '/tenantid'
         ]
         kind: 'MultiHash'
         version: 2
