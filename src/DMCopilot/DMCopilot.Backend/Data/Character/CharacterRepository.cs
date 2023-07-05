@@ -22,11 +22,11 @@ namespace DMCopilot.Backend.Data
             _logger.LogInformation($"Initialized {nameof(CharacterRepository)} using container '{containerName}'.");
         }
 
-        public async Task<Character> GetCharacterAsync(Guid characterId)
+        public async Task<Character> GetCharacterAsync(Guid id)
         {
             try
             {
-                var response = await _container.ReadItemAsync<Character>(characterId.ToString(), new PartitionKey(characterId.ToString()));
+                var response = await _container.ReadItemAsync<Character>(id.ToString(), new PartitionKey(id.ToString()));
                 return response.Resource;
             }
             catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
@@ -54,9 +54,9 @@ namespace DMCopilot.Backend.Data
             return response.Resource;
         }
 
-        public async Task<Character> UpdateCharacterAsync(Guid characterId, Character character)
+        public async Task<Character> UpdateCharacterAsync(Guid id, Character character)
         {
-            var existingCharacter = await GetCharacterAsync(characterId);
+            var existingCharacter = await GetCharacterAsync(id);
             if (existingCharacter == null)
             {
                 return null;
@@ -66,14 +66,14 @@ namespace DMCopilot.Backend.Data
             return response.Resource;
         }
 
-        public async Task<bool> DeleteCharacterAsync(Guid characterId)
+        public async Task<bool> DeleteCharacterAsync(Guid id)
         {
-            var existingCharacter = await GetCharacterAsync(characterId);
+            var existingCharacter = await GetCharacterAsync(id);
             if (existingCharacter == null)
             {
                 return false;
             }
-            var response = await _container.DeleteItemAsync<Character>(characterId.ToString(), new PartitionKey(characterId.ToString()));
+            var response = await _container.DeleteItemAsync<Character>(id.ToString(), new PartitionKey(id.ToString()));
             return response.StatusCode == System.Net.HttpStatusCode.NoContent;
         }
     }

@@ -18,8 +18,15 @@ namespace DMCopilot.Backend.Data
 
         public async Task<Account> GetAccountAsync(String id)
         {
-            var queryDefinition = new QueryDefinition("SELECT * FROM c WHERE c.Id = @id");
-            return await GetAccountByQueryAsync(queryDefinition);
+            try
+            {
+                var response = await _container.ReadItemAsync<Account>(id, new PartitionKey(id));
+                return response.Resource;
+            }
+            catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                throw new AccountNotFoundException(id);
+            }
         }
 
         private async Task<Account> GetAccountByQueryAsync(QueryDefinition queryDefinition)

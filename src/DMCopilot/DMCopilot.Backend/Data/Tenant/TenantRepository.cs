@@ -20,16 +20,16 @@ namespace DMCopilot.Backend.Data
             _logger.LogInformation($"Initialized {nameof(TenantRepository)} using container '{containerName}'.");
         }
 
-        public async Task<Tenant> GetTenantAsync(Guid tenantId)
+        public async Task<Tenant> GetTenantAsync(Guid id)
         {
             try
             {
-                var response = await _container.ReadItemAsync<Tenant>(tenantId.ToString(), new PartitionKey(tenantId.ToString()));
+                var response = await _container.ReadItemAsync<Tenant>(id.ToString(), new PartitionKey(id.ToString()));
                 return response.Resource;
             }
             catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
-                throw new TenantNotFoundException(tenantId.ToString());
+                throw new TenantNotFoundException(id.ToString());
             }
         }
 
@@ -99,11 +99,11 @@ namespace DMCopilot.Backend.Data
             return response.Resource;
         }
 
-        public async Task<bool> DeleteTenantAsync(Guid tenantId)
+        public async Task<bool> DeleteTenantAsync(Guid id)
         {
             try
             {
-                await _container.DeleteItemAsync<Tenant>(tenantId.ToString(), new PartitionKey(tenantId.ToString()));
+                await _container.DeleteItemAsync<Tenant>(id.ToString(), new PartitionKey(id.ToString()));
                 return true;
             }
             catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
