@@ -11,22 +11,16 @@ namespace DMCopilot.Backend.Models
     {
         /// <summary>
         /// Gets or sets the unique identifier for the account.
+        /// This will be the email address of the user.
         /// </summary>
         [JsonProperty(PropertyName = "id")]
-        public Guid Id { get; set; }
-
-        /// <summary>
-        /// Gets or sets the email address associated with the account.
-        /// This is used as the unique identifier and partition key for the account.
-        /// </summary>
-        [JsonProperty(PropertyName = "email")]
-        public string Email { get; set; }
+        public String Id { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the account.
         /// </summary>
         [JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
+        public String Name { get; set; }
 
         /// <summary>
         /// Gets or sets the active tenant for the account.
@@ -49,10 +43,9 @@ namespace DMCopilot.Backend.Models
         /// <param name="email">The email address associated with the account.</param>
         /// <param name="activeTenantId">The currently active tenant.</param>
         /// <param name="tenantRoles">The roles the account has in any tenants.</param>
-        public Account(Guid id, string email, string name, Guid activeTenantId, List<AccountTenantRole> tenantRoles)
+        public Account(String id, String name, Guid activeTenantId, List<AccountTenantRole> tenantRoles)
         {
             Id = id;
-            Email = email;
             Name = name;
             ActiveTenantId = activeTenantId;
             TenantRoles = tenantRoles;
@@ -77,13 +70,13 @@ namespace DMCopilot.Backend.Models
         public Guid TenantId { get; set; }
         
         [JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
+        public String Name { get; set; }
 
         [JsonProperty(PropertyName = "role")]
         public TenantRole Role { get; set; }
 
 
-        public AccountTenantRole(Guid tenantId, string name, TenantRole role)
+        public AccountTenantRole(Guid tenantId, String name, TenantRole role)
         {
             TenantId = tenantId;
             Name = name;

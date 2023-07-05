@@ -15,7 +15,7 @@ namespace DMCopilot.Backend.Data
         private readonly Microsoft.Azure.Cosmos.Container _container;
         private readonly ILogger<CharacterRepository> _logger;
 
-        public CharacterRepository(CosmosClient cosmosClient, string databaseName, string containerName, ILogger<CharacterRepository> logger)
+        public CharacterRepository(CosmosClient cosmosClient, String databaseName, String containerName, ILogger<CharacterRepository> logger)
         {
             _container = cosmosClient.GetContainer(databaseName, containerName);
             _logger = logger;

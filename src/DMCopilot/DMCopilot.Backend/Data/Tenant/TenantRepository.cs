@@ -13,7 +13,7 @@ namespace DMCopilot.Backend.Data
         private readonly Container _container;
         private readonly ILogger<TenantRepository> _logger;
 
-        public TenantRepository(CosmosClient client, string databaseName, string containerName, ILogger<TenantRepository> logger)
+        public TenantRepository(CosmosClient client, String databaseName, String containerName, ILogger<TenantRepository> logger)
         {
             _container = client.GetContainer(databaseName, containerName);
             _logger = logger;
@@ -47,7 +47,7 @@ namespace DMCopilot.Backend.Data
             return null;
         }
 
-        public async Task<Tenant> GetTenantByNameAsync(string name)
+        public async Task<Tenant> GetTenantByNameAsync(String name)
         {
             var queryDefinition = new QueryDefinition("SELECT * FROM c WHERE c.Name = @name")
                 .WithParameter("@name", name);

@@ -34,18 +34,18 @@ namespace DMCopilot.Backend.Models
         /// Gets or sets the name of the tenant.
         /// </summary>
         [JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
+        public String Name { get; set; }
 
         /// <summary>
         /// Gets or sets the email of the owner of the tenant.
         /// </summary>
         [JsonProperty(PropertyName = "owneremail")]
-        public string OwnerEmail { get; set; }
+        public String OwnerEmail { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Tenant"/> class.
         /// </summary>
-        public Tenant(Guid id, string name, string ownerEmail, TenantType type = TenantType.Individual)
+        public Tenant(Guid id, String name, String ownerEmail, TenantType type = TenantType.Individual)
         {
             Id = id;
             Type = type;

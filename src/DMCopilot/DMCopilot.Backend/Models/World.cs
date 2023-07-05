@@ -25,18 +25,18 @@ namespace DMCopilot.Backend.Models
         /// Gets or sets the name of the world.
         /// </summary>
         [JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
+        public String Name { get; set; }
 
         /// <summary>
         /// Gets or sets the description of the world.
         /// </summary>
         [JsonProperty(PropertyName = "description")]
-        public string? Description { get; set; }
+        public String? Description { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="World"/> class.
         /// </summary>
-        public World(Guid id, Guid tenantId, string name, string? description = null)
+        public World(Guid id, Guid tenantId, String name, String? description = null)
         {
             Id = id;
             TenantId = tenantId;

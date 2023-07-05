@@ -18,17 +18,18 @@
       "vscode": {
         "settings": {},
         "extensions": [
-          "ms-dotnettools.csharp",
-          "ms-azuretools.vscode-docker",
-          "GitHub.copilot-nightly",
-          "GitHub.copilot-chat",
-          "ms-dotnettools.csdevkit",
-          "ms-azuretools.vscode-bicep",
-          "ms-vscode.azure-account",
-          "ms-vscode.azurecli",
-          "ms-vscode-remote.remote-containers",
-          "ms-semantic-kernel.semantic-kernel"
-        ]
+			"ms-dotnettools.csharp",
+			"ms-azuretools.vscode-docker",
+			"GitHub.copilot-nightly",
+			"GitHub.copilot-chat",
+			"ms-dotnettools.csdevkit",
+			"ms-azuretools.vscode-bicep",
+			"ms-vscode.azure-account",
+			"ms-vscode.azurecli",
+			"ms-vscode-remote.remote-containers",
+			"ms-semantic-kernel.semantic-kernel",
+			"GitHub.copilot-labs"
+		]
       }
     }
   }

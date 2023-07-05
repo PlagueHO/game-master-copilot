@@ -54,7 +54,7 @@ resource cosmosDbAccountsContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDat
       id: 'accounts'
       partitionKey: {
         paths: [
-          '/email'
+          '/id'
         ]
         kind: 'Hash'
       }
@@ -104,7 +104,7 @@ resource cosmosDbCampaignsContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDa
       id: 'campaigns'
       partitionKey: {
         paths: [
-          '/tenantid'
+          '/id'
           '/worldid'
           '/campaignid'
         ]
@@ -123,7 +123,7 @@ resource cosmosDbCharactersContainer 'Microsoft.DocumentDB/databaseAccounts/sqlD
       id: 'characters'
       partitionKey: {
         paths: [
-          '/tenantid'
+          '/id'
           '/worldid'
           '/characterid'
         ]

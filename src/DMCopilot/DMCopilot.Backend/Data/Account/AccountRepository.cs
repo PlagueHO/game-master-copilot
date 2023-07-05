@@ -9,30 +9,17 @@ namespace DMCopilot.Backend.Data
         private readonly Container _container;
         private readonly ILogger<AccountRepository> _logger;
 
-        public AccountRepository(CosmosClient client, string databaseName, string containerName, ILogger<AccountRepository> logger)
+        public AccountRepository(CosmosClient client, String databaseName, String containerName, ILogger<AccountRepository> logger)
         {
             _container = client.GetContainer(databaseName, containerName);
             _logger = logger;
             _logger.LogInformation($"Initialized {nameof(AccountRepository)} using container '{containerName}'.");
         }
 
-        public async Task<Account> GetAccountAsync(Guid id)
+        public async Task<Account> GetAccountAsync(String id)
         {
             var queryDefinition = new QueryDefinition("SELECT * FROM c WHERE c.Id = @id");
             return await GetAccountByQueryAsync(queryDefinition);
-        }
-
-        public async Task<Account> GetAccountByEmailAsync(string email)
-        {
-            try
-            {
-                var response = await _container.ReadItemAsync<Account>(email, new PartitionKey(email));
-                return response.Resource;
-            }
-            catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
-            {
-                throw new AccountNotFoundException($"Account '{email}' not found.");
-            }
         }
 
         private async Task<Account> GetAccountByQueryAsync(QueryDefinition queryDefinition)
@@ -73,18 +60,18 @@ namespace DMCopilot.Backend.Data
             return response.Resource;
         }
 
-        public async Task<Account> UpdateAccountAsync(string email, Account account)
+        public async Task<Account> UpdateAccountAsync(String id, Account account)
         {
-            account.Email = email;
-            var response = await _container.UpsertItemAsync(account, new PartitionKey(email));
+            account.Id = id;
+            var response = await _container.UpsertItemAsync(account, new PartitionKey(id));
             return response.Resource;
         }
 
-        public async Task<bool> DeleteAccountAsync(string email)
+        public async Task<bool> DeleteAccountAsync(String id)
         {
             try
             {
-                await _container.DeleteItemAsync<Account>(email, new PartitionKey(email));
+                await _container.DeleteItemAsync<Account>(id, new PartitionKey(id));
                 return true;
             }
             catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)

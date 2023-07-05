@@ -19,7 +19,7 @@ namespace DMCopilot.Backend.Models
         /// The name of the character.
         /// </summary>
         [JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
+        public String Name { get; set; }
 
         /// <summary>
         /// The age of the character.
@@ -31,13 +31,13 @@ namespace DMCopilot.Backend.Models
         /// The class of the character.
         /// </summary>
         [JsonProperty(PropertyName = "class")]
-        public string? Class { get; set; }
+        public String? Class { get; set; }
 
         /// <summary>
         /// The race of the character.
         /// </summary>
         [JsonProperty(PropertyName = "race")]
-        public string? Race { get; set; }
+        public String? Race { get; set; }
 
         /// <summary>
         /// The height of the character.
@@ -55,43 +55,43 @@ namespace DMCopilot.Backend.Models
         /// The physical characteristics of the character.
         /// </summary>
         [JsonProperty(PropertyName = "physicalcharacteristics")]
-        public string? PhysicalCharacteristics { get; set; }
+        public String? PhysicalCharacteristics { get; set; }
 
         /// <summary>
         /// The voice of the character.
         /// </summary>
         [JsonProperty(PropertyName = "voice")]
-        public string? Voice { get; set; }
+        public String? Voice { get; set; }
 
         /// <summary>
         /// The clothing of the character.
         /// </summary>
         [JsonProperty(PropertyName = "clothing")]
-        public string? Clothing { get; set; }
+        public String? Clothing { get; set; }
 
         /// <summary>
         /// The personality traits of the character.
         /// </summary>
         [JsonProperty(PropertyName = "personalitytraits")]
-        public string? PersonalityTraits { get; set; }
+        public String? PersonalityTraits { get; set; }
 
         /// <summary>
         /// The ideals of the character.
         /// </summary>
         [JsonProperty(PropertyName = "ideals")]
-        public string? Ideals { get; set; }
+        public String? Ideals { get; set; }
 
         /// <summary>
         /// The bonds of the character.
         /// </summary>
         [JsonProperty(PropertyName = "bonds")]
-        public string? Bonds { get; set; }
+        public String? Bonds { get; set; }
 
         /// <summary>
         /// The flaws of the character.
         /// </summary>
         [JsonProperty(PropertyName = "flaws")]
-        public string? Flaws { get; set; }
+        public String? Flaws { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Character"/> class.

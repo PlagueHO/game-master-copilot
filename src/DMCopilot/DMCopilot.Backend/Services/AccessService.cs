@@ -42,7 +42,7 @@ namespace DMCopilot.Backend.Services
 
             try
             {
-                account = await _accountRepository.GetAccountByEmailAsync(email);
+                account = await _accountRepository.GetAccountAsync(email);
             }
             catch (AccountNotFoundException)
             {
@@ -75,7 +75,7 @@ namespace DMCopilot.Backend.Services
                 new AccountTenantRole(tenant.Id, name, TenantRole.Owner)
             };
 
-            var account = new Account(Guid.NewGuid(), email, name, tenant.Id, tenantRoles);
+            var account = new Account(email, name, tenant.Id, tenantRoles);
             await _accountRepository.CreateAccountAsync(account);
             
             _logger.LogInformation("Creating account for '{email}'.", email);
