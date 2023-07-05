@@ -8,10 +8,13 @@ using Microsoft.AspNetCore.Components.Authorization;
 namespace DMCopilot.Backend.Services
 {
     /// <summary>
-    /// Service for managing user accounts and authentication.
+    /// Service for managing user accounts and tenants.
     /// </summary>
     public class AccessService : IAccessService
     {
+        public Account Account { get; private set; }
+        public Tenant Tenant { get; private set; }
+        public bool IsLoaded => Account != null && Tenant != null;
         private readonly IAccountRepository _accountRepository;
         private readonly ITenantRepository _tenantRepository;
         private readonly ILogger<AccessService> _logger;
@@ -25,35 +28,48 @@ namespace DMCopilot.Backend.Services
         }
 
         /// <summary>
-        /// Loads the account details for the specified user or creates a new account if one does not exist.
+        /// Uses the authentication context to get or create the account and tenant for the user.
         /// </summary>
         /// <param name="context">The authentication state for the user.</param>
         /// <returns>The account details for the user.</returns>
-        public async Task<Account> LoadAccountAsync(AuthenticationState context)
+        public async Task<Account> InitializeUsingContext(AuthenticationState context)
         {
-            Account account;
-
-            if (context.User.Identity?.Name == null)
+            // If the authentication context for the user is null, then fail
+            if (context.User == null || context.User.Identity?.Name == null)
             {
                 throw new NotAuthenticatedException();
             }
 
+            // Obtain the email address of the user from the authentication context
             var email = context.User.Identity.Name;
 
             try
             {
-                account = await _accountRepository.GetAccountAsync(email);
+                // See if the account already exists
+                Account = await _accountRepository.GetAccountAsync(email);
+                try
+                {
+                    // The accounts exists, so check if the tenant matching the active tenant exists
+                    Tenant = await _tenantRepository.GetTenantAsync(Account.ActiveTenantId);
+                }
+                catch (TenantNotFoundException)
+                {
+                    // The tenant does not exist, so create it
+                    Tenant = await InitializeTenantAsync(context);
+                }
             }
             catch (AccountNotFoundException)
             {
-                account = await InitializeAccountAsync(context);
+                // The account does not exist so create it
+                Account = await InitializeAccountAsync(context);
             }
 
-            return account;
+            return Account;
         }
 
         private async Task<Account> InitializeAccountAsync(AuthenticationState context)
         {
+            // If the authentication context for the user is null, then fail
             if (context.User.Identity?.Name == null)
             {
                 throw new NotAuthenticatedException();
@@ -62,19 +78,18 @@ namespace DMCopilot.Backend.Services
             // Create a new individual tenant for the account
             var tenant = await InitializeTenantAsync(context);
 
-            // Create the account for the user and associate the individual tenant with it
-            var email = context.User.Identity.Name;
-            var name = context.User.Claims.FirstOrDefault(c => c.Type == "name")?.Value ?? email;
-
             if (tenant == null)
             {
                 throw new TenantNotFoundException("Tenant could not be created.");
             }
 
-            var tenantRoles = new List<AccountTenantRole> {
-                new AccountTenantRole(tenant.Id, name, TenantRole.Owner)
-            };
+            // Create the account for the user and associate the individual tenant with it
+            var email = context.User.Identity.Name;
+            var name = context.User.Claims.FirstOrDefault(c => c.Type == "name")?.Value ?? email;
 
+            var tenantRoles = new List<AccountTenantRole> {
+                new AccountTenantRole(tenant.Id, email, name, TenantType.Individual, TenantRole.Owner)
+            };
             var account = new Account(email, name, tenant.Id, tenantRoles);
             await _accountRepository.CreateAccountAsync(account);
             
@@ -85,6 +100,7 @@ namespace DMCopilot.Backend.Services
 
         private async Task<Tenant> InitializeTenantAsync(AuthenticationState context)
         {
+            // If the authentication context for the user is null, then fail
             if (context.User.Identity?.Name == null)
             {
                 throw new NotAuthenticatedException();

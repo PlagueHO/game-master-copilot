@@ -1,5 +1,5 @@
 ﻿@using Blazorise
-@using Blazorise.Bootstrap
+@using DMCopilot.Backend.Models
 @using DMCopilot.Backend.Services
 
 @inject IAccessService AccessService
@@ -7,8 +7,36 @@
 
 <AuthorizeView>
     <Authorized>
-        @context.User.Identity?.Name
-        <a href="MicrosoftIdentity/Account/SignOut">Log out</a>
+        <Dropdown>
+        @if (AccessService.IsLoaded)
+        {
+            <DropdownToggle Color="Color.Primary">
+                @_tenant.Type: @_tenant.Name
+            </DropdownToggle>
+            <DropdownMenu>
+                <DropdownHeader>Tenants</DropdownHeader>
+                @foreach (var tenantRole in _account.TenantRoles)
+                {
+                    if (_tenant.Id == tenantRole.TenantId)
+                    {
+                        <DropdownItem>@tenantRole.Type: @tenantRole.Name (@tenantRole.Role)</DropdownItem>
+                    }
+                    else
+                    {
+                        <DropdownItem>@tenantRole.Type: @tenantRole.Name (@tenantRole.Role)</DropdownItem>
+                    }
+                }
+                <DropdownDivider />
+                <DropdownItem href="MicrosoftIdentity/Account/SignOut">Log out</DropdownItem>
+            </DropdownMenu>
+        }
+        else
+        {
+            <DropdownMenu>
+                <DropdownItem href="MicrosoftIdentity/Account/SignOut">Log out</DropdownItem>
+            </DropdownMenu>
+        }
+        </Dropdown>
     </Authorized>
     <NotAuthorized>
         <a href="MicrosoftIdentity/Account/SignIn">Log in</a>
@@ -16,9 +44,13 @@
 </AuthorizeView>
 
 @code {
+    public Account? _account;
+    public Tenant? _tenant;
+
     protected override async Task OnInitializedAsync()
     {
         var context = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        await AccessService.LoadAccountAsync(context);
+        _account = await AccessService.InitializeUsingContext(context);
+        _tenant = AccessService.Tenant;
     }
 }

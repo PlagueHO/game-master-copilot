@@ -5,6 +5,9 @@ namespace DMCopilot.Backend.Services
 {
     public interface IAccessService
     {
-        public Task<Account> LoadAccountAsync(AuthenticationState context);
+        public Account Account { get; }
+        public Tenant Tenant { get; }
+        public bool IsLoaded { get; }
+        public Task<Account> InitializeUsingContext(AuthenticationState context);
     }
 }

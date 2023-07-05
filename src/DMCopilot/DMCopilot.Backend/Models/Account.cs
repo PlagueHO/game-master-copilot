@@ -33,7 +33,7 @@ namespace DMCopilot.Backend.Models
         /// </summary>
         [JsonProperty(PropertyName = "tenantroles")]
 
-        public List<AccountTenantRole> TenantRoles { get; set; }
+        public List<AccountTenantRole> TenantRoles { get; set; } = new List<AccountTenantRole>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Account"/> class.
@@ -49,6 +49,11 @@ namespace DMCopilot.Backend.Models
             Name = name;
             ActiveTenantId = activeTenantId;
             TenantRoles = tenantRoles;
+        }
+
+        public void AddTenantRole(AccountTenantRole tenantRole)
+        {
+            TenantRoles.Add(tenantRole);
         }
     }
 
@@ -68,18 +73,25 @@ namespace DMCopilot.Backend.Models
         /// </summary>
         [JsonProperty(PropertyName = "tenantid")]
         public Guid TenantId { get; set; }
-        
+
+        [JsonProperty(PropertyName = "email")]
+        public String Email { get; set; }
+
         [JsonProperty(PropertyName = "name")]
         public String Name { get; set; }
+
+        [JsonProperty(PropertyName = "type")]
+        public TenantType Type { get; set; }
 
         [JsonProperty(PropertyName = "role")]
         public TenantRole Role { get; set; }
 
-
-        public AccountTenantRole(Guid tenantId, String name, TenantRole role)
+        public AccountTenantRole(Guid tenantId, String email, String name, TenantType type, TenantRole role)
         {
             TenantId = tenantId;
+            Email = email;
             Name = name;
+            Type = type;
             Role = role;
         }
     }
