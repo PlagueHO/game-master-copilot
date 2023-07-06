@@ -1,23 +1,21 @@
 ﻿@using Blazorise
+
 @using DMCopilot.Backend.Models
 @using DMCopilot.Backend.Services
-
-@inject IAccessService AccessService
-@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <AuthorizeView>
     <Authorized>
         <Dropdown>
-        @if (AccessService.IsLoaded)
+        @if (Account != null && Tenant != null)
         {
             <DropdownToggle Color="Color.Primary">
-                @_tenant.Type: @_tenant.Name
+                @Tenant.Type: @Tenant.Name
             </DropdownToggle>
             <DropdownMenu>
                 <DropdownHeader>Tenants</DropdownHeader>
-                @foreach (var tenantRole in _account.TenantRoles)
+                @foreach (var tenantRole in Account.TenantRoles)
                 {
-                    if (_tenant.Id == tenantRole.TenantId)
+                    if (Tenant.Id == tenantRole.TenantId)
                     {
                         <DropdownItem>@tenantRole.Type: @tenantRole.Name (@tenantRole.Role)</DropdownItem>
                     }
@@ -44,13 +42,9 @@
 </AuthorizeView>
 
 @code {
-    public Account? _account;
-    public Tenant? _tenant;
+    [CascadingParameter]
+    public Account? Account { get; set; }
 
-    protected override async Task OnInitializedAsync()
-    {
-        var context = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        _account = await AccessService.InitializeUsingContext(context);
-        _tenant = AccessService.Tenant;
-    }
+    [CascadingParameter]
+    public Tenant? Tenant { get; set; }
 }

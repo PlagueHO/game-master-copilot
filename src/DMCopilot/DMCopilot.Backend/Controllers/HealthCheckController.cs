@@ -24,7 +24,7 @@ namespace DMCopilot.Backend.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            bool healthy = true;
+            Boolean healthy = true;
 
             // Check the Cosmos DB connection
             var databases = await _cosmosClient.GetDatabaseQueryIterator<DatabaseProperties>().ReadNextAsync();

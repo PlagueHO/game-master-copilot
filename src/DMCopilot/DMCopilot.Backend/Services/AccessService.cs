@@ -14,7 +14,7 @@ namespace DMCopilot.Backend.Services
     {
         public Account Account { get; private set; }
         public Tenant Tenant { get; private set; }
-        public bool IsLoaded => Account != null && Tenant != null;
+        public Boolean IsLoaded => Account != null && Tenant != null;
         private readonly IAccountRepository _accountRepository;
         private readonly ITenantRepository _tenantRepository;
         private readonly ILogger<AccessService> _logger;

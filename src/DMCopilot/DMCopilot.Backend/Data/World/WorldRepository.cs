@@ -85,7 +85,7 @@ namespace DMCopilot.Backend.Data
             return response.Resource;
         }
 
-        public async Task<bool> DeleteWorldAsync(Guid id)
+        public async Task<Boolean> DeleteWorldAsync(Guid id)
         {
             try
             {

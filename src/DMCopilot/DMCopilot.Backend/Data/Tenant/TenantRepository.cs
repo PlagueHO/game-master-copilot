@@ -99,7 +99,7 @@ namespace DMCopilot.Backend.Data
             return response.Resource;
         }
 
-        public async Task<bool> DeleteTenantAsync(Guid id)
+        public async Task<Boolean> DeleteTenantAsync(Guid id)
         {
             try
             {

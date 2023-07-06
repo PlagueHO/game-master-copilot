@@ -11,6 +11,6 @@ namespace DMCopilot.Backend.Data
         Task<IEnumerable<Account>> GetAccountsAsync();
         Task<Account> CreateAccountAsync(Account account);
         Task<Account> UpdateAccountAsync(String id, Account account);
-        Task<bool> DeleteAccountAsync(String ir);
+        Task<Boolean> DeleteAccountAsync(String ir);
     }
 }

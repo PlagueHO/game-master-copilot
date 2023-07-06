@@ -15,6 +15,6 @@ namespace DMCopilot.Backend.Data
         Task<IEnumerable<Tenant>> GetTenantsByOwnerEmailAsync(EmailAddress ownerEmail);
         Task<Tenant> CreateTenantAsync(Tenant tenant);
         Task<Tenant> UpdateTenantAsync(Guid id, Tenant tenant);
-        Task<bool> DeleteTenantAsync(Guid id);
+        Task<Boolean> DeleteTenantAsync(Guid id);
     }
 }

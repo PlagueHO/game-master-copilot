@@ -6,7 +6,7 @@
 
 @inject ICharacterRepository characterRepository
 
-<h3>Characters</h3>
+<h4>Characters</h4>
 
 <Table FixedHeader FixedHeaderTableHeight="300px">
     <TableHeader>
@@ -17,7 +17,7 @@
             <TableHeaderCell>Race</TableHeaderCell>
         </TableRow>
     </TableHeader>
-    @if (IsCharactersLoaded())
+    @if (IsLoaded)
     {
         <TableBody>
             @foreach (var character in characters)
@@ -39,7 +39,7 @@
 
 @code {
     private IEnumerable<Character> characters;
-    private string characterDetails { get; set; } = "A hill dwarf merchant who runs a general store in Baldurs Gate.";
+    public Boolean IsLoaded => characters != null;
     
     protected override async Task OnInitializedAsync()
     {

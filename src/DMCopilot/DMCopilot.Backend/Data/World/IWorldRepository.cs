@@ -13,6 +13,6 @@ namespace DMCopilot.Backend.Data
         Task<IEnumerable<World>> GetWorldsByTenantAsync(Guid tenantId);
         Task<World> CreateWorldAsync(World world);
         Task<World> UpdateWorldAsync(Guid id, World world);
-        Task<bool> DeleteWorldAsync(Guid id);
+        Task<Boolean> DeleteWorldAsync(Guid id);
     }
 }

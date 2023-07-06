@@ -11,6 +11,6 @@ namespace DMCopilot.Backend.Data
         Task<IEnumerable<Character>> GetCharactersAsync();
         Task<Character> CreateCharacterAsync(Character character);
         Task<Character> UpdateCharacterAsync(Guid id, Character character);
-        Task<bool> DeleteCharacterAsync(Guid id);
+        Task<Boolean> DeleteCharacterAsync(Guid id);
     }
 }

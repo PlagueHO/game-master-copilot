@@ -74,7 +74,7 @@ namespace DMCopilot.Backend.Data
             return response.Resource;
         }
 
-        public async Task<bool> DeleteAccountAsync(String id)
+        public async Task<Boolean> DeleteAccountAsync(String id)
         {
             try
             {

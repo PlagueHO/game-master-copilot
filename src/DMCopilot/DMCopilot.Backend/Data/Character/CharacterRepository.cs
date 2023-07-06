@@ -66,7 +66,7 @@ namespace DMCopilot.Backend.Data
             return response.Resource;
         }
 
-        public async Task<bool> DeleteCharacterAsync(Guid id)
+        public async Task<Boolean> DeleteCharacterAsync(Guid id)
         {
             var existingCharacter = await GetCharacterAsync(id);
             if (existingCharacter == null)

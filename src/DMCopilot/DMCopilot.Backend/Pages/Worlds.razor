@@ -1,0 +1,59 @@
+@page "/worlds"
+
+@using DMCopilot.Backend.Services
+@using DMCopilot.Backend.Data
+@using DMCopilot.Backend.Models
+
+@inject IWorldRepository worldRepository
+
+<h4>Worlds</h4>
+
+<Table FixedHeader FixedHeaderTableHeight="300px">
+    <TableHeader>
+        <TableRow>
+            <TableHeaderCell>Name</TableHeaderCell>
+            <TableHeaderCell>Description</TableHeaderCell>
+        </TableRow>
+    </TableHeader>
+    @if (IsLoaded)
+    {
+        <TableBody>
+            @foreach (var world in worlds)
+            {
+                <TableRow @key="@world.Id">
+                    <TableRowHeader>@world.Name</TableRowHeader>
+                    <TableRowCell>@world.Description</TableRowCell>
+                </TableRow>
+            }
+        </TableBody>
+    }
+    else
+    {
+        <p><em>Loading...</em></p>
+    }
+</Table>
+
+@code {
+    [CascadingParameter]
+    public Account? Account { get; set; }
+
+    [CascadingParameter]
+    public Tenant? Tenant { get; set; }
+
+    private IEnumerable<World>? worlds;
+    public Boolean IsLoaded => worlds != null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetWorlds();
+    }
+
+    private async Task GetWorlds()
+    {
+        // Get the worlds from the WorldRepository
+        if (Account != Account)
+        {
+            this.worlds = await worldRepository.GetWorldsByTenantAsync(Account.ActiveTenantId);
+        }
+    }
+}
