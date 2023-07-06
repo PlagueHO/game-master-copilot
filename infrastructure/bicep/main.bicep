@@ -56,28 +56,28 @@ var openAiModelDeployments = [
     modelName: 'text-davinci-003'
     version: '1'
     sku: 'Standard'
-    capacity: 50
+    capacity: 20
   }
   {
     name: 'gpt-35-turbo'
     modelName: 'gpt-35-turbo'
     version: '0613'
     sku: 'Standard'
-    capacity: 50
+    capacity: 20
   }
   {
     name: 'gpt-35-turbo-16k'
     modelName: 'gpt-35-turbo-16k'
     version: '0613'
     sku: 'Standard'
-    capacity: 50
+    capacity: 20
   }
   {
     name: 'text-embedding-ada-002'
     modelName: 'text-embedding-ada-002'
     version: '2'
     sku: 'Standard'
-    capacity: 50
+    capacity: 20
   }
 ]
 

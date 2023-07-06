@@ -43,9 +43,9 @@
     private IEnumerable<World>? worlds;
     public Boolean IsLoaded => worlds != null;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
-        await GetWorlds();
+            await GetWorlds();
     }
 
     private async Task GetWorlds()
