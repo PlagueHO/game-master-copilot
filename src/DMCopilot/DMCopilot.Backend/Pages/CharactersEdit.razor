@@ -1,5 +1,4 @@
-@page "/characters/{CharacterId}/edit"
-@page "/characters/new"
+@page "/characters/{CharacterId?}"
 
 @using DMCopilot.Backend.Services
 @using DMCopilot.Backend.Data
@@ -8,9 +7,9 @@
 @inject ISemanticKernelService semanticKernelService
 @inject ICharacterRepository characterRepository
 
-<h3>Character</h3>
+<h4>Character</h4>
 
-@if (_character == null)
+@if (CharacterId != null && _character == null)
 {
     <p><em>Loading...</em></p>
 }
@@ -24,23 +23,18 @@ else
 }
 
 @code {
-    [Parameter]
-    public Guid CharacterId { get; set; }
+        [Parameter]
+        public Guid? CharacterId { get; set; }
 
     private Character _character;
     private string _characterDetails { get; set; } = "A hill dwarf merchant who runs a general store in Baldurs Gate.";
 
-    protected override async Task OnInitializedAsync()
+    protected override async void OnParametersSet()
     {
-        if (IsNewCharacter())
+        if (CharacterId == null)
             _character = new Character(Guid.NewGuid());
         else
-            _character = await LoadCharacterAsync(CharacterId);
-    }
-
-    private Boolean IsNewCharacter()
-    {
-        return CharacterId == null;
+            _character = await LoadCharacterAsync((Guid) CharacterId);
     }
 
     private async Task<Character> LoadCharacterAsync(Guid characterId)
