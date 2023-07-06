@@ -8,13 +8,11 @@ namespace DMCopilot.Backend.Data
 {
     public interface IWorldRepository
     {
-        Task<Tenant> GetWorldAsync(Guid worldId);
-        Task<Tenant> GetWorldByNameAsync(string name);
-        Task<Tenant> GetTenantByOwnerEmailAsync(EmailAddress ownerEmail);
-        Task<IEnumerable<Tenant>> GetTenantsAsync();
-        Task<IEnumerable<Tenant>> GetTenantsByOwnerEmailAsync(EmailAddress ownerEmail);
-        Task<Tenant> CreateTenantAsync(Tenant tenant);
-        Task<Tenant> UpdateTenantAsync(Guid worldId, Tenant tenant);
-        Task<bool> DeleteTenantAsync(Guid worldId);
+        Task<World> GetWorldAsync(Guid id, Guid tenantId);
+        Task<World> GetWorldByNameAsync(Guid tenantId, string name);
+        Task<IEnumerable<World>> GetWorldsByTenantAsync(Guid tenantId);
+        Task<World> CreateWorldAsync(World world);
+        Task<World> UpdateWorldAsync(Guid id, World world);
+        Task<bool> DeleteWorldAsync(Guid id);
     }
 }

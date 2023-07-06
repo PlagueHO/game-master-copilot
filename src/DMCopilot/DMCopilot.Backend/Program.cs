@@ -92,6 +92,7 @@ internal class Program
         var repositories = new[] {
             new { RepositoryType = typeof(AccountRepository), RepositoryInterface = typeof(IAccountRepository), CollectionName = "accounts" },
             new { RepositoryType = typeof(TenantRepository), RepositoryInterface = typeof(ITenantRepository), CollectionName = "tenants" },
+            new { RepositoryType = typeof(WorldRepository), RepositoryInterface = typeof(IWorldRepository), CollectionName = "worlds" },
             new { RepositoryType = typeof(CharacterRepository), RepositoryInterface = typeof(ICharacterRepository), CollectionName = "characters" }
         };
 

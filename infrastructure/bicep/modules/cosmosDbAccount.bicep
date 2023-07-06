@@ -86,8 +86,8 @@ resource cosmosDbWorldsContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatab
       id: 'worlds'
       partitionKey: {
         paths: [
-          '/id'
           '/tenantid'
+          '/id'
         ]
         kind: 'MultiHash'
         version: 2
@@ -104,9 +104,9 @@ resource cosmosDbCampaignsContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDa
       id: 'campaigns'
       partitionKey: {
         paths: [
-          '/id'
+          '/tenantid'
           '/worldid'
-          '/campaignid'
+          '/id'
         ]
         kind: 'MultiHash'
         version: 2
@@ -123,9 +123,9 @@ resource cosmosDbCharactersContainer 'Microsoft.DocumentDB/databaseAccounts/sqlD
       id: 'characters'
       partitionKey: {
         paths: [
+          '/tenantid'
+          '/campaignid'
           '/id'
-          '/worldid'
-          '/characterid'
         ]
         kind: 'MultiHash'
         version: 2
