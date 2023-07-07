@@ -1,21 +1,34 @@
 ﻿namespace DMCopilot.Backend.Models.Configuration;
 
-public enum SemanticKernelConfigurationServiceType
-{
-    AzureOpenAIServiceTextCompletion,
-    AzureOpenAIServiceChatCompletion,
-    AzureOpenAIServiceEmbedding
-}
 public class SemanticKernelConfiguration
 {
-    public string? PluginsDirectory { get; set; }
-    public List<SemanticKernelConfigurationService>? Services { get; set; }
+    public String? PluginsDirectory { get; set; }
+    public List<SemanticKernelAzureOpenAiTextCompletionServices>? AzureOpenAiTextCompletionServices { get; set; }
+    public List<SemanticKernelAzureOpenAiChatCompletionServices>? AzureOpenAiChatCompletionServices { get; set; }
+    public List<SemanticKernelAzureOpenAiTextEmbeddingGenerationServices>? AzureOpenAiTextEmbeddingGenerationServices { get; set; }
 }
 
-public class SemanticKernelConfigurationService
+public class SemanticKernelAzureOpenAiTextCompletionServices
 {
-    public required string Id { get; set; }
-    public SemanticKernelConfigurationServiceType Type { get; set; }
-    public required string Endpoint { get; set; }
-    public required string Deployment { get; set; }
+    public String? Id { get; set; }    
+    public String? Deployment { get; set; }
+    public String? Endpoint { get; set; }
+    public Boolean SetAsDefault { get; set; } = false;
+}
+
+public class SemanticKernelAzureOpenAiChatCompletionServices
+{
+    public String? Id { get; set; }
+    public String? Deployment { get; set; }
+    public String? Endpoint { get; set; }
+    public Boolean AlsoAsTextCompletion { get; set; } = false;
+    public Boolean SetAsDefault { get; set; } = false;
+}
+
+public class SemanticKernelAzureOpenAiTextEmbeddingGenerationServices
+{
+    public String? Id { get; set; }
+    public String? Deployment { get; set; }
+    public String? Endpoint { get; set; }
+    public Boolean SetAsDefault { get; set; } = false;
 }

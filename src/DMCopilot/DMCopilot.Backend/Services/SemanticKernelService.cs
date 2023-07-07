@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Protocols;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Orchestration;
 using Microsoft.SemanticKernel.SkillDefinition;
+using System.Configuration;
 
 namespace DMCopilot.Backend.Services
 {
@@ -26,40 +27,10 @@ namespace DMCopilot.Backend.Services
 
             var semanticKernelBuilder = new KernelBuilder();
 
-            var serviceActions = new Dictionary<SemanticKernelConfigurationServiceType, Action<SemanticKernelConfigurationService>>()
-            {
-                { SemanticKernelConfigurationServiceType.AzureOpenAIServiceTextCompletion, (service) => semanticKernelBuilder.WithAzureTextCompletionService(service.Deployment,
-                                                                                                                                    service.Endpoint,
-                                                                                                                                    azureCredential,
-                                                                                                                                    service.Id) },
-                { SemanticKernelConfigurationServiceType.AzureOpenAIServiceChatCompletion, (service) => semanticKernelBuilder.WithAzureTextCompletionService(service.Deployment,
-                                                                                                                                    service.Endpoint,
-                                                                                                                                    azureCredential,
-                                                                                                                                    service.Id) },
-                { SemanticKernelConfigurationServiceType.AzureOpenAIServiceEmbedding, (service) => semanticKernelBuilder.WithAzureTextEmbeddingGenerationService(service.Deployment,
-                                                                                                                                         service.Endpoint,
-                                                                                                                                         azureCredential,
-                                                                                                                                         service.Id) }
-            };
-
-            if (semanticKernelConfiguration.Services == null)
-            {
-                throw new ArgumentException("Semantic Kernel configuration services are null");
-            }
-
-            foreach (var service in semanticKernelConfiguration.Services)
-            {
-                _logger.LogInformation($"Adding service {service.Id} using deployment {service.Deployment} on endpoint {service.Endpoint} to Semantic Kernel");
-
-                if (serviceActions.TryGetValue(service.Type, out var action))
-                {
-                    action(service);
-                }
-                else
-                {
-                    throw new ArgumentException("Invalid Semantic Kernel service type");
-                }
-            }
+            // Load the generative AI services that will be available to Semantic Kernel
+            LoadAzureOpenAiTextCompletionServices(semanticKernelBuilder);
+            LoadAzureOpenAiChatCompletionServices(semanticKernelBuilder);
+            LoadAzureOpenAiTextEmbeddingGenerationServices(semanticKernelBuilder);
 
             _semanticKernel = semanticKernelBuilder.Build();
 
@@ -77,6 +48,79 @@ namespace DMCopilot.Backend.Services
             }
 
             _functions = new Dictionary<string, IDictionary<string, Microsoft.SemanticKernel.SkillDefinition.ISKFunction>>();
+        }
+
+        public void LoadAzureOpenAiTextCompletionServices(KernelBuilder semanticKernelBuilder)
+        {
+            if (_semanticKernelConfiguration.AzureOpenAiTextCompletionServices == null)
+                throw new ConfigurationErrorsException("No Azure OpenAI Text Completion services configured");
+
+            foreach (SemanticKernelAzureOpenAiTextCompletionServices service in _semanticKernelConfiguration.AzureOpenAiTextCompletionServices)
+            {
+                if (service.Deployment == null)
+                    throw new ConfigurationErrorsException("Deployment setting for Azure OpenAI Text Completion service is empty");
+
+                if (service.Endpoint == null)
+                    throw new ConfigurationErrorsException("Deployment setting for Azure OpenAI Text Completion service is empty");
+
+                _logger.LogInformation($"Adding Azure OpenAI Text Completion service '{service.Id}' using deployment '{service.Deployment}' on endpoint '{service.Endpoint}' to Semantic Kernel");
+
+                semanticKernelBuilder.WithAzureTextCompletionService(
+                   deploymentName: service.Deployment,
+                   endpoint: service.Endpoint,
+                   credentials: _azureCredential,
+                   serviceId: service.Id,
+                   setAsDefault: service.SetAsDefault);
+            }
+        }
+
+        public void LoadAzureOpenAiChatCompletionServices(KernelBuilder semanticKernelBuilder)
+        {
+            if (_semanticKernelConfiguration.AzureOpenAiChatCompletionServices == null)
+                throw new ConfigurationErrorsException("No Azure OpenAI Chat Completion services configured");
+
+            foreach (SemanticKernelAzureOpenAiChatCompletionServices service in _semanticKernelConfiguration.AzureOpenAiChatCompletionServices)
+            {
+                if (service.Deployment == null)
+                    throw new ConfigurationErrorsException("Deployment setting for Azure OpenAI Chat Completion service is empty");
+
+                if (service.Endpoint == null)
+                    throw new ConfigurationErrorsException("Deployment setting for Azure OpenAI Chat Completion service is empty");
+
+                _logger.LogInformation($"Adding Azure OpenAI Chat Completion service '{service.Id}' using deployment '{service.Deployment}' on endpoint '{service.Endpoint}' to Semantic Kernel");
+
+                semanticKernelBuilder.WithAzureChatCompletionService(
+                   deploymentName: service.Deployment,
+                   endpoint: service.Endpoint,
+                   credentials: _azureCredential,
+                   serviceId: service.Id,
+                   setAsDefault: service.SetAsDefault,
+                   alsoAsTextCompletion: service.AlsoAsTextCompletion);
+            }
+        }
+
+        public void LoadAzureOpenAiTextEmbeddingGenerationServices(KernelBuilder semanticKernelBuilder)
+        {
+            if (_semanticKernelConfiguration.AzureOpenAiTextEmbeddingGenerationServices == null)
+                throw new ConfigurationErrorsException("No Azure OpenAI Text Embedding Generation services configured");
+
+            foreach (SemanticKernelAzureOpenAiTextEmbeddingGenerationServices service in _semanticKernelConfiguration.AzureOpenAiTextEmbeddingGenerationServices)
+            {
+                if (service.Deployment == null)
+                    throw new ConfigurationErrorsException("Deployment setting for Azure OpenAI Text Embedding Generation service is empty");
+
+                if (service.Endpoint == null)
+                    throw new ConfigurationErrorsException("Deployment setting for Azure OpenAI Text Embedding Generation service is empty");
+
+                _logger.LogInformation($"Adding Azure OpenAI Text Embedding Generation service '{service.Id}' using deployment '{service.Deployment}' on endpoint '{service.Endpoint}' to Semantic Kernel");
+
+                semanticKernelBuilder.WithAzureTextEmbeddingGenerationService(
+                   deploymentName: service.Deployment,
+                   endpoint: service.Endpoint,
+                   credential: _azureCredential,
+                   serviceId: service.Id,
+                   setAsDefault: service.SetAsDefault);
+            }
         }
 
         public void LoadPlugin(string name)

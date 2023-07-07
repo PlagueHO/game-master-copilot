@@ -99,52 +99,56 @@ var appSettings = [
     value: 'Plugins'
   }
   {
-    name: 'SemanticKernel__Services__0__Id'
+    name: 'SemanticKernel__AzureOpenAiTextCompletionServices__0__Id'
     value: 'TextCompletion'
   }
   {
-    name: 'SemanticKernel__Services__0__Type'
-    value: 'AzureOpenAIServiceTextCompletion'
-  }
-  {
-    name: 'SemanticKernel__Services__0__Endpoint'
+    name: 'SemanticKernel__AzureOpenAiTextCompletionServices__0__Endpoint'
     value: azureOpenAiEndpoint
   }
   {
-    name: 'SemanticKernel__Services__0__Deployment'
+    name: 'SemanticKernel__AzureOpenAiTextCompletionServices__0__Deployment'
     value: azureOpenAiDeploymentText
   }
   {
-    name: 'SemanticKernel__Services__1__Id'
-    value: 'TextCompletion'
+    name: 'SemanticKernel__AzureOpenAiTextCompletionServices__0__SetAsDefault'
+    value: true
   }
   {
-    name: 'SemanticKernel__Services__1__Type'
-    value: 'AzureOpenAIServiceChatCompletion'
+    name: 'SemanticKernel__AzureOpenAiChatCompletionServices__1__Id'
+    value: 'ChatCompletion'
   }
   {
-    name: 'SemanticKernel__Services__1__Endpoint'
+    name: 'SemanticKernel__AzureOpenAiChatCompletionServices__1__Endpoint'
     value: azureOpenAiEndpoint
   }
   {
-    name: 'SemanticKernel__Services__1__Deployment'
+    name: 'SemanticKernel__AzureOpenAiChatCompletionServices__1__Deployment'
     value: azureOpenAiDeploymentChat
   }
   {
-    name: 'SemanticKernel__Services__2__Id'
-    value: 'TextCompletion'
+    name: 'SemanticKernel__AzureOpenAiChatCompletionServices__1__SetAsDefault'
+    value: true
   }
   {
-    name: 'SemanticKernel__Services__2__Type'
-    value: 'AzureOpenAIServiceChatCompletion'
+    name: 'SemanticKernel__AzureOpenAiChatCompletionServices__1__AlsoAsTextCompletion'
+    value: true
   }
   {
-    name: 'SemanticKernel__Services__2__Endpoint'
+    name: 'SemanticKernel__AzureOpenAiTextEmbeddingGenerationServices__2__Id'
+    value: 'Embeddings'
+  }
+  {
+    name: 'SemanticKernel__AzureOpenAiTextEmbeddingGenerationServices__2__Endpoint'
     value: azureOpenAiEndpoint
   }
   {
-    name: 'SemanticKernel__Services__2__Deployment'
+    name: 'SemanticKernel__AzureOpenAiTextEmbeddingGenerationServices__2__Deployment'
     value: azureOpenAiDeploymentTextEmbedding
+  }
+  {
+    name: 'SemanticKernel__AzureOpenAiTextEmbeddingGenerationServices__2__SetAsDefault'
+    value: true
   }
   {
     name: 'CosmosDb__EndpointUri'

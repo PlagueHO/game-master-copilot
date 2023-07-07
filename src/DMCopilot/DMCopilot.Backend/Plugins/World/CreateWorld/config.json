@@ -1,0 +1,21 @@
+{
+    "schema": 1,
+    "description": "Generate a world for Dugneons and Dragons 5th edition based on provide world information",
+    "type": "completion",
+    "completion": {
+        "max_tokens": 2000,
+        "temperature": 0.75,
+        "top_p": 0.0,
+        "presence_penalty": 0.0,
+        "frequency_penalty": 0.0
+    },
+    "input": {
+        "parameters": [
+            {
+                "name": "input",
+                "description": "The details of the world to create.",
+                "defaultValue": "A fantasy realm called on a world called Toril with a range of climates and enviornments with a long rich history."
+            }
+        ]
+    }
+}

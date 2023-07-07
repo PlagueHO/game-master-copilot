@@ -23,23 +23,27 @@ else
 }
 
 @code {
-        [Parameter]
-        public Guid? CharacterId { get; set; }
+    [CascadingParameter]
+    public Account? Account { get; set; }
+
+    [CascadingParameter]
+    public Tenant? Tenant { get; set; }
+
+    [Parameter]
+    public Guid? CharacterId { get; set; }
 
     private Character _character;
     private string _characterDetails { get; set; } = "A hill dwarf merchant who runs a general store in Baldurs Gate.";
 
     protected override async void OnParametersSet()
     {
-        if (CharacterId == null)
-            _character = new Character(Guid.NewGuid());
-        else
-            _character = await LoadCharacterAsync((Guid) CharacterId);
-    }
-
-    private async Task<Character> LoadCharacterAsync(Guid characterId)
-    {
-        return await characterRepository.GetCharacterAsync(characterId);
+        if (Tenant != null)
+        {
+            if (CharacterId == null)
+                _character = new Character(Guid.NewGuid());
+            else
+                _character = await characterRepository.GetCharacterAsync((Guid) CharacterId);
+        }
     }
 
     private async Task CreateCharacter()

@@ -34,6 +34,18 @@ namespace DMCopilot.Backend.Models
         public String? Description { get; set; }
 
         /// <summary>
+        /// Gets or sets the history of the world.
+        /// </summary>
+        [JsonProperty(PropertyName = "history")]
+        public String? History { get; set; }
+
+        /// <summary>
+        /// Gets or sets the georgraphy of the world.
+        /// </summary>
+        [JsonProperty(PropertyName = "geography")]
+        public String? Geography { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="World"/> class.
         /// </summary>
         public World(Guid id, Guid tenantId, String name, String? description = null)

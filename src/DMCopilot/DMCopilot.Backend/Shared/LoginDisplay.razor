@@ -8,7 +8,6 @@
         <Bar Breakpoint="Breakpoint.Desktop"
              Background="Background.Light"
              ThemeContrast="ThemeContrast.Light">
-
             <BarEnd>
                 <BarDropdown>
                     @if (Account != null && Tenant != null)
@@ -25,15 +24,19 @@
                     }
                 </BarDropdown>
                 <BarItem>
-                    <BarItem>
-                        <Button Link="MicrosoftIdentity/Account/SignOut" Color="Color.Secondary">Log out</Button>
-                    </BarItem>
+                    <Button Link="MicrosoftIdentity/Account/SignOut" Color="Color.Secondary">Log out</Button>
                 </BarItem>
             </BarEnd>
         </Bar>
     </Authorized>
     <NotAuthorized>
-        <a href="MicrosoftIdentity/Account/SignIn">Log in</a>
+        <Bar Breakpoint="Breakpoint.Desktop"
+             Background="Background.Light"
+             ThemeContrast="ThemeContrast.Light">
+            <BarItem>
+                <Button Link="MicrosoftIdentity/Account/SignIn" Color="Color.Secondary">Log in</Button>
+            </BarItem>
+        </Bar>
     </NotAuthorized>
 </AuthorizeView>
 

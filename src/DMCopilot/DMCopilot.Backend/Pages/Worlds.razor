@@ -15,7 +15,7 @@
             <TableHeaderCell>Description</TableHeaderCell>
         </TableRow>
     </TableHeader>
-    @if (IsLoaded)
+    @if (IsWorldsLoaded)
     {
         <TableBody>
             @foreach (var world in worlds)
@@ -40,12 +40,12 @@
     [CascadingParameter]
     public Tenant? Tenant { get; set; }
 
+    public Boolean IsWorldsLoaded => worlds != null;
     private IEnumerable<World>? worlds;
-    public Boolean IsLoaded => worlds != null;
 
     protected override async Task OnParametersSetAsync()
     {
-            await GetWorlds();
+        await GetWorlds();
     }
 
     private async Task GetWorlds()
