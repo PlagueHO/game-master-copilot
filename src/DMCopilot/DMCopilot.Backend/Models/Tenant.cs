@@ -37,20 +37,20 @@ namespace DMCopilot.Backend.Models
         public String Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the email of the owner of the tenant.
+        /// Gets or sets the account of the owner of the tenant. This is the email address of the owner.
         /// </summary>
-        [JsonProperty(PropertyName = "owneremail")]
-        public String OwnerEmail { get; set; }
+        [JsonProperty(PropertyName = "owneraccount")]
+        public String OwnerAccount { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Tenant"/> class.
         /// </summary>
-        public Tenant(Guid id, String name, String ownerEmail, TenantType type = TenantType.Individual)
+        public Tenant(Guid id, String name, String ownerAccount, TenantType type = TenantType.Individual)
         {
             Id = id;
             Type = type;
             Name = name;
-            OwnerEmail = ownerEmail;
+            OwnerAccount = ownerAccount;
         }
     }
 }

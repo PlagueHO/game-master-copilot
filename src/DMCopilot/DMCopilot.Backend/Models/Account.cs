@@ -64,13 +64,14 @@ namespace DMCopilot.Backend.Models
     {
         Owner,
         Admin,
-        User
+        Contributor,
+        Reader
     }
 
+    /// <summary>
+    /// Represents the tenants that the account has access to and the role they have in the tenant.
+    /// </summary>
     public class AccountTenantRole {
-        /// <summary>
-        /// A role of an account has in a tenant.
-        /// </summary>
         [JsonProperty(PropertyName = "tenantid")]
         public Guid TenantId { get; set; }
 

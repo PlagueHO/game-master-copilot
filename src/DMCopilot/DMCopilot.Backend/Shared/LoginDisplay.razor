@@ -5,36 +5,32 @@
 
 <AuthorizeView>
     <Authorized>
-        <Dropdown>
-        @if (Account != null && Tenant != null)
-        {
-            <DropdownToggle Color="Color.Primary">
-                @Tenant.Type: @Tenant.Name
-            </DropdownToggle>
-            <DropdownMenu>
-                <DropdownHeader>Tenants</DropdownHeader>
-                @foreach (var tenantRole in Account.TenantRoles)
-                {
-                    if (Tenant.Id == tenantRole.TenantId)
+        <Bar Breakpoint="Breakpoint.Desktop"
+             Background="Background.Light"
+             ThemeContrast="ThemeContrast.Light">
+
+            <BarEnd>
+                <BarDropdown>
+                    @if (Account != null && Tenant != null)
                     {
-                        <DropdownItem>@tenantRole.Type: @tenantRole.Name (@tenantRole.Role)</DropdownItem>
+                        <BarDropdownToggle Color="Color.Primary">
+                            @Tenant.Name (@Tenant.Type)
+                        </BarDropdownToggle>
+                        <BarDropdownMenu>
+                            @foreach (var tenantRole in Account.TenantRoles)
+                            {
+                                <BarDropdownItem Active=@(Tenant.Id == tenantRole.TenantId)>@tenantRole.Name (@tenantRole.Type)</BarDropdownItem>
+                            }
+                        </BarDropdownMenu>
                     }
-                    else
-                    {
-                        <DropdownItem>@tenantRole.Type: @tenantRole.Name (@tenantRole.Role)</DropdownItem>
-                    }
-                }
-                <DropdownDivider />
-                <DropdownItem href="MicrosoftIdentity/Account/SignOut">Log out</DropdownItem>
-            </DropdownMenu>
-        }
-        else
-        {
-            <DropdownMenu>
-                <DropdownItem href="MicrosoftIdentity/Account/SignOut">Log out</DropdownItem>
-            </DropdownMenu>
-        }
-        </Dropdown>
+                </BarDropdown>
+                <BarItem>
+                    <BarItem>
+                        <Button Link="MicrosoftIdentity/Account/SignOut" Color="Color.Secondary">Log out</Button>
+                    </BarItem>
+                </BarItem>
+            </BarEnd>
+        </Bar>
     </Authorized>
     <NotAuthorized>
         <a href="MicrosoftIdentity/Account/SignIn">Log in</a>
