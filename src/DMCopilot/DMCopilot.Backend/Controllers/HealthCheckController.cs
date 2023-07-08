@@ -1,4 +1,4 @@
-﻿using DMCopilot.Backend.Services;
+﻿using DMCopilot.Shared.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Cosmos;

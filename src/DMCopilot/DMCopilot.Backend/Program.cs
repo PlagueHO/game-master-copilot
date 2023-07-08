@@ -11,10 +11,10 @@ using Microsoft.Identity.Web.UI;
 using Blazorise;
 using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
-using DMCopilot.Backend.Data;
-using DMCopilot.Backend.Services;
-using DMCopilot.Backend.Models.Configuration;
+using DMCopilot.Shared.Data;
+using DMCopilot.Shared.Services;
 using DMCopilot.Backend.Controllers;
+using DMCopilot.Shared.Configuration;
 
 internal class Program
 {
@@ -40,7 +40,7 @@ internal class Program
         builder.Services.AddLogging(loggingBuilder =>
         {
             loggingBuilder.AddConsole();
-            loggingBuilder.AddApplicationInsights();
+            loggingBuilder.AddApplicationInsights(builder.Configuration["ApplicationInsights:ConnectionString"]);
         });
 
         builder.Services.AddAuthorization(options =>
