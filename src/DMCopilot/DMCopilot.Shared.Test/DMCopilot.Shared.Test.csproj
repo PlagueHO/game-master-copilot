@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
-    <RootNamespace>DMCopilot.Backend.Test</RootNamespace>
+    <RootNamespace>DMCopilot.Shared.Test</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DMCopilot.Backend\DMCopilot.Backend.csproj" />
+    <ProjectReference Include="..\DMCopilot.Shared\DMCopilot.Shared.csproj" />
   </ItemGroup>
 
 </Project>

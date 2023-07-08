@@ -1,7 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using DMCopilot.Shared.Data;
+﻿using DMCopilot.Shared.Types;
 
-namespace DMCopilot.Backend.Test.Data.Character
+namespace DMCopilot.Shared.Test.Types
 {
     [TestClass]
     public class WeightTests
@@ -46,7 +45,7 @@ namespace DMCopilot.Backend.Test.Data.Character
             var actual = weight.Value;
 
             // Assert
-            Assert.AreEqual(expected, actual,0.0001);
+            Assert.AreEqual(expected, actual, 0.0001);
         }
 
         [TestMethod]

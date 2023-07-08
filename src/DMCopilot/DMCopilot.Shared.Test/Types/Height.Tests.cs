@@ -1,7 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using DMCopilot.Shared.Data;
+﻿using DMCopilot.Shared.Types;
 
-namespace DMCopilot.Test.Data.Character
+namespace DMCopilot.Shared.Test.Types
 {
     [TestClass]
     public class HeightTests
