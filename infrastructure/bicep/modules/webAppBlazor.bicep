@@ -5,10 +5,7 @@ param keyVaultName string
 param cosmosDbAccountName string
 param appInsightsInstrumentationKey string
 param appInsightsConnectionString string
-param azureOpenAiEndpoint string
-param azureOpenAiDeploymentText string
-param azureOpenAiDeploymentChat string
-param azureOpenAiDeploymentTextEmbedding string
+param azureOpenAiWebConfiguration array
 param azureAdInstance string
 param azureAdDomain string
 @secure()
@@ -29,7 +26,7 @@ resource keyVaultAzureAdClientSecret 'Microsoft.KeyVault/vaults/secrets@2023-02-
   parent: keyVault
 }
 
-var appSettings = [
+var basicConfiguration = [
   {
     name: 'AzureAd__Instance'
     value: azureAdInstance
@@ -99,58 +96,6 @@ var appSettings = [
     value: 'Plugins'
   }
   {
-    name: 'SemanticKernel__AzureOpenAiTextCompletionServices__0__Id'
-    value: 'TextCompletion'
-  }
-  {
-    name: 'SemanticKernel__AzureOpenAiTextCompletionServices__0__Endpoint'
-    value: azureOpenAiEndpoint
-  }
-  {
-    name: 'SemanticKernel__AzureOpenAiTextCompletionServices__0__Deployment'
-    value: azureOpenAiDeploymentText
-  }
-  {
-    name: 'SemanticKernel__AzureOpenAiTextCompletionServices__0__SetAsDefault'
-    value: true
-  }
-  {
-    name: 'SemanticKernel__AzureOpenAiChatCompletionServices__1__Id'
-    value: 'ChatCompletion'
-  }
-  {
-    name: 'SemanticKernel__AzureOpenAiChatCompletionServices__1__Endpoint'
-    value: azureOpenAiEndpoint
-  }
-  {
-    name: 'SemanticKernel__AzureOpenAiChatCompletionServices__1__Deployment'
-    value: azureOpenAiDeploymentChat
-  }
-  {
-    name: 'SemanticKernel__AzureOpenAiChatCompletionServices__1__SetAsDefault'
-    value: true
-  }
-  {
-    name: 'SemanticKernel__AzureOpenAiChatCompletionServices__1__AlsoAsTextCompletion'
-    value: true
-  }
-  {
-    name: 'SemanticKernel__AzureOpenAiTextEmbeddingGenerationServices__2__Id'
-    value: 'Embeddings'
-  }
-  {
-    name: 'SemanticKernel__AzureOpenAiTextEmbeddingGenerationServices__2__Endpoint'
-    value: azureOpenAiEndpoint
-  }
-  {
-    name: 'SemanticKernel__AzureOpenAiTextEmbeddingGenerationServices__2__Deployment'
-    value: azureOpenAiDeploymentTextEmbedding
-  }
-  {
-    name: 'SemanticKernel__AzureOpenAiTextEmbeddingGenerationServices__2__SetAsDefault'
-    value: true
-  }
-  {
     name: 'CosmosDb__EndpointUri'
     value: cosmosDbAccount.properties.documentEndpoint
   }
@@ -159,6 +104,8 @@ var appSettings = [
     value: 'dmcopilot'
   }
 ]
+
+var appSettings = union(basicConfiguration, azureOpenAiWebConfiguration)
 
 var connectionStrings = [
   {

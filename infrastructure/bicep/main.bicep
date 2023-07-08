@@ -52,13 +52,6 @@ param azureAdClientSecret string
 
 var openAiModelDeployments = [
   {
-    name: 'text-davinci-003'
-    modelName: 'text-davinci-003'
-    version: '1'
-    sku: 'Standard'
-    capacity: 20
-  }
-  {
     name: 'gpt-35-turbo'
     modelName: 'gpt-35-turbo'
     version: '0613'
@@ -78,6 +71,65 @@ var openAiModelDeployments = [
     version: '2'
     sku: 'Standard'
     capacity: 20
+  }
+]
+
+var openAiWebConfigration = [
+  {
+    name: 'SemanticKernel__AzureOpenAiTextCompletionServices__0__Id'
+    value: 'ChatCompletion'
+  }
+  {
+    name: 'SemanticKernel__AzureOpenAiTextCompletionServices__0__Endpoint'
+    value: openAiService.outputs.openAiServiceEndpoint
+  }
+  {
+    name: 'SemanticKernel__AzureOpenAiTextCompletionServices__0__Deployment'
+    value: openAiModelDeployments[0].name
+  }
+  {
+    name: 'SemanticKernel__AzureOpenAiTextCompletionServices__0__SetAsDefault'
+    value: true
+  }
+  {
+    name: 'SemanticKernel__AzureOpenAiChatCompletionServices__0__AlsoAsTextCompletion'
+    value: true
+  }
+  {
+    name: 'SemanticKernel__AzureOpenAiChatCompletionServices__1__Id'
+    value: 'ChatCompletion'
+  }
+  {
+    name: 'SemanticKernel__AzureOpenAiChatCompletionServices__1__Endpoint'
+    value: openAiService.outputs.openAiServiceEndpoint
+  }
+  {
+    name: 'SemanticKernel__AzureOpenAiChatCompletionServices__1__Deployment'
+    value: openAiModelDeployments[1].name
+  }
+  {
+    name: 'SemanticKernel__AzureOpenAiChatCompletionServices__1__SetAsDefault'
+    value: false
+  }
+  {
+    name: 'SemanticKernel__AzureOpenAiChatCompletionServices__1__AlsoAsTextCompletion'
+    value: true
+  }
+  {
+    name: 'SemanticKernel__AzureOpenAiTextEmbeddingGenerationServices__2__Id'
+    value: 'Embeddings'
+  }
+  {
+    name: 'SemanticKernel__AzureOpenAiTextEmbeddingGenerationServices__2__Endpoint'
+    value: openAiService.outputs.openAiServiceEndpoint
+  }
+  {
+    name: 'SemanticKernel__AzureOpenAiTextEmbeddingGenerationServices__2__Deployment'
+    value: openAiModelDeployments[2].name
+  }
+  {
+    name: 'SemanticKernel__AzureOpenAiTextEmbeddingGenerationServices__2__SetAsDefault'
+    value: true
   }
 ]
 
@@ -177,10 +229,7 @@ module webAppBlazor './modules/webAppBlazor.bicep' = {
     cosmosDbAccountName: cosmosDbAccount.outputs.cosmosDbAccountName
     appInsightsInstrumentationKey: monitoring.outputs.applicationInsightsInstrumentationKey
     appInsightsConnectionString: monitoring.outputs.applicationInsightsConnectionString
-    azureOpenAiEndpoint: openAiService.outputs.openAiServiceEndpoint
-    azureOpenAiDeploymentText: openAiModelDeployments[0].name
-    azureOpenAiDeploymentChat: openAiModelDeployments[1].name
-    azureOpenAiDeploymentTextEmbedding: openAiModelDeployments[2].name
+    azureOpenAiWebConfiguration: openAiWebConfigration
     azureAdInstance: azureAdInstance
     azureAdDomain: azureAdDomain
     azureAdTenantId: azureAdTenantId
