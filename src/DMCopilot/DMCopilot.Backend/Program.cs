@@ -40,7 +40,7 @@ internal class Program
         builder.Services.AddLogging(loggingBuilder =>
         {
             loggingBuilder.AddConsole();
-            loggingBuilder.AddApplicationInsights(builder.Configuration["ApplicationInsights:ConnectionString"]);
+            loggingBuilder.AddApplicationInsights();
         });
 
         builder.Services.AddAuthorization(options =>
