@@ -16,7 +16,7 @@
         <CascadingValue Value="@Tenant">
             <main>
                 <div class="top-row px-4 auth">
-                            <LoginDisplay />
+                    <LoginDisplay />
                 </div>
 
                 <article class="content px-4">
@@ -30,11 +30,11 @@
 @code {
     [CascadingParameter]
     public Account? Account { get; set; }
-    
+
     [CascadingParameter]
     public Tenant? Tenant { get; set; }
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
         var context = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         Account = await AccessService.InitializeUsingContext(context);
