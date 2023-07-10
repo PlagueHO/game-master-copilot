@@ -4,7 +4,9 @@
 @using DMCopilot.Shared.Data
 @using DMCopilot.Shared.Models
 
+@inject ISemanticKernelService semanticKernelService
 @inject IWorldRepository worldRepository
+@inject NavigationManager navigationManager
 
 <h4>Worlds</h4>
 
@@ -13,9 +15,12 @@
         <TableRow>
             <TableHeaderCell>Name</TableHeaderCell>
             <TableHeaderCell>Description</TableHeaderCell>
+            <TableHeaderCell>History</TableHeaderCell>
+            <TableHeaderCell>Geography</TableHeaderCell>
+            <TableHeaderCell>Generation Method</TableHeaderCell>
         </TableRow>
     </TableHeader>
-    @if (IsWorldsLoaded)
+    @if (worlds != null)
     {
         <TableBody>
             @foreach (var world in worlds)
@@ -23,6 +28,9 @@
                 <TableRow @key="@world.Id">
                     <TableRowHeader>@world.Name</TableRowHeader>
                     <TableRowCell>@world.Description</TableRowCell>
+                    <TableRowCell>@world.History</TableRowCell>
+                    <TableRowCell>@world.Geography</TableRowCell>
+                    <TableRowCell>@world.GeneratedContent.Method</TableRowCell>
                 </TableRow>
             }
         </TableBody>
@@ -40,7 +48,6 @@
     [CascadingParameter]
     public Tenant? Tenant { get; set; }
 
-    public Boolean IsWorldsLoaded => worlds != null;
     private IEnumerable<World>? worlds;
 
     protected override async Task OnParametersSetAsync()
@@ -50,8 +57,7 @@
 
     private async Task GetWorlds()
     {
-        // Get the worlds from the WorldRepository
-        if (Account != Account)
+        if (Account != null)
         {
             this.worlds = await worldRepository.GetWorldsByTenantAsync(Account.ActiveTenantId);
         }

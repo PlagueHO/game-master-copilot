@@ -7,7 +7,7 @@ namespace DMCopilot.Shared.Models
     /// <summary>
     /// Represents a world in the application.
     /// </summary>
-    public class World
+    public class World : UniverseComponentBase
     {
         /// <summary>
         /// Gets or sets the unique identifier for the world.
@@ -40,10 +40,16 @@ namespace DMCopilot.Shared.Models
         public String? History { get; set; }
 
         /// <summary>
-        /// Gets or sets the georgraphy of the world.
+        /// Gets or sets the geography of the world.
         /// </summary>
         [JsonProperty(PropertyName = "geography")]
         public String? Geography { get; set; }
+
+        /// <summary>
+        /// Gets or sets a dictionary of other properties for the world.
+        /// </summary>
+        [JsonProperty(PropertyName = "properties")]
+        public Dictionary<String, String>? Properties { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="World"/> class.

@@ -10,17 +10,20 @@
              ThemeContrast="ThemeContrast.Light">
             <BarEnd>
                 <BarDropdown>
-                    @if (Account != null && Tenant != null)
+                    @if (Tenant != null)
                     {
                         <BarDropdownToggle Color="Color.Primary">
                             @Tenant.Name (@Tenant.Type)
                         </BarDropdownToggle>
-                        <BarDropdownMenu>
-                            @foreach (var tenantRole in Account.TenantRoles)
-                            {
-                                <BarDropdownItem Active=@(Tenant.Id == tenantRole.TenantId)>@tenantRole.Name (@tenantRole.Type)</BarDropdownItem>
-                            }
-                        </BarDropdownMenu>
+                        if (Account != null)
+                        {
+                            <BarDropdownMenu>
+                                @foreach (var tenantRole in Account.TenantRoles)
+                                {
+                                    <BarDropdownItem Active=@(Tenant.Id == tenantRole.TenantId)>@tenantRole.Name (@tenantRole.Type)</BarDropdownItem>
+                                }
+                            </BarDropdownMenu>
+                        }
                     }
                 </BarDropdown>
                 <BarItem>

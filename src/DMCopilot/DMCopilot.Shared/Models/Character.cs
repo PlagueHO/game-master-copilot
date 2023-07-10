@@ -6,7 +6,7 @@ namespace DMCopilot.Shared.Models
     /// <summary>
     /// Class to represent a character in the game.
     /// </summary>
-    public class Character
+    public class Character : UniverseComponentBase
     {
         /// <summary>
         /// The unique identifier for the character.

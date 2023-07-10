@@ -37,7 +37,8 @@
     protected override async Task OnParametersSetAsync()
     {
         var context = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        Account = await AccessService.InitializeUsingContext(context);
+        await AccessService.InitializeUsingContext(context);
+        Account = AccessService.Account;
         Tenant = AccessService.Tenant;
     }
 }
