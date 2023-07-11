@@ -1,6 +1,3 @@
-@page "/world/{WorldId?}"
-@page "/world/new"
-
 @using DMCopilot.Shared.Services
 @using DMCopilot.Shared.Data
 @using DMCopilot.Shared.Models
@@ -27,6 +24,7 @@
         </Button>
     </CardBody>
 </Card>
+
 @if (World != null)
 {
     <Card>
@@ -71,15 +69,14 @@
 
     public World? World;
     public String WorldDetails { get; set; } = "A fantasy realm called on a world called Toril with a range of climates and environments with a long rich history.";
-    public Boolean IsNew => navigationManager.Uri.EndsWith("/world/new");
     protected override async void OnParametersSet()
     {
         if (Tenant != null && Account != null)
         {
-            if (IsNew)
+            if (navigationManager.Uri.EndsWith("/world/new"))
                 World = new World(Guid.NewGuid(), Tenant.Id, "New World", "A new world!");
-            else
-                World = await worldRepository.GetWorldAsync(WorldId, Tenant.Id);            
+            else if (WorldId != null)
+                World = await worldRepository.GetWorldAsync(WorldId, Tenant.Id);  
         }
     }
 

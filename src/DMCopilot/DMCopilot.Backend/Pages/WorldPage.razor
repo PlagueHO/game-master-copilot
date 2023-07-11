@@ -1,0 +1,40 @@
+@page "/world"
+@page "/world/new"
+@page "/world/{WorldId:guid}"
+
+@using DMCopilot.Shared.Services
+@using DMCopilot.Shared.Data
+@using DMCopilot.Shared.Models
+
+@inject IWorldRepository worldRepository
+@inject NavigationManager navigationManager
+
+<CascadingValue Value="@Account">
+    <CascadingValue Value="@Tenant">
+        @if (WorldId == null)
+        {
+            <WorldList />
+        }
+        else
+        {
+            <WorldEdit WorldId="@WorldId" />
+        }
+    </CascadingValue>
+</CascadingValue>
+
+@code {
+    [CascadingParameter]
+    public Account? Account { get; set; }
+
+    [CascadingParameter]
+    public Tenant? Tenant { get; set; }
+
+    [Parameter]
+    public Guid WorldId { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        Console.WriteLine(navigationManager.ToBaseRelativePath(navigationManager.Uri));
+        await base.OnParametersSetAsync();
+    }
+}

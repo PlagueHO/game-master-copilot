@@ -1,6 +1,4 @@
-@page "/worlds"
-
-@using DMCopilot.Shared.Services
+﻿@using DMCopilot.Shared.Services
 @using DMCopilot.Shared.Data
 @using DMCopilot.Shared.Models
 
@@ -8,19 +6,27 @@
 @inject IWorldRepository worldRepository
 @inject NavigationManager navigationManager
 
-<h4>Worlds</h4>
+<Card Background="Background.Info" WhiteText>
+    <CardBody>
+        <CardTitle Size="3">
+            Your Worlds
+        </CardTitle>
+        <CardText>
+            Select one of the existing worlds or create a new one by clicking Create. Generating a new world can take a few seconds and requires just a few words of input.
+        </CardText>
+    </CardBody>
+</Card>
 
 <Table FixedHeader FixedHeaderTableHeight="300px">
-    <TableHeader>
-        <TableRow>
-            <TableHeaderCell>Name</TableHeaderCell>
-            <TableHeaderCell>Description</TableHeaderCell>
-            <TableHeaderCell>History</TableHeaderCell>
-            <TableHeaderCell>Geography</TableHeaderCell>
-            <TableHeaderCell>Generation Method</TableHeaderCell>
-        </TableRow>
-    </TableHeader>
-    @if (worlds != null)
+     <TableHeader>
+         <TableRow>
+             <TableHeaderCell>Name</TableHeaderCell>
+             <TableHeaderCell>Description</TableHeaderCell>
+             <TableHeaderCell>History</TableHeaderCell>
+             <TableHeaderCell>Geography</TableHeaderCell>
+         </TableRow>
+     </TableHeader>
+     @if (worlds != null)
     {
         <TableBody>
             @foreach (var world in worlds)
@@ -30,14 +36,13 @@
                     <TableRowCell>@world.Description</TableRowCell>
                     <TableRowCell>@world.History</TableRowCell>
                     <TableRowCell>@world.Geography</TableRowCell>
-                    <TableRowCell>@world.GeneratedContent.Method</TableRowCell>
                 </TableRow>
             }
         </TableBody>
     }
     else
     {
-        <p><em>Loading...</em></p>
+        <PageProgress Visible />
     }
 </Table>
 
@@ -48,11 +53,17 @@
     [CascadingParameter]
     public Tenant? Tenant { get; set; }
 
+    [Parameter]
+    public Guid WorldId { get; set; }
+
     private IEnumerable<World>? worlds;
 
     protected override async Task OnParametersSetAsync()
     {
-        await GetWorlds();
+        if (WorldId == null)
+        {
+            await GetWorlds();
+        }
     }
 
     private async Task GetWorlds()

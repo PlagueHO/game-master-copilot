@@ -27,7 +27,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{805C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DMCopilot.Shared.Test", "DMCopilot.Shared.Test\DMCopilot.Shared.Test.csproj", "{F8EF7652-5DC7-4DFF-BD9A-CA27E93CBC2E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DMCopilot.Shared", "DMCopilot.Shared\DMCopilot.Shared.csproj", "{CF614E2E-8767-42D1-AAA2-6A119F532729}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DMCopilot.Shared", "DMCopilot.Shared\DMCopilot.Shared.csproj", "{CF614E2E-8767-42D1-AAA2-6A119F532729}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

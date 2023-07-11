@@ -20,12 +20,12 @@ namespace DMCopilot.Shared.Data
         {
             try
             {
-                var response = await _container.ReadItemAsync<World>(id.ToString(), new PartitionKey(id.ToString()));
+                var response = await _container.ReadItemAsync<World>(id.ToString(), GetPartitionKey(id,tenantId));
                 return response.Resource;
             }
             catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
-                throw new TenantNotFoundException(id.ToString());
+                throw new WorldNotFoundException($"World {id.ToString()} not found in tenant {tenantId.ToString()}");
             }
         }
 
@@ -77,21 +77,29 @@ namespace DMCopilot.Shared.Data
         public async Task<World> UpdateWorldAsync(Guid id, World world)
         {
             world.Id = id;
-            var response = await _container.UpsertItemAsync(world, new PartitionKey(world.Id.ToString()));
+            var response = await _container.UpsertItemAsync(world, GetPartitionKey(world.Id, world.TenantId));
             return response.Resource;
         }
 
-        public async Task<Boolean> DeleteWorldAsync(Guid id)
+        public async Task<Boolean> DeleteWorldAsync(Guid id, Guid tenantId)
         {
             try
             {
-                await _container.DeleteItemAsync<World>(id.ToString(), new PartitionKey(id.ToString()));
+                await _container.DeleteItemAsync<World>(id.ToString(), GetPartitionKey(id, tenantId));
                 return true;
             }
             catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
                 return false;
             }
+        }
+
+        public static PartitionKey GetPartitionKey(Guid id, Guid tenantId)
+        {
+            return new PartitionKeyBuilder()
+                .Add(tenantId.ToString())
+                .Add(id.ToString())
+                .Build();
         }
     }
 }
