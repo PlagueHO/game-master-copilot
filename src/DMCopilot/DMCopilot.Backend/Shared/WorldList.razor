@@ -2,7 +2,6 @@
 @using DMCopilot.Shared.Data
 @using DMCopilot.Shared.Models
 
-@inject ISemanticKernelService semanticKernelService
 @inject IWorldRepository worldRepository
 @inject NavigationManager navigationManager
 
@@ -26,24 +25,22 @@
              <TableHeaderCell>Geography</TableHeaderCell>
          </TableRow>
      </TableHeader>
-     @if (worlds != null)
-    {
-        <TableBody>
-            @foreach (var world in worlds)
-            {
-                <TableRow @key="@world.Id">
-                    <TableRowHeader>@world.Name</TableRowHeader>
-                    <TableRowCell>@world.Description</TableRowCell>
-                    <TableRowCell>@world.History</TableRowCell>
-                    <TableRowCell>@world.Geography</TableRowCell>
-                </TableRow>
-            }
-        </TableBody>
-    }
-    else
-    {
-        <PageProgress Visible />
-    }
+     <LoadingIndicator @bind-Visible="@loadingVisible">
+        @if (worlds != null)
+        {
+            <TableBody>
+                @foreach (var world in worlds)
+                {
+                    <TableRow @key="@world.Id">
+                        <TableRowHeader>@world.Name</TableRowHeader>
+                        <TableRowCell>@world.Description</TableRowCell>
+                        <TableRowCell>@world.History</TableRowCell>
+                        <TableRowCell>@world.Geography</TableRowCell>
+                    </TableRow>
+                }
+            </TableBody>
+        }
+    </LoadingIndicator>
 </Table>
 
 @code {
@@ -53,24 +50,20 @@
     [CascadingParameter]
     public Tenant? Tenant { get; set; }
 
-    [Parameter]
-    public Guid WorldId { get; set; }
-
-    private IEnumerable<World>? worlds;
+    private bool loadingVisible = true;
+    private IEnumerable<World> worlds { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {
-        if (WorldId == null)
-        {
-            await GetWorlds();
-        }
+        await GetWorlds();
     }
 
     private async Task GetWorlds()
     {
-        if (Account != null)
+        if (Tenant != null)
         {
-            this.worlds = await worldRepository.GetWorldsByTenantAsync(Account.ActiveTenantId);
+            worlds = await worldRepository.GetWorldsByTenantAsync(Tenant.Id);
+            loadingVisible = false;
         }
     }
 }

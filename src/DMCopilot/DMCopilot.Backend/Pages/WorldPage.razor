@@ -11,7 +11,7 @@
 
 <CascadingValue Value="@Account">
     <CascadingValue Value="@Tenant">
-        @if (WorldId == null)
+        @if (navigationManager.ToBaseRelativePath(navigationManager.Uri) == "world")
         {
             <WorldList />
         }
@@ -34,7 +34,6 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        Console.WriteLine(navigationManager.ToBaseRelativePath(navigationManager.Uri));
         await base.OnParametersSetAsync();
     }
 }
