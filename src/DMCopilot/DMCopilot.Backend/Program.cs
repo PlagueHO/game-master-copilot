@@ -109,7 +109,7 @@ internal class Program
             });
         }
 
-        // Add the Account Serivce
+        // Add the Account Service
         builder.Services.AddScoped<IAccessService>((service) =>
         {
             var accountRepository = service.GetService<IAccountRepository>();
