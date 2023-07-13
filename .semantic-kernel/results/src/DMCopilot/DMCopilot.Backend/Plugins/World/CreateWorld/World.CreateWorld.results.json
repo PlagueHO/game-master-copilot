@@ -1,0 +1,8 @@
+{
+    "version": "1.0",
+    "skillName": "World",
+    "functionName": "CreateWorld",
+    "description": "Generate a world for Dugneons and Dragons 5th edition based on provide world information",
+    "filePath": "src\\DMCopilot\\DMCopilot.Backend\\Plugins\\World\\CreateWorld\\skprompt.txt",
+    "results": []
+}
