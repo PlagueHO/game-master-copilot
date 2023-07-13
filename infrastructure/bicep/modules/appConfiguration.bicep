@@ -10,7 +10,8 @@ resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2023-0
     name: 'Free'
   }
   properties: {
-    publicNetworkAccess: 'Automatic'
+    
+    publicNetworkAccess: 'Enabled'
   }
 }
 

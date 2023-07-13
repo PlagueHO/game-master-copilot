@@ -251,6 +251,16 @@ module storageAccount './modules/storageAccount.bicep' = {
   }
 }
 
+module containerApp './modules/containerApp.bicep' = {
+  name: 'containerApp'
+  scope: rg
+  params: {
+    location: location
+    containerAppEnvironmentName: '${baseResourceName}-cae'
+    logAnalyticsWorkspaceCustomerId: monitoring.outputs.logAnalyticsWorkspaceCustomerId
+  }
+}
+
 var roles = {
     'Cognitive Services OpenAI User': '5e0bd9bd-7b93-4f28-af87-19fc36ad61bd'
     'Storage Blob Data Contributor': 'ba92f5b4-2d11-453d-a403-e96b0029c9fe'
