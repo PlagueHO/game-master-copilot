@@ -3,7 +3,7 @@
     "description": "Generate a world for Dungeons and Dragons 5th edition based on provide world information",
     "type": "completion",
     "completion": {
-        "max_tokens": 16000,
+        "max_tokens": 6000,
         "temperature": 0.75,
         "top_p": 0,
         "presence_penalty": 0,

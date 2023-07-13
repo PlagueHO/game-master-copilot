@@ -198,6 +198,11 @@ namespace DMCopilot.Shared.Services
                 context[input] = inputs[input];
             _logger.LogInformation($"Invoking '{function}' from plugin '{plugin}.");
             var result = await _functions[plugin][function].InvokeAsync(context);
+
+            // TODO: Improve error handling
+            if (result.ErrorOccurred)
+                throw new SemanticKernelSkillException($"Error occurred while invoking '{function}' from plugin '{plugin}': {result.LastException.InnerException.Message}");
+
             return result;
         }
     }
