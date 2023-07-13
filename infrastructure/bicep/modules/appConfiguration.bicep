@@ -23,7 +23,7 @@ resource appConfigurationDiagnosticSetting 'Microsoft.Insights/diagnosticSetting
     workspaceId: logAnalyticsWorkspaceId
     logs: [
       {
-        category: 'HTTPRequests'
+        category: 'HttpRequest'
         enabled: true
         retentionPolicy: {
           days: 0
