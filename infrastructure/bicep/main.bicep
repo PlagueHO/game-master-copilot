@@ -266,7 +266,7 @@ var roles = {
     'Storage Blob Data Contributor': 'ba92f5b4-2d11-453d-a403-e96b0029c9fe'
     'Cosmos DB Account Reader Role': 'fbdf93bf-df7d-467e-a4d2-9458aa1360c8'
     'Key Vault Secrets User': '4633458b-17de-408a-b874-0445c86b69e6'
-    'App Configuration Data Reader': '7b62e4b4-4a3c-4e75-8f4d-aaee7f2a8a22'
+    'App Configuration Data Reader': '516239f1-63e1-4d78-a4de-a74fb236a071'
 }
 
 module openAiServiceRoleServicePrincipal 'modules/roleAssignment.bicep' = {
