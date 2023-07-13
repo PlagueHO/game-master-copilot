@@ -52,12 +52,19 @@ param azureAdClientSecret string
 
 var openAiModelDeployments = [
   {
-    name: 'gpt-35-turbo-16k'
-    modelName: 'gpt-35-turbo-16k'
-    version: '0613'
+    name: 'gpt-35-turbo'
+    modelName: 'gpt-35-turbo'
+    version: '0301'
     sku: 'Standard'
-    capacity: 20
+    capacity: 120
   }
+  // {
+  //   name: 'gpt-35-turbo-16k'
+  //   modelName: 'gpt-35-turbo-16k'
+  //   version: '0613'
+  //   sku: 'Standard'
+  //   capacity: 120
+  // }
   {
     name: 'text-embedding-ada-002'
     modelName: 'text-embedding-ada-002'
