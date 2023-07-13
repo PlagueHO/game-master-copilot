@@ -4,6 +4,7 @@ param webAppName string
 param keyVaultName string
 param cosmosDbAccountName string
 param openAiServiceName string
+param appConfigurationName string
 param appInsightsInstrumentationKey string
 param appInsightsConnectionString string
 param azureOpenAiWebConfiguration array
@@ -22,13 +23,17 @@ resource keyVault 'Microsoft.KeyVault/vaults@2023-02-01' existing = {
   name: keyVaultName
 }
 
+resource keyVaultAzureAdClientSecret 'Microsoft.KeyVault/vaults/secrets@2023-02-01' existing = {
+  name: 'AzureAdClientSecret'
+  parent: keyVault
+}
+
 resource openAiService 'Microsoft.CognitiveServices/accounts@2023-05-01' existing = {
   name: openAiServiceName
 }
 
-resource keyVaultAzureAdClientSecret 'Microsoft.KeyVault/vaults/secrets@2023-02-01' existing = {
-  name: 'AzureAdClientSecret'
-  parent: keyVault
+resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2023-03-01' existing = {
+  name: appConfigurationName
 }
 
 var basicConfiguration = [
@@ -111,6 +116,10 @@ var basicConfiguration = [
   {
     name: 'CosmosDb__Database'
     value: 'dmcopilot'
+  }
+  {
+    name: 'AppConfiguration__Endpoint'
+    value: appConfiguration.properties.endpoint
   }
 ]
 

@@ -152,6 +152,17 @@ module keyVault './modules/keyVault.bicep' = {
   }
 }
 
+module appConfiguration './modules/appConfiguration.bicep' = {
+  name: 'appConfiguration'
+  scope: rg
+  params: {
+    location: location
+    appConfigurationName: '${baseResourceName}-appconfig'
+    logAnalyticsWorkspaceId: monitoring.outputs.logAnalyticsWorkspaceId
+    logAnalyticsWorkspaceName: '${baseResourceName}-law'
+  }
+}
+
 module cosmosDbAccount './modules/cosmosDbAccount.bicep' = {
   name: 'cosmosDbAccount'
   scope: rg
@@ -220,6 +231,7 @@ module webAppBlazor './modules/webAppBlazor.bicep' = {
     keyVaultName: keyVault.outputs.keyVaultName
     cosmosDbAccountName: cosmosDbAccount.outputs.cosmosDbAccountName
     openAiServiceName: openAiService.outputs.openAiServiceName
+    appConfigurationName: appConfiguration.outputs.appConfigurationName
     appInsightsInstrumentationKey: monitoring.outputs.applicationInsightsInstrumentationKey
     appInsightsConnectionString: monitoring.outputs.applicationInsightsConnectionString
     azureOpenAiWebConfiguration: openAiWebConfigration
@@ -244,6 +256,7 @@ var roles = {
     'Storage Blob Data Contributor': 'ba92f5b4-2d11-453d-a403-e96b0029c9fe'
     'Cosmos DB Account Reader Role': 'fbdf93bf-df7d-467e-a4d2-9458aa1360c8'
     'Key Vault Secrets User': '4633458b-17de-408a-b874-0445c86b69e6'
+    'App Configuration Data Reader': '7b62e4b4-4a3c-4e75-8f4d-aaee7f2a8a22'
 }
 
 module openAiServiceRoleServicePrincipal 'modules/roleAssignment.bicep' = {
@@ -282,6 +295,16 @@ module keyVaultRoleServicePrincipal 'modules/roleAssignment.bicep' = {
   params: {
     principalId: webAppBlazor.outputs.webAppIdentityPrincipalId
     roleDefinitionId: roles['Key Vault Secrets User']
+    principalType: 'ServicePrincipal'
+  }
+}
+
+module appConfigurationRoleServicePrincipal 'modules/roleAssignment.bicep' = {
+  scope: rg
+  name: 'appConfigurationRoleServicePrincipal'
+  params: {
+    principalId: webAppBlazor.outputs.webAppIdentityPrincipalId
+    roleDefinitionId: roles['App Configuration Data Reader']
     principalType: 'ServicePrincipal'
   }
 }
