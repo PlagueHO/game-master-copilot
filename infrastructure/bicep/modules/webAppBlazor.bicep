@@ -3,6 +3,7 @@ param appServicePlanId string
 param webAppName string
 param keyVaultName string
 param cosmosDbAccountName string
+param openAiServiceName string
 param appInsightsInstrumentationKey string
 param appInsightsConnectionString string
 param azureOpenAiWebConfiguration array
@@ -19,6 +20,10 @@ resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' exis
 
 resource keyVault 'Microsoft.KeyVault/vaults@2023-02-01' existing = {
   name: keyVaultName
+}
+
+resource openAiService 'Microsoft.CognitiveServices/accounts@2023-05-01' existing = {
+  name: openAiServiceName
 }
 
 resource keyVaultAzureAdClientSecret 'Microsoft.KeyVault/vaults/secrets@2023-02-01' existing = {
@@ -94,6 +99,10 @@ var basicConfiguration = [
   {
     name: 'SemanticKernel__PluginsDirectory'
     value: 'Plugins'
+  }
+  {
+    name: 'SemanticKernel__AzureOpenAiApiKey'
+    value: openAiService.listKeys().key1
   }
   {
     name: 'CosmosDb__EndpointUri'

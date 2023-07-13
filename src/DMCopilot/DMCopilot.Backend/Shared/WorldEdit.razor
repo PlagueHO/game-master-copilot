@@ -17,15 +17,15 @@
         <Field>
             <FieldBody>
                 <MemoEdit @bind-Text="@WorldDetails" AutoSize />
-            </FieldBody>
-        </Field>
-        <Button @onclick="CreateWorld" Color="Color.Primary" Margin="Margin.Is2.FromTop" Disabled="@(loadingVisible)">
-            Generate <Icon Name="IconName.ArrowRight" />
-        </Button>
-    </CardBody>
-</Card>
+             </FieldBody>
+         </Field>
+         <Button @onclick="CreateWorld" Color="Color.Primary" Margin="Margin.Is2.FromTop" Disabled="@(loadingVisible)">
+             Generate <Icon Name="IconName.ArrowRight" />
+         </Button>
+     </CardBody>
+ </Card>
 
-@if (World != null)
+ @if (World != null)
 {
     <LoadingIndicator @bind-Visible="@loadingVisible">
         <Card>
@@ -40,23 +40,26 @@
                     <FieldLabel>Description</FieldLabel>
                     <FieldBody>
                         <MemoEdit @bind-Text="@World.Description" AutoSize />
-                    </FieldBody>
-                </Field>
-                <Field>
-                    <FieldLabel>History</FieldLabel>
-                    <FieldBody>
-                        <MemoEdit @bind-Text="@World.History" AutoSize />
-                    </FieldBody>
-                </Field>
-                <Field>
-                    <FieldLabel>Geography</FieldLabel>
-                    <FieldBody>
-                        <MemoEdit @bind-Text="@World.Geography" AutoSize />
-                    </FieldBody>
-                </Field>
-            </CardBody>
-        </Card>
-    </LoadingIndicator>
+                     </FieldBody>
+                 </Field>
+                 <Field>
+                     <FieldLabel>History</FieldLabel>
+                     <FieldBody>
+                         <MemoEdit @bind-Text="@World.History" AutoSize />
+                     </FieldBody>
+                 </Field>
+                 <Field>
+                     <FieldLabel>Geography</FieldLabel>
+                     <FieldBody>
+                         <MemoEdit @bind-Text="@World.Geography" AutoSize />
+                     </FieldBody>
+                 </Field>
+                 <Button @onclick="SaveWorld" Color="Color.Primary" Margin="Margin.Is2.FromTop" Disabled="@(loadingVisible)">
+                     Save <Icon Name="IconName.Save" />
+                 </Button>
+             </CardBody>
+         </Card>
+     </LoadingIndicator>
 }
 
 @code {
@@ -80,7 +83,7 @@
             if (navigationManager.Uri.EndsWith("/world/new"))
                 World = new World(Guid.NewGuid(), Tenant.Id, "New World", "A new world!");
             else if (WorldId != null)
-                World = await worldRepository.GetWorldAsync(WorldId, Tenant.Id);  
+                World = await worldRepository.GetWorldAsync(WorldId, Tenant.Id);
         }
     }
 
@@ -96,5 +99,13 @@
         Console.WriteLine(result);
 
         loadingVisible = false;
+    }
+
+    private async Task SaveWorld()
+    {
+        if (WorldId == null)
+            await worldRepository.CreateWorldAsync(World);
+        else
+            await worldRepository.UpdateWorldAsync(World.Id, World);
     }
 }

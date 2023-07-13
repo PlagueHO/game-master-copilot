@@ -52,13 +52,6 @@ param azureAdClientSecret string
 
 var openAiModelDeployments = [
   {
-    name: 'gpt-35-turbo'
-    modelName: 'gpt-35-turbo'
-    version: '0613'
-    sku: 'Standard'
-    capacity: 20
-  }
-  {
     name: 'gpt-35-turbo-16k'
     modelName: 'gpt-35-turbo-16k'
     version: '0613'
@@ -96,39 +89,31 @@ var openAiWebConfigration = [
     value: true
   }
   {
-    name: 'SemanticKernel__AzureOpenAiChatCompletionServices__1__Id'
-    value: 'ChatCompletion'
-  }
-  {
-    name: 'SemanticKernel__AzureOpenAiChatCompletionServices__1__Endpoint'
-    value: openAiService.outputs.openAiServiceEndpoint
-  }
-  {
-    name: 'SemanticKernel__AzureOpenAiChatCompletionServices__1__Deployment'
-    value: openAiModelDeployments[1].name
-  }
-  {
-    name: 'SemanticKernel__AzureOpenAiChatCompletionServices__1__SetAsDefault'
-    value: false
-  }
-  {
-    name: 'SemanticKernel__AzureOpenAiChatCompletionServices__1__AlsoAsTextCompletion'
-    value: true
-  }
-  {
-    name: 'SemanticKernel__AzureOpenAiTextEmbeddingGenerationServices__2__Id'
+    name: 'SemanticKernel__AzureOpenAiTextEmbeddingGenerationServices__1__Id'
     value: 'Embeddings'
   }
   {
-    name: 'SemanticKernel__AzureOpenAiTextEmbeddingGenerationServices__2__Endpoint'
+    name: 'SemanticKernel__AzureOpenAiTextEmbeddingGenerationServices__1__Endpoint'
     value: openAiService.outputs.openAiServiceEndpoint
   }
   {
-    name: 'SemanticKernel__AzureOpenAiTextEmbeddingGenerationServices__2__Deployment'
-    value: openAiModelDeployments[2].name
+    name: 'SemanticKernel__AzureOpenAiTextEmbeddingGenerationServices__1__Deployment'
+    value: openAiModelDeployments[1].name
   }
   {
-    name: 'SemanticKernel__AzureOpenAiTextEmbeddingGenerationServices__2__SetAsDefault'
+    name: 'SemanticKernel__AzureOpenAiTextEmbeddingGenerationServices__1__SetAsDefault'
+    value: true
+  }
+  {
+    name: 'SemanticKernel__AzureOpenAiImageGenerationServices__2__Id'
+    value: 'Embeddings'
+  }
+  {
+    name: 'SemanticKernel__AzureOpenAiImageGenerationServices__2__Endpoint'
+    value: openAiService.outputs.openAiServiceEndpoint
+  }
+  {
+    name: 'SemanticKernel__AzureOpenAiImageGenerationServices__2__SetAsDefault'
     value: true
   }
 ]
@@ -227,6 +212,7 @@ module webAppBlazor './modules/webAppBlazor.bicep' = {
     webAppName: baseResourceName
     keyVaultName: keyVault.outputs.keyVaultName
     cosmosDbAccountName: cosmosDbAccount.outputs.cosmosDbAccountName
+    openAiServiceName: openAiService.outputs.openAiServiceName
     appInsightsInstrumentationKey: monitoring.outputs.applicationInsightsInstrumentationKey
     appInsightsConnectionString: monitoring.outputs.applicationInsightsConnectionString
     azureOpenAiWebConfiguration: openAiWebConfigration

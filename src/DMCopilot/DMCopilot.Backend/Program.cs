@@ -127,7 +127,10 @@ internal class Program
             var semanticKernelConfiguration = builder.Configuration
                 .GetSection("SemanticKernel")
                 .Get<SemanticKernelConfiguration>() ?? throw new Exception("Semantic Kernel configuration is null");
-            return new SemanticKernelService(azureCredential, semanticKernelConfiguration, service.GetService<ILogger<SemanticKernelService>>());
+            if (semanticKernelConfiguration.AzureOpenAiApiKey == null)
+                return new SemanticKernelService(azureCredential, semanticKernelConfiguration, service.GetService<ILogger<SemanticKernelService>>());
+            else
+                return new SemanticKernelService(semanticKernelConfiguration, service.GetService<ILogger<SemanticKernelService>>());
         });
 
         // Add Blazorize

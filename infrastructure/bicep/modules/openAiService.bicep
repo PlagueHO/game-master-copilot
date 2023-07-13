@@ -83,4 +83,6 @@ resource openAiServiceDiagnosticSetting 'Microsoft.Insights/diagnosticSettings@2
   }
 }
 
+output openAiServiceName string = openAiService.name
+output openAiServiceId string = openAiService.id
 output openAiServiceEndpoint string = openAiService.properties.endpoint

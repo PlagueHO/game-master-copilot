@@ -15,13 +15,13 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.ApplicationInsights" Version="2.21.0" />
     <PackageReference Include="Microsoft.Graph" Version="5.17.0" />
-    <PackageReference Include="Microsoft.SemanticKernel" Version="0.17.230704.3-preview" />
-    <PackageReference Include="Microsoft.SemanticKernel.Abstractions" Version="0.17.230704.3-preview" />
-    <PackageReference Include="Microsoft.SemanticKernel.Connectors.AI.OpenAI" Version="0.17.230704.3-preview" />
-    <PackageReference Include="Microsoft.SemanticKernel.Planning.ActionPlanner" Version="0.17.230704.3-preview" />
-    <PackageReference Include="Microsoft.SemanticKernel.Planning.SequentialPlanner" Version="0.17.230704.3-preview" />
-    <PackageReference Include="Microsoft.SemanticKernel.Skills.OpenAPI" Version="0.17.230704.3-preview" />
-    <PackageReference Include="Microsoft.SemanticKernel.Skills.Web" Version="0.17.230704.3-preview" />
+    <PackageReference Include="Microsoft.SemanticKernel" Version="0.17.230711.7-preview" />
+    <PackageReference Include="Microsoft.SemanticKernel.Abstractions" Version="0.17.230711.7-preview" />
+    <PackageReference Include="Microsoft.SemanticKernel.Connectors.AI.OpenAI" Version="0.17.230711.7-preview" />
+    <PackageReference Include="Microsoft.SemanticKernel.Planning.ActionPlanner" Version="0.17.230711.7-preview" />
+    <PackageReference Include="Microsoft.SemanticKernel.Planning.SequentialPlanner" Version="0.17.230711.7-preview" />
+    <PackageReference Include="Microsoft.SemanticKernel.Skills.OpenAPI" Version="0.17.230711.7-preview" />
+    <PackageReference Include="Microsoft.SemanticKernel.Skills.Web" Version="0.17.230711.7-preview" />
   </ItemGroup>
 
 </Project>
