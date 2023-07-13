@@ -113,7 +113,7 @@ var openAiWebConfigration = [
   }
   {
     name: 'SemanticKernel__AzureOpenAiImageGenerationServices__2__Id'
-    value: 'Embeddings'
+    value: 'ImageGeneration'
   }
   {
     name: 'SemanticKernel__AzureOpenAiImageGenerationServices__2__Endpoint'

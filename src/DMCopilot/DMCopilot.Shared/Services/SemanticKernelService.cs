@@ -67,7 +67,7 @@ namespace DMCopilot.Shared.Services
                     throw new ConfigurationErrorsException("Deployment setting for Azure OpenAI Text Completion service is empty");
 
                 if (service.Endpoint == null)
-                    throw new ConfigurationErrorsException("Deployment setting for Azure OpenAI Text Completion service is empty");
+                    throw new ConfigurationErrorsException("Endpoint setting for Azure OpenAI Text Completion service is empty");
 
                 _logger.LogInformation($"Adding Azure OpenAI Text Completion service '{service.Id}' using deployment '{service.Deployment}' on endpoint '{service.Endpoint}' to Semantic Kernel");
 
@@ -99,7 +99,7 @@ namespace DMCopilot.Shared.Services
                     throw new ConfigurationErrorsException("Deployment setting for Azure OpenAI Chat Completion service is empty");
 
                 if (service.Endpoint == null)
-                    throw new ConfigurationErrorsException("Deployment setting for Azure OpenAI Chat Completion service is empty");
+                    throw new ConfigurationErrorsException("Endpoint setting for Azure OpenAI Chat Completion service is empty");
 
                 _logger.LogInformation($"Adding Azure OpenAI Chat Completion service '{service.Id}' using deployment '{service.Deployment}' on endpoint '{service.Endpoint}' to Semantic Kernel");
 
@@ -133,7 +133,7 @@ namespace DMCopilot.Shared.Services
                     throw new ConfigurationErrorsException("Deployment setting for Azure OpenAI Text Embedding Generation service is empty");
 
                 if (service.Endpoint == null)
-                    throw new ConfigurationErrorsException("Deployment setting for Azure OpenAI Text Embedding Generation service is empty");
+                    throw new ConfigurationErrorsException("Endpoint setting for Azure OpenAI Text Embedding Generation service is empty");
 
                 _logger.LogInformation($"Adding Azure OpenAI Text Embedding Generation service '{service.Id}' using deployment '{service.Deployment}' on endpoint '{service.Endpoint}' to Semantic Kernel");
 
@@ -161,11 +161,8 @@ namespace DMCopilot.Shared.Services
 
             foreach (SemanticKernelAzureOpenAiImageGenerationService service in _semanticKernelConfiguration.AzureOpenAiImageGenerationServices)
             {
-                if (service.Deployment == null)
-                    throw new ConfigurationErrorsException("Deployment setting for Azure OpenAI Image Generation service is empty");
-
                 if (service.Endpoint == null)
-                    throw new ConfigurationErrorsException("Deployment setting for Azure OpenAI Image Generation service is empty");
+                    throw new ConfigurationErrorsException("Endpoint setting for Azure OpenAI Image Generation service is empty");
 
                 _logger.LogInformation($"Adding Azure OpenAI Image Generation service '{service.Id}' using deployment '{service.Deployment}' on endpoint '{service.Endpoint}' to Semantic Kernel");
 
