@@ -65,7 +65,10 @@ internal class Program
         });
 
         // Get an Azure AD token for the application to use to authenticate to services in Azure
-        var azureCredential = new DefaultAzureCredential();
+        var azureCredential = new DefaultAzureCredential(new DefaultAzureCredentialOptions
+        {
+            TenantId = builder.Configuration["AzureAd:TenantId"]
+        });
 
         builder.Services.AddRazorPages();
         builder.Services.AddServerSideBlazor()

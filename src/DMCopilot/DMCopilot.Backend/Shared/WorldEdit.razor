@@ -19,7 +19,7 @@
                 <MemoEdit @bind-Text="@WorldDetails" AutoSize />
             </FieldBody>
         </Field>
-        <Button Color="Color.Primary" Margin="Margin.Is2.FromTop">
+        <Button @onclick="CreateWorld" Color="Color.Primary" Margin="Margin.Is2.FromTop" Disabled="@(loadingVisible)">
             Generate <Icon Name="IconName.ArrowRight" />
         </Button>
     </CardBody>
@@ -27,34 +27,36 @@
 
 @if (World != null)
 {
-    <Card>
-        <CardBody>
-            <Field>
-                <FieldLabel>Name</FieldLabel>
-                <FieldBody>
-                    <TextEdit @bind-Text="@World.Name" />
-                </FieldBody>
-            </Field>
-            <Field>
-                <FieldLabel>Description</FieldLabel>
-                <FieldBody>
-                    <MemoEdit @bind-Text="@World.Description" AutoSize />
-                </FieldBody>
-            </Field>
-            <Field>
-                <FieldLabel>History</FieldLabel>
-                <FieldBody>
-                    <MemoEdit @bind-Text="@World.History" AutoSize />
-                </FieldBody>
-            </Field>
-            <Field>
-                <FieldLabel>Geography</FieldLabel>
-                <FieldBody>
-                    <MemoEdit @bind-Text="@World.Geography" AutoSize />
-                </FieldBody>
-            </Field>
-        </CardBody>
-    </Card>
+    <LoadingIndicator @bind-Visible="@loadingVisible">
+        <Card>
+            <CardBody>
+                <Field>
+                    <FieldLabel>Name</FieldLabel>
+                    <FieldBody>
+                        <TextEdit @bind-Text="@World.Name" />
+                    </FieldBody>
+                </Field>
+                <Field>
+                    <FieldLabel>Description</FieldLabel>
+                    <FieldBody>
+                        <MemoEdit @bind-Text="@World.Description" AutoSize />
+                    </FieldBody>
+                </Field>
+                <Field>
+                    <FieldLabel>History</FieldLabel>
+                    <FieldBody>
+                        <MemoEdit @bind-Text="@World.History" AutoSize />
+                    </FieldBody>
+                </Field>
+                <Field>
+                    <FieldLabel>Geography</FieldLabel>
+                    <FieldBody>
+                        <MemoEdit @bind-Text="@World.Geography" AutoSize />
+                    </FieldBody>
+                </Field>
+            </CardBody>
+        </Card>
+    </LoadingIndicator>
 }
 
 @code {
@@ -67,8 +69,10 @@
     [Parameter]
     public Guid WorldId { get; set; }
 
-    public World? World;
-    public String WorldDetails { get; set; } = "A fantasy realm called on a world called Toril with a range of climates and environments with a long rich history.";
+    World? World;
+    String WorldDetails { get; set; } = "A fantasy realm called on a world called Toril with a range of climates and environments with a long rich history.";
+    Boolean loadingVisible { get; set; } = false;
+
     protected override async void OnParametersSet()
     {
         if (Tenant != null && Account != null)
@@ -82,10 +86,15 @@
 
     private async Task CreateWorld()
     {
-        // Call the semanticKernelService with the world details
-        var result = await semanticKernelService.InvokeFunctionAsync("World", "CreateWorld", WorldDetails);
+        loadingVisible = true;
+
+        var result = await semanticKernelService.InvokePluginFunctionAsync("World", "CreateWorld", new Dictionary<String, String> {
+            {"input", WorldDetails}
+        });
 
         // Use the result in some way
         Console.WriteLine(result);
+
+        loadingVisible = false;
     }
 }

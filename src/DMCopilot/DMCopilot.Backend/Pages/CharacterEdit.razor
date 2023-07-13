@@ -49,7 +49,9 @@ else
     private async Task CreateCharacter()
     {
         // Call the semanticKernelService with the character details
-        var result = await semanticKernelService.InvokeFunctionAsync("Character", "CreateCharacter", _characterDetails);
+        var result = await semanticKernelService.InvokePluginFunctionAsync("Character", "CreateCharacter", new Dictionary<String, String> {
+            {"input", _characterDetails}
+        });
 
         // Use the result in some way
         Console.WriteLine(result);
