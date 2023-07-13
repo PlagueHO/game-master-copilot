@@ -107,5 +107,7 @@
             await worldRepository.CreateWorldAsync(World);
         else
             await worldRepository.UpdateWorldAsync(World.Id, World);
+
+        navigationManager.NavigateTo("/world");
     }
 }
