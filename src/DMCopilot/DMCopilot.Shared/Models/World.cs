@@ -40,10 +40,16 @@ namespace DMCopilot.Shared.Models
         public String? History { get; set; }
 
         /// <summary>
-        /// Gets or sets the geography of the world.
+        /// Gets or sets a list of geographical types.
         /// </summary>
-        [JsonProperty(PropertyName = "geography")]
-        public String? Geography { get; set; }
+        [JsonProperty(PropertyName = "geographies")]
+        public List<String> Geographies { get; set; }
+
+        /// <summary>
+        /// Gets or sets a list of climate types.
+        /// </summary>
+        [JsonProperty(PropertyName = "climates")]
+        public List<String> Climates { get; set; }
 
         /// <summary>
         /// Gets or sets a dictionary of other properties for the world.

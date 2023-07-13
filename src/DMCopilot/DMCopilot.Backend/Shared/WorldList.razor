@@ -5,7 +5,7 @@
 @inject IWorldRepository worldRepository
 @inject NavigationManager navigationManager
 
-<Card Background="Background.Info" WhiteText>
+<Card Background="Background.Primary" WhiteText>
     <CardBody>
         <CardTitle Size="3">
             Your Worlds
@@ -14,39 +14,42 @@
             Select one of the existing worlds or create a new one by clicking Create. Generating a new world can take a few seconds and requires just a few words of input.
         </CardText>
         <CardActions>
-            <Button Color="Color.Primary" Type="ButtonType.Link" To="world/new" Margin="Margin.Is2.FromTop">
+            <Button Color="Color.Dark" Type="ButtonType.Link" To="world/new" Margin="Margin.Is2.FromTop">
                 Create <Icon Name="IconName.Add" />
+            </Button>
+            <Button Color="Color.Dark" Type="ButtonType.Link" To="world/new" Margin="Margin.Is2.FromTop">
+                Delete Selected <Icon Name="IconName.Delete" />
             </Button>
         </CardActions>
     </CardBody>
 </Card>
 
-<Table FixedHeader FixedHeaderTableHeight="300px">
-     <TableHeader>
-         <TableRow>
-             <TableHeaderCell>Name</TableHeaderCell>
-             <TableHeaderCell>Description</TableHeaderCell>
-             <TableHeaderCell>History</TableHeaderCell>
-             <TableHeaderCell>Geography</TableHeaderCell>
-         </TableRow>
-     </TableHeader>
-     <LoadingIndicator @bind-Visible="@loadingVisible">
+<LoadingIndicator @bind-Visible="@loadingVisible">
+    <Table Striped Hoverable Bordered>
+        <TableHeader>
+            <TableRow>
+                <TableHeaderCell>Select</TableHeaderCell>
+                <TableHeaderCell>Name</TableHeaderCell>
+                <TableHeaderCell>Description</TableHeaderCell>
+                <TableHeaderCell>History</TableHeaderCell>
+            </TableRow>
+        </TableHeader>
         @if (worlds != null)
         {
             <TableBody>
                 @foreach (var world in worlds)
                 {
                     <TableRow @key="@world.Id">
-                        <TableRowHeader>@world.Name</TableRowHeader>
+                        <TableRowHeader><Check TValue="bool"/></TableRowHeader>
+                        <TableRowCell>@world.Name</TableRowCell>
                         <TableRowCell>@world.Description</TableRowCell>
                         <TableRowCell>@world.History</TableRowCell>
-                        <TableRowCell>@world.Geography</TableRowCell>
                     </TableRow>
                 }
             </TableBody>
         }
-    </LoadingIndicator>
-</Table>
+    </Table>
+</LoadingIndicator>
 
 @code {
     [CascadingParameter]
