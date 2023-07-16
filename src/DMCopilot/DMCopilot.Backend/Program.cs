@@ -15,6 +15,8 @@ using DMCopilot.Shared.Data;
 using DMCopilot.Shared.Services;
 using DMCopilot.Backend.Controllers;
 using DMCopilot.Shared.Configuration;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 
 internal class Program
 {
@@ -32,6 +34,22 @@ internal class Program
                     .AddInMemoryTokenCaches();
         builder.Services.AddControllersWithViews()
             .AddMicrosoftIdentityUI();
+
+        // Get an Azure AD token for the application to use to authenticate to services in Azure
+        var azureCredential = new DefaultAzureCredential(new DefaultAzureCredentialOptions
+        {
+            TenantId = builder.Configuration["AzureAd:TenantId"]
+        });
+
+        // Add the Application Configuration using the endpoint and set the options to connect
+        builder.Configuration.AddAzureAppConfiguration(options =>
+        {
+            var appConfigurationEndpoint = builder.Configuration["AppConfiguration:Endpoint"] ?? throw new Exception("Semantic Kernel configuration is null");
+
+            UriBuilder appConfigurationEndpointUriBuilder = new UriBuilder(appConfigurationEndpoint);
+            options.Connect(appConfigurationEndpointUriBuilder.Uri, azureCredential);
+        }
+        );
 
         // Add Application Insights services into service collection
         builder.Services.AddApplicationInsightsTelemetry();
@@ -62,12 +80,6 @@ internal class Program
             // By default, all incoming requests will be authorized according to the default policy
             options.FallbackPolicy = options.DefaultPolicy;
 
-        });
-
-        // Get an Azure AD token for the application to use to authenticate to services in Azure
-        var azureCredential = new DefaultAzureCredential(new DefaultAzureCredentialOptions
-        {
-            TenantId = builder.Configuration["AzureAd:TenantId"]
         });
 
         builder.Services.AddRazorPages();
@@ -119,7 +131,7 @@ internal class Program
             var tenantRepository = service.GetService<ITenantRepository>();
             return new AccessService(accountRepository, tenantRepository, service.GetService<ILogger<AccessService>>());
         });
-        
+
         // Add the Semantic Kernel service
         builder.Services.AddSingleton<ISemanticKernelService>((service) =>
         {

@@ -8,13 +8,13 @@
 
   <ItemGroup>
     <PackageReference Include="Azure.Identity" Version="1.9.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="7.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="7.0.9" />
     <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.35.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Cosmos" Version="7.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Cosmos" Version="7.0.9" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.ApplicationInsights" Version="2.21.0" />
-    <PackageReference Include="Microsoft.Graph" Version="5.17.0" />
+    <PackageReference Include="Microsoft.Graph" Version="5.18.0" />
     <PackageReference Include="Microsoft.SemanticKernel" Version="0.17.230711.7-preview" />
     <PackageReference Include="Microsoft.SemanticKernel.Abstractions" Version="0.17.230711.7-preview" />
     <PackageReference Include="Microsoft.SemanticKernel.Connectors.AI.OpenAI" Version="0.17.230711.7-preview" />
