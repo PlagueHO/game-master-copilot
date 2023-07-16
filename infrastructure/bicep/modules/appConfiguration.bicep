@@ -9,6 +9,9 @@ resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2023-0
   sku: {
     name: 'Free'
   }
+  identity: {
+    type: 'SystemAssigned'
+  }
   properties: {
     
     publicNetworkAccess: 'Enabled'
