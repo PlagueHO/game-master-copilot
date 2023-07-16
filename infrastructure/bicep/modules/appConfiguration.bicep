@@ -13,7 +13,6 @@ resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2023-0
     type: 'SystemAssigned'
   }
   properties: {
-    
     publicNetworkAccess: 'Enabled'
   }
 }
