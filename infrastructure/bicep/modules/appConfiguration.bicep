@@ -9,9 +9,14 @@ resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2023-0
   sku: {
     name: 'Free'
   }
+  identity: {
+    type: 'SystemAssigned'
+  }
   properties: {
-    
+    disableLocalAuth: false
     publicNetworkAccess: 'Enabled'
+    softDeleteRetentionInDays: 0
+    enablePurgeProtection: false
   }
 }
 
