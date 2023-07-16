@@ -56,7 +56,7 @@ var openAiModelDeployments = [
     modelName: 'gpt-35-turbo'
     version: '0301'
     sku: 'Standard'
-    capacity: 120
+    capacity: 60
   }
   // {
   //   name: 'gpt-35-turbo-16k'
@@ -70,7 +70,7 @@ var openAiModelDeployments = [
     modelName: 'text-embedding-ada-002'
     version: '2'
     sku: 'Standard'
-    capacity: 20
+    capacity: 60
   }
 ]
 
