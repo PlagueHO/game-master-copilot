@@ -60,3 +60,4 @@ resource appConfigurationDiagnosticSetting 'Microsoft.Insights/diagnosticSetting
 output appConfigurationName string = appConfiguration.name
 output appConfigurationId string = appConfiguration.id
 output appConfigurationEndpoint string = appConfiguration.properties.endpoint
+output appConfigurationIdentityPrincipalId string = appConfiguration.identity.principalId

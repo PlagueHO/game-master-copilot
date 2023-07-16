@@ -12,19 +12,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Azure.Identity" Version="1.9.0" />
     <PackageReference Include="Blazorise" Version="1.2.4" />
     <PackageReference Include="Blazorise.Bootstrap" Version="1.2.4" />
     <PackageReference Include="Blazorise.Icons.FontAwesome" Version="1.2.4" />
     <PackageReference Include="Blazorise.LoadingIndicator" Version="1.2.4" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.8" NoWarn="NU1605" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="7.0.8" NoWarn="NU1605" />
-    <PackageReference Include="Microsoft.AspNetCore.Components" Version="7.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.9" NoWarn="NU1605" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="7.0.9" NoWarn="NU1605" />
+    <PackageReference Include="Microsoft.AspNetCore.Components" Version="7.0.9" />
+    <PackageReference Include="Microsoft.Azure.AppConfiguration.AspNetCore" Version="6.0.1" />
     <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.35.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Cosmos" Version="7.0.8" />
-    <PackageReference Include="Microsoft.Identity.Web" Version="2.12.4" />
-    <PackageReference Include="Microsoft.Identity.Web.MicrosoftGraph" Version="2.12.4" />
-    <PackageReference Include="Microsoft.Identity.Web.UI" Version="2.12.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Cosmos" Version="7.0.9" />
+    <PackageReference Include="Microsoft.Identity.Web" Version="2.13.0" />
+    <PackageReference Include="Microsoft.Identity.Web.MicrosoftGraph" Version="2.13.0" />
+    <PackageReference Include="Microsoft.Identity.Web.UI" Version="2.13.0" />
     <PackageReference Include="Microsoft.SemanticKernel" Version="0.17.230711.7-preview" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1" />
   </ItemGroup>

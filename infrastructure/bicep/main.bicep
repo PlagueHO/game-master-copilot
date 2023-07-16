@@ -56,7 +56,7 @@ var openAiModelDeployments = [
     modelName: 'gpt-35-turbo'
     version: '0301'
     sku: 'Standard'
-    capacity: 120
+    capacity: 60
   }
   // {
   //   name: 'gpt-35-turbo-16k'
@@ -70,7 +70,7 @@ var openAiModelDeployments = [
     modelName: 'text-embedding-ada-002'
     version: '2'
     sku: 'Standard'
-    capacity: 20
+    capacity: 60
   }
 ]
 
@@ -269,9 +269,9 @@ var roles = {
     'App Configuration Data Reader': '516239f1-63e1-4d78-a4de-a74fb236a071'
 }
 
-module openAiServiceRoleServicePrincipal 'modules/roleAssignment.bicep' = {
+module openAiServiceWebAppRoleServicePrincipal 'modules/roleAssignment.bicep' = {
   scope: rg
-  name: 'openAiServiceRoleServicePrincipal'
+  name: 'openAiServiceWebAppRoleServicePrincipal'
   params: {
     principalId: webAppBlazor.outputs.webAppIdentityPrincipalId
     roleDefinitionId: roles['Cognitive Services OpenAI User']
@@ -279,9 +279,9 @@ module openAiServiceRoleServicePrincipal 'modules/roleAssignment.bicep' = {
   }
 }
 
-module cosmosDbRoleServicePrincipal 'modules/roleAssignment.bicep' = {
+module cosmosDbWebAppRoleServicePrincipal 'modules/roleAssignment.bicep' = {
   scope: rg
-  name: 'cosmosDbRoleServicePrincipal'
+  name: 'cosmosDbWebAppRoleServicePrincipal'
   params: {
     principalId: webAppBlazor.outputs.webAppIdentityPrincipalId
     roleDefinitionId: roles['Cosmos DB Account Reader Role']
@@ -289,9 +289,9 @@ module cosmosDbRoleServicePrincipal 'modules/roleAssignment.bicep' = {
   }
 }
 
-module storageAccountRoleServicePrincipal 'modules/roleAssignment.bicep' = {
+module storageAccountWebAppRoleServicePrincipal 'modules/roleAssignment.bicep' = {
   scope: rg
-  name: 'storageAccountRoleServicePrincipal'
+  name: 'storageAccountWebAppRoleServicePrincipal'
   params: {
     principalId: webAppBlazor.outputs.webAppIdentityPrincipalId
     roleDefinitionId: roles['Storage Blob Data Contributor']
@@ -299,9 +299,9 @@ module storageAccountRoleServicePrincipal 'modules/roleAssignment.bicep' = {
   }
 }
 
-module keyVaultRoleServicePrincipal 'modules/roleAssignment.bicep' = {
+module keyVaultWebAppRoleServicePrincipal 'modules/roleAssignment.bicep' = {
   scope: rg
-  name: 'keyVaultRoleServicePrincipal'
+  name: 'keyVaultWebAppRoleServicePrincipal'
   params: {
     principalId: webAppBlazor.outputs.webAppIdentityPrincipalId
     roleDefinitionId: roles['Key Vault Secrets User']
@@ -309,9 +309,19 @@ module keyVaultRoleServicePrincipal 'modules/roleAssignment.bicep' = {
   }
 }
 
-module appConfigurationRoleServicePrincipal 'modules/roleAssignment.bicep' = {
+module keyVaultAppConfigurationRoleServicePrincipal 'modules/roleAssignment.bicep' = {
   scope: rg
-  name: 'appConfigurationRoleServicePrincipal'
+  name: 'keyVaultAppConfigurationRoleServicePrincipal'
+  params: {
+    principalId: appConfiguration.outputs.appConfigurationIdentityPrincipalId
+    roleDefinitionId: roles['Key Vault Secrets User']
+    principalType: 'ServicePrincipal'
+  }
+}
+
+module appConfigurationWebAppRoleServicePrincipal 'modules/roleAssignment.bicep' = {
+  scope: rg
+  name: 'appConfigurationWebAppRoleServicePrincipal'
   params: {
     principalId: webAppBlazor.outputs.webAppIdentityPrincipalId
     roleDefinitionId: roles['App Configuration Data Reader']
