@@ -4,16 +4,16 @@ using Microsoft.Extensions.Logging;
 
 namespace DMCopilot.Shared.Data
 {
-    public class CharacterRepository : ICharacterRepository
+    public class CharacterRepositoryCosmosDb : ICharacterRepository
     {
         private readonly Microsoft.Azure.Cosmos.Container _container;
-        private readonly ILogger<CharacterRepository> _logger;
+        private readonly ILogger<CharacterRepositoryCosmosDb> _logger;
 
-        public CharacterRepository(CosmosClient cosmosClient, String databaseName, String containerName, ILogger<CharacterRepository> logger)
+        public CharacterRepositoryCosmosDb(CosmosClient cosmosClient, String databaseName, String containerName, ILogger<CharacterRepositoryCosmosDb> logger)
         {
             _container = cosmosClient.GetContainer(databaseName, containerName);
             _logger = logger;
-            _logger.LogInformation($"Initialized {nameof(CharacterRepository)} using container '{containerName}'.");
+            _logger.LogInformation($"Initialized {nameof(CharacterRepositoryCosmosDb)} using container '{containerName}'.");
         }
 
         public async Task<Character> GetCharacterAsync(Guid id)

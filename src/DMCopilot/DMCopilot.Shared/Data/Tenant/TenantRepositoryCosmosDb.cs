@@ -5,16 +5,16 @@ using Microsoft.Graph.Models;
 
 namespace DMCopilot.Shared.Data
 {
-    public class TenantRepository : ITenantRepository
+    public class TenantRepositoryCosmosDb : ITenantRepository
     {
         private readonly Container _container;
-        private readonly ILogger<TenantRepository> _logger;
+        private readonly ILogger<TenantRepositoryCosmosDb> _logger;
 
-        public TenantRepository(CosmosClient client, String databaseName, String containerName, ILogger<TenantRepository> logger)
+        public TenantRepositoryCosmosDb(CosmosClient client, String databaseName, String containerName, ILogger<TenantRepositoryCosmosDb> logger)
         {
             _container = client.GetContainer(databaseName, containerName);
             _logger = logger;
-            _logger.LogInformation($"Initialized {nameof(TenantRepository)} using container '{containerName}'.");
+            _logger.LogInformation($"Initialized {nameof(TenantRepositoryCosmosDb)} using container '{containerName}'.");
         }
 
         public async Task<Tenant> GetTenantAsync(Guid id)

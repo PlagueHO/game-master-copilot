@@ -105,10 +105,10 @@ internal class Program
 
         // Define an array of repository configurations
         var repositories = new[] {
-            new { RepositoryType = typeof(AccountRepository), RepositoryInterface = typeof(IAccountRepository), CollectionName = "accounts" },
-            new { RepositoryType = typeof(TenantRepository), RepositoryInterface = typeof(ITenantRepository), CollectionName = "tenants" },
-            new { RepositoryType = typeof(WorldRepository), RepositoryInterface = typeof(IWorldRepository), CollectionName = "worlds" },
-            new { RepositoryType = typeof(CharacterRepository), RepositoryInterface = typeof(ICharacterRepository), CollectionName = "characters" }
+            new { RepositoryType = typeof(AccountRepositoryCosmosDb), RepositoryInterface = typeof(IAccountRepository), CollectionName = "accounts" },
+            new { RepositoryType = typeof(TenantRepositoryCosmosDb), RepositoryInterface = typeof(ITenantRepository), CollectionName = "tenants" },
+            new { RepositoryType = typeof(WorldRepositoryCosmosDb), RepositoryInterface = typeof(IWorldRepository), CollectionName = "worlds" },
+            new { RepositoryType = typeof(CharacterRepositoryCosmosDb), RepositoryInterface = typeof(ICharacterRepository), CollectionName = "characters" }
         };
 
         // Loop through the repository configurations and register them as scoped services
