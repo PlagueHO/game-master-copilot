@@ -38,23 +38,23 @@ resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2023-0
 
 var basicConfiguration = [
   {
-    name: 'AzureAd__Instance'
+    name: 'AzureAd:Instance'
     value: azureAdInstance
   }
   {
-    name: 'AzureAd__Domain'
+    name: 'AzureAd:Domain'
     value: azureAdDomain
   }
   {
-    name: 'AzureAd__TenantId'
+    name: 'AzureAd:TenantId'
     value: azureAdTenantId
   }
   {
-    name: 'AzureAd__ClientId'
+    name: 'AzureAd:ClientId'
     value: azureAdClientId
   }
   {
-    name: 'AzureAd__ClientSecret'
+    name: 'AzureAd:ClientSecret'
     value: '@Microsoft.KeyVault(SecretUri=${keyVaultAzureAdClientSecret.properties.secretUri})'
   }
   {
@@ -102,23 +102,23 @@ var basicConfiguration = [
     value: 'disabled'
   }
   {
-    name: 'SemanticKernel__PluginsDirectory'
+    name: 'SemanticKernel:PluginsDirectory'
     value: 'Plugins'
   }
   {
-    name: 'SemanticKernel__AzureOpenAiApiKey'
+    name: 'SemanticKernel:AzureOpenAiApiKey'
     value: openAiService.listKeys().key1
   }
   {
-    name: 'CosmosDb__EndpointUri'
+    name: 'CosmosDb:EndpointUri'
     value: cosmosDbAccount.properties.documentEndpoint
   }
   {
-    name: 'CosmosDb__Database'
+    name: 'CosmosDb:Database'
     value: 'dmcopilot'
   }
   {
-    name: 'AppConfiguration__Endpoint'
+    name: 'AppConfiguration:Endpoint'
     value: appConfiguration.properties.endpoint
   }
 ]
