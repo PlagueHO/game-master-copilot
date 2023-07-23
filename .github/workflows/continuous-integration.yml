@@ -1,0 +1,26 @@
+name: continuous-integration
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  checks: write
+  pull-requests: write
+
+jobs:
+  # We are building an ARM template rather than submitting the Bicep directly
+  # because this allows us to use the latest version of the Bicep compiler.
+
+  build-armtemplate:
+    uses: ./.github/workflows/build-armtemplate.yml
+
+  test-dmcopilotbackend:
+    uses: ./.github/workflows/test-dmcopilotbackend.yml
+
+  build-dmcopilotbackend:
+    needs:
+      - test-dmcopilotbackend
+    uses: ./.github/workflows/build-dmcopilotbackend.yml
+    
