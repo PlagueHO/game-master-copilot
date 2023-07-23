@@ -50,21 +50,16 @@ param azureAdClientId string
 @secure()
 param azureAdClientSecret string
 
+var logAnalyticsWorkspaceName = '${baseResourceName}-law'
+
 var openAiModelDeployments = [
   {
-    name: 'gpt-35-turbo'
-    modelName: 'gpt-35-turbo'
-    version: '0301'
+    name: 'gpt-35-turbo-16k'
+    modelName: 'gpt-35-turbo-16k'
+    version: '0613'
     sku: 'Standard'
     capacity: 60
   }
-  // {
-  //   name: 'gpt-35-turbo-16k'
-  //   modelName: 'gpt-35-turbo-16k'
-  //   version: '0613'
-  //   sku: 'Standard'
-  //   capacity: 120
-  // }
   {
     name: 'text-embedding-ada-002'
     modelName: 'text-embedding-ada-002'
@@ -147,7 +142,7 @@ module keyVault './modules/keyVault.bicep' = {
     location: location
     keyVaultName: '${baseResourceName}-akv'
     logAnalyticsWorkspaceId: monitoring.outputs.logAnalyticsWorkspaceId
-    logAnalyticsWorkspaceName: '${baseResourceName}-law'
+    logAnalyticsWorkspaceName: logAnalyticsWorkspaceName
     azureAdClientSecret: azureAdClientSecret
   }
 }
@@ -159,7 +154,7 @@ module appConfiguration './modules/appConfiguration.bicep' = {
     location: location
     appConfigurationName: '${baseResourceName}-appconfig'
     logAnalyticsWorkspaceId: monitoring.outputs.logAnalyticsWorkspaceId
-    logAnalyticsWorkspaceName: '${baseResourceName}-law'
+    logAnalyticsWorkspaceName: logAnalyticsWorkspaceName
   }
 }
 
@@ -183,7 +178,7 @@ module openAiService './modules/openAiService.bicep' = {
     openAiServiceName: '${baseResourceName}-oai'
     openAiModeldeployments: openAiModelDeployments
     logAnalyticsWorkspaceId: monitoring.outputs.logAnalyticsWorkspaceId
-    logAnalyticsWorkspaceName: '${baseResourceName}-law'
+    logAnalyticsWorkspaceName: logAnalyticsWorkspaceName
   }
 }
 
@@ -201,7 +196,7 @@ module cognitiveSearch './modules/cognitiveSearch.bicep' = {
     partitionCount: 1
     hostingMode: 'default'
     logAnalyticsWorkspaceId: monitoring.outputs.logAnalyticsWorkspaceId
-    logAnalyticsWorkspaceName: '${baseResourceName}-law'
+    logAnalyticsWorkspaceName: logAnalyticsWorkspaceName
   }
 }
 
@@ -251,6 +246,16 @@ module storageAccount './modules/storageAccount.bicep' = {
   }
 }
 
+module containerRegistry './modules/containerRegistry.bicep' = {
+  name: 'containerRegistry'
+  scope: rg
+  params: {
+    location: location
+    containerRegistryName: '${baseResourceName}-acr'
+    logAnalyticsWorkspaceId: monitoring.outputs.logAnalyticsWorkspaceId
+    logAnalyticsWorkspaceName: logAnalyticsWorkspaceName
+  }
+}
 module containerApp './modules/containerApp.bicep' = {
   name: 'containerApp'
   scope: rg
@@ -267,6 +272,7 @@ var roles = {
     'Cosmos DB Account Reader Role': 'fbdf93bf-df7d-467e-a4d2-9458aa1360c8'
     'Key Vault Secrets User': '4633458b-17de-408a-b874-0445c86b69e6'
     'App Configuration Data Reader': '516239f1-63e1-4d78-a4de-a74fb236a071'
+    AcrPull: '7f951dda-4ed3-4680-a7ca-43fe172d538d'
 }
 
 module openAiServiceWebAppRoleServicePrincipal 'modules/roleAssignment.bicep' = {
@@ -325,6 +331,16 @@ module appConfigurationWebAppRoleServicePrincipal 'modules/roleAssignment.bicep'
   params: {
     principalId: webAppBlazor.outputs.webAppIdentityPrincipalId
     roleDefinitionId: roles['App Configuration Data Reader']
+    principalType: 'ServicePrincipal'
+  }
+}
+
+module containerRegistryAppConfigurationRoleServicePrincipal 'modules/roleAssignment.bicep' = {
+  scope: rg
+  name: 'containerRegistryAppConfigurationRoleServicePrincipal'
+  params: {
+    principalId: appConfiguration.outputs.appConfigurationIdentityPrincipalId
+    roleDefinitionId: roles['AcrPull']
     principalType: 'ServicePrincipal'
   }
 }
