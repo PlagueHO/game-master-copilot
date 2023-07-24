@@ -1,7 +1,6 @@
-﻿using DMCopilot.Shared.Data;
-using DMCopilot.Shared.Models;
+﻿using DMCopilot.Data.Models;
+using DMCopilot.Data.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.Cosmos;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 

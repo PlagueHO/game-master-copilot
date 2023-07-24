@@ -1,22 +1,16 @@
 using Azure.Identity;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
-using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 using Blazorise;
 using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
-using DMCopilot.Shared.Data;
-using DMCopilot.Shared.Services;
+using DMCopilot.Data.Repositories;
 using DMCopilot.Backend.Controllers;
+using DMCopilot.Shared.Services;
 using DMCopilot.Shared.Configuration;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 
 internal class Program
 {

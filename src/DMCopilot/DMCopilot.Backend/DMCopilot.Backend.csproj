@@ -32,6 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DMCopilot.Data\DMCopilot.Data.csproj" />
     <ProjectReference Include="..\DMCopilot.Shared\DMCopilot.Shared.csproj" />
   </ItemGroup>
 

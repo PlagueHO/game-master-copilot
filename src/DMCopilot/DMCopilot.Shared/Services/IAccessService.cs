@@ -1,4 +1,4 @@
-﻿using DMCopilot.Shared.Models;
+﻿using DMCopilot.Data.Models;
 using Microsoft.AspNetCore.Components.Authorization;
 
 namespace DMCopilot.Shared.Services
