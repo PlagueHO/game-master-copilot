@@ -1,48 +1,41 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Newtonsoft.Json;
 
-namespace DMCopilot.Data.Models
+namespace DMCopilot.Data.Models;
+
+public enum GeneratedContentMethod
 {
-    public enum GeneratedContentMethod
-    {
-        None,
-        Manual,
-        AI,
-        Random
-    }
+    None,
+    Manual,
+    AI,
+    Random
+}
+
+/// <summary>
+/// Class to represent how the source content was generated.
+/// </summary>
+public class GeneratedContent
+{
+    /// <summary>
+    /// The method that was used to generate this content.
+    /// </summary>
+    [JsonProperty(PropertyName = "method")]
+    public GeneratedContentMethod Method { get; set; } = GeneratedContentMethod.Manual;
 
     /// <summary>
-    /// Class to represent how the source content was generated.
+    /// The Semantic Kernel plugin that was used to generate this content if the method was FoundationalModel.
     /// </summary>
-    public class GeneratedContent
-    {
-        /// <summary>
-        /// The method that was used to generate this content.
-        /// </summary>
-        [JsonProperty(PropertyName = "method")]
-        public GeneratedContentMethod Method { get; set; } = GeneratedContentMethod.Manual;
+    [JsonProperty(PropertyName = "plugin")]
+    public string? Plugin { get; set; }
 
-        /// <summary>
-        /// The Semantic Kernel plugin that was used to generate this content if the method was FoundationalModel.
-        /// </summary>
-        [JsonProperty(PropertyName = "plugin")]
-        public string? Plugin { get; set; }
+    /// <summary>
+    /// The Semantic Kernel function in the plugin that was used to generate this content if the method was FoundationalModel.
+    /// </summary>
+    [JsonProperty(PropertyName = "function")]
+    public string? Function { get; set; }
 
-        /// <summary>
-        /// The Semantic Kernel function in the plugin that was used to generate this content if the method was FoundationalModel.
-        /// </summary>
-        [JsonProperty(PropertyName = "function")]
-        public string? Function { get; set; }
-
-        /// <summary>
-        /// The input parameters that was passed to the Semantic Kernel function that was used to generate this content if the method was FoundationalModel.
-        /// </summary>
-        [JsonProperty(PropertyName = "parameters")]
-        public Dictionary<string, string>? Parameters { get; set; }
-    }
+    /// <summary>
+    /// The input parameters that was passed to the Semantic Kernel function that was used to generate this content if the method was FoundationalModel.
+    /// </summary>
+    [JsonProperty(PropertyName = "parameters")]
+    public Dictionary<string, string>? Parameters { get; set; }
 }
