@@ -2,7 +2,7 @@
 
 namespace DMCopilot.Data.Models
 {
-    public interface IGeneratedStorageEntity<T> : IStorageEntity<T>
+    public interface IGeneratedStorageEntity : IStorageEntity
     {
         /// <summary>
         /// Information about how the storage entity was populated

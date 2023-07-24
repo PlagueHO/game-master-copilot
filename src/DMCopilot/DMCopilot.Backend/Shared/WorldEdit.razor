@@ -65,7 +65,7 @@
     public Tenant? Tenant { get; set; }
 
     [Parameter]
-    public Guid WorldId { get; set; }
+    public string WorldId { get; set; }
 
     World? World;
     String WorldDetails { get; set; } = "A fantasy realm called on a world called Toril with a range of climates and environments with a long rich history.";
@@ -76,7 +76,7 @@
         if (Tenant != null && Account != null)
         {
             if (navigationManager.Uri.EndsWith("/world/new"))
-                World = new World(Guid.NewGuid(), Tenant.Id, "New World", "A new world!");
+                World = new World(Guid.NewGuid().ToString(), Tenant.Id, "New World", "A new world!");
             else if (WorldId != null)
                 World = await worldRepository.GetWorldAsync(WorldId, Tenant.Id);
         }

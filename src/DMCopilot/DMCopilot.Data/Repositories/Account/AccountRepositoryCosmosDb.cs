@@ -9,14 +9,14 @@ namespace DMCopilot.Data.Repositories
         private readonly Container _container;
         private readonly ILogger<AccountRepositoryCosmosDb> _logger;
 
-        public AccountRepositoryCosmosDb(CosmosClient client, String databaseName, String containerName, ILogger<AccountRepositoryCosmosDb> logger)
+        public AccountRepositoryCosmosDb(CosmosClient client, string databaseName, string containerName, ILogger<AccountRepositoryCosmosDb> logger)
         {
             _container = client.GetContainer(databaseName, containerName);
             _logger = logger;
             _logger.LogInformation($"Initialized {nameof(AccountRepositoryCosmosDb)} using container '{containerName}'.");
         }
 
-        public async Task<Account> GetAccountAsync(String id)
+        public async Task<Account> GetAccountAsync(string id)
         {
             try
             {
@@ -67,14 +67,14 @@ namespace DMCopilot.Data.Repositories
             return response.Resource;
         }
 
-        public async Task<Account> UpdateAccountAsync(String id, Account account)
+        public async Task<Account> UpdateAccountAsync(string id, Account account)
         {
             account.Id = id;
             var response = await _container.UpsertItemAsync(account, new PartitionKey(id));
             return response.Resource;
         }
 
-        public async Task<Boolean> DeleteAccountAsync(String id)
+        public async Task<bool> DeleteAccountAsync(string id)
         {
             try
             {

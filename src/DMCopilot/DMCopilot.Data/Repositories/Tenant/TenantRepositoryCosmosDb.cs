@@ -10,23 +10,23 @@ namespace DMCopilot.Data.Repositories
         private readonly Container _container;
         private readonly ILogger<TenantRepositoryCosmosDb> _logger;
 
-        public TenantRepositoryCosmosDb(CosmosClient client, String databaseName, String containerName, ILogger<TenantRepositoryCosmosDb> logger)
+        public TenantRepositoryCosmosDb(CosmosClient client, string databaseName, string containerName, ILogger<TenantRepositoryCosmosDb> logger)
         {
             _container = client.GetContainer(databaseName, containerName);
             _logger = logger;
             _logger.LogInformation($"Initialized {nameof(TenantRepositoryCosmosDb)} using container '{containerName}'.");
         }
 
-        public async Task<Tenant> GetTenantAsync(Guid id)
+        public async Task<Tenant> GetTenantAsync(string id)
         {
             try
             {
-                var response = await _container.ReadItemAsync<Tenant>(id.ToString(), new PartitionKey(id.ToString()));
+                var response = await _container.ReadItemAsync<Tenant>(id, new PartitionKey(id));
                 return response.Resource;
             }
             catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
-                throw new TenantNotFoundException(id.ToString());
+                throw new TenantNotFoundException(id);
             }
         }
 
@@ -44,7 +44,7 @@ namespace DMCopilot.Data.Repositories
             return null;
         }
 
-        public async Task<Tenant> GetTenantByNameAsync(String name)
+        public async Task<Tenant> GetTenantByNameAsync(string name)
         {
             var queryDefinition = new QueryDefinition("SELECT * FROM c WHERE c.Name = @name")
                 .WithParameter("@name", name);
@@ -89,18 +89,18 @@ namespace DMCopilot.Data.Repositories
             return response.Resource;
         }
 
-        public async Task<Tenant> UpdateTenantAsync(Guid id, Tenant tenant)
+        public async Task<Tenant> UpdateTenantAsync(string id, Tenant tenant)
         {
             tenant.Id = id;
-            var response = await _container.UpsertItemAsync(tenant, new PartitionKey(tenant.Id.ToString()));
+            var response = await _container.UpsertItemAsync(tenant, new PartitionKey(tenant.Id));
             return response.Resource;
         }
 
-        public async Task<Boolean> DeleteTenantAsync(Guid id)
+        public async Task<bool> DeleteTenantAsync(string id)
         {
             try
             {
-                await _container.DeleteItemAsync<Tenant>(id.ToString(), new PartitionKey(id.ToString()));
+                await _container.DeleteItemAsync<Tenant>(id, new PartitionKey(id));
                 return true;
             }
             catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)

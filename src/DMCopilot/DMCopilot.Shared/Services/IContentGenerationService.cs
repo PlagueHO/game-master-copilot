@@ -18,13 +18,13 @@ namespace DMCopilot.Shared.Services
         /// </summary>
         /// <param name="details"></param>
         /// <returns></returns>
-        public Task<World> GenerateWorldAsync(String details);
+        public Task<World> GenerateWorldAsync(string details);
 
         /// <summary>
         /// Generate a Character from the provided content.
         /// </summary>
         /// <param name="details"></param>
         /// <returns></returns>
-        public Task<Character> GenerateCharacterAsync(String details);
+        public Task<Character> GenerateCharacterAsync(string details);
     }
 }

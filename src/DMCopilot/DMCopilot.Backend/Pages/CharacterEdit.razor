@@ -30,7 +30,7 @@ else
     public Tenant? Tenant { get; set; }
 
     [Parameter]
-    public Guid? CharacterId { get; set; }
+    public string? CharacterId { get; set; }
 
     private Character _character;
     private string _characterDetails { get; set; } = "A hill dwarf merchant who runs a general store in Baldurs Gate.";
@@ -40,9 +40,9 @@ else
         if (Tenant != null)
         {
             if (CharacterId == null)
-                _character = new Character(Guid.NewGuid());
+                _character = new Character(Guid.NewGuid().ToString());
             else
-                _character = await characterRepository.GetCharacterAsync((Guid) CharacterId);
+                _character = await characterRepository.GetCharacterAsync(CharacterId);
         }
     }
 

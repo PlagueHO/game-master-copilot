@@ -7,7 +7,7 @@ namespace DMCopilot.Shared.Services
     {
         public Account Account { get; }
         public Tenant Tenant { get; }
-        public Boolean IsLoaded { get; }
+        public bool IsLoaded { get; }
         public Task<Account> InitializeUsingContext(AuthenticationState context);
     }
 }

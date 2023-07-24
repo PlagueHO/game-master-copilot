@@ -9,23 +9,23 @@ namespace DMCopilot.Data.Repositories
         private readonly Container _container;
         private readonly ILogger<WorldRepositoryCosmosDb> _logger;
 
-        public WorldRepositoryCosmosDb(CosmosClient client, String databaseName, String containerName, ILogger<WorldRepositoryCosmosDb> logger)
+        public WorldRepositoryCosmosDb(CosmosClient client, string databaseName, string containerName, ILogger<WorldRepositoryCosmosDb> logger)
         {
             _container = client.GetContainer(databaseName, containerName);
             _logger = logger;
             _logger.LogInformation($"Initialized {nameof(WorldRepositoryCosmosDb)} using container '{containerName}'.");
         }
 
-        public async Task<World> GetWorldAsync(Guid id, Guid tenantId)
+        public async Task<World> GetWorldAsync(string id, string tenantId)
         {
             try
             {
-                var response = await _container.ReadItemAsync<World>(id.ToString(), GetPartitionKey(id,tenantId));
+                var response = await _container.ReadItemAsync<World>(id, GetPartitionKey(id,tenantId));
                 return response.Resource;
             }
             catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
-                throw new WorldNotFoundException($"World {id.ToString()} not found in tenant {tenantId.ToString()}");
+                throw new WorldNotFoundException($"World {id} not found in tenant {tenantId}");
             }
         }
 
@@ -43,7 +43,7 @@ namespace DMCopilot.Data.Repositories
             return null;
         }
 
-        public async Task<World> GetWorldByNameAsync(Guid tenantId, string name)
+        public async Task<World> GetWorldByNameAsync(string tenantId, string name)
         {
             var queryDefinition = new QueryDefinition("SELECT * FROM c WHERE c.Name = @name")
                 .WithParameter("@name", name);
@@ -62,7 +62,7 @@ namespace DMCopilot.Data.Repositories
             return results;
         }
 
-        public async Task<IEnumerable<World>> GetWorldsByTenantAsync(Guid tenantId)
+        public async Task<IEnumerable<World>> GetWorldsByTenantAsync(string tenantId)
         {
             var queryDefinition = new QueryDefinition("SELECT * FROM c");
             return await GetWorldsByQueryAsync(queryDefinition);
@@ -74,18 +74,18 @@ namespace DMCopilot.Data.Repositories
             return response.Resource;
         }
 
-        public async Task<World> UpdateWorldAsync(Guid id, World world)
+        public async Task<World> UpdateWorldAsync(string id, World world)
         {
             world.Id = id;
             var response = await _container.UpsertItemAsync(world, GetPartitionKey(world.Id, world.TenantId));
             return response.Resource;
         }
 
-        public async Task<Boolean> DeleteWorldAsync(Guid id, Guid tenantId)
+        public async Task<bool> DeleteWorldAsync(string id, string tenantId)
         {
             try
             {
-                await _container.DeleteItemAsync<World>(id.ToString(), GetPartitionKey(id, tenantId));
+                await _container.DeleteItemAsync<World>(id, GetPartitionKey(id, tenantId));
                 return true;
             }
             catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
@@ -94,11 +94,11 @@ namespace DMCopilot.Data.Repositories
             }
         }
 
-        public static PartitionKey GetPartitionKey(Guid id, Guid tenantId)
+        public static PartitionKey GetPartitionKey(string id, string tenantId)
         {
             return new PartitionKeyBuilder()
-                .Add(tenantId.ToString())
-                .Add(id.ToString())
+                .Add(tenantId)
+                .Add(id)
                 .Build();
         }
     }

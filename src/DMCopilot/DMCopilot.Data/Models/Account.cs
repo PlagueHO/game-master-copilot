@@ -5,7 +5,7 @@ namespace DMCopilot.Data.Models
     /// <summary>
     /// Represents an account in the system.
     /// </summary>
-    public class Account : IStorageEntity<string>
+    public class Account : IStorageEntity
     {
         /// <summary>
         /// Gets or sets the unique identifier for the account.
@@ -24,7 +24,7 @@ namespace DMCopilot.Data.Models
         /// Gets or sets the active tenant for the account.
         /// </summary>
         [JsonProperty(PropertyName = "activetenantid")]
-        public Guid ActiveTenantId { get; set; }
+        public string ActiveTenantId { get; set; }
 
         /// <summary>
         /// Gets or sets the list of Tenant Roles associated with the account.
@@ -41,7 +41,7 @@ namespace DMCopilot.Data.Models
         /// <param name="email">The email address associated with the account.</param>
         /// <param name="activeTenantId">The currently active tenant.</param>
         /// <param name="tenantRoles">The roles the account has in any tenants.</param>
-        public Account(string id, string name, Guid activeTenantId, List<AccountTenantRole> tenantRoles)
+        public Account(string id, string name, string activeTenantId, List<AccountTenantRole> tenantRoles)
         {
             Id = id;
             Name = name;
@@ -71,7 +71,7 @@ namespace DMCopilot.Data.Models
     /// </summary>
     public class AccountTenantRole {
         [JsonProperty(PropertyName = "tenantid")]
-        public Guid TenantId { get; set; }
+        public string TenantId { get; set; }
 
         [JsonProperty(PropertyName = "email")]
         public string Email { get; set; }
@@ -85,7 +85,7 @@ namespace DMCopilot.Data.Models
         [JsonProperty(PropertyName = "role")]
         public TenantRole Role { get; set; }
 
-        public AccountTenantRole(Guid tenantId, String email, String name, TenantType type, TenantRole role)
+        public AccountTenantRole(string tenantId, string email, string name, TenantType type, TenantRole role)
         {
             TenantId = tenantId;
             Email = email;

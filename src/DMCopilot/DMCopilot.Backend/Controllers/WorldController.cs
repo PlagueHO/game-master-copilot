@@ -20,13 +20,13 @@ namespace DMCopilot.Backend.Controllers
         }
         
         [HttpGet]
-        public async Task<IEnumerable<World>> Get([FromQuery] Guid tenantId)
+        public async Task<IEnumerable<World>> Get([FromQuery] string tenantId)
         {
             return await _worldRepository.GetWorldsByTenantAsync(tenantId);
         }
 
         [HttpGet("{id}")]
-        public async Task<World> Get(Guid id, [FromQuery] Guid tenantId)
+        public async Task<World> Get(string id, [FromQuery] string tenantId)
         {
             return await _worldRepository.GetWorldAsync(id, tenantId);
         }
@@ -38,14 +38,14 @@ namespace DMCopilot.Backend.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task Put(Guid id, [FromBody] World world)
+        public async Task Put(string id, [FromBody] World world)
         {
             await _worldRepository.UpdateWorldAsync(id, world);
         }
 
         // DELETE api/<WorldController>/5
         [HttpDelete("{id}")]
-        public async Task Delete(Guid id, [FromBody] Guid tenantId)
+        public async Task Delete(string id, [FromBody] string tenantId)
         {
             await _worldRepository.DeleteWorldAsync(id, tenantId);
         }
