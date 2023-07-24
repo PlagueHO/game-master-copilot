@@ -4,7 +4,7 @@ namespace DMCopilot.Shared.Services
 {
     public interface ISemanticKernelService
     {
-        public Task<SKContext> InvokePluginFunctionAsync(string plugin, string function, Dictionary<String, String> inputs);
+        public Task<SKContext> InvokePluginFunctionAsync(string plugin, string function, Dictionary<string, string> inputs);
         
     }
 }

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -22,6 +22,10 @@
     <PackageReference Include="Microsoft.SemanticKernel.Planning.SequentialPlanner" Version="0.17.230718.1-preview" />
     <PackageReference Include="Microsoft.SemanticKernel.Skills.OpenAPI" Version="0.17.230718.1-preview" />
     <PackageReference Include="Microsoft.SemanticKernel.Skills.Web" Version="0.17.230718.1-preview" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DMCopilot.Data\DMCopilot.Data.csproj" />
   </ItemGroup>
 
 </Project>

@@ -25,9 +25,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{805C
 		..\..\infrastructure\bicep\modules\webAppBlazor.bicep = ..\..\infrastructure\bicep\modules\webAppBlazor.bicep
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DMCopilot.Shared.Test", "DMCopilot.Shared.Test\DMCopilot.Shared.Test.csproj", "{F8EF7652-5DC7-4DFF-BD9A-CA27E93CBC2E}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DMCopilot.Shared", "DMCopilot.Shared\DMCopilot.Shared.csproj", "{CF614E2E-8767-42D1-AAA2-6A119F532729}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DMCopilot.Data", "DMCopilot.Data\DMCopilot.Data.csproj", "{1F854BB6-CE3E-4899-A7E3-B61216087447}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DMCopilot.Entities", "DMCopilot.Entities\DMCopilot.Entities.csproj", "{0ECACDEA-7C46-492A-8B9D-71BCA7DAA657}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DMCopilot.Entities.Test", "DMCopilot.Entities.Test\DMCopilot.Entities.Test.csproj", "{58483A94-FAC5-481A-9579-702A313B9C2B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,14 +43,22 @@ Global
 		{48D62070-7356-4DED-A602-52730176F572}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{48D62070-7356-4DED-A602-52730176F572}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{48D62070-7356-4DED-A602-52730176F572}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F8EF7652-5DC7-4DFF-BD9A-CA27E93CBC2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F8EF7652-5DC7-4DFF-BD9A-CA27E93CBC2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F8EF7652-5DC7-4DFF-BD9A-CA27E93CBC2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F8EF7652-5DC7-4DFF-BD9A-CA27E93CBC2E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CF614E2E-8767-42D1-AAA2-6A119F532729}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CF614E2E-8767-42D1-AAA2-6A119F532729}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF614E2E-8767-42D1-AAA2-6A119F532729}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF614E2E-8767-42D1-AAA2-6A119F532729}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F854BB6-CE3E-4899-A7E3-B61216087447}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F854BB6-CE3E-4899-A7E3-B61216087447}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F854BB6-CE3E-4899-A7E3-B61216087447}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F854BB6-CE3E-4899-A7E3-B61216087447}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0ECACDEA-7C46-492A-8B9D-71BCA7DAA657}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0ECACDEA-7C46-492A-8B9D-71BCA7DAA657}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0ECACDEA-7C46-492A-8B9D-71BCA7DAA657}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0ECACDEA-7C46-492A-8B9D-71BCA7DAA657}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58483A94-FAC5-481A-9579-702A313B9C2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58483A94-FAC5-481A-9579-702A313B9C2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58483A94-FAC5-481A-9579-702A313B9C2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58483A94-FAC5-481A-9579-702A313B9C2B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

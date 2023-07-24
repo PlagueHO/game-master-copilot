@@ -1,9 +1,4 @@
-﻿using DMCopilot.Shared.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DMCopilot.Entities.Models;
 
 namespace DMCopilot.Shared.Services
 {
@@ -23,13 +18,13 @@ namespace DMCopilot.Shared.Services
         /// </summary>
         /// <param name="details"></param>
         /// <returns></returns>
-        public Task<World> GenerateWorldAsync(String details);
+        public Task<World> GenerateWorldAsync(string details);
 
         /// <summary>
         /// Generate a Character from the provided content.
         /// </summary>
         /// <param name="details"></param>
         /// <returns></returns>
-        public Task<Character> GenerateCharacterAsync(String details);
+        public Task<Character> GenerateCharacterAsync(string details);
     }
 }

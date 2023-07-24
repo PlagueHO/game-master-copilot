@@ -10,7 +10,7 @@ namespace DMCopilot.Backend.Pages
     {
         public string? RequestId { get; set; }
 
-        public Boolean ShowRequestId => !string.IsNullOrEmpty(RequestId);
+        public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
 
         private readonly ILogger<ErrorModel> _logger;
 

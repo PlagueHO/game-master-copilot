@@ -1,5 +1,6 @@
-﻿using DMCopilot.Shared.Data;
-using DMCopilot.Shared.Models;
+﻿using DMCopilot.Data.Repositories;
+using DMCopilot.Shared.Services;
+using DMCopilot.Entities.Models;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Logging;
 
@@ -12,7 +13,7 @@ namespace DMCopilot.Shared.Services
     {
         public Account Account { get; private set; }
         public Tenant Tenant { get; private set; }
-        public Boolean IsLoaded => Account != null && Tenant != null;
+        public bool IsLoaded => Account != null && Tenant != null;
         private readonly IAccountRepository _accountRepository;
         private readonly ITenantRepository _tenantRepository;
         private readonly ILogger<AccessService> _logger;
@@ -107,7 +108,7 @@ namespace DMCopilot.Shared.Services
             // Create a new individual tenant for the user account
             var email = context.User.Identity.Name;
             var name = context.User.Claims.FirstOrDefault(c => c.Type == "name")?.Value ?? email;
-            var tenant = new Tenant(Guid.NewGuid(), name, email, TenantType.Individual);
+            var tenant = new Tenant(Guid.NewGuid().ToString(), name, email, TenantType.Individual);
             await _tenantRepository.CreateTenantAsync(tenant);
             
             _logger.LogInformation("Creating individual tenant for '{email}'.", email);

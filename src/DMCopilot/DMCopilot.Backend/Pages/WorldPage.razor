@@ -3,8 +3,8 @@
 @page "/world/{WorldId:guid}"
 
 @using DMCopilot.Shared.Services
-@using DMCopilot.Shared.Data
-@using DMCopilot.Shared.Models
+@using DMCopilot.Entities.Models
+@using DMCopilot.Data.Repositories
 
 @inject IWorldRepository worldRepository
 @inject NavigationManager navigationManager
@@ -30,7 +30,7 @@
     public Tenant? Tenant { get; set; }
 
     [Parameter]
-    public Guid WorldId { get; set; }
+    public string WorldId { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {

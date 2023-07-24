@@ -187,11 +187,11 @@ namespace DMCopilot.Shared.Services
             }
         }
 
-        public async Task<SKContext> InvokePluginFunctionAsync(string plugin, string function, Dictionary<String, String> inputs)
+        public async Task<SKContext> InvokePluginFunctionAsync(string plugin, string function, Dictionary<string, string> inputs)
         {
             LoadPlugin(plugin);
             var context = _semanticKernel.CreateNewContext();
-            foreach (String input in inputs.Keys)
+            foreach (string input in inputs.Keys)
                 context[input] = inputs[input];
             _logger.LogInformation($"Invoking '{function}' from plugin '{plugin}.");
             var result = await _functions[plugin][function].InvokeAsync(context);
