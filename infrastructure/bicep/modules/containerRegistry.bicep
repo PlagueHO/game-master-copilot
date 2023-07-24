@@ -26,7 +26,7 @@ resource containerRegistrySetting 'Microsoft.Insights/diagnosticSettings@2021-05
     workspaceId: logAnalyticsWorkspaceId
     logs: [
       {
-        category: 'HttpRequest'
+        category: 'ContainerRegistryRepositoryEvents'
         enabled: true
         retentionPolicy: {
           days: 0
@@ -34,7 +34,7 @@ resource containerRegistrySetting 'Microsoft.Insights/diagnosticSettings@2021-05
         }
       }
       {
-        category: 'Audit'
+        category: 'ContainerRegistryLoginEvents'
         enabled: true
         retentionPolicy: {
           days: 0
