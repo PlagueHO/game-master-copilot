@@ -51,6 +51,16 @@ param azureAdClientId string
 param azureAdClientSecret string
 
 var logAnalyticsWorkspaceName = '${baseResourceName}-law'
+var applicationInsightsName = '${baseResourceName}-ai'
+var keyVaultName = '${baseResourceName}-akv'
+var appConfigurationName = '${baseResourceName}-appconfig'
+var appServiceName = '${baseResourceName}-asp'
+var openAiServiceName = '${baseResourceName}-oai'
+var cognitiveSearchName = '${baseResourceName}-cog'
+var cosmosDbAccountName = '${baseResourceName}-cdb'
+var storageAccountName = replace('${baseResourceName}data','-','')
+var containerRegistryName = replace('${baseResourceName}acr','-','')
+var containerAppEnvironmentName = '${baseResourceName}-cae'
 
 var openAiModelDeployments = [
   {
@@ -130,8 +140,8 @@ module monitoring './modules/monitoring.bicep' = {
   scope: rg
   params: {
     location: location
-    logAnalyticsWorkspaceName: '${baseResourceName}-law'
-    applicationInsightsName: '${baseResourceName}-ai'
+    logAnalyticsWorkspaceName: logAnalyticsWorkspaceName
+    applicationInsightsName: applicationInsightsName
   }
 }
 
@@ -140,7 +150,7 @@ module keyVault './modules/keyVault.bicep' = {
   scope: rg
   params: {
     location: location
-    keyVaultName: '${baseResourceName}-akv'
+    keyVaultName: keyVaultName
     logAnalyticsWorkspaceId: monitoring.outputs.logAnalyticsWorkspaceId
     logAnalyticsWorkspaceName: logAnalyticsWorkspaceName
     azureAdClientSecret: azureAdClientSecret
@@ -152,7 +162,7 @@ module appConfiguration './modules/appConfiguration.bicep' = {
   scope: rg
   params: {
     location: location
-    appConfigurationName: '${baseResourceName}-appconfig'
+    appConfigurationName: appConfigurationName
     logAnalyticsWorkspaceId: monitoring.outputs.logAnalyticsWorkspaceId
     logAnalyticsWorkspaceName: logAnalyticsWorkspaceName
   }
@@ -163,7 +173,7 @@ module cosmosDbAccount './modules/cosmosDbAccount.bicep' = {
   scope: rg
   params: {
     location: location
-    cosmosDbAccountName: '${baseResourceName}-cdb'
+    cosmosDbAccountName: cosmosDbAccountName
   }
 }
 
@@ -175,7 +185,7 @@ module openAiService './modules/openAiService.bicep' = {
   ]
   params: {
     location: location
-    openAiServiceName: '${baseResourceName}-oai'
+    openAiServiceName: openAiServiceName
     openAiModeldeployments: openAiModelDeployments
     logAnalyticsWorkspaceId: monitoring.outputs.logAnalyticsWorkspaceId
     logAnalyticsWorkspaceName: logAnalyticsWorkspaceName
@@ -190,7 +200,7 @@ module cognitiveSearch './modules/cognitiveSearch.bicep' = {
   ]
   params: {
     location: location
-    cognitiveSearchName: '${baseResourceName}-cog'
+    cognitiveSearchName: cognitiveSearchName
     sku: 'basic'
     replicaCount: 1
     partitionCount: 1
@@ -205,7 +215,7 @@ module appServicePlan './modules/appServicePlan.bicep' = {
   scope: rg
   params: {
     location: location
-    appServicePlanName: '${baseResourceName}-asp'
+    appServicePlanName: appServiceName
     appServicePlanConfiguration: appServicePlanConfiguration
   }
 }
@@ -242,7 +252,7 @@ module storageAccount './modules/storageAccount.bicep' = {
   scope: rg
   params: {
     location: location
-    storageAccountName: replace('${baseResourceName}data','-','')
+    storageAccountName: storageAccountName
   }
 }
 
@@ -251,7 +261,7 @@ module containerRegistry './modules/containerRegistry.bicep' = {
   scope: rg
   params: {
     location: location
-    containerRegistryName: '${baseResourceName}-acr'
+    containerRegistryName: containerRegistryName
     logAnalyticsWorkspaceId: monitoring.outputs.logAnalyticsWorkspaceId
     logAnalyticsWorkspaceName: logAnalyticsWorkspaceName
   }
@@ -261,7 +271,7 @@ module containerApp './modules/containerApp.bicep' = {
   scope: rg
   params: {
     location: location
-    containerAppEnvironmentName: '${baseResourceName}-cae'
+    containerAppEnvironmentName: containerAppEnvironmentName
     logAnalyticsWorkspaceCustomerId: monitoring.outputs.logAnalyticsWorkspaceCustomerId
   }
 }
