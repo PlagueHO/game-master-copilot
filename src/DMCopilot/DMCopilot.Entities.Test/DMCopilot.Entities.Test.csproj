@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DMCopilot.Data\DMCopilot.Data.csproj" />
+    <ProjectReference Include="..\DMCopilot.Entities\DMCopilot.Entities.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,5 +1,6 @@
 ﻿using DMCopilot.Data.Repositories;
-using DMCopilot.Data.Models;
+using DMCopilot.Shared.Services;
+using DMCopilot.Entities.Models;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Logging;
 

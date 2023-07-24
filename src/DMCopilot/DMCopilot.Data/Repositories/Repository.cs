@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DMCopilot.Data.Models;
+﻿using DMCopilot.Entities.Models;
 using static DMCopilot.Data.Repositories.IStorageContext;
 
 namespace DMCopilot.Data.Repositories;

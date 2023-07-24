@@ -1,4 +1,4 @@
-﻿using DMCopilot.Data.Models;
+﻿using DMCopilot.Entities.Models;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
 

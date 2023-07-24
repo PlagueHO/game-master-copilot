@@ -1,4 +1,4 @@
-﻿namespace DMCopilot.Data.Types;
+﻿namespace DMCopilot.Entities.Types;
 
 /// <summary>
 /// Represents the height of a character.

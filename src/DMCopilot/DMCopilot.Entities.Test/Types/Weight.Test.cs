@@ -1,6 +1,6 @@
-﻿using DMCopilot.Data.Types;
+﻿using DMCopilot.Entities.Types;
 
-namespace DMCopilot.Data.Test.Types
+namespace DMCopilot.Entities.Test.Types
 {
     [TestClass]
     public class WeightTests

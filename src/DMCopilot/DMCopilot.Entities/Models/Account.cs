@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
-namespace DMCopilot.Data.Models;
+namespace DMCopilot.Entities.Models;
 
 /// <summary>
 /// Represents an account in the system.
@@ -11,26 +11,25 @@ public class Account : IStorageEntity
     /// Gets or sets the unique identifier for the account.
     /// This will be the email address of the user.
     /// </summary>
-    [JsonProperty(PropertyName = "id")]
+    [JsonPropertyName("id")]
     public string Id { get; set; }
 
     /// <summary>
     /// Gets or sets the name of the account.
     /// </summary>
-    [JsonProperty(PropertyName = "name")]
+    [JsonPropertyName("name")]
     public string Name { get; set; }
 
     /// <summary>
     /// Gets or sets the active tenant for the account.
     /// </summary>
-    [JsonProperty(PropertyName = "activetenantid")]
+    [JsonPropertyName("activetenantid")]
     public string ActiveTenantId { get; set; }
 
     /// <summary>
     /// Gets or sets the list of Tenant Roles associated with the account.
     /// </summary>
-    [JsonProperty(PropertyName = "tenantroles")]
-
+    [JsonPropertyName("tenantroles")]
     public List<AccountTenantRole> TenantRoles { get; set; } = new List<AccountTenantRole>();
 
     /// <summary>
@@ -69,20 +68,21 @@ public enum TenantRole
 /// <summary>
 /// Represents the tenants that the account has access to and the role they have in the tenant.
 /// </summary>
-public class AccountTenantRole {
-    [JsonProperty(PropertyName = "tenantid")]
+public class AccountTenantRole
+{
+    [JsonPropertyName("tenantid")]
     public string TenantId { get; set; }
 
-    [JsonProperty(PropertyName = "email")]
+    [JsonPropertyName("email")]
     public string Email { get; set; }
 
-    [JsonProperty(PropertyName = "name")]
+    [JsonPropertyName("name")]
     public string Name { get; set; }
 
-    [JsonProperty(PropertyName = "type")]
+    [JsonPropertyName("type")]
     public TenantType Type { get; set; }
 
-    [JsonProperty(PropertyName = "role")]
+    [JsonPropertyName("role")]
     public TenantRole Role { get; set; }
 
     public AccountTenantRole(string tenantId, string email, string name, TenantType type, TenantRole role)

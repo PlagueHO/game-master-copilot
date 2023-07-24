@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
-namespace DMCopilot.Data.Models;
+namespace DMCopilot.Entities.Models;
 
 // Enum for the different types of tenants
 public enum TenantType
@@ -19,25 +19,25 @@ public class Tenant : IStorageEntity
     /// <summary>
     /// Gets or sets the unique identifier for the tenant.
     /// </summary>
-    [JsonProperty(PropertyName = "id")]
+    [JsonPropertyName("id")]
     public string Id { get; set; }
 
     /// <summary>
     /// Gets or sets the type of the tenant.
     /// </summary>
-    [JsonProperty(PropertyName = "type")]
+    [JsonPropertyName("type")]
     public TenantType Type { get; set; } = TenantType.Individual;
 
     /// <summary>
     /// Gets or sets the name of the tenant.
     /// </summary>
-    [JsonProperty(PropertyName = "name")]
+    [JsonPropertyName("name")]
     public string Name { get; set; }
 
     /// <summary>
     /// Gets or sets the account of the owner of the tenant. This is the email address of the owner.
     /// </summary>
-    [JsonProperty(PropertyName = "owneraccount")]
+    [JsonPropertyName("owneraccount")]
     public string OwnerAccount { get; set; }
 
     /// <summary>

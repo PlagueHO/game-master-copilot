@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography.X509Certificates;
 
-namespace DMCopilot.Data.Types;
+namespace DMCopilot.Entities.Types;
 
 /// <summary>
 /// Represents a weight measurement in grams.

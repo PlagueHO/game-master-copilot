@@ -1,4 +1,4 @@
-﻿using DMCopilot.Data.Models;
+﻿using DMCopilot.Entities.Models;
 using DMCopilot.Data.Repositories;
 using Microsoft.AspNetCore.Mvc;
 

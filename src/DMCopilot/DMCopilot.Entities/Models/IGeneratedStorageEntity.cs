@@ -1,12 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
-namespace DMCopilot.Data.Models;
+namespace DMCopilot.Entities.Models;
 
 public interface IGeneratedStorageEntity : IStorageEntity
 {
     /// <summary>
     /// Information about how the storage entity was populated
     /// </summary>
-    [JsonProperty(PropertyName = "generatedcontent")]
+    [JsonPropertyName("generatedcontent")]
     public GeneratedContent GeneratedContent { get; set; }
 }
