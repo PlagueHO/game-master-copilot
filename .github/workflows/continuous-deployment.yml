@@ -57,12 +57,12 @@ jobs:
       AZUREAD_CLIENT_ID: ${{ secrets.AZUREAD_CLIENT_ID }}
       AZUREAD_CLIENTSECRET: ${{ secrets.AZUREAD_CLIENTSECRET }}
 
-  test-dmcopilotbackend:
-    uses: ./.github/workflows/test-dmcopilotbackend.yml
+  test-dmcopilot:
+    uses: ./.github/workflows/test-dmcopilot.yml
 
   build-dmcopilotbackend:
     needs:
-      - test-dmcopilotbackend
+      - test-dmcopilot
     uses: ./.github/workflows/build-dmcopilotbackend.yml
   
   publish-dmcopilotbackend:
