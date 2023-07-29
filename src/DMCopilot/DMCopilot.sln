@@ -27,11 +27,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{805C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DMCopilot.Shared", "DMCopilot.Shared\DMCopilot.Shared.csproj", "{CF614E2E-8767-42D1-AAA2-6A119F532729}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DMCopilot.Data", "DMCopilot.Data\DMCopilot.Data.csproj", "{1F854BB6-CE3E-4899-A7E3-B61216087447}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DMCopilot.Data", "DMCopilot.Data\DMCopilot.Data.csproj", "{1F854BB6-CE3E-4899-A7E3-B61216087447}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DMCopilot.Entities", "DMCopilot.Entities\DMCopilot.Entities.csproj", "{0ECACDEA-7C46-492A-8B9D-71BCA7DAA657}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DMCopilot.Entities", "DMCopilot.Entities\DMCopilot.Entities.csproj", "{0ECACDEA-7C46-492A-8B9D-71BCA7DAA657}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DMCopilot.Entities.Test", "DMCopilot.Entities.Test\DMCopilot.Entities.Test.csproj", "{58483A94-FAC5-481A-9579-702A313B9C2B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DMCopilot.Entities.Test", "DMCopilot.Entities.Test\DMCopilot.Entities.Test.csproj", "{58483A94-FAC5-481A-9579-702A313B9C2B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DMCopilot.WebApi", "DMCopilot.WebApi\DMCopilot.WebApi.csproj", "{1F578834-FE0C-4DC4-9018-45DEC732B86A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +61,10 @@ Global
 		{58483A94-FAC5-481A-9579-702A313B9C2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{58483A94-FAC5-481A-9579-702A313B9C2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{58483A94-FAC5-481A-9579-702A313B9C2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F578834-FE0C-4DC4-9018-45DEC732B86A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F578834-FE0C-4DC4-9018-45DEC732B86A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F578834-FE0C-4DC4-9018-45DEC732B86A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F578834-FE0C-4DC4-9018-45DEC732B86A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
