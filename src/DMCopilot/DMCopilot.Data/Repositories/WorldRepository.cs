@@ -4,13 +4,13 @@ using DMCopilot.Data.Repositories;
 
 namespace DMCopilot.Data.Repositories;
 
-public class WorldRepositoryNew : Repository<World>
+public class WorldRepository : Repository<World>
 {
     /// <summary>
     /// Initializes a new instance of the WorldRepository class.
     /// </summary>
     /// <param name="storageContext">The storage context.</param>
-    public WorldRepositoryNew(IStorageContext<World> storageContext)
+    public WorldRepository(IStorageContext<World> storageContext)
         : base(storageContext)
     {
     }

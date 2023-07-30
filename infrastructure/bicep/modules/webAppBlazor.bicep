@@ -38,23 +38,31 @@ resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2023-0
 
 var basicConfiguration = [
   {
-    name: 'AzureAd:Instance'
+    name: 'Authorization:Type'
+    value: 'AzureAd'
+  }
+  {
+    name: 'Authorization:AzureAd:Instance'
     value: azureAdInstance
   }
   {
-    name: 'AzureAd:Domain'
+    name: 'Authorization:AzureAd:Instance'
+    value: azureAdInstance
+  }
+  {
+    name: 'Authorization:AzureAd:Domain'
     value: azureAdDomain
   }
   {
-    name: 'AzureAd:TenantId'
+    name: 'Authorization:AzureAd:TenantId'
     value: azureAdTenantId
   }
   {
-    name: 'AzureAd:ClientId'
+    name: 'Authorization:AzureAd:ClientId'
     value: azureAdClientId
   }
   {
-    name: 'AzureAd:ClientSecret'
+    name: 'Authorization:AzureAd:ClientSecret'
     value: '@Microsoft.KeyVault(SecretUri=${keyVaultAzureAdClientSecret.properties.secretUri})'
   }
   {
@@ -110,12 +118,20 @@ var basicConfiguration = [
     value: openAiService.listKeys().key1
   }
   {
-    name: 'CosmosDb:EndpointUri'
+    name: 'DataStore:Type'
+    value: 'CosmosDb'
+  }
+  {
+    name: 'DataStore:CosmosDb:EndpointUri'
     value: cosmosDbAccount.properties.documentEndpoint
   }
   {
-    name: 'CosmosDb:Database'
+    name: 'DataStore:CosmosDb:Database'
     value: 'dmcopilot'
+  }
+  {
+    name: 'DataStore:CosmosDb:ConnectionString'
+    value: cosmosDbAccount.listConnectionStrings().connectionStrings[0].connectionString
   }
   {
     name: 'AppConfiguration:Endpoint'

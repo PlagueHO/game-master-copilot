@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace DMCopilot.WebApi.Service;
+namespace DMCopilot.Shared.Services.Options;
 
 /// <summary>
-/// App Configuration Configuration options for the DMCopilot.WebApi.
+/// App Configuration options for DMCopilot.
 /// </summary>
 public class AppConfigurationOptions
 {

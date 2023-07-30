@@ -2,7 +2,6 @@
 
 namespace DMCopilot.Data.Repositories;
 
-
 /// <summary>
 /// Defines the basic CRUD operations for a repository.
 /// </summary>
