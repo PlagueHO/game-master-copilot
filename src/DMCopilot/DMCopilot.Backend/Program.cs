@@ -32,6 +32,8 @@ internal class Program
 
         // TODO: Add Application Configuration service
 
+        // TODO: Move this to Authorization service
+
         // Add authentication related services
         var initialScopes = builder.Configuration["DownstreamApi:Scopes"]?.Split(' ') ?? builder.Configuration["MicrosoftGraph:Scopes"]?.Split(' ');
         builder.Services

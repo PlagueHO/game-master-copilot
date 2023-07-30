@@ -23,4 +23,8 @@
     <ProjectReference Include="..\DMCopilot.Services\DMCopilot.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
 </Project>

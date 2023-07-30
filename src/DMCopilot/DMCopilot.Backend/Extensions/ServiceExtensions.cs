@@ -45,6 +45,8 @@ public static class BackendServiceExtensions
     /// </summary>
     internal static IServiceCollection AddAuthorization(this IServiceCollection services, IConfiguration configuration)
     {
+        // TODO: Complete this method
+
         var authorizationOptions = services.BuildServiceProvider().GetRequiredService<IOptions<AuthorizationOptions>>().Value;
         switch (authorizationOptions.Type)
         {

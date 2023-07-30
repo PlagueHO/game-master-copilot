@@ -1,10 +1,10 @@
 @page "/character/{CharacterId?}"
 
-@using DMCopilot.Shared.Services
+@using DMCopilot.Services
 @using DMCopilot.Entities.Models
 @using DMCopilot.Data.Repositories
 
-@inject ISemanticKernelService semanticKernelService
+@inject SemanticKernelService semanticKernelService
 @inject CharacterRepository characterRepository
 
 <h4>Character</h4>
