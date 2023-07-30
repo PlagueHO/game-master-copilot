@@ -1,10 +1,9 @@
 ﻿using DMCopilot.Data.Repositories;
-using DMCopilot.Shared.Services;
 using DMCopilot.Entities.Models;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Logging;
 
-namespace DMCopilot.Shared.Services;
+namespace DMCopilot.Services;
 
 /// <summary>
 /// Service for managing user accounts and tenants.
@@ -91,9 +90,9 @@ public class AccessService : IAccessService
         };
         var account = new Account(email, name, tenant.Id, tenantRoles);
         await _accountRepository.CreateAsync(account);
-        
+
         _logger.LogInformation("Creating account for '{email}'.", email);
-        
+
         return account;
     }
 
@@ -110,9 +109,9 @@ public class AccessService : IAccessService
         var name = context.User.Claims.FirstOrDefault(c => c.Type == "name")?.Value ?? email;
         var tenant = new Tenant(Guid.NewGuid().ToString(), name, email, TenantType.Individual);
         await _tenantRepository.CreateAsync(tenant);
-        
+
         _logger.LogInformation("Creating individual tenant for '{email}'.", email);
-        
+
         return tenant;
     }
 }

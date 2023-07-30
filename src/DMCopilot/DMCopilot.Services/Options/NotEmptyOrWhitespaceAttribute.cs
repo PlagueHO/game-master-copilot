@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace DMCopilot.Shared.Services.Options;
+namespace DMCopilot.Services.Options;
 
 /// <summary>
 /// If the string is set, it must not be empty or whitespace.

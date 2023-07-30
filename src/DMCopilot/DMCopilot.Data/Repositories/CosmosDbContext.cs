@@ -1,6 +1,6 @@
-﻿using System.Net;
+﻿using DMCopilot.Entities.Models;
 using Microsoft.Azure.Cosmos;
-using DMCopilot.Entities.Models;
+using System.Net;
 
 namespace DMCopilot.Data.Repositories;
 

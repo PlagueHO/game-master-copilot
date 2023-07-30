@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace DMCopilot.Shared.Services.Options;
+namespace DMCopilot.Services.Options;
 
 /// <summary>
 /// App Configuration options for DMCopilot.

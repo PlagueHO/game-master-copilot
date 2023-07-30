@@ -1,20 +1,14 @@
-using Azure.Identity;
 using Blazorise;
 using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.Azure.Cosmos;
-using Microsoft.Identity.Web;
-using Microsoft.Identity.Web.UI;
 using DMCopilot.Backend.Controllers;
 using DMCopilot.Backend.Extensions;
 using DMCopilot.Data.Repositories;
-using DMCopilot.Shared.Services.Options;
-using DMCopilot.Shared.Services;
-using Microsoft.ApplicationInsights.Extensibility;
-using Microsoft.SemanticKernel.Diagnostics;
-using Microsoft.Extensions.DependencyInjection;
+using DMCopilot.Services;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Identity.Web;
+using Microsoft.Identity.Web.UI;
 
 internal class Program
 {
@@ -24,7 +18,6 @@ internal class Program
 
         // Load configuration
         builder.Services.AddOptions(builder.Configuration);
-
 
         // Add logging and application insights service
         builder.Services

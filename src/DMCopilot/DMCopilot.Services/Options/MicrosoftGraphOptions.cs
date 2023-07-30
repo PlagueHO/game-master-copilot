@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace DMCopilot.Shared.Services.Options;
+namespace DMCopilot.Services.Options;
 
 /// <summary>
 /// Microsoft Graph Configuration options for DMCopilot.

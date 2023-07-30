@@ -1,13 +1,8 @@
 ﻿using Azure.Identity;
+using DMCopilot.Services.Options;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DMCopilot.Shared.Services.Options;
 
-namespace DMCopilot.Shared.Services;
+namespace DMCopilot.Services;
 
 public class AzureCredentialService
 {
@@ -23,9 +18,9 @@ public class AzureCredentialService
                            TenantId = _options.AzureAd.TenantId
                        });
     }
+
     public DefaultAzureCredential GetDefaultAzureCredential()
     {
         return _defaultAzureCredential;
     }
 }
-

@@ -7,6 +7,7 @@ public enum TenantType
 {
     // The tenant is for an individual
     Individual,
+
     // The tenant is for an organization
     Organization
 }

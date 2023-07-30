@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace DMCopilot.Shared.Services.Options;
+namespace DMCopilot.Services.Options;
 
 /// <summary>
 /// Authorization options for DMCopilot.
@@ -59,7 +59,6 @@ public class AuthorizationOptions
         [Required]
         public string? Scopes { get; set; } = string.Empty;
     }
-
 
     /// <summary>
     /// Type of authorization.

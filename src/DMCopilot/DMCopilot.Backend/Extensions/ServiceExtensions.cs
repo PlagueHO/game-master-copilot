@@ -1,12 +1,11 @@
-﻿using System.Reflection;
+﻿using DMCopilot.Data.Repositories;
+using DMCopilot.Entities.Models;
+using DMCopilot.Services;
+using DMCopilot.Services.Options;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
-using DMCopilot.Shared.Services;
-using DMCopilot.Shared.Services.Options;
-using DMCopilot.Data.Repositories;
-using DMCopilot.Entities.Models;
-using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace DMCopilot.Backend.Extensions;
 

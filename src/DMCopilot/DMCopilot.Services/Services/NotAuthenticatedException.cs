@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace DMCopilot.Shared.Services;
+namespace DMCopilot.Services;
 
 [Serializable]
 internal class NotAuthenticatedException : Exception

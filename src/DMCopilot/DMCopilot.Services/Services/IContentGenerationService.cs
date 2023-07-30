@@ -1,6 +1,6 @@
 ﻿using DMCopilot.Entities.Models;
 
-namespace DMCopilot.Shared.Services;
+namespace DMCopilot.Services;
 
 /// <summary>
 /// This is an interface used to abstract the content generation service.

@@ -2,6 +2,7 @@
 using System.Text.Json.Serialization;
 
 namespace DMCopilot.Entities.Models;
+
 /// <summary>
 /// Class to represent a character in the game.
 /// </summary>

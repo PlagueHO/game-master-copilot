@@ -20,7 +20,7 @@ public class WorldRepositoryCosmosDb : IWorldRepository
     {
         try
         {
-            var response = await _container.ReadItemAsync<World>(id, GetPartitionKey(id,tenantId));
+            var response = await _container.ReadItemAsync<World>(id, GetPartitionKey(id, tenantId));
             return response.Resource;
         }
         catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
-namespace DMCopilot.Shared.Services.Options;
+namespace DMCopilot.Services.Options;
 
 /// <summary>
 /// If the other property is set to the expected value, then this property is required.

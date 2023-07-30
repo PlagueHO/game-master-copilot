@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace DMCopilot.Shared.Services.Options;
+namespace DMCopilot.Services.Options;
 
 /// <summary>
 /// Data Store Configuration options for DMCopilot.
@@ -77,5 +77,4 @@ public class DataStoreOptions
     /// </summary>
     [RequiredOnPropertyValue(nameof(Type), DataStoreType.CosmosDb)]
     public CosmosDbOptions? CosmosDb { get; set; } = new CosmosDbOptions();
-
 }

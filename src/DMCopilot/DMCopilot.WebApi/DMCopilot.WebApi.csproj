@@ -20,7 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\DMCopilot.Data\DMCopilot.Data.csproj" />
     <ProjectReference Include="..\DMCopilot.Entities\DMCopilot.Entities.csproj" />
-    <ProjectReference Include="..\DMCopilot.Shared\DMCopilot.Shared.csproj" />
+    <ProjectReference Include="..\DMCopilot.Services\DMCopilot.Services.csproj" />
   </ItemGroup>
 
 </Project>

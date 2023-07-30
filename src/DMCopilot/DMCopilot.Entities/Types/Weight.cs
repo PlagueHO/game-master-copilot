@@ -1,6 +1,4 @@
-﻿using System.Security.Cryptography.X509Certificates;
-
-namespace DMCopilot.Entities.Types;
+﻿namespace DMCopilot.Entities.Types;
 
 /// <summary>
 /// Represents a weight measurement in grams.
@@ -12,9 +10,9 @@ public class Weight
     /// </summary>
     public double Value { get; set; }
 
-    const double OUNCES_PER_GRAM = 0.03527396;
-    const double POUNDS_PER_GRAM = 0.00220462;
-    const double KILOGRAMS_PER_GRAM = 0.001;
+    private const double OUNCES_PER_GRAM = 0.03527396;
+    private const double POUNDS_PER_GRAM = 0.00220462;
+    private const double KILOGRAMS_PER_GRAM = 0.001;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Weight"/> class.

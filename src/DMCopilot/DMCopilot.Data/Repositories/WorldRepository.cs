@@ -1,6 +1,4 @@
 ﻿using DMCopilot.Entities.Models;
-using Microsoft.Graph.Models;
-using DMCopilot.Data.Repositories;
 
 namespace DMCopilot.Data.Repositories;
 

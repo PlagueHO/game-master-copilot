@@ -1,5 +1,5 @@
-﻿using DMCopilot.WebApi.Extensions;
-using DMCopilot.Shared.Services.Options;
+﻿using DMCopilot.Services.Options;
+using DMCopilot.WebApi.Extensions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
@@ -41,7 +41,6 @@ internal static class ServicesExtensions
             .Bind(configuration.GetSection(DataStoreOptions.PropertyName))
             .ValidateOnStart()
             .PostConfigure(TrimStringProperties);
-
 
         return services;
     }

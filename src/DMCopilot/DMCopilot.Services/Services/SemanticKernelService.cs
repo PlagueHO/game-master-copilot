@@ -1,12 +1,11 @@
 ﻿using Azure.Identity;
+using DMCopilot.Services.Options;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Orchestration;
-using System.Configuration;
-using DMCopilot.Shared.Services.Options;
 
-namespace DMCopilot.Shared.Services;
+namespace DMCopilot.Services;
 
 public class SemanticKernelService : ISemanticKernelService
 {
@@ -14,7 +13,6 @@ public class SemanticKernelService : ISemanticKernelService
     private readonly ILogger<SemanticKernelService> _logger;
     private readonly SemanticKernelOptions _options;
     private readonly DefaultAzureCredential? _azureCredential;
-    private readonly string? _azureOpenAiApiKey;
     private readonly string _pluginsDirectory;
     private IDictionary<string, IDictionary<string, Microsoft.SemanticKernel.SkillDefinition.ISKFunction>> _functions;
 
@@ -35,8 +33,8 @@ public class SemanticKernelService : ISemanticKernelService
 
         _semanticKernel = semanticKernelBuilder.Build();
 
-        // Set the class-level private field _skillDirectory to a value that 
-        // corresponds to the value retrieved from the configuration or the default 
+        // Set the class-level private field _skillDirectory to a value that
+        // corresponds to the value retrieved from the configuration or the default
         // value specified in the code block, which is "\Plugins".
         var pluginsDirectory = _options.PluginsDirectory;
         if (pluginsDirectory == null)
