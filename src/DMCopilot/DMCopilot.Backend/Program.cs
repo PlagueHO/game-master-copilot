@@ -5,15 +5,12 @@ using DMCopilot.Backend.Controllers;
 using DMCopilot.Backend.Extensions;
 using DMCopilot.Data.Repositories;
 using DMCopilot.Services;
-using Microsoft.ApplicationInsights.Extensibility;
-using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 
-internal class Program
+public sealed class Program
 {
     private static void Main(string[] args)
     {
@@ -28,45 +25,8 @@ internal class Program
         // Add logging and application insights service
         builder.Services.AddLoggingAndTelemetry(builder.Configuration);
 
-        // TODO: Move this to Authorization service
-
         // Add authentication related services
-        var initialScopes = builder.Configuration["DownstreamApi:Scopes"]?.Split(' ') ?? builder.Configuration["MicrosoftGraph:Scopes"]?.Split(' ');
-        builder.Services
-            .AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
-            .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"))
-            .EnableTokenAcquisitionToCallDownstreamApi(initialScopes)
-            .AddMicrosoftGraph(builder.Configuration.GetSection("MicrosoftGraph"))
-            .AddInMemoryTokenCaches();
-
-        builder.Services.AddAuthorization(options =>
-        {
-            options.DefaultPolicy = new AuthorizationPolicyBuilder()
-                .RequireAuthenticatedUser()
-                .Build();
-
-            options.AddPolicy("AllowAnonymous", policy =>
-            {
-                policy.RequireAssertion(context =>
-                {
-                    // Allow unauthenticated access to the HealthCheck endpoint
-                    return context.Resource is Endpoint endpoint &&
-                           endpoint.Metadata.GetMetadata<IAllowAnonymous>() != null;
-                });
-            });
-
-            // By default, all incoming requests will be authorized according to the default policy
-            options.FallbackPolicy = options.DefaultPolicy;
-        });
-
-        // Add support for controllers and identity pages
-        builder.Services
-            .AddControllersWithViews()
-            .AddMicrosoftIdentityUI();
-
-        builder.Services.AddRazorPages();
-        builder.Services.AddServerSideBlazor()
-            .AddMicrosoftIdentityConsentHandler();
+        builder.Services.AddAuthenticationAndAuthorization(builder.Configuration);
 
         // Add the Data Store
         builder.Services.AddDataStore();
@@ -81,6 +41,15 @@ internal class Program
 
         // Add the Semantic Kernel service
         builder.Services.AddSemanticKernel();
+
+        // Add support for controllers and identity pages
+        builder.Services
+            .AddControllersWithViews()
+            .AddMicrosoftIdentityUI();
+
+        builder.Services.AddRazorPages();
+        builder.Services.AddServerSideBlazor()
+            .AddMicrosoftIdentityConsentHandler();
 
         // Add Blazorize
         builder.Services.AddBlazorise(options =>

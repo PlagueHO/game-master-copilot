@@ -2,10 +2,13 @@
 using DMCopilot.Entities.Models;
 using DMCopilot.Services;
 using DMCopilot.Services.Options;
+using DMCopilot.Services.Auth;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
+using Microsoft.Identity.Web;
 using System.Reflection;
 
 namespace DMCopilot.Backend.Extensions;
@@ -21,14 +24,14 @@ public static class BackendServiceExtensions
             .PostConfigure(TrimStringProperties);
 
         // Add the Azure AD Configuration options
-        services.AddOptions<AuthorizationOptions>(AuthorizationOptions.PropertyName)
-            .Bind(configuration.GetSection(AuthorizationOptions.PropertyName))
+        services.AddOptions<Services.Options.AuthorizationOptions>(Services.Options.AuthorizationOptions.PropertyName)
+            .Bind(configuration.GetSection(Services.Options.AuthorizationOptions.PropertyName))
             .ValidateOnStart()
             .PostConfigure(TrimStringProperties);
 
         // Add the Microsoft Graph Configuration options
-        services.AddOptions<MicrosoftGraphOptions>(MicrosoftGraphOptions.PropertyName)
-            .Bind(configuration.GetSection(MicrosoftGraphOptions.PropertyName))
+        services.AddOptions<Services.Options.MicrosoftGraphOptions>(Services.Options.MicrosoftGraphOptions.PropertyName)
+            .Bind(configuration.GetSection(Services.Options.MicrosoftGraphOptions.PropertyName))
             .ValidateOnStart()
             .PostConfigure(TrimStringProperties);
 
@@ -71,23 +74,48 @@ public static class BackendServiceExtensions
     }
 
     /// <summary>
-    /// Add authorization services
+    /// Add authentication and authorization services
     /// </summary>
-    internal static IServiceCollection AddAuthorization(this IServiceCollection services, IConfiguration configuration)
+    internal static IServiceCollection AddAuthenticationAndAuthorization(this IServiceCollection services, IConfiguration configuration)
     {
-        // TODO: Complete this method
-
-        var authorizationOptions = services.BuildServiceProvider().GetRequiredService<IOptions<AuthorizationOptions>>().Value;
+        var authorizationOptions = services.BuildServiceProvider().GetRequiredService<IOptions<Services.Options.AuthorizationOptions>>().Value;
 
         switch (authorizationOptions.Type)
         {
-            case AuthorizationOptions.AuthorizationType.AzureAd:
-                services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                    .AddMicrosoftIdentityWebApi(configuration.GetSection($"{AuthorizationOptions.PropertyName}:AzureAd"));
+            case Services.Options.AuthorizationOptions.AuthorizationType.AzureAd:
+                var initialScopes = configuration["DownstreamApi:Scopes"]?.Split(' ') ?? configuration["MicrosoftGraph:Scopes"]?.Split(' ');
+                services
+                    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddMicrosoftIdentityWebApp(configuration.GetSection($"{Services.Options.AuthorizationOptions.PropertyName}:AzureAd"))
+                    .EnableTokenAcquisitionToCallDownstreamApi(initialScopes)
+                    .AddMicrosoftGraph(configuration.GetSection("MicrosoftGraph"))
+                    .AddInMemoryTokenCaches();
+
+                services.AddAuthorization(options =>
+                {
+                    options.DefaultPolicy = new AuthorizationPolicyBuilder()
+                        .RequireAuthenticatedUser()
+                        .Build();
+
+                    options.AddPolicy("AllowAnonymous", policy =>
+                    {
+                        policy.RequireAssertion(context =>
+                        {
+                            // Allow unauthenticated access to the HealthCheck endpoint
+                            return context.Resource is Endpoint endpoint &&
+                                   endpoint.Metadata.GetMetadata<IAllowAnonymous>() != null;
+                        });
+                    });
+
+                    // By default, all incoming requests will be authorized according to the default policy
+                    options.FallbackPolicy = options.DefaultPolicy;
+                });
+
                 break;
 
-            case AuthorizationOptions.AuthorizationType.None:
-                services.AddAuthentication(PassThroughAuthenticationHandler.AuthenticationScheme)
+            case Services.Options.AuthorizationOptions.AuthorizationType.None:
+                services
+                    .AddAuthentication(PassThroughAuthenticationHandler.AuthenticationScheme)
                     .AddScheme<AuthenticationSchemeOptions, PassThroughAuthenticationHandler>(
                         authenticationScheme: PassThroughAuthenticationHandler.AuthenticationScheme,
                         configureOptions: null);
@@ -107,7 +135,7 @@ public static class BackendServiceExtensions
     {
         services.AddSingleton<AzureCredentialService>((service) =>
         {
-            return new AzureCredentialService(service.GetService<IOptions<AuthorizationOptions>>());
+            return new AzureCredentialService(service.GetService<IOptions<Services.Options.AuthorizationOptions>>());
         });
 
         return services;
