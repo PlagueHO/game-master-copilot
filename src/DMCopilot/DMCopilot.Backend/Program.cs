@@ -5,8 +5,11 @@ using DMCopilot.Backend.Controllers;
 using DMCopilot.Backend.Extensions;
 using DMCopilot.Data.Repositories;
 using DMCopilot.Services;
+using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 
@@ -19,18 +22,11 @@ internal class Program
         // Load configuration
         builder.Services.AddOptions(builder.Configuration);
 
-        // Add logging and application insights service
-        builder.Services
-            .AddSingleton<ILogger>(sp => sp.GetRequiredService<ILogger<Program>>()) // some services require an un-templated ILogger
-            .AddSingleton<ILoggerFactory, LoggerFactory>()
-            .AddLogging(loggingBuilder =>
-            {
-                loggingBuilder.AddConsole();
-                loggingBuilder.AddApplicationInsights();
-            })
-            .AddApplicationInsightsTelemetry();
+        // Add Azure Credential service
+        builder.Services.AddAzureCredentialService();
 
-        // TODO: Add Application Configuration service
+        // Add logging and application insights service
+        builder.Services.AddLoggingAndTelemetry(builder.Configuration);
 
         // TODO: Move this to Authorization service
 
@@ -62,9 +58,6 @@ internal class Program
             // By default, all incoming requests will be authorized according to the default policy
             options.FallbackPolicy = options.DefaultPolicy;
         });
-
-        // Add Azure Credential service
-        builder.Services.AddAzureCredentialService();
 
         // Add support for controllers and identity pages
         builder.Services

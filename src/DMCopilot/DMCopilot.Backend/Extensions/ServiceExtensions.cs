@@ -2,6 +2,7 @@
 using DMCopilot.Entities.Models;
 using DMCopilot.Services;
 using DMCopilot.Services.Options;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
@@ -13,6 +14,12 @@ public static class BackendServiceExtensions
 {
     public static IServiceCollection AddOptions(this IServiceCollection services, ConfigurationManager configuration)
     {
+        // Add the Azure Application Insights options
+        services.AddOptions<ApplicationInsightsOptions>(ApplicationInsightsOptions.PropertyName)
+            .Bind(configuration.GetSection(ApplicationInsightsOptions.PropertyName))
+            .ValidateOnStart()
+            .PostConfigure(TrimStringProperties);
+
         // Add the Azure AD Configuration options
         services.AddOptions<AuthorizationOptions>(AuthorizationOptions.PropertyName)
             .Bind(configuration.GetSection(AuthorizationOptions.PropertyName))
@@ -41,6 +48,29 @@ public static class BackendServiceExtensions
     }
 
     /// <summary>
+    /// Add logging and telemetry services
+    /// </summary>
+    internal static IServiceCollection AddLoggingAndTelemetry(this IServiceCollection services, IConfiguration configuration)
+    {
+        var applicationInsightsConnectionString = services.BuildServiceProvider().GetRequiredService<IOptions<ApplicationInsightsOptions>>().Value.ConnectionString;
+
+        services
+            .AddSingleton<ILogger>(sp => sp.GetRequiredService<ILogger<Program>>()) // some services require an un-templated ILogger
+            .AddSingleton<ILoggerFactory, LoggerFactory>()
+            .AddHttpContextAccessor()
+            .AddApplicationInsightsTelemetry(options => options.ConnectionString = applicationInsightsConnectionString)
+            .AddSingleton<ITelemetryInitializer, AppInsightsUserTelemetryInitializerService>()
+            .AddLogging(logBuilder =>
+            {
+                logBuilder.AddConsole();
+                logBuilder.AddApplicationInsights();
+            })
+            .AddSingleton<ITelemetryService, AppInsightsTelemetryService>();
+
+        return services;
+    }
+
+    /// <summary>
     /// Add authorization services
     /// </summary>
     internal static IServiceCollection AddAuthorization(this IServiceCollection services, IConfiguration configuration)
@@ -48,6 +78,7 @@ public static class BackendServiceExtensions
         // TODO: Complete this method
 
         var authorizationOptions = services.BuildServiceProvider().GetRequiredService<IOptions<AuthorizationOptions>>().Value;
+
         switch (authorizationOptions.Type)
         {
             case AuthorizationOptions.AuthorizationType.AzureAd:

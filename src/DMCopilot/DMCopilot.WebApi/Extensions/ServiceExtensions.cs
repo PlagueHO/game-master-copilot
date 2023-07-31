@@ -1,38 +1,40 @@
-﻿using DMCopilot.Services.Options;
-using DMCopilot.WebApi.Extensions;
+﻿using DMCopilot.Data.Repositories;
+using DMCopilot.Entities.Models;
+using DMCopilot.Services;
+using DMCopilot.Services.Options;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
-using Microsoft.Identity.Web;
 using System.Reflection;
 
 namespace DMCopilot.WebApi.Extensions;
 
-internal static class ServicesExtensions
+public static class BackendServiceExtensions
 {
-    /// <summary>
-    /// Parse configuration into options.
-    /// </summary>
-    internal static IServiceCollection AddOptions(this IServiceCollection services, ConfigurationManager configuration)
+    public static IServiceCollection AddOptions(this IServiceCollection services, ConfigurationManager configuration)
     {
-        // AzureAdOptions configuration
-        services.AddOptions<AuthorizationOptions>()
+        // Add the Azure Application Insights options
+        services.AddOptions<ApplicationInsightsOptions>(ApplicationInsightsOptions.PropertyName)
+            .Bind(configuration.GetSection(ApplicationInsightsOptions.PropertyName))
+            .ValidateOnStart()
+            .PostConfigure(TrimStringProperties);
+
+        // Add the Azure AD Configuration options
+        services.AddOptions<AuthorizationOptions>(AuthorizationOptions.PropertyName)
             .Bind(configuration.GetSection(AuthorizationOptions.PropertyName))
             .ValidateOnStart()
-            .ValidateDataAnnotations()
             .PostConfigure(TrimStringProperties);
 
-        // Microsoft Graph configuration
-        services.AddOptions<MicrosoftGraphOptions>()
+        // Add the Microsoft Graph Configuration options
+        services.AddOptions<MicrosoftGraphOptions>(MicrosoftGraphOptions.PropertyName)
             .Bind(configuration.GetSection(MicrosoftGraphOptions.PropertyName))
             .ValidateOnStart()
-            .ValidateDataAnnotations()
             .PostConfigure(TrimStringProperties);
 
-        // App Configuration configuration
-        services.AddOptions<AppConfigurationOptions>()
+        // Add the Azure App Configuration options
+        services.AddOptions<AppConfigurationOptions>(AppConfigurationOptions.PropertyName)
             .Bind(configuration.GetSection(AppConfigurationOptions.PropertyName))
-            .ValidateDataAnnotations()
             .ValidateOnStart()
             .PostConfigure(TrimStringProperties);
 
@@ -41,63 +43,6 @@ internal static class ServicesExtensions
             .Bind(configuration.GetSection(DataStoreOptions.PropertyName))
             .ValidateOnStart()
             .PostConfigure(TrimStringProperties);
-
-        return services;
-    }
-
-    /// <summary>
-    /// Add CORS settings.
-    /// </summary>
-    internal static IServiceCollection AddCors(this IServiceCollection services)
-    {
-        IConfiguration configuration = services.BuildServiceProvider().GetRequiredService<IConfiguration>();
-        string[] allowedOrigins = configuration.GetSection("AllowedOrigins").Get<string[]>() ?? Array.Empty<string>();
-        if (allowedOrigins.Length > 0)
-        {
-            services.AddCors(options =>
-            {
-                options.AddDefaultPolicy(
-                    policy =>
-                    {
-                        policy.WithOrigins(allowedOrigins)
-                            .AllowAnyHeader();
-                    });
-            });
-        }
-
-        return services;
-    }
-
-    /// <summary>
-    /// Add authorization services
-    /// </summary>
-    internal static IServiceCollection AddAuthorization(this IServiceCollection services, IConfiguration configuration)
-    {
-        Microsoft.AspNetCore.Authorization.AuthorizationOptions config = services.BuildServiceProvider().GetRequiredService<IOptions<Microsoft.AspNetCore.Authorization.AuthorizationOptions>>().Value;
-        switch (config.Type)
-        {
-            case Microsoft.AspNetCore.Authorization.AuthorizationOptions.AuthorizationType.AzureAd:
-                services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                    .AddMicrosoftIdentityWebApi(configuration.GetSection($"{Microsoft.AspNetCore.Authorization.AuthorizationOptions.PropertyName}:AzureAd"));
-                break;
-
-            case Microsoft.AspNetCore.Authorization.AuthorizationOptions.AuthorizationType.ApiKey:
-                services.AddAuthentication(ApiKeyAuthenticationHandler.AuthenticationScheme)
-                    .AddScheme<ApiKeyAuthenticationSchemeOptions, ApiKeyAuthenticationHandler>(
-                        ApiKeyAuthenticationHandler.AuthenticationScheme,
-                        options => options.ApiKey = config.ApiKey);
-                break;
-
-            case Microsoft.AspNetCore.Authorization.AuthorizationOptions.AuthorizationType.None:
-                services.AddAuthentication(PassThroughAuthenticationHandler.AuthenticationScheme)
-                    .AddScheme<AuthenticationSchemeOptions, PassThroughAuthenticationHandler>(
-                        authenticationScheme: PassThroughAuthenticationHandler.AuthenticationScheme,
-                        configureOptions: null);
-                break;
-
-            default:
-                throw new InvalidOperationException($"Invalid authorization type '{config.Type}'.");
-        }
 
         return services;
     }

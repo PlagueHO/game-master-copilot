@@ -4,6 +4,9 @@ using Microsoft.Extensions.Options;
 
 namespace DMCopilot.Services;
 
+/// <summary>
+/// Service to return the DefaultAzureCredential
+/// </summary>
 public class AzureCredentialService
 {
     public readonly AuthorizationOptions _options;
