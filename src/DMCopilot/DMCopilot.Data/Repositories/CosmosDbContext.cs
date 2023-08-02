@@ -78,13 +78,23 @@ public class CosmosDbContext<T> : IStorageContext<T>, IDisposable where T : ISto
 
         try
         {
-            var response = await this._container.ReadItemAsync<T>(entityId, new PartitionKey(entityId));
+            var response = await this._container.ReadItemAsync<T>(entityId, GetPartitionKey(entityId));
             return response.Resource;
         }
         catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
         {
             throw new KeyNotFoundException($"Entity with id {entityId} not found.");
         }
+    }
+
+    /// <summary>
+    /// Get the partition key for the entity.
+    /// </summary>
+    /// <param name="entity">The entity.</param>
+    /// <returns>The partition key.</returns>
+    internal static PartitionKey GetPartitionKey(string entityId)
+    {
+        return new PartitionKey(entityId);
     }
 
     /// <inheritdoc/>

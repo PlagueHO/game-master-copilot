@@ -169,7 +169,6 @@ public static class BackendServiceExtensions
         IStorageContext<Account> accountStorageContext;
         IStorageContext<Tenant> tenantStorageContext;
         IStorageContext<World> worldStorageContext;
-        IStorageContext<Character> characterStorageContext;
 
         var dataStoreConfig = services.BuildServiceProvider().GetRequiredService<IOptions<DataStoreOptions>>().Value;
 
@@ -188,8 +187,6 @@ public static class BackendServiceExtensions
                         dataStoreConfig.CosmosDb.ConnectionString, dataStoreConfig.CosmosDb.DatabaseName, dataStoreConfig.CosmosDb.TenantsContainerName);
                     worldStorageContext = new CosmosDbContext<World>(
                         dataStoreConfig.CosmosDb.ConnectionString, dataStoreConfig.CosmosDb.DatabaseName, dataStoreConfig.CosmosDb.WorldsContainerName);
-                    characterStorageContext = new CosmosDbContext<Character>(
-                        dataStoreConfig.CosmosDb.ConnectionString, dataStoreConfig.CosmosDb.DatabaseName, dataStoreConfig.CosmosDb.CharactersContainerName);
 #pragma warning restore CA2000 // Dispose objects before losing scope
                     break;
                 }
@@ -204,7 +201,6 @@ public static class BackendServiceExtensions
         services.AddSingleton<AccountRepository>(new AccountRepository(accountStorageContext));
         services.AddSingleton<TenantRepository>(new TenantRepository(tenantStorageContext));
         services.AddSingleton<WorldRepository>(new WorldRepository(worldStorageContext));
-        services.AddSingleton<CharacterRepository>(new CharacterRepository(characterStorageContext));
 
         return services;
     }

@@ -14,12 +14,21 @@ public class TenantRepository : Repository<Tenant>
     }
 
     /// <summary>
-    /// Gets the tenant using a tenant id
+    /// Finds the tenant using a tenant id.
     /// </summary>
     /// <param name="id">The tenant id.</param>
     /// <returns>The tenant record.</returns>
-    public Task<Tenant> GetByTenantIdAsync(string id)
+    public Task<Tenant> FindByTenantIdAsync(string tenantId)
     {
-        return base.StorageContext.ReadAsync(id);
+        return base.StorageContext.ReadAsync(tenantId);
     }
+
+    /// <summary>
+    /// Read all the tenants.
+    /// </summary>
+    /// <returns>A list of all tenant records.</returns>
+    public Task<IEnumerable<Tenant>> ReadAllAsync()
+    {
+        return base.StorageContext.QueryEntitiesAsync(tenant => true);
+    }   
 }

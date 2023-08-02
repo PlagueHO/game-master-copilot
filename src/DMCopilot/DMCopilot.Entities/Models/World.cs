@@ -14,6 +14,10 @@ namespace DMCopilot.Entities.Models
         [JsonPropertyName("id")]
         public string Id { get; set; }
 
+        /// <inheritdoc/>
+        [JsonPropertyName("type")]
+        public GeneratedStorageEntityType Type { get; } = GeneratedStorageEntityType.World;
+
         /// <summary>
         /// Gets or sets the unique identifier for the world.
         /// </summary>

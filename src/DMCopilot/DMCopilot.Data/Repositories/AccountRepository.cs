@@ -14,12 +14,12 @@ public class AccountRepository : Repository<Account>
     }
 
     /// <summary>
-    /// Gets the account using account id which is usually the e-mail address of the user
+    /// Founds the account record using account id.
     /// </summary>
     /// <param name="id">The account id.</param>
     /// <returns>The account record.</returns>
-    public Task<Account> GetByAccountIdAsync(string id)
+    public Task<Account> FindByAccountIdAsync(string accountId)
     {
-        return base.StorageContext.ReadAsync(id);
+        return base.StorageContext.ReadAsync(accountId);
     }
 }

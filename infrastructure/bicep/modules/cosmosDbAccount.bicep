@@ -96,35 +96,15 @@ resource cosmosDbWorldsContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatab
   }
 }
 
-resource cosmosDbCampaignsContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2023-04-15' = {
-  name: 'campaigns'
+resource cosmosDbEntitiesContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2023-04-15' = {
+  name: 'entities'
   parent: cosmosDbDatabase
   properties: {
     resource: {
-      id: 'campaigns'
+      id: 'entities'
       partitionKey: {
         paths: [
           '/tenantid'
-          '/worldid'
-          '/id'
-        ]
-        kind: 'MultiHash'
-        version: 2
-      }
-    }
-  }
-}
-
-resource cosmosDbCharactersContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2023-04-15' = {
-  name: 'characters'
-  parent: cosmosDbDatabase
-  properties: {
-    resource: {
-      id: 'characters'
-      partitionKey: {
-        paths: [
-          '/tenantid'
-          '/campaignid'
           '/id'
         ]
         kind: 'MultiHash'

@@ -70,7 +70,7 @@
     {
         if (Tenant != null)
         {
-            worlds = await worldRepository.GetWorldsByTenantAsync(Tenant.Id);
+            worlds = await worldRepository.FindByTenantIdAsync(Tenant.Id);
             loadingVisible = false;
             await InvokeAsync(StateHasChanged);
         }
