@@ -21,59 +21,12 @@ public class DataStoreOptions
     }
 
     /// <summary>
-    /// Configuration settings for connecting to Azure CosmosDB.
-    /// </summary>
-    public class CosmosDbOptions
-    {
-        /// <summary>
-        /// Cosmos DB endpoint URI
-        /// </summary>
-        [Required, Url]
-        public string? Endpoint { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Cosmos DB database name
-        /// </summary>
-        public string? DatabaseName { get; set; } = "dmcopilot";
-
-        /// <summary>
-        /// Cosmos DB connection string
-        /// </summary>
-        [Required, NotEmptyOrWhitespace]
-        public string? ConnectionString { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Cosmos DB container name for storing accounts
-        /// </summary>
-        [Required, NotEmptyOrWhitespace]
-        public string? AccountsContainerName { get; set; } = "accounts";
-
-        /// <summary>
-        /// Cosmos DB container name for storing tenants
-        /// </summary>
-        [Required, NotEmptyOrWhitespace]
-        public string? TenantsContainerName { get; set; } = "tenants";
-
-        /// <summary>
-        /// Cosmos DB container name for storing entities
-        /// </summary>
-        [Required, NotEmptyOrWhitespace]
-        public string? EntitiesContainerName { get; set; } = "entities";
-
-        /// <summary>
-        /// Cosmos DB container name for storing worlds
-        /// </summary>
-        [Required, NotEmptyOrWhitespace]
-        public string? WorldsContainerName { get; set; } = "worlds";
-    }
-
-    /// <summary>
-    /// Gets or sets the type of chat store to use.
+    /// Gets or sets the type of data store to use.
     /// </summary>
     public DataStoreType Type { get; set; } = DataStoreType.CosmosDb;
 
     /// <summary>
-    /// Gets or sets the configuration for the Azure CosmosDB chat store.
+    /// Gets or sets the configuration for the Azure CosmosDB data store.
     /// </summary>
     [RequiredOnPropertyValue(nameof(Type), DataStoreType.CosmosDb)]
     public CosmosDbOptions? CosmosDb { get; set; } = new CosmosDbOptions();
