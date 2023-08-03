@@ -20,30 +20,35 @@ public static class BackendServiceExtensions
         // Add the Azure Application Insights options
         services.AddOptions<ApplicationInsightsOptions>(ApplicationInsightsOptions.PropertyName)
             .Bind(configuration.GetSection(ApplicationInsightsOptions.PropertyName))
+            .ValidateDataAnnotations()
             .ValidateOnStart()
             .PostConfigure(TrimStringProperties);
 
         // Add the Azure AD Configuration options
         services.AddOptions<Services.Options.AuthorizationOptions>(Services.Options.AuthorizationOptions.PropertyName)
             .Bind(configuration.GetSection(Services.Options.AuthorizationOptions.PropertyName))
+            .ValidateDataAnnotations()
             .ValidateOnStart()
             .PostConfigure(TrimStringProperties);
 
         // Add the Microsoft Graph Configuration options
         services.AddOptions<Services.Options.MicrosoftGraphOptions>(Services.Options.MicrosoftGraphOptions.PropertyName)
             .Bind(configuration.GetSection(Services.Options.MicrosoftGraphOptions.PropertyName))
+            .ValidateDataAnnotations()
             .ValidateOnStart()
             .PostConfigure(TrimStringProperties);
 
         // Add the Azure App Configuration options
         services.AddOptions<AppConfigurationOptions>(AppConfigurationOptions.PropertyName)
             .Bind(configuration.GetSection(AppConfigurationOptions.PropertyName))
+            .ValidateDataAnnotations()
             .ValidateOnStart()
             .PostConfigure(TrimStringProperties);
 
         // Add the Data Store options
         services.AddOptions<DataStoreOptions>(DataStoreOptions.PropertyName)
             .Bind(configuration.GetSection(DataStoreOptions.PropertyName))
+            .ValidateDataAnnotations()
             .ValidateOnStart()
             .PostConfigure(TrimStringProperties);
 
