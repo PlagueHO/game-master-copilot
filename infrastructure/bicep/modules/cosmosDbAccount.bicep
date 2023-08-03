@@ -96,15 +96,16 @@ resource cosmosDbWorldsContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatab
   }
 }
 
-resource cosmosDbEntitiesContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2023-04-15' = {
-  name: 'entities'
+resource cosmosDbPagesContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2023-04-15' = {
+  name: 'pages'
   parent: cosmosDbDatabase
   properties: {
     resource: {
-      id: 'entities'
+      id: 'pages'
       partitionKey: {
         paths: [
           '/tenantid'
+          '/type'
           '/id'
         ]
         kind: 'MultiHash'

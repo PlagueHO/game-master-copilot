@@ -58,6 +58,6 @@
     private async Task GetTenants()
     {
         // Get the tenant from the TenantRepository
-        this.tenants = await tenantRepository.GetAllAsync();
+        this.tenants = await tenantRepository.ReadAllAsync();
     }
 }

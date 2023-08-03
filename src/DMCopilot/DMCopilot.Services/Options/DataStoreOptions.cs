@@ -55,16 +55,16 @@ public class DataStoreOptions
         public string? TenantsContainerName { get; set; } = "tenants";
 
         /// <summary>
+        /// Cosmos DB container name for storing entities
+        /// </summary>
+        [Required, NotEmptyOrWhitespace]
+        public string? EntitiesContainerName { get; set; } = "entities";
+
+        /// <summary>
         /// Cosmos DB container name for storing worlds
         /// </summary>
         [Required, NotEmptyOrWhitespace]
         public string? WorldsContainerName { get; set; } = "worlds";
-
-        /// <summary>
-        /// Cosmos DB container name for storing characters
-        /// </summary>
-        [Required, NotEmptyOrWhitespace]
-        public string? CharactersContainerName { get; set; } = "characters";
     }
 
     /// <summary>

@@ -178,7 +178,7 @@ public static class BackendServiceExtensions
                 {
                     if (dataStoreConfig.CosmosDb == null)
                     {
-                        throw new InvalidOperationException("DataStore:Cosmos is required when DataStore:Type is 'CosmosDb'");
+                        throw new InvalidOperationException("DataStore:CosmosDb is required when DataStore:Type is 'CosmosDb'");
                     }
 #pragma warning disable CA2000 // Dispose objects before losing scope - objects are singletons for the duration of the process and disposed when the process exits.
                     accountStorageContext = new CosmosDbContext<Account>(
@@ -194,7 +194,7 @@ public static class BackendServiceExtensions
             default:
                 {
                     throw new InvalidOperationException(
-                        "Invalid 'ChatStore' setting 'chatStoreConfig.Type'.");
+                        $"Invalid 'DataStore:Type' setting '{dataStoreConfig.Type}'.");
                 }
         }
 

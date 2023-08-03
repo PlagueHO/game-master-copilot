@@ -2,7 +2,10 @@
 
 namespace DMCopilot.Entities.Models;
 
-public enum GeneratedContentMethod
+/// <summary>
+/// The type of method used to generate the content of the page.
+/// </summary>
+public enum PageContentGenerationMethod
 {
     None,
     Manual,
@@ -11,15 +14,15 @@ public enum GeneratedContentMethod
 }
 
 /// <summary>
-/// Class to represent how the source content was generated.
+/// Class to represent how the page content was generated.
 /// </summary>
-public class GeneratedContent
+public class PageGeneratedContent
 {
     /// <summary>
     /// The method that was used to generate this content.
     /// </summary>
     [JsonPropertyName("method")]
-    public GeneratedContentMethod Method { get; set; } = GeneratedContentMethod.Manual;
+    public PageContentGenerationMethod Method { get; set; } = PageContentGenerationMethod.Manual;
 
     /// <summary>
     /// The Semantic Kernel plugin that was used to generate this content if the method was FoundationalModel.
@@ -39,7 +42,7 @@ public class GeneratedContent
     [JsonPropertyName("parameters")]
     public Dictionary<string, string>? Parameters { get; set; }
 
-    public GeneratedContent(GeneratedContentMethod method, string? plugin, string? function, Dictionary<string, string>? parameters)
+    public PageGeneratedContent(PageContentGenerationMethod method, string? plugin, string? function, Dictionary<string, string>? parameters)
     {
         Method = method;
         Plugin = plugin;
@@ -47,7 +50,7 @@ public class GeneratedContent
         Parameters = parameters;
     }
 
-    public GeneratedContent()
+    public PageGeneratedContent()
     {
     }
 }

@@ -2,13 +2,12 @@
 
 namespace DMCopilot.Entities.Models;
 
-// Enum for the different types of tenants
+/// <summary>
+/// Enum for the different types of tenants
+/// </summary>
 public enum TenantType
 {
-    // The tenant is for an individual
     Individual,
-
-    // The tenant is for an organization
     Organization
 }
 

@@ -43,12 +43,12 @@ public class AccessService : IAccessService
         try
         {
             // See if the account already exists
-            Account = await _accountRepository.GetByAccountIdAsync(email);
+            Account = await _accountRepository.FindByAccountIdAsync(email);
 
             try
             {
                 // The accounts exists, so check if the tenant matching the active tenant exists
-                Tenant = await _tenantRepository.GetByTenantIdAsync(Account.ActiveTenantId);
+                Tenant = await _tenantRepository.FindByTenantIdAsync(Account.ActiveTenantId);
             }
             catch (KeyNotFoundException)
             {
@@ -78,7 +78,7 @@ public class AccessService : IAccessService
 
         if (tenant == null)
         {
-            throw new TenantNotFoundException("Tenant could not be created.");
+            throw new Exception("Tenant could not be created.");
         }
 
         // Create the account for the user and associate the individual tenant with it
@@ -96,6 +96,12 @@ public class AccessService : IAccessService
         return account;
     }
 
+    /// <summary>
+    /// Creates a new individual tenant for the currently logged in user.
+    /// </summary>
+    /// <param name="context">The currently authenticated user.</param>
+    /// <returns>The newly initialized tenant.</returns>
+    /// <exception cref="NotAuthenticatedException"></exception>
     private async Task<Tenant> InitializeTenantAsync(AuthenticationState context)
     {
         // If the authentication context for the user is null, then fail
