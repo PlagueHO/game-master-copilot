@@ -5,16 +5,19 @@ using DMCopilot.Backend.Controllers;
 using DMCopilot.Backend.Extensions;
 using DMCopilot.Data.Repositories;
 using DMCopilot.Services;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
+
+
+namespace DMCopilot.Backend;
 
 public sealed class Program
 {
     private static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+
+        // builder.Host.AddConfiguration();
 
         // Load configuration
         builder.Services.AddOptions(builder.Configuration);
@@ -64,6 +67,9 @@ public sealed class Program
             .AddApplicationPart(typeof(HealthCheckController).Assembly)
             .AddControllersAsServices();
 
+        // Add health checks
+        builder.Services.AddHealthChecks();
+
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
@@ -84,6 +90,7 @@ public sealed class Program
         app.UseAuthorization();
 
         app.MapControllers();
+        app.MapHealthChecks("/healthz");
         app.MapBlazorHub();
         app.MapFallbackToPage("/_Host");
 

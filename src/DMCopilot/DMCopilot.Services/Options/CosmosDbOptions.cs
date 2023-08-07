@@ -37,10 +37,10 @@ public class CosmosDbOptions
     public string? TenantsContainerName { get; set; } = "tenants";
 
     /// <summary>
-    /// Cosmos DB container name for storing entities
+    /// Cosmos DB container name for storing pages
     /// </summary>
     [Required, NotEmptyOrWhitespace]
-    public string? EntitiesContainerName { get; set; } = "entities";
+    public string? PagesContainerName { get; set; } = "pages";
 
     /// <summary>
     /// Cosmos DB container name for storing worlds

@@ -13,4 +13,7 @@ public class ApplicationInsightsOptions
     /// Connection String for Application Insights
     /// </summary>
     public string? ConnectionString { get; set; }
+
+    [Required, NotEmptyOrWhitespace]
+    public string? Test { get; set; }
 }

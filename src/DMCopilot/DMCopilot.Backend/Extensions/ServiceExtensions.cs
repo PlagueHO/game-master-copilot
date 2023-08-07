@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
 using Microsoft.Identity.Web;
+
 using System.Reflection;
 
 namespace DMCopilot.Backend.Extensions;
@@ -18,35 +19,35 @@ public static class BackendServiceExtensions
     public static IServiceCollection AddOptions(this IServiceCollection services, ConfigurationManager configuration)
     {
         // Add the Azure Application Insights options
-        services.AddOptions<ApplicationInsightsOptions>(ApplicationInsightsOptions.PropertyName)
+        services.AddOptions<ApplicationInsightsOptions>()
             .Bind(configuration.GetSection(ApplicationInsightsOptions.PropertyName))
             .ValidateDataAnnotations()
             .ValidateOnStart()
             .PostConfigure(TrimStringProperties);
 
         // Add the Azure AD Configuration options
-        services.AddOptions<Services.Options.AuthorizationOptions>(Services.Options.AuthorizationOptions.PropertyName)
+        services.AddOptions<Services.Options.AuthorizationOptions>()
             .Bind(configuration.GetSection(Services.Options.AuthorizationOptions.PropertyName))
             .ValidateDataAnnotations()
             .ValidateOnStart()
             .PostConfigure(TrimStringProperties);
 
         // Add the Microsoft Graph Configuration options
-        services.AddOptions<Services.Options.MicrosoftGraphOptions>(Services.Options.MicrosoftGraphOptions.PropertyName)
+        services.AddOptions<Services.Options.MicrosoftGraphOptions>()
             .Bind(configuration.GetSection(Services.Options.MicrosoftGraphOptions.PropertyName))
             .ValidateDataAnnotations()
             .ValidateOnStart()
             .PostConfigure(TrimStringProperties);
 
         // Add the Azure App Configuration options
-        services.AddOptions<AppConfigurationOptions>(AppConfigurationOptions.PropertyName)
+        services.AddOptions<AppConfigurationOptions>()
             .Bind(configuration.GetSection(AppConfigurationOptions.PropertyName))
             .ValidateDataAnnotations()
             .ValidateOnStart()
             .PostConfigure(TrimStringProperties);
 
         // Add the Data Store options
-        services.AddOptions<DataStoreOptions>(DataStoreOptions.PropertyName)
+        services.AddOptions<DataStoreOptions>()
             .Bind(configuration.GetSection(DataStoreOptions.PropertyName))
             .ValidateDataAnnotations()
             .ValidateOnStart()
@@ -58,7 +59,7 @@ public static class BackendServiceExtensions
     /// <summary>
     /// Add logging and telemetry services
     /// </summary>
-    internal static IServiceCollection AddLoggingAndTelemetry(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddLoggingAndTelemetry(this IServiceCollection services, IConfiguration configuration)
     {
         var applicationInsightsConnectionString = services.BuildServiceProvider().GetRequiredService<IOptions<ApplicationInsightsOptions>>().Value.ConnectionString;
 
@@ -81,7 +82,7 @@ public static class BackendServiceExtensions
     /// <summary>
     /// Add authentication and authorization services
     /// </summary>
-    internal static IServiceCollection AddAuthenticationAndAuthorization(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddAuthenticationAndAuthorization(this IServiceCollection services, IConfiguration configuration)
     {
         var authorizationOptions = services.BuildServiceProvider().GetRequiredService<IOptions<Services.Options.AuthorizationOptions>>().Value;
 
@@ -136,7 +137,7 @@ public static class BackendServiceExtensions
     /// <summary>
     /// Add Azure Credential Service
     /// </summary>
-    internal static IServiceCollection AddAzureCredentialService(this IServiceCollection services)
+    public static IServiceCollection AddAzureCredentialService(this IServiceCollection services)
     {
         services.AddSingleton<AzureCredentialService>((service) =>
         {
@@ -149,7 +150,7 @@ public static class BackendServiceExtensions
     /// <summary>
     /// Add Semantic Kernel service
     /// </summary>
-    internal static IServiceCollection AddSemanticKernel(this IServiceCollection services)
+    public static IServiceCollection AddSemanticKernel(this IServiceCollection services)
     {
         services.AddSingleton<ISemanticKernelService>((service) =>
         {

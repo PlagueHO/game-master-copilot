@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace DMCopilot.Backend.Controllers;
 
 [ApiController]
-[Route("healthcheck")]
+[Route("healthz")]
 public class HealthCheckController : ControllerBase
 {
     private readonly ILogger<HealthCheckController> _logger;
