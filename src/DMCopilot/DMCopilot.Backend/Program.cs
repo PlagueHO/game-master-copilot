@@ -35,7 +35,7 @@ public sealed class Program
         builder.Services.AddDataStore();
 
         // Add the Account Service
-        builder.Services.AddScoped<IAccessService>((service) =>
+        builder.Services.AddScoped<AccessService>((service) =>
         {
             var accountRepository = service.GetService<AccountRepository>();
             var tenantRepository = service.GetService<TenantRepository>();

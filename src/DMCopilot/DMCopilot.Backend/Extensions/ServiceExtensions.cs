@@ -11,6 +11,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.Identity.Web;
 
 using System.Reflection;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 
 namespace DMCopilot.Backend.Extensions;
 
@@ -91,7 +92,7 @@ public static class BackendServiceExtensions
             case Services.Options.AuthorizationOptions.AuthorizationType.AzureAd:
                 var initialScopes = configuration["DownstreamApi:Scopes"]?.Split(' ') ?? configuration["MicrosoftGraph:Scopes"]?.Split(' ');
                 services
-                    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
                     .AddMicrosoftIdentityWebApp(configuration.GetSection($"{Services.Options.AuthorizationOptions.PropertyName}:AzureAd"))
                     .EnableTokenAcquisitionToCallDownstreamApi(initialScopes)
                     .AddMicrosoftGraph(configuration.GetSection("MicrosoftGraph"))
@@ -152,7 +153,7 @@ public static class BackendServiceExtensions
     /// </summary>
     public static IServiceCollection AddSemanticKernel(this IServiceCollection services)
     {
-        services.AddSingleton<ISemanticKernelService>((service) =>
+        services.AddSingleton<SemanticKernelService>((service) =>
         {
             var semanticKernelOptions = service.GetService<IOptions<SemanticKernelOptions>>().Value;
             if (semanticKernelOptions.AzureOpenAiApiKey == null)

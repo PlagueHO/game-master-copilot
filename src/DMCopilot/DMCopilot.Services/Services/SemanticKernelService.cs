@@ -29,7 +29,7 @@ public class SemanticKernelService : ISemanticKernelService
         LoadAzureOpenAiTextCompletionServices(semanticKernelBuilder);
         LoadAzureOpenAiChatCompletionServices(semanticKernelBuilder);
         LoadAzureOpenAiTextEmbeddingGenerationServices(semanticKernelBuilder);
-        LoadAzureOpenAIImageGenerationServices(semanticKernelBuilder);
+        LoadAzureOpenAiImageGenerationServices(semanticKernelBuilder);
 
         _semanticKernel = semanticKernelBuilder.Build();
 
@@ -133,7 +133,7 @@ public class SemanticKernelService : ISemanticKernelService
         }
     }
 
-    public void LoadAzureOpenAIImageGenerationServices(KernelBuilder semanticKernelBuilder)
+    public void LoadAzureOpenAiImageGenerationServices(KernelBuilder semanticKernelBuilder)
     {
         if (_options.AzureOpenAiImageServices == null)
             return;
