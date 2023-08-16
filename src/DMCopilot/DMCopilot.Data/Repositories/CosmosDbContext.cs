@@ -112,7 +112,14 @@ public class CosmosDbContext<T> : IStorageContext<T>, IDisposable where T : ISto
             throw new ArgumentOutOfRangeException(nameof(tenantId), "Tenant Id cannot be null or empty.");
         }
 
-        return await ReadAsync(entityId, BuildPartitionKey(entityId, tenantId));
+        try
+        {
+            return await ReadAsync(entityId, BuildPartitionKey(entityId, tenantId));
+        }
+        catch (KeyNotFoundException)
+        {
+            throw new KeyNotFoundException($"Entity with id {entityId} in tenant {tenantId} not found.");
+        }
     }
 
     /// <inheritdoc/>
@@ -133,7 +140,14 @@ public class CosmosDbContext<T> : IStorageContext<T>, IDisposable where T : ISto
             throw new ArgumentOutOfRangeException(nameof(tenantId), "Tenant Id cannot be null or empty.");
         }
 
-        return await ReadAsync(entityId, BuildPartitionKey(entityId, type, tenantId));
+        try
+        {
+            return await ReadAsync(entityId, BuildPartitionKey(entityId, type, tenantId));
+        }
+        catch (KeyNotFoundException)
+        {
+            throw new KeyNotFoundException($"Entity with id {entityId} of type {type} in tenant {tenantId} not found.");
+        }
     }
 
     /// <inheritdoc/>
@@ -203,10 +217,10 @@ public class CosmosDbContext<T> : IStorageContext<T>, IDisposable where T : ISto
     {
         var partitionKeyBuilder = new PartitionKeyBuilder().Add(entity.Id);
 
-        if (entity is ITenantStorageEntity tenantEntity)
+        if (entity is IStorageTenantedEntity tenantEntity)
             partitionKeyBuilder.Add(tenantEntity.TenantId);
 
-        if (entity is ITypedTenantStorageEntity tenantStorageEntity)
+        if (entity is IStorageTenantedTypedEntity tenantStorageEntity)
             partitionKeyBuilder.Add(tenantStorageEntity.Type);
 
         return partitionKeyBuilder.Build();

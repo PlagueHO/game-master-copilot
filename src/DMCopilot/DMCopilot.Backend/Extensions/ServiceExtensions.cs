@@ -54,6 +54,13 @@ public static class BackendServiceExtensions
             .ValidateOnStart()
             .PostConfigure(TrimStringProperties);
 
+        // Add the Semantic Kernel options
+        services.AddOptions<SemanticKernelOptions>()
+            .Bind(configuration.GetSection(SemanticKernelOptions.PropertyName))
+            .ValidateDataAnnotations()
+            .ValidateOnStart();
+            //.PostConfigure(TrimStringProperties);
+
         return services;
     }
 

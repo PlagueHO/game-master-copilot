@@ -2,7 +2,7 @@
 
 namespace DMCopilot.Entities.Models;
 
-public interface ITenantStorageEntity : IStorageEntity
+public interface IStorageTenantedEntity : IStorageEntity
 {
     /// <summary>
     /// Gets or sets the tenant identifier for the storage entity.

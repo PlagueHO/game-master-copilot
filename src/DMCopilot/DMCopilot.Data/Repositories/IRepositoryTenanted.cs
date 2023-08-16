@@ -5,7 +5,7 @@ namespace DMCopilot.Data.Repositories;
 /// <summary>
 /// Defines the extended CRUD operations for a tenanted repository.
 /// </summary>
-public interface IRepositoryTenanted<T> where T : IStorageEntity
+public interface IRepositoryTenanted<T> where T : IStorageTenantedEntity
 {
     /// <summary>
     /// Finds an entity by its id and tenant id.

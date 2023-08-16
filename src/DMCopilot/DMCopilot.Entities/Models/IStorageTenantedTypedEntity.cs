@@ -2,7 +2,7 @@
 
 namespace DMCopilot.Entities.Models;
 
-public interface ITypedTenantStorageEntity : ITenantStorageEntity
+public interface IStorageTenantedTypedEntity : IStorageTenantedEntity
 {
     /// <summary>
     /// Gets or sets the ty[e for the storage entity.

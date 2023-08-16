@@ -2,7 +2,7 @@
 /// <summary>
 /// Defines the extended CRUD operations for a tenanted and typed repository.
 /// </summary>
-public interface IRepositoryTenantedTyped<T> where T : IStorageEntity
+public interface IRepositoryTenantedTyped<T> where T : IStorageTenantedTypedEntity
 {
     /// <summary>
     /// Finds an entity by its id, tenant id and type.

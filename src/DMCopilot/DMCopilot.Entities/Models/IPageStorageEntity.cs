@@ -2,7 +2,7 @@
 
 namespace DMCopilot.Entities.Models;
 
-public interface IPageStorageEntity : ITypedTenantStorageEntity
+public interface IPageStorageEntity : IStorageTenantedTypedEntity
 {
     /// <summary>
     /// Information about how the storage entity was populated

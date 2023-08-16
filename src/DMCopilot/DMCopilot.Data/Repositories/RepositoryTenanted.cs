@@ -5,7 +5,7 @@ namespace DMCopilot.Data.Repositories;
 /// <summary>
 /// Defines the basic CRUD operations for a repository that is tenanted.
 /// </summary>
-public class RepositoryTenanted<T> : Repository<T>, IRepositoryTenanted<T> where T : IStorageEntity
+public class RepositoryTenanted<T> : Repository<T>, IRepositoryTenanted<T> where T : IStorageTenantedEntity
 {
     /// <summary>
     /// Initializes a new instance of the RepositoryTenanted class.
