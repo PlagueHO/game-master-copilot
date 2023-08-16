@@ -44,6 +44,18 @@ public class Repository<T> : IRepository<T> where T : IStorageEntity
     }
 
     /// <inheritdoc/>
+    public Task<T> FindByIdAsync(string id, string tenantId)
+    {
+        return StorageContext.ReadAsync(id, tenantId);
+    }
+
+    /// <inheritdoc/>
+    public Task<T> FindByIdAsync(string id, string type, string tenantId)
+    {
+        return StorageContext.ReadAsync(id, type, tenantId);
+    }
+
+    /// <inheritdoc/>
     public async Task<bool> TryFindByIdAsync(string id, Action<T?> entity)
     {
         try

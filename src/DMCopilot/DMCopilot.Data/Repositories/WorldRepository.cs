@@ -2,7 +2,7 @@
 
 namespace DMCopilot.Data.Repositories;
 
-public class WorldRepository : Repository<World>
+public class WorldRepository : RepositoryTenanted<World>
 {
     /// <summary>
     /// Initializes a new instance of the WorldRepository class.
@@ -20,7 +20,7 @@ public class WorldRepository : Repository<World>
     /// <returns>A world record with the world Id.</returns>
     public Task<World> FindByWorldIdAsync(string worldId, string tenantId)
     {
-        return base.FindByIdAsync(worldId);
+        return base.FindByIdAsync(worldId, tenantId);
     }
     
     /// <summary>
