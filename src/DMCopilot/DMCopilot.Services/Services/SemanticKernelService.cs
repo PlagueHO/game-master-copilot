@@ -21,6 +21,7 @@ public class SemanticKernelService : ISemanticKernelService
         _logger = logger;
         _options = options.Value;
 
+        // TODO: Move the kernel creation into execution of a plan
         _logger.LogInformation("Creating Semantic Kernel");
 
         var semanticKernelBuilder = new KernelBuilder();

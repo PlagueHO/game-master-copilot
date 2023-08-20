@@ -60,6 +60,7 @@ public static class BackendServiceExtensions
             .ValidateDataAnnotations()
             .ValidateOnStart();
             //.PostConfigure(TrimStringProperties);
+        // TODO: Figure out what is causing the above line to throw an exception
 
         return services;
     }
