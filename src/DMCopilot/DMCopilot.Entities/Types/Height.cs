@@ -37,7 +37,7 @@ public class Height
     /// <param name="inches">The height in inches.</param>
     public Height(double metres)
     {
-        Value=metres;
+        Value = metres;
     }
 
     /// <summary>

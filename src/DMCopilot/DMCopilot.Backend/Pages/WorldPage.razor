@@ -1,12 +1,12 @@
 @page "/world"
 @page "/world/new"
-@page "/world/{WorldId:guid}"
+@page "/world/{WorldId}"
 
-@using DMCopilot.Shared.Services
+@using DMCopilot.Services
 @using DMCopilot.Entities.Models
 @using DMCopilot.Data.Repositories
 
-@inject IWorldRepository worldRepository
+@inject WorldRepository worldRepository
 @inject NavigationManager navigationManager
 
 <CascadingValue Value="@Account">

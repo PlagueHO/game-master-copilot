@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace DMCopilot.Entities.Models
@@ -8,13 +6,17 @@ namespace DMCopilot.Entities.Models
     /// <summary>
     /// Represents a world in the application.
     /// </summary>
-    public class World : IGeneratedStorageEntity
+    public class World : IPageStorageEntity
     {
         /// <summary>
         /// Gets or sets the unique identifier for the world.
         /// </summary>
         [JsonPropertyName("id")]
         public string Id { get; set; }
+
+        /// <inheritdoc/>
+        [JsonPropertyName("type")]
+        public string Type { get; set; } = "World";
 
         /// <summary>
         /// Gets or sets the unique identifier for the world.
@@ -44,13 +46,13 @@ namespace DMCopilot.Entities.Models
         /// Gets or sets a list of geographical types.
         /// </summary>
         [JsonPropertyName("geographies")]
-        public List<string> Geographies { get; set; }
+        public List<string>? Geographies { get; set; }
 
         /// <summary>
         /// Gets or sets a list of climate types.
         /// </summary>
         [JsonPropertyName("climates")]
-        public List<string> Climates { get; set; }
+        public List<string>? Climates { get; set; }
 
         /// <summary>
         /// Gets or sets a dictionary of other properties for the world.
@@ -62,7 +64,7 @@ namespace DMCopilot.Entities.Models
         /// Information about how the storage entity was populated
         /// </summary>
         [JsonPropertyName("generatedcontent")]
-        public GeneratedContent GeneratedContent { get; set; } = new GeneratedContent();
+        public PageGeneratedContent GeneratedContent { get; set; } = new PageGeneratedContent();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="World"/> class.

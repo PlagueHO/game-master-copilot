@@ -1,10 +1,10 @@
 @page "/tenant"
 
-@using DMCopilot.Shared.Services
+@using DMCopilot.Services
 @using DMCopilot.Entities.Models
 @using DMCopilot.Data.Repositories
 
-@inject ITenantRepository tenantRepository
+@inject TenantRepository tenantRepository
 
 <h4>Tenants</h4>
 
@@ -58,6 +58,6 @@
     private async Task GetTenants()
     {
         // Get the tenant from the TenantRepository
-        this.tenants = await tenantRepository.GetTenantsAsync();
+        this.tenants = await tenantRepository.ReadAllAsync();
     }
 }

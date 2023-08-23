@@ -2,7 +2,6 @@
 
 namespace DMCopilot.Data.Repositories;
 
-
 /// <summary>
 /// Defines the basic CRUD operations for a repository.
 /// </summary>
@@ -42,6 +41,18 @@ public class Repository<T> : IRepository<T> where T : IStorageEntity
     public Task<T> FindByIdAsync(string id)
     {
         return StorageContext.ReadAsync(id);
+    }
+
+    /// <inheritdoc/>
+    public Task<T> FindByIdAsync(string id, string tenantId)
+    {
+        return StorageContext.ReadAsync(id, tenantId);
+    }
+
+    /// <inheritdoc/>
+    public Task<T> FindByIdAsync(string id, string type, string tenantId)
+    {
+        return StorageContext.ReadAsync(id, type, tenantId);
     }
 
     /// <inheritdoc/>
