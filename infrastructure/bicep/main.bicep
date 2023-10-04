@@ -29,6 +29,9 @@ param baseResourceName string
   'B1'
   'B2'
   'B3'
+  'S1'
+  'S2'
+  'S3'
   'P1V2'
   'P2V2'
   'P3V2'
@@ -334,6 +337,7 @@ module containerApp './modules/containerApp.bicep' = {
     location: location
     containerAppEnvironmentName: containerAppEnvironmentName
     logAnalyticsWorkspaceCustomerId: monitoring.outputs.logAnalyticsWorkspaceCustomerId
+    logAnalyticsWorkspaceSharedKey: monitoring.output.logAnalyticsWorkspaceSharedKey
   }
 }
 

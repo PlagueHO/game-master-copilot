@@ -23,3 +23,4 @@ output applicationInsightsInstrumentationKey string = applicationInsights.proper
 output applicationInsightsConnectionString string = applicationInsights.properties.ConnectionString
 output logAnalyticsWorkspaceId string = logAnalyticsWorkspace.id
 output logAnalyticsWorkspaceCustomerId string = logAnalyticsWorkspace.properties.customerId
+output logAnalyticsWorkspaceSharedKey string = logAnalyticsWorkspace.properties.primarySharedKey

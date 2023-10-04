@@ -1,8 +1,9 @@
 param location string
 param containerAppEnvironmentName string
 param logAnalyticsWorkspaceCustomerId string
+param logAnalyticsWorkspaceSharedKey string
 
-resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2023-04-01-preview' = {
+resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2023-05-01' = {
   name: containerAppEnvironmentName
   location: location
   properties: {
@@ -10,6 +11,7 @@ resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2023-04-01-p
       destination: 'log-analytics'
       logAnalyticsConfiguration: {
           customerId: logAnalyticsWorkspaceCustomerId
+          sharedKey: logAnalyticsWorkspaceSharedKey
       }
     }
   }
