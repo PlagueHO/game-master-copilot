@@ -14,8 +14,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "bicep", "bicep", "{45A296C7
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{805C7B55-9BC1-4EF2-B2B9-4D2F3E9F3F1B}"
 	ProjectSection(SolutionItems) = preProject
+		..\..\infrastructure\bicep\modules\appConfiguration.bicep = ..\..\infrastructure\bicep\modules\appConfiguration.bicep
 		..\..\infrastructure\bicep\modules\appServicePlan.bicep = ..\..\infrastructure\bicep\modules\appServicePlan.bicep
+		..\..\infrastructure\bicep\modules\b2c.bicep = ..\..\infrastructure\bicep\modules\b2c.bicep
 		..\..\infrastructure\bicep\modules\cognitiveSearch.bicep = ..\..\infrastructure\bicep\modules\cognitiveSearch.bicep
+		..\..\infrastructure\bicep\modules\containerApp.bicep = ..\..\infrastructure\bicep\modules\containerApp.bicep
+		..\..\infrastructure\bicep\modules\containerRegistry.bicep = ..\..\infrastructure\bicep\modules\containerRegistry.bicep
 		..\..\infrastructure\bicep\modules\cosmosDbAccount.bicep = ..\..\infrastructure\bicep\modules\cosmosDbAccount.bicep
 		..\..\infrastructure\bicep\modules\keyVault.bicep = ..\..\infrastructure\bicep\modules\keyVault.bicep
 		..\..\infrastructure\bicep\modules\monitoring.bicep = ..\..\infrastructure\bicep\modules\monitoring.bicep
@@ -31,9 +35,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DMCopilot.Entities", "DMCop
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DMCopilot.Entities.Test", "DMCopilot.Entities.Test\DMCopilot.Entities.Test.csproj", "{58483A94-FAC5-481A-9579-702A313B9C2B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DMCopilot.WebApi", "DMCopilot.WebApi\DMCopilot.WebApi.csproj", "{1F578834-FE0C-4DC4-9018-45DEC732B86A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DMCopilot.WebApi", "DMCopilot.WebApi\DMCopilot.WebApi.csproj", "{1F578834-FE0C-4DC4-9018-45DEC732B86A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DMCopilot.Services", "DMCopilot.Services\DMCopilot.Services.csproj", "{B655F32E-40DB-48AC-9093-166181F5BE2E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DMCopilot.Services", "DMCopilot.Services\DMCopilot.Services.csproj", "{B655F32E-40DB-48AC-9093-166181F5BE2E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -16,7 +16,7 @@ resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2023-05-01' 
 // Add the diagnostic settings to send logs and metrics to Log Analytics
 resource openAiServiceDiagnosticSetting 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
   name: 'send-to-${logAnalyticsWorkspaceName}'
-  scope: containerAppEnvironmentName
+  scope: containerAppEnvironment
   properties: {
     workspaceId: logAnalyticsWorkspaceId
     logs: [
