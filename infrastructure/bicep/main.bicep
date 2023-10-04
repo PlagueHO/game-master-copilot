@@ -1,14 +1,21 @@
 targetScope = 'subscription'
 
-@description('The location to deploy the main demo into.')
+@description('The location to deploy the Dungeon Master Copilot into.')
 @allowed([
+  'AustraliaEast'
+  'CanadaEast'
   'EastUS'
+  'EastUS2'
   'FranceCentral'
+  'JapanEast'
+  'NorthCentralUS'
   'SouthCentralUS'
+  'SwedenCentral'
+  'SwitzerlandNorth'
   'WestEurope'
   'UKSouth'
 ])
-param location string = 'SouthCentralUS'
+param location string = 'CanadaEast'
 
 @description('The name of the resource group that will contain all the resources.')
 param resourceGroupName string
@@ -64,11 +71,25 @@ var containerAppEnvironmentName = '${baseResourceName}-cae'
 
 var openAiModelDeployments = [
   {
+    name: 'gpt-35-turbo'
+    modelName: 'gpt-35-turbo'
+    version: '0613'
+    sku: 'Standard'
+    capacity: 60
+  }
+  {
     name: 'gpt-35-turbo-16k'
     modelName: 'gpt-35-turbo-16k'
     version: '0613'
     sku: 'Standard'
     capacity: 60
+  }
+  {
+    name: 'gpt-4'
+    modelName: 'gpt-4'
+    version: '0613'
+    sku: 'Standard'
+    capacity: 20
   }
   {
     name: 'text-embedding-ada-002'
@@ -82,7 +103,7 @@ var openAiModelDeployments = [
 var openAiWebConfigration = [
   {
     name: 'SemanticKernel__AzureOpenAiTextCompletionServices__0__Id'
-    value: 'ChatCompletion'
+    value: 'ChatCompletionGPT35TURBO'
   }
   {
     name: 'SemanticKernel__AzureOpenAiTextCompletionServices__0__Endpoint'
@@ -101,31 +122,71 @@ var openAiWebConfigration = [
     value: true
   }
   {
-    name: 'SemanticKernel__AzureOpenAiTextEmbeddingGenerationServices__1__Id'
-    value: 'Embeddings'
+    name: 'SemanticKernel__AzureOpenAiTextCompletionServices__1__Id'
+    value: 'ChatCompletionGPT35TURBO16K'
   }
   {
-    name: 'SemanticKernel__AzureOpenAiTextEmbeddingGenerationServices__1__Endpoint'
+    name: 'SemanticKernel__AzureOpenAiTextCompletionServices__1__Endpoint'
     value: openAiService.outputs.openAiServiceEndpoint
   }
   {
-    name: 'SemanticKernel__AzureOpenAiTextEmbeddingGenerationServices__1__Deployment'
+    name: 'SemanticKernel__AzureOpenAiTextCompletionServices__1__Deployment'
     value: openAiModelDeployments[1].name
   }
   {
-    name: 'SemanticKernel__AzureOpenAiTextEmbeddingGenerationServices__1__SetAsDefault'
+    name: 'SemanticKernel__AzureOpenAiTextCompletionServices__1__SetAsDefault'
+    value: false
+  }
+  {
+    name: 'SemanticKernel__AzureOpenAiChatCompletionServices__1__AlsoAsTextCompletion'
     value: true
   }
   {
-    name: 'SemanticKernel__AzureOpenAiImageGenerationServices__2__Id'
-    value: 'ImageGeneration'
+    name: 'SemanticKernel__AzureOpenAiTextCompletionServices__2__Id'
+    value: 'ChatCompletionGPT4'
   }
   {
-    name: 'SemanticKernel__AzureOpenAiImageGenerationServices__2__Endpoint'
+    name: 'SemanticKernel__AzureOpenAiTextCompletionServices__2__Endpoint'
     value: openAiService.outputs.openAiServiceEndpoint
   }
   {
-    name: 'SemanticKernel__AzureOpenAiImageGenerationServices__2__SetAsDefault'
+    name: 'SemanticKernel__AzureOpenAiTextCompletionServices__2__Deployment'
+    value: openAiModelDeployments[1].name
+  }
+  {
+    name: 'SemanticKernel__AzureOpenAiTextCompletionServices__2__SetAsDefault'
+    value: false
+  }
+  {
+    name: 'SemanticKernel__AzureOpenAiChatCompletionServices__2__AlsoAsTextCompletion'
+    value: true
+  }
+  {
+    name: 'SemanticKernel__AzureOpenAiTextEmbeddingGenerationServices__3__Id'
+    value: 'Embeddings'
+  }
+  {
+    name: 'SemanticKernel__AzureOpenAiTextEmbeddingGenerationServices__3__Endpoint'
+    value: openAiService.outputs.openAiServiceEndpoint
+  }
+  {
+    name: 'SemanticKernel__AzureOpenAiTextEmbeddingGenerationServices__3__Deployment'
+    value: openAiModelDeployments[1].name
+  }
+  {
+    name: 'SemanticKernel__AzureOpenAiTextEmbeddingGenerationServices__3__SetAsDefault'
+    value: true
+  }
+  {
+    name: 'SemanticKernel__AzureOpenAiImageGenerationServices__4__Id'
+    value: 'ImageGeneration'
+  }
+  {
+    name: 'SemanticKernel__AzureOpenAiImageGenerationServices__4__Endpoint'
+    value: openAiService.outputs.openAiServiceEndpoint
+  }
+  {
+    name: 'SemanticKernel__AzureOpenAiImageGenerationServices__4__SetAsDefault'
     value: true
   }
 ]
