@@ -21,7 +21,7 @@ resource openAiServiceDiagnosticSetting 'Microsoft.Insights/diagnosticSettings@2
     workspaceId: logAnalyticsWorkspaceId
     logs: [
       {
-        category: 'Audit'
+        categoryGroup: 'audit'
         enabled: true
         retentionPolicy: {
           days: 0
@@ -29,15 +29,7 @@ resource openAiServiceDiagnosticSetting 'Microsoft.Insights/diagnosticSettings@2
         }
       }
       {
-        category: 'ContainerAppConsoleLogs'
-        enabled: true
-        retentionPolicy: {
-          days: 0
-          enabled: false 
-        }
-      }
-      {
-        category: 'ContainerAppSystemLogs'
+        categoryGroup: 'allLogs'
         enabled: true
         retentionPolicy: {
           days: 0
