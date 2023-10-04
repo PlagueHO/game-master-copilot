@@ -5,6 +5,9 @@ param applicationInsightsName string
 resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
   name: logAnalyticsWorkspaceName
   location: location
+  identity: {
+      type: 'SystemAssigned'
+  }
 }
 
 resource applicationInsights 'Microsoft.Insights/components@2020-02-02' = {
@@ -23,4 +26,3 @@ output applicationInsightsInstrumentationKey string = applicationInsights.proper
 output applicationInsightsConnectionString string = applicationInsights.properties.ConnectionString
 output logAnalyticsWorkspaceId string = logAnalyticsWorkspace.id
 output logAnalyticsWorkspaceCustomerId string = logAnalyticsWorkspace.properties.customerId
-output logAnalyticsWorkspaceSharedKey string = logAnalyticsWorkspace.properties.primarySharedKey
