@@ -19,7 +19,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2023-02-01' = {
     enabledForDiskEncryption: true
     enableSoftDelete: true
     softDeleteRetentionInDays: 7
-    enablePurgeProtection: true
+    enablePurgeProtection: false
     enableRbacAuthorization: true
   }
 }
