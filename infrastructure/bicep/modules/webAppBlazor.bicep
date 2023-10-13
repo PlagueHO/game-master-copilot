@@ -38,31 +38,31 @@ resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2023-0
 
 var basicConfiguration = [
   {
-    name: 'Authorization:Type'
+    name: 'Authorization__Type'
     value: 'AzureAd'
   }
   {
-    name: 'Authorization:AzureAd:Instance'
+    name: 'Authorization__AzureAd__Instance'
     value: azureAdInstance
   }
   {
-    name: 'Authorization:AzureAd:Instance'
+    name: 'Authorization__AzureAd__Instance'
     value: azureAdInstance
   }
   {
-    name: 'Authorization:AzureAd:Domain'
+    name: 'Authorization__AzureAd__Domain'
     value: azureAdDomain
   }
   {
-    name: 'Authorization:AzureAd:TenantId'
+    name: 'Authorization__AzureAd__TenantId'
     value: azureAdTenantId
   }
   {
-    name: 'Authorization:AzureAd:ClientId'
+    name: 'Authorization__AzureAd__ClientId'
     value: azureAdClientId
   }
   {
-    name: 'Authorization:AzureAd:ClientSecret'
+    name: 'Authorization__AzureAd__ClientSecret'
     value: '@Microsoft.KeyVault(SecretUri=${keyVaultAzureAdClientSecret.properties.secretUri})'
   }
   {
@@ -110,31 +110,31 @@ var basicConfiguration = [
     value: 'disabled'
   }
   {
-    name: 'SemanticKernel:PluginsDirectory'
+    name: 'SemanticKernel__PluginsDirectory'
     value: 'Plugins'
   }
   {
-    name: 'SemanticKernel:AzureOpenAiApiKey'
+    name: 'SemanticKernel__AzureOpenAiApiKey'
     value: openAiService.listKeys().key1
   }
   {
-    name: 'DataStore:Type'
+    name: 'DataStore__Type'
     value: 'CosmosDb'
   }
   {
-    name: 'DataStore:CosmosDb:EndpointUri'
+    name: 'DataStore__CosmosDb__EndpointUri'
     value: cosmosDbAccount.properties.documentEndpoint
   }
   {
-    name: 'DataStore:CosmosDb:Database'
+    name: 'DataStore__CosmosDb__Database'
     value: 'gmcopilot'
   }
   {
-    name: 'DataStore:CosmosDb:ConnectionString'
+    name: 'DataStore__CosmosDb__ConnectionString'
     value: cosmosDbAccount.listConnectionStrings().connectionStrings[0].connectionString
   }
   {
-    name: 'AppConfiguration:Endpoint'
+    name: 'AppConfiguration__Endpoint'
     value: appConfiguration.properties.endpoint
   }
 ]
