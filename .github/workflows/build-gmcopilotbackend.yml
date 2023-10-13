@@ -1,0 +1,33 @@
+name: build-gmcopilotbackend
+
+on:
+  workflow_call:
+
+jobs:
+  build-gmcopilotbackend:
+    name: Build GMC backend
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install .NET 7
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 7
+
+      - name: Build publishable GMC backend
+        run: |
+          dotnet publish --configuration Release
+        working-directory: ./src/GMCopilot/GMCopilot.Backend/
+
+      - name: Zip publishable GMC backend
+        run: |
+          zip -r gmcopilotbackend.zip .
+        working-directory: ./src/GMCopilot/GMCopilot.Backend/bin/Release/net7.0/publish
+
+      - name: Upload GMC backend as workflow artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: gmcopilot
+          path: ./src/GMCopilot/GMCopilot.Backend/bin/Release/net7.0/publish/gmcopilotbackend.zip

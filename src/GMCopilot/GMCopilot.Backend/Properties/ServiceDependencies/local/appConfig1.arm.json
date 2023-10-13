@@ -1,0 +1,77 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resourceGroupName": {
+            "type": "string",
+            "defaultValue": "dsr-gmcopilot-rg",
+            "metadata": {
+                "_parameterType": "resourceGroup",
+                "description": "Name of the resource group for the resource. It is recommended to put resources under same resource group for better tracking."
+            }
+        },
+        "resourceGroupLocation": {
+            "type": "string",
+            "defaultValue": "eastus",
+            "metadata": {
+                "_parameterType": "location",
+                "description": "Location of the resource group. Resource groups could have different location than resources."
+            }
+        },
+        "resourceLocation": {
+            "type": "string",
+            "defaultValue": "[parameters('resourceGroupLocation')]",
+            "metadata": {
+                "_parameterType": "location",
+                "description": "Location of the resource. By default use resource group's location, unless the resource provider is not supported there."
+            }
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Resources/resourceGroups",
+            "name": "[parameters('resourceGroupName')]",
+            "location": "[parameters('resourceGroupLocation')]",
+            "apiVersion": "2019-10-01"
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "name": "[concat(parameters('resourceGroupName'), 'Deployment', uniqueString(concat('dsr-gmcopilot-appconfig', subscription().subscriptionId)))]",
+            "resourceGroup": "[parameters('resourceGroupName')]",
+            "apiVersion": "2019-10-01",
+            "dependsOn": [
+                "[parameters('resourceGroupName')]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "resources": [
+                        {
+                            "type": "Microsoft.AppConfiguration/configurationStores",
+                            "location": "[parameters('resourceLocation')]",
+                            "properties": {},
+                            "sku": {
+                                "name": "free"
+                            },
+                            "systemData": {
+                                "createdBy": "Daniel.ScottRaynsford@microsoft.com",
+                                "createdByType": "User",
+                                "createdAt": "2023-07-13T20:10:38+12:00",
+                                "lastModifiedBy": "4aaeb40a-ad35-4c2d-89f3-7bee597b9a47",
+                                "lastModifiedByType": "Application",
+                                "lastModifiedAt": "2023-07-14T11:11:44+12:00"
+                            },
+                            "name": "dsr-gmcopilot-appconfig",
+                            "apiVersion": "2022-05-01"
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "metadata": {
+        "_dependencyType": "appConfig.azure"
+    }
+}

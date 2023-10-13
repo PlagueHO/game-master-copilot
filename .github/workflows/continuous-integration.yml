@@ -16,11 +16,11 @@ jobs:
   build-armtemplate:
     uses: ./.github/workflows/build-armtemplate.yml
 
-  test-dmcopilot:
-    uses: ./.github/workflows/test-dmcopilot.yml
+  test-gmcopilot:
+    uses: ./.github/workflows/test-gmcopilot.yml
 
-  build-dmcopilotbackend:
+  build-gmcopilotbackend:
     needs:
-      - test-dmcopilot
-    uses: ./.github/workflows/build-dmcopilotbackend.yml
+      - test-gmcopilot
+    uses: ./.github/workflows/build-gmcopilotbackend.yml
     

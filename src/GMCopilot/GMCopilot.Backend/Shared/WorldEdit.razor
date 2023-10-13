@@ -1,0 +1,107 @@
+@using GMCopilot.Services
+@using GMCopilot.Data.Repositories
+@using GMCopilot.Entities.Models
+@using System.Text.Json
+
+@inject SemanticKernelService semanticKernelService
+@inject WorldRepository worldRepository
+@inject NavigationManager navigationManager
+
+<Card Background="Background.Primary" WhiteText>
+    <CardBody>
+        <CardTitle Size="3">
+            Generate a World
+        </CardTitle>
+        <CardText>
+            Enter a few details about the world you would like to generate. You can be as specific as you like, or leave it to chance.
+        </CardText>
+        <Field>
+            <FieldBody>
+                <MemoEdit @bind-Text="@WorldDetails" AutoSize />
+             </FieldBody>
+         </Field>
+         <Button @onclick="GenerateWorld" Color="Color.Dark" Margin="Margin.Is2.FromTop" Disabled="@(loadingVisible)">
+             Generate <Icon Name="IconName.ArrowRight" />
+         </Button>
+     </CardBody>
+ </Card>
+
+ @if (World != null)
+{
+    <LoadingIndicator @bind-Visible="@loadingVisible">
+        <Card>
+            <CardBody>
+                <Field>
+                    <FieldLabel>Name</FieldLabel>
+                    <FieldBody>
+                        <TextEdit @bind-Text="@World.Name" />
+                    </FieldBody>
+                </Field>
+                <Field>
+                    <FieldLabel>Description</FieldLabel>
+                    <FieldBody>
+                        <MemoEdit @bind-Text="@World.Description" AutoSize />
+                     </FieldBody>
+                 </Field>
+                 <Field>
+                     <FieldLabel>History</FieldLabel>
+                     <FieldBody>
+                         <MemoEdit @bind-Text="@World.History" AutoSize />
+                     </FieldBody>
+                 </Field>
+                 <Button @onclick="SaveWorld" Color="Color.Dark" Margin="Margin.Is2.FromTop" Disabled="@(loadingVisible)">
+                     Save <Icon Name="IconName.Save" />
+                 </Button>
+             </CardBody>
+         </Card>
+     </LoadingIndicator>
+}
+
+@code {
+    [CascadingParameter]
+    public Account? Account { get; set; }
+
+    [CascadingParameter]
+    public Tenant? Tenant { get; set; }
+
+    [Parameter]
+    public string WorldId { get; set; }
+
+    World? World;
+    String WorldDetails { get; set; } = "A fantasy realm called on a world called Toril with a range of climates and environments with a long rich history.";
+    Boolean loadingVisible { get; set; } = false;
+
+    protected override async void OnParametersSet()
+    {
+        if (Tenant != null && Account != null)
+        {
+            if (navigationManager.Uri.EndsWith("/world/new"))
+                World = new World(Guid.NewGuid().ToString(), Tenant.Id, "New World", "A new world!");
+            else if (WorldId != null)
+                World = await worldRepository.FindByWorldIdAsync(WorldId, Tenant.Id);
+        }
+    }
+
+    private async Task GenerateWorld()
+    {
+        loadingVisible = true;
+
+        var functionResult = await semanticKernelService.InvokePluginFunctionAsync("World", "CreateWorld", new Dictionary<String, String> {
+            {"input", WorldDetails}
+        });
+
+        Console.WriteLine(functionResult.Result);
+
+        loadingVisible = false;
+    }
+
+    private async Task SaveWorld()
+    {
+        if (WorldId == null)
+            await worldRepository.CreateAsync(World);
+        else
+            await worldRepository.UpsertAsync(World);
+
+        navigationManager.NavigateTo("/world");
+    }
+}

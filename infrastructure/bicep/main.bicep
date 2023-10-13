@@ -1,6 +1,6 @@
 targetScope = 'subscription'
 
-@description('The location to deploy the Dungeon Master Copilot into.')
+@description('The location to deploy the Game Master Copilot into.')
 @allowed([
   'AustraliaEast'
   'CanadaEast'

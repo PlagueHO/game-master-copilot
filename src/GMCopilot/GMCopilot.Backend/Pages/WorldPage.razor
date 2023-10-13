@@ -1,0 +1,39 @@
+@page "/world"
+@page "/world/new"
+@page "/world/{WorldId}"
+
+@using GMCopilot.Services
+@using GMCopilot.Entities.Models
+@using GMCopilot.Data.Repositories
+
+@inject WorldRepository worldRepository
+@inject NavigationManager navigationManager
+
+<CascadingValue Value="@Account">
+    <CascadingValue Value="@Tenant">
+        @if (navigationManager.ToBaseRelativePath(navigationManager.Uri) == "world")
+        {
+            <WorldList />
+        }
+        else
+        {
+            <WorldEdit WorldId="@WorldId" />
+        }
+    </CascadingValue>
+</CascadingValue>
+
+@code {
+    [CascadingParameter]
+    public Account? Account { get; set; }
+
+    [CascadingParameter]
+    public Tenant? Tenant { get; set; }
+
+    [Parameter]
+    public string WorldId { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+    }
+}

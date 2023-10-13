@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/src/dungeon-master-copilot/dungeon-master-copilot-server/dungeon-master-copilot-server.csproj",
+                "${workspaceFolder}/src/game-master-copilot/game-master-copilot-server/game-master-copilot-server.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -19,7 +19,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/src/dungeon-master-copilot/dungeon-master-copilot-server/dungeon-master-copilot-server.csproj",
+                "${workspaceFolder}/src/game-master-copilot/game-master-copilot-server/game-master-copilot-server.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -33,7 +33,7 @@
                 "watch",
                 "run",
                 "--project",
-                "${workspaceFolder}/src/dungeon-master-copilot/dungeon-master-copilot-server/dungeon-master-copilot-server.csproj"
+                "${workspaceFolder}/src/game-master-copilot/game-master-copilot-server/game-master-copilot-server.csproj"
             ],
             "problemMatcher": "$msCompile"
         }

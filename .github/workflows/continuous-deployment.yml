@@ -57,19 +57,19 @@ jobs:
       AZUREAD_CLIENT_ID: ${{ secrets.AZUREAD_CLIENT_ID }}
       AZUREAD_CLIENTSECRET: ${{ secrets.AZUREAD_CLIENTSECRET }}
 
-  test-dmcopilot:
-    uses: ./.github/workflows/test-dmcopilot.yml
+  test-gmcopilot:
+    uses: ./.github/workflows/test-gmcopilot.yml
 
-  build-dmcopilotbackend:
+  build-gmcopilotbackend:
     needs:
-      - test-dmcopilot
-    uses: ./.github/workflows/build-dmcopilotbackend.yml
+      - test-gmcopilot
+    uses: ./.github/workflows/build-gmcopilotbackend.yml
   
-  publish-dmcopilotbackend:
+  publish-gmcopilotbackend:
     needs:
-      - build-dmcopilotbackend
+      - build-gmcopilotbackend
       - deploy-infrastructure
-    uses: ./.github/workflows/publish-dmcopilotbackend.yml
+    uses: ./.github/workflows/publish-gmcopilotbackend.yml
     with:
       RESOURCE_GROUP_NAME: ${{ vars.RESOURCE_GROUP_NAME }}
       WEBAPPNAME: ${{ needs.deploy-infrastructure.outputs.WEBAPPNAME }}

@@ -127,7 +127,7 @@ var basicConfiguration = [
   }
   {
     name: 'DataStore:CosmosDb:Database'
-    value: 'dmcopilot'
+    value: 'gmcopilot'
   }
   {
     name: 'DataStore:CosmosDb:ConnectionString'

@@ -1,7 +1,7 @@
 {
-    "name": "dungeon-master-copilot",
+    "name": "game-master-copilot",
     "image": "mcr.microsoft.com/devcontainers/dotnet:0-7.0",
-    "workspaceFolder": "/workspaces/dungeon-master-copilot",
+    "workspaceFolder": "/workspaces/game-master-copilot",
     "onCreateCommand": "bash ./.devcontainer/on-setup.sh",
   
     // Features to add to the dev container. More info: https://containers.dev/features.

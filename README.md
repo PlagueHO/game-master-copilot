@@ -1,8 +1,8 @@
-# Dungeon Master Copilot
+# Game Master Copilot
 
-[![continuous-deployment](https://github.com/PlagueHO/dungeon-master-copilot/actions/workflows/continuous-deployment.yml/badge.svg)](https://github.com/PlagueHO/dungeon-master-copilot/actions/workflows/continuous-deployment.yml)
+[![continuous-deployment](https://github.com/PlagueHO/game-master-copilot/actions/workflows/continuous-deployment.yml/badge.svg)](https://github.com/PlagueHO/game-master-copilot/actions/workflows/continuous-deployment.yml)
 
-Dungeon Master Copilot is an AI enabled copilot to help dungeon masters create content. It is a multitenant application that can be used to serve users and teams (organizations).
+Game Master Copilot is an AI enabled copilot to help game masters create content. It is a multitenant application that can be used to serve users and teams (organizations).
 
 The application is a work-in-progress and is being used a test platform for various technologies and services. It is intended to demonstrate the use of Large Foundational Models/Generative AI using Azure OpenAI Service and [Semantic Kernel](https://aka.ms/sk/learn) as well as a reference architecture for running [multitenant SaaS applications in Azure](https://aka.ms/multitenantarchitecture).
 
@@ -31,8 +31,8 @@ Future features planned:
 
 The application is built and deployed using:
 
-- **Continuous delivery** using [GitHub Actions workflow]() from the main branch. See [continuous-deployment.yml](https://github.com/PlagueHO/dungeon-master-copilot/blob/main/.github/workflows/continuous-deployment.yml).
-- **Infrastrucutre as Code** using [Azure Bicep](). See [main.bicep](https://github.com/PlagueHO/dungeon-master-copilot/blob/main/infrastructure/bicep/main.bicep).
+- **Continuous delivery** using [GitHub Actions workflow]() from the main branch. See [continuous-deployment.yml](https://github.com/PlagueHO/game-master-copilot/blob/main/.github/workflows/continuous-deployment.yml).
+- **Infrastrucutre as Code** using [Azure Bicep](). See [main.bicep](https://github.com/PlagueHO/game-master-copilot/blob/main/infrastructure/bicep/main.bicep).
 
 ### Workload Identity
 
@@ -43,8 +43,8 @@ The following _Actions Variables_ should be configured in the GitHub repository:
 - `APPSERVICEPLAN_CONFIGURATION`: The configuration of the Azure App Service Plan for running the Foundry VTT server. Must be one of `B1`, `P1V2`, `P2V2`, `P3V2`, `P0V3`,`P1V3`, `P2V3`, `P3V3`.
 - `AZUREAD_INSTANCE`: The Azure AD URL to use for authentication. For example, 'https://login.microsoftonline.com/'.
 - `LOCATION`: The Azure region to deploy the resources to. For example, `EastUS`.
-- `BASE_RESOURCE_NAME`: The base name that will prefixed to all Azure resources deployed to ensure they are unique. For example, `dsr-dmcopilot`.
-- `RESOURCE_GROUP_NAME`: The name of the Azure resource group to create and add the resources to. For example, `dsr-dmcopilot-rg`.
+- `BASE_RESOURCE_NAME`: The base name that will prefixed to all Azure resources deployed to ensure they are unique. For example, `dsr-gmcopilot`.
+- `RESOURCE_GROUP_NAME`: The name of the Azure resource group to create and add the resources to. For example, `dsr-gmcopilot-rg`.
 
 Your variables should look similar to this:
 ![Example of GitHub Variables](/images/github-variables-example.png)

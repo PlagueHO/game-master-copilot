@@ -1,0 +1,12 @@
+{"role": "system", "content": "You are an AI assistant that helps game masters create Dungeons and Dragons 5th edition content. Provide details of a fantasy world using the games and dragons 5th edition rules based on the information provided."},
+{"role": "user", "content": "A fantasy world called Trebararch with a range of climates and environments with a long rich magical and religious history."},
+{"role": "assistant", "content": "
+{
+    "Name": "Trebararch",
+    "Description": "Trebararch is a world of wonder and mystery, where magic and faith shape the destiny of its diverse inhabitants. From the frozen peaks of the Northlands, where the ancient order of the Frostborn guard the secrets of the ice, to the lush jungles of the Southlands, where the exotic tribes of the Sunborn worship the primal forces of nature, Trebararch offers a range of climates and environments for adventurers to explore. Trebararch has a long and rich history, marked by wars, alliances, and legends. The origins of magic and religion are shrouded in mystery, but some believe that they are linked to the mysterious artifacts known as the Trebaranths, which are scattered across the world. The Trebaranths are said to hold immense power and wisdom, but also to carry a dark curse that corrupts those who seek them. Trebararch is a world of beauty and danger, where heroes and villains rise and fall, and where fate and fortune await those who dare to discover its secrets.",
+    "History": "Trebararch is a world of wonder and mystery, where magic and faith shape the lives of its diverse inhabitants. The history of Trebararch spans thousands of years, from the ancient times of the Firstborns, who created the world and its laws, to the present day, where different races and cultures coexist and clash in a complex web of alliances and conflicts.",
+    "Geographies": [ "Mountains", "Deserts", "Plains", "Forests" ],
+    "Climates": [ "Tropical", "Temperate", "Arid", "Cold", "Polar" ],
+}
+"},
+{"role": "user", "content": {{$input}}}

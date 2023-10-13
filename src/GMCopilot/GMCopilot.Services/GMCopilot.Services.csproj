@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Azure.Identity" Version="1.10.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights" Version="2.21.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="7.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging.ApplicationInsights" Version="2.21.0" />
+    <PackageReference Include="Microsoft.SemanticKernel" Version="0.19.230804.2-preview" />
+    <PackageReference Include="Microsoft.SemanticKernel.Connectors.AI.OpenAI" Version="0.19.230804.2-preview" />
+    <PackageReference Include="Microsoft.SemanticKernel.Connectors.Memory.AzureCognitiveSearch" Version="0.19.230804.2-preview" />
+    <PackageReference Include="Microsoft.SemanticKernel.Core" Version="0.19.230804.2-preview" />
+    <PackageReference Include="Microsoft.SemanticKernel.Planning.ActionPlanner" Version="0.19.230804.2-preview" />
+    <PackageReference Include="Microsoft.SemanticKernel.Planning.SequentialPlanner" Version="0.19.230804.2-preview" />
+    <PackageReference Include="Microsoft.SemanticKernel.Skills.Document" Version="0.19.230804.2-preview" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GMCopilot.Data\GMCopilot.Data.csproj" />
+    <ProjectReference Include="..\GMCopilot.Entities\GMCopilot.Entities.csproj" />
+  </ItemGroup>
+
+</Project>

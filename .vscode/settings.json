@@ -1,3 +1,3 @@
 {
-    "dotnet.defaultSolution": "src/DMCopilot/DMCopilot.sln"
+    "dotnet.defaultSolution": "src/GMCopilot/GMCopilot.sln"
 }

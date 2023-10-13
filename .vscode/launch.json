@@ -10,9 +10,9 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/src/dungeon-master-copilot/dungeon-master-copilot-server/bin/Debug/net7.0/dungeon-master-copilot-server.dll",
+            "program": "${workspaceFolder}/src/game-master-copilot/game-master-copilot-server/bin/Debug/net7.0/game-master-copilot-server.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/src/dungeon-master-copilot/dungeon-master-copilot-server",
+            "cwd": "${workspaceFolder}/src/game-master-copilot/game-master-copilot-server",
             "stopAtEntry": false,
             // Enable launching a web browser when ASP.NET Core starts. For more information: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser
             "serverReadyAction": {

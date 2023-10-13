@@ -1,0 +1,88 @@
+﻿@using GMCopilot.Services
+@using GMCopilot.Entities.Models
+@using GMCopilot.Data.Repositories
+
+@inject WorldRepository worldRepository
+@inject NavigationManager navigationManager
+
+<Card Background="Background.Primary" WhiteText>
+    <CardBody>
+        <CardTitle Size="3">
+            Your Worlds
+        </CardTitle>
+        <CardText>
+            Select one of the existing worlds or create a new one by clicking Create. Generating a new world can take a few seconds and requires just a few words of input.
+        </CardText>
+        <CardActions>
+            <Button Color="Color.Dark" Type="ButtonType.Link" @onclick="CreateButtonClick" Margin="Margin.Is2.FromTop">
+                Create <Icon Name="IconName.Add" />
+            </Button>
+            <Button Color="Color.Dark" Type="ButtonType.Link" Margin="Margin.Is2.FromTop">
+                Delete Selected <Icon Name="IconName.Delete" />
+            </Button>
+        </CardActions>
+    </CardBody>
+</Card>
+
+<LoadingIndicator @bind-Visible="@loadingVisible">
+    <Table Striped Hoverable Bordered>
+        <TableHeader>
+            <TableRow>
+                <TableHeaderCell>Select</TableHeaderCell>
+                <TableHeaderCell>Name</TableHeaderCell>
+                <TableHeaderCell>Description</TableHeaderCell>
+                <TableHeaderCell>History</TableHeaderCell>
+            </TableRow>
+        </TableHeader>
+        @if (worlds != null)
+        {
+            <TableBody>
+                @foreach (var world in worlds)
+                {
+                    <TableRow @key="@world.Id">
+                        <TableRowHeader><Check TValue="bool"/></TableRowHeader>
+                        <TableRowCell @onclick="(e) => WorldClick(e, world)">@world.Name</TableRowCell>
+                        <TableRowCell @onclick="(e) => WorldClick(e, world)">@world.Description</TableRowCell>
+                        <TableRowCell @onclick="(e) => WorldClick(e, world)">@world.History</TableRowCell>
+                    </TableRow>
+                }
+            </TableBody>
+        }
+    </Table>
+</LoadingIndicator>
+
+@code {
+    [CascadingParameter]
+    public Account? Account { get; set; }
+
+    [CascadingParameter]
+    public Tenant? Tenant { get; set; }
+
+    private bool loadingVisible = true;
+    private IEnumerable<World> worlds { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await LoadWorlds();
+    }
+
+    private async Task LoadWorlds()
+    {
+        if (Tenant != null)
+        {
+            worlds = await worldRepository.FindByTenantIdAsync(Tenant.Id);
+            loadingVisible = false;
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private async void WorldClick(MouseEventArgs e, World world)
+    {
+        navigationManager.NavigateTo($"/world/{world.Id}");
+    }
+
+    private async void CreateButtonClick()
+    {
+        navigationManager.NavigateTo("/world/new");        
+    }
+}
