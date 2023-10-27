@@ -43,8 +43,8 @@ public class CosmosDbOptions
     public string? PagesContainerName { get; set; } = "pages";
 
     /// <summary>
-    /// Cosmos DB container name for storing worlds
+    /// Cosmos DB container name for storing universes
     /// </summary>
     [Required, NotEmptyOrWhitespace]
-    public string? WorldsContainerName { get; set; } = "worlds";
+    public string? UniversesContainerName { get; set; } = "universes";
 }

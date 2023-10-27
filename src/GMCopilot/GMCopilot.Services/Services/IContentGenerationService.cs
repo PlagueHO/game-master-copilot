@@ -14,9 +14,9 @@ namespace GMCopilot.Services;
 public interface IContentGenerationService
 {
     /// <summary>
-    /// Generate a World from the provided content.
+    /// Generate a Universe from the provided content.
     /// </summary>
     /// <param name="details"></param>
     /// <returns></returns>
-    public Task<World> GenerateWorldAsync(string details);
+    public Task<Universe> GenerateUniverseAsync(string details);
 }

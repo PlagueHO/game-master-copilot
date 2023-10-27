@@ -221,7 +221,7 @@ public class CosmosDbContext<T> : IStorageContext<T>, IDisposable where T : ISto
             partitionKeyBuilder.Add(tenantEntity.TenantId);
 
         if (entity is IStorageTenantedTypedEntity tenantStorageEntity)
-            partitionKeyBuilder.Add(tenantStorageEntity.Type);
+            partitionKeyBuilder.Add(tenantStorageEntity.Type.ToString());
 
         return partitionKeyBuilder.Build();
     }

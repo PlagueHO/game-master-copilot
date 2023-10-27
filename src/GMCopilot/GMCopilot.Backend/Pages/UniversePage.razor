@@ -1,23 +1,23 @@
-@page "/world"
-@page "/world/new"
-@page "/world/{WorldId}"
+@page "/universe"
+@page "/universe/new"
+@page "/universe/{universeId}"
 
 @using GMCopilot.Services
 @using GMCopilot.Entities.Models
 @using GMCopilot.Data.Repositories
 
-@inject WorldRepository worldRepository
+@inject UniverseRepository universeRepository
 @inject NavigationManager navigationManager
 
 <CascadingValue Value="@Account">
     <CascadingValue Value="@Tenant">
-        @if (navigationManager.ToBaseRelativePath(navigationManager.Uri) == "world")
+        @if (navigationManager.ToBaseRelativePath(navigationManager.Uri) == "universe")
         {
-            <WorldList />
+            <UniverseList />
         }
         else
         {
-            <WorldEdit WorldId="@WorldId" />
+            <UniverseEdit UniverseId="@UniverseId" />
         }
     </CascadingValue>
 </CascadingValue>
@@ -30,7 +30,7 @@
     public Tenant? Tenant { get; set; }
 
     [Parameter]
-    public string WorldId { get; set; }
+    public string UniverseId { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {

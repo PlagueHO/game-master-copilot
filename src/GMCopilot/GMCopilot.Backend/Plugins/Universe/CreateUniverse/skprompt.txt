@@ -1,0 +1,10 @@
+{"role": "system", "content": "You are an AI assistant that helps game masters create content for table top role playing games. Provide details of a universe using the {{$system}} based on the information provided."},
+{"role": "user", "content": "A universe called {{$name}} that does not contain traditional magic, but creatures living it can be granted gifts by ancient entities that roam the far reaches of sapce. These gifts allow them to bend space and matter in powerful ways."},
+{"role": "assistant", "content": "
+{
+    "Name": "Trebararch",
+    "Description": "Trebararch is a non-magical universe where some creatures living in it contain gifts that allow them to bend space and matter in powerful ways. These gifts were granted to them by ancient stellar entities called 'The Prometheans'.",
+    "Creation": "The universe was created when two entities called the collosi collided. The collision caused a massive explosion that created the universe."
+}
+"},
+{"role": "user", "content": {{details}}}

@@ -1,0 +1,101 @@
+@using GMCopilot.Services
+@using GMCopilot.Data.Repositories
+@using GMCopilot.Entities.Models
+@using System.Text.Json
+
+@inject SemanticKernelService semanticKernelService
+@inject UniverseRepository universeRepository
+@inject NavigationManager navigationManager
+
+<Card Background="Background.Primary" WhiteText>
+    <CardBody>
+        <CardTitle Size="3">
+            Generate a Universe
+        </CardTitle>
+        <CardText>
+            Enter a few details about the universe you would like to generate. You can be as specific as you like, or leave it to chance.
+        </CardText>
+        <Field>
+            <FieldBody>
+                <MemoEdit @bind-Text="@UniverseDetails" AutoSize />
+             </FieldBody>
+         </Field>
+         <Button @onclick="GenerateUniverse" Color="Color.Dark" Margin="Margin.Is2.FromTop" Disabled="@(loadingVisible)">
+             Generate <Icon Name="IconName.ArrowRight" />
+         </Button>
+     </CardBody>
+ </Card>
+
+ @if (Universe != null)
+{
+    <LoadingIndicator @bind-Visible="@loadingVisible">
+        <Card>
+            <CardBody>
+                <Field>
+                    <FieldLabel>Name</FieldLabel>
+                    <FieldBody>
+                        <TextEdit @bind-Text="@Universe.Name" />
+                    </FieldBody>
+                </Field>
+                <Field>
+                    <FieldLabel>Description</FieldLabel>
+                    <FieldBody>
+                        <MemoEdit @bind-Text="@Universe.Description" AutoSize />
+                     </FieldBody>
+                 </Field>
+                 <Button @onclick="SaveUniverse" Color="Color.Dark" Margin="Margin.Is2.FromTop" Disabled="@(loadingVisible)">
+                     Save <Icon Name="IconName.Save" />
+                 </Button>
+             </CardBody>
+         </Card>
+     </LoadingIndicator>
+}
+
+@code {
+    [CascadingParameter]
+    public Account? Account { get; set; }
+
+    [CascadingParameter]
+    public Tenant? Tenant { get; set; }
+
+    [Parameter]
+    public string UniverseId { get; set; }
+
+    Universe? Universe;
+    String UniverseDetails { get; set; } = "A fantasy universe.";
+    Boolean loadingVisible { get; set; } = false;
+
+    protected override async void OnParametersSet()
+    {
+        if (Tenant != null && Account != null)
+        {
+            if (navigationManager.Uri.EndsWith("/universe/new"))
+                Universe = new Universe(Guid.NewGuid().ToString(), Tenant.Id, "New Universe", "A new universe!");
+            else if (UniverseId != null)
+                Universe = await universeRepository.FindByUniverseIdAsync(UniverseId, Tenant.Id);
+        }
+    }
+
+    private async Task GenerateUniverse()
+    {
+        loadingVisible = true;
+
+        var functionResult = await semanticKernelService.InvokePluginFunctionAsync("Universe", "CreateUniverse", new Dictionary<String, String> {
+            {"input", UniverseDetails}
+        });
+
+        Console.WriteLine(functionResult.Result);
+
+        loadingVisible = false;
+    }
+
+    private async Task SaveUniverse()
+    {
+        if (UniverseId == null)
+            await universeRepository.CreateAsync(Universe);
+        else
+            await universeRepository.UpsertAsync(Universe);
+
+        navigationManager.NavigateTo("/universe");
+    }
+}

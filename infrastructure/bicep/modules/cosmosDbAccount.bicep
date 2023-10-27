@@ -78,12 +78,12 @@ resource cosmosDbTenantsContainer 'Microsoft.DocumentDB/databaseAccounts/sqlData
   }
 }
 
-resource cosmosDbWorldsContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2023-04-15' = {
-  name: 'worlds'
+resource cosmosDbUniversesContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2023-04-15' = {
+  name: 'universes'
   parent: cosmosDbDatabase
   properties: {
     resource: {
-      id: 'worlds'
+      id: 'universes'
       partitionKey: {
         paths: [
           '/tenantid'

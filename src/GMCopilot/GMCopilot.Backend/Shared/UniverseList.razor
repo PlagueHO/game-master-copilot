@@ -2,16 +2,16 @@
 @using GMCopilot.Entities.Models
 @using GMCopilot.Data.Repositories
 
-@inject WorldRepository worldRepository
+@inject UniverseRepository universeRepository
 @inject NavigationManager navigationManager
 
 <Card Background="Background.Primary" WhiteText>
     <CardBody>
         <CardTitle Size="3">
-            Your Worlds
+            Your Universes
         </CardTitle>
         <CardText>
-            Select one of the existing worlds or create a new one by clicking Create. Generating a new world can take a few seconds and requires just a few words of input.
+            Select one of the existing universes or create a new one by clicking Create. Generating a new universe can take a few seconds and requires just a few words of input.
         </CardText>
         <CardActions>
             <Button Color="Color.Dark" Type="ButtonType.Link" @onclick="CreateButtonClick" Margin="Margin.Is2.FromTop">
@@ -31,19 +31,17 @@
                 <TableHeaderCell>Select</TableHeaderCell>
                 <TableHeaderCell>Name</TableHeaderCell>
                 <TableHeaderCell>Description</TableHeaderCell>
-                <TableHeaderCell>History</TableHeaderCell>
             </TableRow>
         </TableHeader>
-        @if (worlds != null)
+        @if (universes != null)
         {
             <TableBody>
-                @foreach (var world in worlds)
+                @foreach (var universe in universes)
                 {
-                    <TableRow @key="@world.Id">
+                    <TableRow @key="@universe.Id">
                         <TableRowHeader><Check TValue="bool"/></TableRowHeader>
-                        <TableRowCell @onclick="(e) => WorldClick(e, world)">@world.Name</TableRowCell>
-                        <TableRowCell @onclick="(e) => WorldClick(e, world)">@world.Description</TableRowCell>
-                        <TableRowCell @onclick="(e) => WorldClick(e, world)">@world.History</TableRowCell>
+                        <TableRowCell @onclick="(e) => UniverseClick(e, universe)">@universe.Name</TableRowCell>
+                        <TableRowCell @onclick="(e) => UniverseClick(e, universe)">@universe.Description</TableRowCell>
                     </TableRow>
                 }
             </TableBody>
@@ -59,30 +57,30 @@
     public Tenant? Tenant { get; set; }
 
     private bool loadingVisible = true;
-    private IEnumerable<World> worlds { get; set; }
+    private IEnumerable<Universe>? universes { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {
-        await LoadWorlds();
+        await LoadUniverses();
     }
 
-    private async Task LoadWorlds()
+    private async Task LoadUniverses()
     {
         if (Tenant != null)
         {
-            worlds = await worldRepository.FindByTenantIdAsync(Tenant.Id);
+            universes = await universeRepository.FindByTenantIdAsync(Tenant.Id);
             loadingVisible = false;
             await InvokeAsync(StateHasChanged);
         }
     }
 
-    private async void WorldClick(MouseEventArgs e, World world)
+    private async void UniverseClick(MouseEventArgs e, Universe universe)
     {
-        navigationManager.NavigateTo($"/world/{world.Id}");
+        navigationManager.NavigateTo($"/universe/{universe.Id}");
     }
 
     private async void CreateButtonClick()
     {
-        navigationManager.NavigateTo("/world/new");        
+        navigationManager.NavigateTo("/universe/new");
     }
 }

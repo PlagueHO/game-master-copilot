@@ -1,4 +1,7 @@
 ﻿using GMCopilot.Entities.Models;
+
+namespace GMCopilot.Data.Repositories;
+
 /// <summary>
 /// Defines the extended CRUD operations for a tenanted and typed repository.
 /// </summary>

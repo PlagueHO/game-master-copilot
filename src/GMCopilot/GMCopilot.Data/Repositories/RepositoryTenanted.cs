@@ -16,7 +16,7 @@ public class RepositoryTenanted<T> : Repository<T>, IRepositoryTenanted<T> where
     }
 
     /// <inheritdoc/>
-    public Task<T> FindByIdAsync(string id, string tenantId)
+    public new Task<T> FindByIdAsync(string id, string tenantId)
     {
         return StorageContext.ReadAsync(id, tenantId);
     }

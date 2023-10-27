@@ -20,7 +20,17 @@ public class TenantRepository : Repository<Tenant>
     /// <returns>The tenant record.</returns>
     public Task<Tenant> FindByTenantIdAsync(string tenantId)
     {
-        return base.StorageContext.ReadAsync(tenantId);
+        return base.FindByIdAsync(tenantId);
+    }
+
+    /// <summary>
+    /// Tries to find the tenant using a tenant id.
+    /// </summary>
+    /// <param name="id">The tenant id.</param>
+    /// <returns>The tenant record.</returns>
+    public async Task<bool> TryFindByTenantIdAsync(string tenantId, Action<Tenant?> tenant)
+    {
+        return await base.TryFindByIdAsync(tenantId, tenant);
     }
 
     /// <summary>

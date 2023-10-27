@@ -1,0 +1,32 @@
+{
+    "schema": 1,
+    "description": "Generate a universe for table top role playing game based on provided universe information",
+    "type": "completion",
+    "completion": {
+        "max_tokens": 6000,
+        "temperature": 0.75,
+        "top_p": 0,
+        "presence_penalty": 0,
+        "frequency_penalty": 0
+    },
+    "input": {
+        "parameters": [
+            {
+                "name": "name",
+                "description": "The name of the universe to create.",
+                "defaultValue": "The Forgotten Realms."
+            },
+            {
+                "name": "details",
+                "description": "The details of the universe to create.",
+                "defaultValue": "A traditional fantasy universe set in the Forgotten Realms."
+            },
+            {
+                "name": "system",
+                "description": "The table top role playing game system to create the universe for.",
+                "defaultValue": "Dungeons and Dragons 5th Edition."
+            }
+
+        ]
+    }
+}

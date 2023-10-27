@@ -26,7 +26,7 @@ public class Tenant : IStorageEntity
     /// Gets or sets the type of the tenant.
     /// </summary>
     [JsonPropertyName("type")]
-    public TenantType Type { get; set; } = TenantType.Individual;
+    public TenantType Type { get; set; }
 
     /// <summary>
     /// Gets or sets the name of the tenant.

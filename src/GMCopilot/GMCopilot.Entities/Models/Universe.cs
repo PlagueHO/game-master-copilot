@@ -5,58 +5,42 @@ using GMCopilot.Entities.Types;
 namespace GMCopilot.Entities.Models
 {
     /// <summary>
-    /// Represents a world page entity.
+    /// Represents a universe page entity.
     /// </summary>
-    public class World : IPageStorageEntity
+    public class Universe : IStorageTenantedEntity
     {
         /// <summary>
-        /// Gets or sets the unique identifier for the world.
+        /// Gets or sets the unique identifier for the universe.
         /// </summary>
         [JsonPropertyName("id")]
         public string Id { get; set; }
 
-        /// <inheritdoc/>
-        [JsonPropertyName("type")]
-        public PageStorageEntityTypes Type { get; set; } = PageStorageEntityTypes.World;
-
         /// <summary>
-        /// Gets or sets the unique identifier for the world.
+        /// Gets or sets the unique identifier for the universe.
         /// </summary>
         [JsonPropertyName("tenantid")]
         public string TenantId { get; set; }
 
         /// <summary>
-        /// Gets or sets the name of the world.
+        /// Gets or sets the name of the universe.
         /// </summary>
         [JsonPropertyName("name")]
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the description of the world.
+        /// Gets or sets the description of the universe.
         /// </summary>
         [JsonPropertyName("description")]
         public string? Description { get; set; }
 
         /// <summary>
-        /// Gets or sets the history of the world.
+        /// Gets or sets the creation of the universe.
         /// </summary>
-        [JsonPropertyName("history")]
-        public string? History { get; set; }
+        [JsonPropertyName("creation")]
+        public string? Creation { get; set; }
 
         /// <summary>
-        /// Gets or sets a list of geographical types.
-        /// </summary>
-        [JsonPropertyName("geographies")]
-        public List<string>? Geographies { get; set; }
-
-        /// <summary>
-        /// Gets or sets a list of climate types.
-        /// </summary>
-        [JsonPropertyName("climates")]
-        public List<string>? Climates { get; set; }
-
-        /// <summary>
-        /// Gets or sets a dictionary of other properties for the world.
+        /// Gets or sets a dictionary of other properties for the universe.
         /// </summary>
         [JsonPropertyName("properties")]
         public Dictionary<string, string>? Properties { get; set; }
@@ -68,9 +52,9 @@ namespace GMCopilot.Entities.Models
         public PageGeneratedContent GeneratedContent { get; set; } = new PageGeneratedContent();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="world"/> class.
+        /// Initializes a new instance of the <see cref="Universe"/> class.
         /// </summary>
-        public World(string id, string tenantId, string name, string? description = null)
+        public Universe(string id, string tenantId, string name, string? description = null)
         {
             Id = id;
             TenantId = tenantId;
@@ -79,7 +63,7 @@ namespace GMCopilot.Entities.Models
         }
 
         /// <summary>
-        /// Converts the current <see cref="World"/> object to a JSON string.
+        /// Converts the current <see cref="Universe"/> object to a JSON string.
         /// </summary>
         /// <returns>A JSON formatted <see cref="string"/>.</returns>
         public string ToJson()
@@ -88,13 +72,13 @@ namespace GMCopilot.Entities.Models
         }
 
         /// <summary>
-        /// Deserializes the provided JSON string into a new <see cref="World"/> object.
+        /// Deserializes the provided JSON string into a new <see cref="Universe"/> object.
         /// </summary>
         /// <param name="json">The JSON <see cref="string"/> to deserialize.</param>
-        /// <returns>A new <see cref="World"/> object based on the provided JSON string.</returns>
-        public static World FromJson(string json)
+        /// <returns>A new <see cref="Universe"/> object based on the provided JSON string.</returns>
+        public static Universe FromJson(string json)
         {
-            return JsonSerializer.Deserialize<World>(json);
+            return JsonSerializer.Deserialize<Universe>(json);
         }
     }
 }

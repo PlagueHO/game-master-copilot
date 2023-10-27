@@ -5,7 +5,6 @@ using GMCopilot.Services.Options;
 using GMCopilot.Services.Auth;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
 using Microsoft.Identity.Web;
@@ -183,7 +182,7 @@ public static class BackendServiceExtensions
     {
         IStorageContext<Account> accountStorageContext;
         IStorageContext<Tenant> tenantStorageContext;
-        IStorageContext<World> worldStorageContext;
+        IStorageContext<Universe> universeStorageContext;
 
         var dataStoreConfig = services.BuildServiceProvider().GetRequiredService<IOptions<DataStoreOptions>>().Value;
 
@@ -200,8 +199,8 @@ public static class BackendServiceExtensions
                         dataStoreConfig.CosmosDb.ConnectionString, dataStoreConfig.CosmosDb.DatabaseName, dataStoreConfig.CosmosDb.AccountsContainerName);
                     tenantStorageContext = new CosmosDbContext<Tenant>(
                         dataStoreConfig.CosmosDb.ConnectionString, dataStoreConfig.CosmosDb.DatabaseName, dataStoreConfig.CosmosDb.TenantsContainerName);
-                    worldStorageContext = new CosmosDbContext<World>(
-                        dataStoreConfig.CosmosDb.ConnectionString, dataStoreConfig.CosmosDb.DatabaseName, dataStoreConfig.CosmosDb.WorldsContainerName);
+                    universeStorageContext = new CosmosDbContext<Universe>(
+                        dataStoreConfig.CosmosDb.ConnectionString, dataStoreConfig.CosmosDb.DatabaseName, dataStoreConfig.CosmosDb.UniversesContainerName);
 #pragma warning restore CA2000 // Dispose objects before losing scope
                     break;
                 }
@@ -215,7 +214,7 @@ public static class BackendServiceExtensions
 
         services.AddSingleton<AccountRepository>(new AccountRepository(accountStorageContext));
         services.AddSingleton<TenantRepository>(new TenantRepository(tenantStorageContext));
-        services.AddSingleton<WorldRepository>(new WorldRepository(worldStorageContext));
+        services.AddSingleton<UniverseRepository>(new UniverseRepository(universeStorageContext));
 
         return services;
     }
