@@ -1,44 +1,24 @@
-﻿@using Blazorise
-
-@using GMCopilot.Entities.Models
+﻿@using GMCopilot.Entities.Models
 
 <AuthorizeView>
     <Authorized>
-        <Bar Breakpoint="Breakpoint.Desktop"
-             Background="Background.Light"
-             ThemeContrast="ThemeContrast.Light">
-            <BarEnd>
-                <BarDropdown>
-                    @if (Tenant != null)
+        <MudSelect T="string" Label="Tenant" Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter">
+            @if (Tenant != null)
+            {
+                if (Account != null)
+                {
+                    @foreach (var tenantRole in Account.TenantRoles)
                     {
-                        <BarDropdownToggle Color="Color.Primary">
-                            @Tenant.Name (@Tenant.Type)
-                        </BarDropdownToggle>
-                        if (Account != null)
-                        {
-                            <BarDropdownMenu>
-                                @foreach (var tenantRole in Account.TenantRoles)
-                                {
-                                    <BarDropdownItem Active=@(Tenant.Id == tenantRole.TenantId)>@tenantRole.Name (@tenantRole.Type)</BarDropdownItem>
-                                }
-                            </BarDropdownMenu>
-                        }
+                        <MudSelectItem Value="@(string.Format("{0} ({1})", tenantRole.Name, tenantRole.Type))" />
                     }
-                </BarDropdown>
-                <BarItem>
-                    <Button Link="MicrosoftIdentity/Account/SignOut" Color="Color.Secondary">Log out</Button>
-                </BarItem>
-            </BarEnd>
-        </Bar>
+                }
+            }
+        </MudSelect>
+        <MudSpacer />
+        <MudButton Variant="Variant.Filled" Href="MicrosoftIdentity/Account/SignOut">Log out</MudButton>
     </Authorized>
     <NotAuthorized>
-        <Bar Breakpoint="Breakpoint.Desktop"
-             Background="Background.Light"
-             ThemeContrast="ThemeContrast.Light">
-            <BarItem>
-                <Button Link="MicrosoftIdentity/Account/SignIn" Color="Color.Secondary">Log in</Button>
-            </BarItem>
-        </Bar>
+        <MudButton Variant="Variant.Filled" Href="MicrosoftIdentity/Account/SignIn">Log in</MudButton>
     </NotAuthorized>
 </AuthorizeView>
 

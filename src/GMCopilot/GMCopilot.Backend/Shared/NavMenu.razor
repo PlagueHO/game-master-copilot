@@ -1,24 +1,9 @@
-<Bar Mode="BarMode.VerticalInline"
-     CollapseMode="BarCollapseMode.Small"
-     Breakpoint="Breakpoint.Desktop"
-     NavigationBreakpoint="Breakpoint.Tablet"
-     Background="Background.Transparent"
-     ThemeContrast="ThemeContrast.Dark">
-    <BarBrand Background="Background.Transparent">
-        <BarItem>
-            <BarLink To="#">
-                Game Master Copilot
-            </BarLink>
-        </BarItem>
-    </BarBrand>
-     <BarMenu>
-        <BarStart>
-            <BarItem>
-                <BarLink To="universe">
-                    <BarIcon IconName="IconName.Map" />
-                    Universes
-                </BarLink>
-            </BarItem>
-        </BarStart>
-    </BarMenu>
-</Bar>
+<MudNavMenu>
+    <MudNavLink Href="/" Match="NavLinkMatch.All">Dashboard</MudNavLink>
+    <MudNavLink Href="/universe" Match="NavLinkMatch.Prefix">Universes</MudNavLink>
+    <MudNavGroup Title="Settings" Expanded="true">
+        <MudNavLink Href="/user" Match="NavLinkMatch.Prefix">Users</MudNavLink>
+        <MudNavLink Href="/security" Match="NavLinkMatch.Prefix">Security</MudNavLink>
+    </MudNavGroup>
+    <MudNavLink Href="/about" Match="NavLinkMatch.Prefix">About</MudNavLink>
+</MudNavMenu>

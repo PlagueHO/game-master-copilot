@@ -8,31 +8,42 @@
 
 <PageTitle>Game Master Copilot</PageTitle>
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
-    <CascadingValue Value="@Account">
-        <CascadingValue Value="@Tenant">
-            <main>
-                <div class="top-row px-4 auth">
-                    <LoginDisplay />
-                </div>
+<MudThemeProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
 
-                <article class="content px-4">
-                    @Body
-                </article>
-            </main>
-        </CascadingValue>
-    </CascadingValue>
-</div>
+<MudLayout>
+    <MudAppBar>
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        My Application
+    </MudAppBar>
+    <MudDrawer @bind-Open="@_drawerOpen">
+        <NavMenu />
+    </MudDrawer>
+    <MudMainContent>
+        <div class="top-row px-4 auth">
+            <LoginDisplay />
+        </div>
+
+        <article class="content px-4">
+            @Body
+        </article>
+    </MudMainContent>
+</MudLayout>
 
 @code {
+    bool _drawerOpen = true;
+
     [CascadingParameter]
     public Account? Account { get; set; }
 
     [CascadingParameter]
     public Tenant? Tenant { get; set; }
+
+    void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
 
     protected override async Task OnParametersSetAsync()
     {
