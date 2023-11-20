@@ -5,51 +5,86 @@
 @inject UniverseRepository universeRepository
 @inject NavigationManager navigationManager
 
-<Card Background="Background.Primary" WhiteText>
-    <CardBody>
-        <CardTitle Size="3">
+<MudCard BackgroundColor="Color.Primary" TextColor="Color.White">
+    <MudCardContent>
+        <MudCardHeader>
             Your Universes
-        </CardTitle>
-        <CardText>
+        </MudCardHeader>
+        <MudText>
             Select one of the existing universes or create a new one by clicking Create. Generating a new universe can take a few seconds and requires just a few words of input.
-        </CardText>
-        <CardActions>
-            <Button Color="Color.Dark" Type="ButtonType.Link" @onclick="CreateButtonClick" Margin="Margin.Is2.FromTop">
-                Create <Icon Name="IconName.Add" />
-            </Button>
-            <Button Color="Color.Dark" Type="ButtonType.Link" Margin="Margin.Is2.FromTop">
-                Delete Selected <Icon Name="IconName.Delete" />
-            </Button>
-        </CardActions>
-    </CardBody>
-</Card>
+        </MudText>
+        <MudCardActions>
+            <MudButton OnClick="CreateButtonClick" Color="Color.Dark" Margin="Margin.Is2.FromTop">
+                Create <MudIcon Icon="@Icons.Material.Filled.Add" />
+            </MudButton>
+            <MudButton OnClick="CreateButtonClick" Color="Color.Dark" Margin="Margin.Is2.FromTop">
+                Delete Selected <MudIcon Icon="@Icons.Material.Filled.Delete" />
+            </MudButton>
+        </MudCardActions>
+    </MudCardContent>
+</MudCard>
 
-<LoadingIndicator @bind-Visible="@loadingVisible">
-    <Table Striped Hoverable Bordered>
-        <TableHeader>
-            <TableRow>
-                <TableHeaderCell>Select</TableHeaderCell>
-                <TableHeaderCell>Name</TableHeaderCell>
-                <TableHeaderCell>Description</TableHeaderCell>
-            </TableRow>
-        </TableHeader>
-        @if (universes != null)
-        {
-            <TableBody>
-                @foreach (var universe in universes)
-                {
-                    <TableRow @key="@universe.Id">
-                        <TableRowHeader><Check TValue="bool"/></TableRowHeader>
-                        <TableRowCell @onclick="(e) => UniverseClick(e, universe)">@universe.Name</TableRowCell>
-                        <TableRowCell @onclick="(e) => UniverseClick(e, universe)">@universe.Description</TableRowCell>
-                    </TableRow>
-                }
-            </TableBody>
-        }
-    </Table>
-</LoadingIndicator>
+<MudProgressCircular Color="Color.Primary" Size="Size.Large" Indeterminate="true" >
+    <MudDataGrid T="Universe" MultiSelection="true" Items="@universes" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter"
+        Hideable="true" RowClick="@RowClicked" SelectedItemsChanged="@SelectedItemsChanged">
+        <ToolBarContent>
+            <MudText Typo="Typo.h6">Universes</MudText>
+            <MudSpacer />
+            <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
+                AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+        </ToolBarContent>
+        <Columns>
+            <SelectColumn T="Universe" />
+            <PropertyColumn Property="x => x.Name" Title="Name" Sortable="true" Filterable="true" />
+            <PropertyColumn Property="x => x.Description" Title="Description" Sortable="true" Filterable="true" />
+        </Columns>
+        <PagerContent>
+            <MudDataGridPager T="Universe" />
+        </PagerContent>
+    </MudDataGrid>
+
+    <div class="d-flex flex-wrap mt-4">
+        <MudSwitch @bind-Checked="@_sortNameByLength" Color="Color.Primary">Sort Name Column By Length</MudSwitch>
+    </div>
+
+    <MudExpansionPanels Style="flex:1">
+        <MudExpansionPanel Text="Show Events">
+            @foreach (var message in _events)
+            {
+                <MudText Typo="@Typo.body2">@message</MudText>
+            }
+            @if(_events.Count > 0) 
+            {
+                <div class="d-flex">
+                    <MudSpacer/>
+                    <MudButton Class="mt-3" ButtonType="ButtonType.Button" Variant="Variant.Filled" OnClick="@(() => _events.Clear())">Clear</MudButton>
+                </div>
+            }
+        </MudExpansionPanel>
+    </MudExpansionPanels>
+</MudProgressCircular>
 
 @code {
+    private string _searchString;
+    private bool _sortNameByLength;
+    private List<string> _events = new();
+
+    // quick filter - filter globally across multiple columns with the same input
+    private Func<Universe, bool> _quickFilter => x =>
+    {
+        if (string.IsNullOrWhiteSpace(_searchString))
+            return true;
+
+        if (x.Name.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+
+        if (x.Description.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+
+        return false;
+    };
+
+
     [CascadingParameter]
     public Account? Account { get; set; }
 
@@ -72,6 +107,17 @@
             loadingVisible = false;
             await InvokeAsync(StateHasChanged);
         }
+    }
+
+    // events
+    void RowClicked(DataGridRowClickEventArgs<Universe> args)
+    {
+        _events.Insert(0, $"Event = RowClick, Index = {args.RowIndex}, Data = {System.Text.Json.JsonSerializer.Serialize(args.Item)}");
+    }
+
+    void SelectedItemsChanged(HashSet<Universe> items)
+    {
+        _events.Insert(0, $"Event = SelectedItemsChanged, Data = {System.Text.Json.JsonSerializer.Serialize(items)}");
     }
 
     private async void UniverseClick(MouseEventArgs e, Universe universe)
