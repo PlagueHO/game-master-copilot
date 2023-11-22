@@ -1,9 +1,11 @@
 <MudNavMenu>
-    <MudNavLink Href="/" Match="NavLinkMatch.All">Dashboard</MudNavLink>
-    <MudNavLink Href="/universe" Match="NavLinkMatch.Prefix">Universes</MudNavLink>
-    <MudNavGroup Title="Settings" Expanded="true">
-        <MudNavLink Href="/user" Match="NavLinkMatch.Prefix">Users</MudNavLink>
-        <MudNavLink Href="/security" Match="NavLinkMatch.Prefix">Security</MudNavLink>
-    </MudNavGroup>
-    <MudNavLink Href="/about" Match="NavLinkMatch.Prefix">About</MudNavLink>
+    <MudNavLink Href="/" Match="NavLinkMatch.All">
+        <MudIcon Icon="@Icons.Material.Outlined.Home" /> Home
+    </MudNavLink>
+    <MudNavLink Href="/universe" Match="NavLinkMatch.Prefix">
+        <MudIcon Icon="@Icons.Material.Outlined.StarOutline" /> Universes
+    </MudNavLink>
+    <MudNavLink Href="/settings" Match="NavLinkMatch.Prefix" Style="position: fixed; bottom: 0;">
+        <MudIcon Icon="@Icons.Material.Outlined.Settings" /> Settings
+    </MudNavLink>
 </MudNavMenu>

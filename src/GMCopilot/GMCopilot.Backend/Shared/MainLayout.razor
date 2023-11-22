@@ -48,5 +48,6 @@
         await AccessService.InitializeUsingContext(context);
         Account = AccessService.Account;
         Tenant = AccessService.Tenant;
+        Console.WriteLine(Account.name);
     }
 }

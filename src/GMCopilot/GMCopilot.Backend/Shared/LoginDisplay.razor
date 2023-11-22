@@ -2,23 +2,11 @@
 
 <AuthorizeView>
     <Authorized>
-        <MudSelect T="string" Label="Tenant" Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter">
-            @if (Tenant != null)
-            {
-                if (Account != null)
-                {
-                    @foreach (var tenantRole in Account.TenantRoles)
-                    {
-                        <MudSelectItem Value="@(string.Format("{0} ({1})", tenantRole.Name, tenantRole.Type))" />
-                    }
-                }
-            }
-        </MudSelect>
         <MudSpacer />
-        <MudButton Variant="Variant.Filled" Href="MicrosoftIdentity/Account/SignOut">Log out</MudButton>
+        <MudButton Variant="Variant.Text" Href="MicrosoftIdentity/Account/SignOut">Log out</MudButton>
     </Authorized>
     <NotAuthorized>
-        <MudButton Variant="Variant.Filled" Href="MicrosoftIdentity/Account/SignIn">Log in</MudButton>
+        <MudButton Variant="Variant.Text" Href="MicrosoftIdentity/Account/SignIn">Log in</MudButton>
     </NotAuthorized>
 </AuthorizeView>
 
