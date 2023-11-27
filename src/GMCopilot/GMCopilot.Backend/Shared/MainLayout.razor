@@ -16,7 +16,7 @@
     <MudAppBar>
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
         Game Master Copilot
-        <LoginDisplay />
+        <AccountMenu />
     </MudAppBar>
     <MudDrawer @bind-Open="@_drawerOpen">
         <NavMenu />
@@ -48,6 +48,5 @@
         await AccessService.InitializeUsingContext(context);
         Account = AccessService.Account;
         Tenant = AccessService.Tenant;
-        Console.WriteLine(Account.name);
     }
 }

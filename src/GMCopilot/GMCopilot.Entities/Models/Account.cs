@@ -48,9 +48,22 @@ public class Account : IStorageEntity
         TenantRoles = tenantRoles;
     }
 
+    /// <summary>
+    /// Adds a tenant role to the account.
+    /// </summary>
+    /// <param name="tenantRole">The tenant role to add.</param>
     public void AddTenantRole(AccountTenantRole tenantRole)
     {
         TenantRoles.Add(tenantRole);
+    }
+
+    /// <summary>
+    /// Returns the string representation of the account.
+    /// </summary>
+    /// <returns>The name of the account.</returns>
+    public override string ToString()
+    {
+        return Name;
     }
 }
 

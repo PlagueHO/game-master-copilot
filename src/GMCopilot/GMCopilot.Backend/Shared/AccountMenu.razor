@@ -1,0 +1,35 @@
+﻿@using GMCopilot.Entities.Models
+
+<AuthorizeView>
+    <Authorized>
+        <MudSpacer />
+        @if (Account == null || Tenant == null)
+        {
+            <MudButton Variant="Variant.Filled">Loading account...</MudButton>
+        }
+        else
+        {
+            <MudButton Variant="Variant.Filled">Manage @Account.Name | @Tenant.Name</MudButton>
+        }
+
+        <MudButton Variant="Variant.Filled" Href="MicrosoftIdentity/Account/SignOut">Log out</MudButton>
+    </Authorized>
+    <NotAuthorized>
+        <MudSpacer />
+        <MudButton Variant="Variant.Filled" Href="MicrosoftIdentity/Account/SignIn">Log in</MudButton>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    [CascadingParameter]
+    public Account? Account { get; set; }
+
+    [CascadingParameter]
+    public Tenant? Tenant { get; set; }
+
+    private String AccountDetails { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+    }
+}
