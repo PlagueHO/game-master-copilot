@@ -32,10 +32,7 @@
     bool _drawerOpen = true;
 
     [CascadingParameter]
-    public Account? Account { get; set; }
-
-    [CascadingParameter]
-    public Tenant? Tenant { get; set; }
+    public AccessService AccessContext { get; set; }
 
     void DrawerToggle()
     {
@@ -46,7 +43,6 @@
     {
         var context = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         await AccessService.InitializeUsingContext(context);
-        Account = AccessService.Account;
-        Tenant = AccessService.Tenant;
+        AccessContext = AccessService;
     }
 }

@@ -3,13 +3,13 @@
 <AuthorizeView>
     <Authorized>
         <MudSpacer />
-        @if (Account == null || Tenant == null)
+        @if (AccessContext.IsLoaded)
         {
-            <MudButton Variant="Variant.Filled">Loading account...</MudButton>
+            <MudButton Variant="Variant.Filled">Manage @AccessContext.Account.Name | @AccessContext.Tenant.Name</MudButton>
         }
         else
         {
-            <MudButton Variant="Variant.Filled">Manage @Account.Name | @Tenant.Name</MudButton>
+            <MudButton Variant="Variant.Filled">Loading account...</MudButton>
         }
 
         <MudButton Variant="Variant.Filled" Href="MicrosoftIdentity/Account/SignOut">Log out</MudButton>
@@ -22,14 +22,5 @@
 
 @code {
     [CascadingParameter]
-    public Account? Account { get; set; }
-
-    [CascadingParameter]
-    public Tenant? Tenant { get; set; }
-
-    private String AccountDetails { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-    }
+    public AccessService? AccessContext { get; set; }
 }
