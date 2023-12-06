@@ -1,12 +1,11 @@
-using Blazorise;
-using Blazorise.Bootstrap;
-using Blazorise.Icons.FontAwesome;
+using MudBlazor.Services;
 using GMCopilot.Backend.Controllers;
 using GMCopilot.Backend.Extensions;
 using GMCopilot.Data.Repositories;
 using GMCopilot.Services;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
+using MudBlazor.Services;
 
 
 namespace GMCopilot.Backend;
@@ -54,13 +53,8 @@ public sealed class Program
         builder.Services.AddServerSideBlazor()
             .AddMicrosoftIdentityConsentHandler();
 
-        // Add Blazorize
-        builder.Services.AddBlazorise(options =>
-            {
-                options.Immediate = true;
-            })
-            .AddBootstrapProviders()
-            .AddFontAwesomeIcons();
+        // Add Mudblazor
+        builder.Services.AddMudServices();
 
         // Add the controllers and the Health Check
         builder.Services.AddControllers()

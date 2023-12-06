@@ -7,48 +7,32 @@
 @inject UniverseRepository universeRepository
 @inject NavigationManager navigationManager
 
-<Card Background="Background.Primary" WhiteText>
-    <CardBody>
-        <CardTitle Size="3">
+<MudCard Outlined="true">
+    <MudCardContent>
+        <MudCardHeader>
             Generate a Universe
-        </CardTitle>
-        <CardText>
+        </MudCardHeader>
+        <MudText>
             Enter a few details about the universe you would like to generate. You can be as specific as you like, or leave it to chance.
-        </CardText>
-        <Field>
-            <FieldBody>
-                <MemoEdit @bind-Text="@UniverseDetails" AutoSize />
-             </FieldBody>
-         </Field>
-         <Button @onclick="GenerateUniverse" Color="Color.Dark" Margin="Margin.Is2.FromTop" Disabled="@(loadingVisible)">
-             Generate <Icon Name="IconName.ArrowRight" />
-         </Button>
-     </CardBody>
- </Card>
+        </MudText>
+        <MudTextField @bind-Value="@UniverseDetails" Variant="Variant.Outlined" Margin="Margin.Dense" />
+        <MudButton OnClick="@GenerateUniverse" Color="Color.Dark" Margin="Margin.Is2.FromTop" Disabled="@(loadingVisible)">
+            Generate <MudIcon Icon="@Icons.Material.Filled.ArrowRight" />
+        </MudButton>
+    </MudCardContent>
+</MudCard>
 
  @if (Universe != null)
 {
-    <LoadingIndicator @bind-Visible="@loadingVisible">
-        <Card>
-            <CardBody>
-                <Field>
-                    <FieldLabel>Name</FieldLabel>
-                    <FieldBody>
-                        <TextEdit @bind-Text="@Universe.Name" />
-                    </FieldBody>
-                </Field>
-                <Field>
-                    <FieldLabel>Description</FieldLabel>
-                    <FieldBody>
-                        <MemoEdit @bind-Text="@Universe.Description" AutoSize />
-                     </FieldBody>
-                 </Field>
-                 <Button @onclick="SaveUniverse" Color="Color.Dark" Margin="Margin.Is2.FromTop" Disabled="@(loadingVisible)">
-                     Save <Icon Name="IconName.Save" />
-                 </Button>
-             </CardBody>
-         </Card>
-     </LoadingIndicator>
+    <MudProgressCircular Color="Color.Primary" Size="Size.Large" Indeterminate="true" >
+        <MudCardContent>
+            <MudTextField @bind-Value="@Universe.Name" Label="Name" Variant="Variant.Outlined" Margin="Margin.Dense" />
+            <MudTextField @bind-Value="@Universe.Description" Label="Name" Variant="Variant.Outlined" Margin="Margin.Dense" />
+            <MudButton OnClick="@SaveUniverse" Color="Color.Dark" Margin="Margin.Is2.FromTop" Disabled="@(loadingVisible)">
+                Save <MudIcon Icon="@Icons.Material.Filled.Save" />
+            </MudButton>
+        </MudCardContent>
+    </MudProgressCircular>
 }
 
 @code {
@@ -79,12 +63,6 @@
     private async Task GenerateUniverse()
     {
         loadingVisible = true;
-
-        var functionResult = await semanticKernelService.InvokePluginFunctionAsync("Universe", "CreateUniverse", new Dictionary<String, String> {
-            {"input", UniverseDetails}
-        });
-
-        Console.WriteLine(functionResult.Result);
 
         loadingVisible = false;
     }

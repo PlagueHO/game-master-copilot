@@ -1,5 +1,6 @@
 ﻿using GMCopilot.Data.Repositories;
 using GMCopilot.Entities.Models;
+using GMCopilot.Services.Exceptions;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Logging;
 
@@ -10,11 +11,66 @@ namespace GMCopilot.Services;
 /// </summary>
 public class AccessService : IAccessService
 {
-    public Account Account { get; private set; }
-    public Tenant Tenant { get; private set; }
-    public bool IsLoaded => Account != null && Tenant != null;
+    /// <summary>
+    /// Represents the authenticated user's account.
+    /// </summary>
+    private Account _account;
+    public Account Account {
+        get => _account;
+        private set
+        {
+            _account = value;
+            AccountChanged?.Invoke(this, value);
+            _logger.LogInformation("Account changed to '{account}'.", value.Id);
+        }
+    }
+
+    /// <summary>
+    /// Event that is triggered when the account is changed.
+    /// </summary>
+    /// <param name="sender">The object that triggered the event.</param>
+    /// <param name="value">The new account value.</param>
+    public event EventHandler<Account> AccountChanged = (sender, value) => { };
+
+    /// <summary>
+    /// The repository for managing user accounts.
+    /// </summary>
     private readonly AccountRepository _accountRepository;
+
+    /// <summary>
+    /// Represents the authenticated user's active tenant.
+    /// </summary>
+    private Tenant _tenant;
+    public Tenant Tenant { 
+        get => _tenant;
+        private set
+        {
+            _tenant = value;
+            TenantChanged?.Invoke(this, value);
+            _logger.LogInformation("Tenant changed to '{tenant}'.", value.Id);
+        }
+    }
+
+    /// <summary>
+    /// Event that is triggered when the tenant is changed.
+    /// </summary>
+    /// <param name="sender">The object that triggered the event.</param>
+    /// <param name="value">The new tenant value.</param>
+    public event EventHandler<Tenant> TenantChanged = (sender, value) => { };
+
+    /// <summary>
+    /// The repository for managing tenants.
+    /// </summary>
     private readonly TenantRepository _tenantRepository;
+
+    /// <summary>
+    /// Gets a value indicating whether the account and tenant are loaded.
+    /// </summary>
+    public bool IsLoaded => Account != null && Tenant != null;
+
+    /// <summary>
+    /// The logger for the AccessService class.
+    /// </summary>
     private readonly ILogger<AccessService> _logger;
 
     public AccessService(ILogger<AccessService> logger, AccountRepository accountRepository, TenantRepository tenantRepository)
@@ -34,7 +90,7 @@ public class AccessService : IAccessService
         // If the authentication context for the user is null, then fail
         if (context.User == null || context.User.Identity?.Name == null)
         {
-            throw new NotAuthenticatedException();
+            throw new AccessServiceNotAuthenticatedException();
         }
 
         // Obtain the email address of the user from the authentication context
@@ -65,12 +121,17 @@ public class AccessService : IAccessService
         return Account;
     }
 
+    /// <summary>
+    /// Initializes a new account using the authentication context.
+    /// </summary>
+    /// <param name="context">The authentication state for the user.</param>
+    /// <returns>The newly initialized account.</returns>
     private async Task<Account> InitializeAccountAsync(AuthenticationState context)
     {
         // If the authentication context for the user is null, then fail
         if (context.User.Identity?.Name == null)
         {
-            throw new NotAuthenticatedException();
+            throw new AccessServiceNotAuthenticatedException();
         }
 
         // Create a new individual tenant for the account
@@ -78,7 +139,7 @@ public class AccessService : IAccessService
 
         if (tenant == null)
         {
-            throw new Exception("Tenant could not be created.");
+            throw new AccessServiceTenantCreateException("Failed to create tenant.");
         }
 
         // Create the account for the user and associate the individual tenant with it
@@ -101,13 +162,13 @@ public class AccessService : IAccessService
     /// </summary>
     /// <param name="context">The currently authenticated user.</param>
     /// <returns>The newly initialized tenant.</returns>
-    /// <exception cref="NotAuthenticatedException"></exception>
+    /// <exception cref="AccessServiceNotAuthenticatedException"></exception>
     private async Task<Tenant> InitializeTenantAsync(AuthenticationState context)
     {
         // If the authentication context for the user is null, then fail
         if (context.User.Identity?.Name == null)
         {
-            throw new NotAuthenticatedException();
+            throw new AccessServiceNotAuthenticatedException();
         }
 
         // Create a new individual tenant for the user account
@@ -120,4 +181,21 @@ public class AccessService : IAccessService
 
         return tenant;
     }
+
+    /// <summary>
+    /// Returns a string representation of the object.
+    /// </summary>
+    /// <returns>A string that represents the object.</returns>
+    public override string ToString()
+    {
+        if (IsLoaded)
+        {
+            return $"{Account?.Name} ({Tenant?.Name})";
+        }
+        else
+        {
+            return string.Empty;
+        }
+    }
+
 }

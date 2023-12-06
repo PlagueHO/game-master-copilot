@@ -14,7 +14,6 @@ public class SemanticKernelService : ISemanticKernelService
     private readonly SemanticKernelOptions _options;
     private readonly DefaultAzureCredential? _azureCredential;
     private readonly string _pluginsDirectory;
-    private IDictionary<string, IDictionary<string, Microsoft.SemanticKernel.SkillDefinition.ISKFunction>> _functions;
 
     public SemanticKernelService(ILogger<SemanticKernelService> logger, IOptions<SemanticKernelOptions> options)
     {
@@ -46,8 +45,6 @@ public class SemanticKernelService : ISemanticKernelService
         {
             _pluginsDirectory = Path.IsPathRooted(pluginsDirectory) ? pluginsDirectory : Path.Combine(Directory.GetCurrentDirectory(), pluginsDirectory);
         }
-
-        _functions = new Dictionary<string, IDictionary<string, Microsoft.SemanticKernel.SkillDefinition.ISKFunction>>();
     }
 
     public SemanticKernelService(ILogger<SemanticKernelService> logger, DefaultAzureCredential azureCredential, IOptions<SemanticKernelOptions> options) : this(logger, options)
@@ -90,7 +87,7 @@ public class SemanticKernelService : ISemanticKernelService
             _logger.LogInformation($"Adding Azure OpenAI Chat Completion service '{service.Id}' using deployment '{service.Deployment}' on endpoint '{service.Endpoint}' to Semantic Kernel");
 
             if (_options.AzureOpenAiApiKey == null)
-                semanticKernelBuilder.WithAzureChatCompletionService(
+                semanticKernelBuilder.WithAzureOpenAIChatCompletionService(
                     deploymentName: service.Deployment,
                     endpoint: service.Endpoint,
                     credentials: _azureCredential,
@@ -98,7 +95,7 @@ public class SemanticKernelService : ISemanticKernelService
                     setAsDefault: service.SetAsDefault,
                     alsoAsTextCompletion: service.AlsoAsTextCompletion);
             else
-                semanticKernelBuilder.WithAzureChatCompletionService(
+                semanticKernelBuilder.WithAzureOpenAIChatCompletionService(
                     deploymentName: service.Deployment,
                     endpoint: service.Endpoint,
                     apiKey: _options.AzureOpenAiApiKey,
@@ -118,14 +115,14 @@ public class SemanticKernelService : ISemanticKernelService
             _logger.LogInformation($"Adding Azure OpenAI Text Embedding Generation service '{service.Id}' using deployment '{service.Deployment}' on endpoint '{service.Endpoint}' to Semantic Kernel");
 
             if (_options.AzureOpenAiApiKey == null)
-                semanticKernelBuilder.WithAzureTextEmbeddingGenerationService(
+                semanticKernelBuilder.WithAzureOpenAITextEmbeddingGenerationService(
                     deploymentName: service.Deployment,
                     endpoint: service.Endpoint,
                     credential: _azureCredential,
                     serviceId: service.Id,
                     setAsDefault: service.SetAsDefault);
             else
-                semanticKernelBuilder.WithAzureTextEmbeddingGenerationService(
+                semanticKernelBuilder.WithAzureOpenAITextEmbeddingGenerationService(
                     deploymentName: service.Deployment,
                     endpoint: service.Endpoint,
                     apiKey: _options.AzureOpenAiApiKey,
@@ -152,31 +149,5 @@ public class SemanticKernelService : ISemanticKernelService
                serviceId: service.Id,
                setAsDefault: service.SetAsDefault);
         }
-    }
-
-    public void LoadPlugin(string name)
-    {
-        if (!_functions.ContainsKey(name))
-        {
-            // Import a Semantic Skill from the specified directory and output a console message to confirm it.
-            _functions.Add(name, _semanticKernel.ImportSemanticSkillFromDirectory(_pluginsDirectory, name));
-            _logger.LogInformation($"Imported {_functions.Count()} from plugin '{name} in the '{_pluginsDirectory}' directory.");
-        }
-    }
-
-    public async Task<SKContext> InvokePluginFunctionAsync(string plugin, string function, Dictionary<string, string> inputs)
-    {
-        LoadPlugin(plugin);
-        var context = _semanticKernel.CreateNewContext();
-        foreach (string input in inputs.Keys)
-            context[input] = inputs[input];
-        _logger.LogInformation($"Invoking '{function}' from plugin '{plugin}.");
-        var result = await _functions[plugin][function].InvokeAsync(context);
-
-        // TODO: Improve error handling
-        if (result.ErrorOccurred)
-            throw new SemanticKernelSkillException($"Error occurred while invoking '{function}' from plugin '{plugin}': {result.LastException.InnerException.Message}");
-
-        return result;
     }
 }

@@ -50,4 +50,13 @@ public class Tenant : IStorageEntity
         Name = name;
         OwnerAccount = ownerAccount;
     }
+
+    /// <summary>
+    /// Outputs the name of the tenant.
+    /// </summary>
+    /// <returns>The name of the type and name of the tenant.</returns>
+    public override string ToString()
+    {
+        return $"{Type}: {Name}";
+    }
 }
