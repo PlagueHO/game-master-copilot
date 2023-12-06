@@ -14,11 +14,11 @@
 
 <MudLayout>
     <MudAppBar>
-        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => ToggleNavDrawer())" />
         Game Master Copilot
         <AccountMenu />
     </MudAppBar>
-    <MudDrawer @bind-Open="@_drawerOpen">
+    <MudDrawer @bind-Open="@_navDrawerOpen">
         <NavMenu />
     </MudDrawer>
     <MudMainContent>
@@ -29,20 +29,16 @@
 </MudLayout>
 
 @code {
-    bool _drawerOpen = true;
+    bool _navDrawerOpen = true;
 
-    [CascadingParameter]
-    public AccessService AccessContext { get; set; }
-
-    void DrawerToggle()
+    void ToggleNavDrawer()
     {
-        _drawerOpen = !_drawerOpen;
+        _navDrawerOpen = !_navDrawerOpen;
     }
 
-    protected override async Task OnParametersSetAsync()
+    protected override async Task OnInitializedAsync()
     {
         var context = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         await AccessService.InitializeUsingContext(context);
-        AccessContext = AccessService;
     }
 }

@@ -1,26 +1,74 @@
 ﻿@using GMCopilot.Entities.Models
 
+@inject AccessService AccessService
+@implements IDisposable
+
 <AuthorizeView>
     <Authorized>
         <MudSpacer />
-        @if (AccessContext.IsLoaded)
+
+        @if (AccessService.IsLoaded)
         {
-            <MudButton Variant="Variant.Filled">Manage @AccessContext.Account.Name | @AccessContext.Tenant.Name</MudButton>
+            <MudToolBar>
+                <MudIconButton Variant="Variant.Filled" Icon="@Icons.Material.Outlined.PeopleAlt" OnClick="@((e) => OpenAccountDrawer())" />
+            </MudToolBar>
+
+            <MudDrawer @bind-Open="@_accountDrawerOpen" Anchor="Anchor.End" Elevation="1" Variant="@DrawerVariant.Temporary">
+                <MudDrawerHeader>
+                    <MudIcon Icon="@Icons.Material.Outlined.PeopleOutline" />                    
+                    <MudText Typo="Typo.h6" Class="px-4">Account</MudText>
+                </MudDrawerHeader>
+                <MudDrawerContainer>
+                    <MudNavMenu>
+                        <MudText Typo="Typo.body1" Class="px-4 mud-text-secondary">@AccessService.Account?.Name</MudText>
+                        <MudText Typo="Typo.body2" Class="px-4 mud-text-secondary">@AccessService.Account?.Id</MudText>
+                        <MudDivider Class="my-2" />
+                        <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Logout" Href="MicrosoftIdentity/Account/SignOut">Logout</MudNavLink>
+                    </MudNavMenu>
+                </MudDrawerContainer>
+            </MudDrawer>
         }
         else
         {
-            <MudButton Variant="Variant.Filled">Loading account...</MudButton>
+            <MudToolBar>
+                <MudIconButton Variant="Variant.Filled" Icon="@Icons.Material.Outlined.PeopleAlt" Disabled="true" OnClick="@((e) => OpenAccountDrawer())" />
+            </MudToolBar>
         }
-
-        <MudButton Variant="Variant.Filled" Href="MicrosoftIdentity/Account/SignOut">Log out</MudButton>
     </Authorized>
     <NotAuthorized>
         <MudSpacer />
-        <MudButton Variant="Variant.Filled" Href="MicrosoftIdentity/Account/SignIn">Log in</MudButton>
+
+        <MudToolBar>
+            <MudIconButton Variant="Variant.Filled" Icon="@Icons.Material.Outlined.PeopleAlt" Href="MicrosoftIdentity/Account/SignIn" />
+        </MudToolBar>
     </NotAuthorized>
 </AuthorizeView>
 
 @code {
-    [CascadingParameter]
-    public AccessService? AccessContext { get; set; }
+    bool _accountDrawerOpen = false;
+
+    protected override void OnInitialized()
+    {
+        AccessService.AccountChanged += OnAccessServiceAccountChanged;
+    }
+
+    public void Dispose()
+    {
+        AccessService.AccountChanged -= OnAccessServiceAccountChanged;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public void OnAccessServiceAccountChanged(object? sender, Account account)
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    void OpenAccountDrawer()
+    {
+        _accountDrawerOpen = true;
+    }
 }
