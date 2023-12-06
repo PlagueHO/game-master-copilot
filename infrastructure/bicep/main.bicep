@@ -66,7 +66,7 @@ var keyVaultName = '${baseResourceName}-akv'
 var appConfigurationName = '${baseResourceName}-appconfig'
 var appServiceName = '${baseResourceName}-asp'
 var openAiServiceName = '${baseResourceName}-oai'
-var cognitiveSearchName = '${baseResourceName}-cog'
+var aiSearchName = '${baseResourceName}-aisearch'
 var cosmosDbAccountName = '${baseResourceName}-cdb'
 var storageAccountName = replace('${baseResourceName}data','-','')
 var containerRegistryName = replace('${baseResourceName}acr','-','')
@@ -256,15 +256,15 @@ module openAiService './modules/openAiService.bicep' = {
   }
 }
 
-module cognitiveSearch './modules/cognitiveSearch.bicep' = {
-  name: 'cognitiveSearch'
+module aiSearch './modules/aiSearch.bicep' = {
+  name: 'aiSearch'
   scope: rg
   dependsOn: [
     monitoring
   ]
   params: {
     location: location
-    cognitiveSearchName: cognitiveSearchName
+    aiSearchName: aiSearchName
     sku: 'basic'
     replicaCount: 1
     partitionCount: 1
