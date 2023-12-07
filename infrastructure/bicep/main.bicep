@@ -317,6 +317,8 @@ module storageAccount './modules/storageAccount.bicep' = {
   params: {
     location: location
     storageAccountName: storageAccountName
+    logAnalyticsWorkspaceId: monitoring.outputs.logAnalyticsWorkspaceId
+    logAnalyticsWorkspaceName: logAnalyticsWorkspaceName
   }
 }
 
