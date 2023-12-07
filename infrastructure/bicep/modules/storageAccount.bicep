@@ -27,7 +27,7 @@ resource storageAccountDiagnosticSetting 'Microsoft.Insights/diagnosticSettings@
   scope: storageAccount
   properties: {
     workspaceId: logAnalyticsWorkspaceId
-    logs: [
+    metrics: [
       {
         category: 'Transaction'
         enabled: true
@@ -70,6 +70,8 @@ resource storageAccountBlobDiagnosticSetting 'Microsoft.Insights/diagnosticSetti
           days: 0
         }
       }
+    ]
+    metrics: [
       {
         category: 'Transaction'
         enabled: true
