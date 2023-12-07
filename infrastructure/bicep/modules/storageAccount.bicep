@@ -47,6 +47,30 @@ resource storageAccountBlobDiagnosticSetting 'Microsoft.Insights/diagnosticSetti
     workspaceId: logAnalyticsWorkspaceId
     logs: [
       {
+        category: 'StorageRead'
+        enabled: true
+        retentionPolicy: {
+          enabled: false
+          days: 0
+        }
+      }
+      {
+        category: 'StorageWrite'
+        enabled: true
+        retentionPolicy: {
+          enabled: false
+          days: 0
+        }
+      }
+      {
+        category: 'StorageDelete'
+        enabled: true
+        retentionPolicy: {
+          enabled: false
+          days: 0
+        }
+      }
+      {
         category: 'Transaction'
         enabled: true
         retentionPolicy: {
