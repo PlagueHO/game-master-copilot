@@ -83,7 +83,7 @@ var openAiModelDeployments = [
   {
     name: 'gpt-4'
     modelName: 'gpt-4'
-    version: '1106-preview'
+    version: '1106-Preview'
     sku: 'Standard'
     capacity: 20
   }
