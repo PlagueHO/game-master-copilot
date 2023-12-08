@@ -1,23 +1,37 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.6.33717.318
+VisualStudioVersion = 17.9.34321.82
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.Backend", "GMCopilot.Backend\GMCopilot.Backend.csproj", "{48D62070-7356-4DED-A602-52730176F572}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot", "GMCopilot\GMCopilot\GMCopilot.csproj", "{95F325A2-9042-4083-9973-A9C6766B92DF}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "infrastructure", "infrastructure", "{171E43A3-C8DF-4B84-8EE1-62F792075A39}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.Client", "GMCopilot\GMCopilot.Client\GMCopilot.Client.csproj", "{0DE02C5B-E501-4D8F-A9DE-E918ECBAFAB9}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "bicep", "bicep", "{45A296C7-98AC-4AD2-AEC2-A97F613AD76E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMCopilot.AppHost", "GMCopilot.AppHost\GMCopilot.AppHost.csproj", "{855C085F-0835-4CBD-AAED-0A0CAC02ACAE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.ServiceDefaults", "GMCopilot.ServiceDefaults\GMCopilot.ServiceDefaults.csproj", "{5699140E-8959-4F64-9E3F-3E196E4CD98B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.Entities", "GMCopilot.Entities\GMCopilot.Entities.csproj", "{CDABF85C-D2A9-45F0-BD74-B1C29E91848E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.Entities.Test", "GMCopilot.Entities.Test\GMCopilot.Entities.Test.csproj", "{5A04982B-A2A2-40A4-AFA9-3D86C7D1FBC1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.Data", "GMCopilot.Data\GMCopilot.Data.csproj", "{E1DE7E75-5267-42A2-A022-43FB7BDA4994}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.Services", "GMCopilot.Services\GMCopilot.Services.csproj", "{FE95D1C9-1718-4D56-AA93-B836FB654C82}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "infrastructure", "infrastructure", "{4DFADA57-DCA8-48C8-8FF8-5A90AA693835}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "bicep", "bicep", "{849E9E1F-504A-43AE-B8DF-11E3AEA5040E}"
 	ProjectSection(SolutionItems) = preProject
 		..\..\infrastructure\bicep\main.bicep = ..\..\infrastructure\bicep\main.bicep
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{805C7B55-9BC1-4EF2-B2B9-4D2F3E9F3F1B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{5E1097A3-B22B-4DB3-82EF-331C06DF83C0}"
 	ProjectSection(SolutionItems) = preProject
+		..\..\infrastructure\bicep\modules\aiSearch.bicep = ..\..\infrastructure\bicep\modules\aiSearch.bicep
 		..\..\infrastructure\bicep\modules\appConfiguration.bicep = ..\..\infrastructure\bicep\modules\appConfiguration.bicep
 		..\..\infrastructure\bicep\modules\appServicePlan.bicep = ..\..\infrastructure\bicep\modules\appServicePlan.bicep
 		..\..\infrastructure\bicep\modules\b2c.bicep = ..\..\infrastructure\bicep\modules\b2c.bicep
-		..\..\infrastructure\bicep\modules\cognitiveSearch.bicep = ..\..\infrastructure\bicep\modules\cognitiveSearch.bicep
 		..\..\infrastructure\bicep\modules\containerApp.bicep = ..\..\infrastructure\bicep\modules\containerApp.bicep
 		..\..\infrastructure\bicep\modules\containerRegistry.bicep = ..\..\infrastructure\bicep\modules\containerRegistry.bicep
 		..\..\infrastructure\bicep\modules\cosmosDbAccount.bicep = ..\..\infrastructure\bicep\modules\cosmosDbAccount.bicep
@@ -29,55 +43,53 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{805C
 		..\..\infrastructure\bicep\modules\webAppBlazor.bicep = ..\..\infrastructure\bicep\modules\webAppBlazor.bicep
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.Data", "GMCopilot.Data\GMCopilot.Data.csproj", "{1F854BB6-CE3E-4899-A7E3-B61216087447}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.Entities", "GMCopilot.Entities\GMCopilot.Entities.csproj", "{0ECACDEA-7C46-492A-8B9D-71BCA7DAA657}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.Entities.Test", "GMCopilot.Entities.Test\GMCopilot.Entities.Test.csproj", "{58483A94-FAC5-481A-9579-702A313B9C2B}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.WebApi", "GMCopilot.WebApi\GMCopilot.WebApi.csproj", "{1F578834-FE0C-4DC4-9018-45DEC732B86A}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.Services", "GMCopilot.Services\GMCopilot.Services.csproj", "{B655F32E-40DB-48AC-9093-166181F5BE2E}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{48D62070-7356-4DED-A602-52730176F572}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{48D62070-7356-4DED-A602-52730176F572}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{48D62070-7356-4DED-A602-52730176F572}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{48D62070-7356-4DED-A602-52730176F572}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1F854BB6-CE3E-4899-A7E3-B61216087447}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1F854BB6-CE3E-4899-A7E3-B61216087447}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1F854BB6-CE3E-4899-A7E3-B61216087447}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1F854BB6-CE3E-4899-A7E3-B61216087447}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0ECACDEA-7C46-492A-8B9D-71BCA7DAA657}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0ECACDEA-7C46-492A-8B9D-71BCA7DAA657}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0ECACDEA-7C46-492A-8B9D-71BCA7DAA657}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0ECACDEA-7C46-492A-8B9D-71BCA7DAA657}.Release|Any CPU.Build.0 = Release|Any CPU
-		{58483A94-FAC5-481A-9579-702A313B9C2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{58483A94-FAC5-481A-9579-702A313B9C2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{58483A94-FAC5-481A-9579-702A313B9C2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{58483A94-FAC5-481A-9579-702A313B9C2B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1F578834-FE0C-4DC4-9018-45DEC732B86A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1F578834-FE0C-4DC4-9018-45DEC732B86A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1F578834-FE0C-4DC4-9018-45DEC732B86A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1F578834-FE0C-4DC4-9018-45DEC732B86A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B655F32E-40DB-48AC-9093-166181F5BE2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B655F32E-40DB-48AC-9093-166181F5BE2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B655F32E-40DB-48AC-9093-166181F5BE2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B655F32E-40DB-48AC-9093-166181F5BE2E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95F325A2-9042-4083-9973-A9C6766B92DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95F325A2-9042-4083-9973-A9C6766B92DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95F325A2-9042-4083-9973-A9C6766B92DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95F325A2-9042-4083-9973-A9C6766B92DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DE02C5B-E501-4D8F-A9DE-E918ECBAFAB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DE02C5B-E501-4D8F-A9DE-E918ECBAFAB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DE02C5B-E501-4D8F-A9DE-E918ECBAFAB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DE02C5B-E501-4D8F-A9DE-E918ECBAFAB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{855C085F-0835-4CBD-AAED-0A0CAC02ACAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{855C085F-0835-4CBD-AAED-0A0CAC02ACAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{855C085F-0835-4CBD-AAED-0A0CAC02ACAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{855C085F-0835-4CBD-AAED-0A0CAC02ACAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5699140E-8959-4F64-9E3F-3E196E4CD98B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5699140E-8959-4F64-9E3F-3E196E4CD98B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5699140E-8959-4F64-9E3F-3E196E4CD98B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5699140E-8959-4F64-9E3F-3E196E4CD98B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CDABF85C-D2A9-45F0-BD74-B1C29E91848E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDABF85C-D2A9-45F0-BD74-B1C29E91848E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDABF85C-D2A9-45F0-BD74-B1C29E91848E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDABF85C-D2A9-45F0-BD74-B1C29E91848E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A04982B-A2A2-40A4-AFA9-3D86C7D1FBC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A04982B-A2A2-40A4-AFA9-3D86C7D1FBC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A04982B-A2A2-40A4-AFA9-3D86C7D1FBC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A04982B-A2A2-40A4-AFA9-3D86C7D1FBC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1DE7E75-5267-42A2-A022-43FB7BDA4994}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1DE7E75-5267-42A2-A022-43FB7BDA4994}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1DE7E75-5267-42A2-A022-43FB7BDA4994}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1DE7E75-5267-42A2-A022-43FB7BDA4994}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE95D1C9-1718-4D56-AA93-B836FB654C82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE95D1C9-1718-4D56-AA93-B836FB654C82}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE95D1C9-1718-4D56-AA93-B836FB654C82}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE95D1C9-1718-4D56-AA93-B836FB654C82}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{45A296C7-98AC-4AD2-AEC2-A97F613AD76E} = {171E43A3-C8DF-4B84-8EE1-62F792075A39}
-		{805C7B55-9BC1-4EF2-B2B9-4D2F3E9F3F1B} = {45A296C7-98AC-4AD2-AEC2-A97F613AD76E}
+		{849E9E1F-504A-43AE-B8DF-11E3AEA5040E} = {4DFADA57-DCA8-48C8-8FF8-5A90AA693835}
+		{5E1097A3-B22B-4DB3-82EF-331C06DF83C0} = {849E9E1F-504A-43AE-B8DF-11E3AEA5040E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {00CAEFEC-5E9A-4002-9F20-E79E879C8E96}
+		SolutionGuid = {2A2307AE-EA29-4E2F-BBBE-B947237F5C15}
 	EndGlobalSection
 EndGlobal
