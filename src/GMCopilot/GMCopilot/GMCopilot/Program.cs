@@ -1,5 +1,6 @@
 using GMCopilot.Client.Pages;
 using GMCopilot.Components;
+using MudBlazor.Services;
 
 namespace GMCopilot;
 
@@ -14,6 +15,9 @@ public class Program
         builder.Services.AddRazorComponents()
             .AddInteractiveServerComponents()
             .AddInteractiveWebAssemblyComponents();
+
+        // Add Mudblazor
+        builder.Services.AddMudServices();
 
         var app = builder.Build();
 

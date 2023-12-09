@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MudBlazor" Version="6.11.1" />
     <ProjectReference Include="..\..\GMCopilot.ServiceDefaults\GMCopilot.ServiceDefaults.csproj" />
     <ProjectReference Include="..\GMCopilot.Client\GMCopilot.Client.csproj" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.0" />
