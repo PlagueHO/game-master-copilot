@@ -1,23 +1,29 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.6.33717.318
+VisualStudioVersion = 17.9.34321.82
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.Backend", "GMCopilot.Backend\GMCopilot.Backend.csproj", "{48D62070-7356-4DED-A602-52730176F572}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot", "GMCopilot\GMCopilot\GMCopilot.csproj", "{5D4679D5-8CD5-4ED3-8DF7-0EC7935040D1}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "infrastructure", "infrastructure", "{171E43A3-C8DF-4B84-8EE1-62F792075A39}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.Client", "GMCopilot\GMCopilot.Client\GMCopilot.Client.csproj", "{E96BFDE8-1C06-4273-883E-E6E084F81B03}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "bicep", "bicep", "{45A296C7-98AC-4AD2-AEC2-A97F613AD76E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMCopilot.AppHost", "GMCopilot.AppHost\GMCopilot.AppHost.csproj", "{947A6781-CC9E-40C6-BD2A-CAC741BB9DDC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.ServiceDefaults", "GMCopilot.ServiceDefaults\GMCopilot.ServiceDefaults.csproj", "{F133D4FC-27E9-4B5E-BECF-567B45912536}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "infrastructure", "infrastructure", "{AC637440-6306-456A-B8B4-78B20E27C464}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "bicep", "bicep", "{10D81E03-BA52-490A-B458-7604EEB53DFB}"
 	ProjectSection(SolutionItems) = preProject
 		..\..\infrastructure\bicep\main.bicep = ..\..\infrastructure\bicep\main.bicep
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{805C7B55-9BC1-4EF2-B2B9-4D2F3E9F3F1B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{602364DA-368C-48BD-A57C-477B96AC5875}"
 	ProjectSection(SolutionItems) = preProject
+		..\..\infrastructure\bicep\modules\aiSearch.bicep = ..\..\infrastructure\bicep\modules\aiSearch.bicep
 		..\..\infrastructure\bicep\modules\appConfiguration.bicep = ..\..\infrastructure\bicep\modules\appConfiguration.bicep
 		..\..\infrastructure\bicep\modules\appServicePlan.bicep = ..\..\infrastructure\bicep\modules\appServicePlan.bicep
 		..\..\infrastructure\bicep\modules\b2c.bicep = ..\..\infrastructure\bicep\modules\b2c.bicep
-		..\..\infrastructure\bicep\modules\cognitiveSearch.bicep = ..\..\infrastructure\bicep\modules\cognitiveSearch.bicep
 		..\..\infrastructure\bicep\modules\containerApp.bicep = ..\..\infrastructure\bicep\modules\containerApp.bicep
 		..\..\infrastructure\bicep\modules\containerRegistry.bicep = ..\..\infrastructure\bicep\modules\containerRegistry.bicep
 		..\..\infrastructure\bicep\modules\cosmosDbAccount.bicep = ..\..\infrastructure\bicep\modules\cosmosDbAccount.bicep
@@ -29,55 +35,37 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{805C
 		..\..\infrastructure\bicep\modules\webAppBlazor.bicep = ..\..\infrastructure\bicep\modules\webAppBlazor.bicep
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.Data", "GMCopilot.Data\GMCopilot.Data.csproj", "{1F854BB6-CE3E-4899-A7E3-B61216087447}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.Entities", "GMCopilot.Entities\GMCopilot.Entities.csproj", "{0ECACDEA-7C46-492A-8B9D-71BCA7DAA657}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.Entities.Test", "GMCopilot.Entities.Test\GMCopilot.Entities.Test.csproj", "{58483A94-FAC5-481A-9579-702A313B9C2B}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.WebApi", "GMCopilot.WebApi\GMCopilot.WebApi.csproj", "{1F578834-FE0C-4DC4-9018-45DEC732B86A}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.Services", "GMCopilot.Services\GMCopilot.Services.csproj", "{B655F32E-40DB-48AC-9093-166181F5BE2E}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{48D62070-7356-4DED-A602-52730176F572}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{48D62070-7356-4DED-A602-52730176F572}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{48D62070-7356-4DED-A602-52730176F572}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{48D62070-7356-4DED-A602-52730176F572}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1F854BB6-CE3E-4899-A7E3-B61216087447}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1F854BB6-CE3E-4899-A7E3-B61216087447}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1F854BB6-CE3E-4899-A7E3-B61216087447}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1F854BB6-CE3E-4899-A7E3-B61216087447}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0ECACDEA-7C46-492A-8B9D-71BCA7DAA657}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0ECACDEA-7C46-492A-8B9D-71BCA7DAA657}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0ECACDEA-7C46-492A-8B9D-71BCA7DAA657}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0ECACDEA-7C46-492A-8B9D-71BCA7DAA657}.Release|Any CPU.Build.0 = Release|Any CPU
-		{58483A94-FAC5-481A-9579-702A313B9C2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{58483A94-FAC5-481A-9579-702A313B9C2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{58483A94-FAC5-481A-9579-702A313B9C2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{58483A94-FAC5-481A-9579-702A313B9C2B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1F578834-FE0C-4DC4-9018-45DEC732B86A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1F578834-FE0C-4DC4-9018-45DEC732B86A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1F578834-FE0C-4DC4-9018-45DEC732B86A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1F578834-FE0C-4DC4-9018-45DEC732B86A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B655F32E-40DB-48AC-9093-166181F5BE2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B655F32E-40DB-48AC-9093-166181F5BE2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B655F32E-40DB-48AC-9093-166181F5BE2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B655F32E-40DB-48AC-9093-166181F5BE2E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D4679D5-8CD5-4ED3-8DF7-0EC7935040D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D4679D5-8CD5-4ED3-8DF7-0EC7935040D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D4679D5-8CD5-4ED3-8DF7-0EC7935040D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D4679D5-8CD5-4ED3-8DF7-0EC7935040D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E96BFDE8-1C06-4273-883E-E6E084F81B03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E96BFDE8-1C06-4273-883E-E6E084F81B03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E96BFDE8-1C06-4273-883E-E6E084F81B03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E96BFDE8-1C06-4273-883E-E6E084F81B03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{947A6781-CC9E-40C6-BD2A-CAC741BB9DDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{947A6781-CC9E-40C6-BD2A-CAC741BB9DDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{947A6781-CC9E-40C6-BD2A-CAC741BB9DDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{947A6781-CC9E-40C6-BD2A-CAC741BB9DDC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F133D4FC-27E9-4B5E-BECF-567B45912536}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F133D4FC-27E9-4B5E-BECF-567B45912536}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F133D4FC-27E9-4B5E-BECF-567B45912536}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F133D4FC-27E9-4B5E-BECF-567B45912536}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{45A296C7-98AC-4AD2-AEC2-A97F613AD76E} = {171E43A3-C8DF-4B84-8EE1-62F792075A39}
-		{805C7B55-9BC1-4EF2-B2B9-4D2F3E9F3F1B} = {45A296C7-98AC-4AD2-AEC2-A97F613AD76E}
+		{10D81E03-BA52-490A-B458-7604EEB53DFB} = {AC637440-6306-456A-B8B4-78B20E27C464}
+		{602364DA-368C-48BD-A57C-477B96AC5875} = {10D81E03-BA52-490A-B458-7604EEB53DFB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {00CAEFEC-5E9A-4002-9F20-E79E879C8E96}
+		SolutionGuid = {5AF7AFCB-A536-477A-AF4B-C6E5D0593636}
 	EndGlobalSection
 EndGlobal
