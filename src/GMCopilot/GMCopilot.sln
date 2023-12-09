@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot", "GMCopilot\GMCo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.Client", "GMCopilot\GMCopilot.Client\GMCopilot.Client.csproj", "{E96BFDE8-1C06-4273-883E-E6E084F81B03}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMCopilot.AppHost", "GMCopilot.AppHost\GMCopilot.AppHost.csproj", "{947A6781-CC9E-40C6-BD2A-CAC741BB9DDC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.AppHost", "GMCopilot.AppHost\GMCopilot.AppHost.csproj", "{947A6781-CC9E-40C6-BD2A-CAC741BB9DDC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.ServiceDefaults", "GMCopilot.ServiceDefaults\GMCopilot.ServiceDefaults.csproj", "{F133D4FC-27E9-4B5E-BECF-567B45912536}"
 EndProject
@@ -35,6 +35,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{6023
 		..\..\infrastructure\bicep\modules\webAppBlazor.bicep = ..\..\infrastructure\bicep\modules\webAppBlazor.bicep
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.Entities", "GMCopilot.Entities\GMCopilot.Entities.csproj", "{0C51CD4D-9995-4022-91C5-3F3A9419D8FF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.Entities.Test", "GMCopilot.Entities.Test\GMCopilot.Entities.Test.csproj", "{4DA87B6D-D330-43B0-B72E-098E2003DFB9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.Data", "GMCopilot.Data\GMCopilot.Data.csproj", "{59DBFEFB-BB60-4660-9CDA-F7120565E0DE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +63,18 @@ Global
 		{F133D4FC-27E9-4B5E-BECF-567B45912536}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F133D4FC-27E9-4B5E-BECF-567B45912536}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F133D4FC-27E9-4B5E-BECF-567B45912536}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C51CD4D-9995-4022-91C5-3F3A9419D8FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C51CD4D-9995-4022-91C5-3F3A9419D8FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C51CD4D-9995-4022-91C5-3F3A9419D8FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C51CD4D-9995-4022-91C5-3F3A9419D8FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4DA87B6D-D330-43B0-B72E-098E2003DFB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DA87B6D-D330-43B0-B72E-098E2003DFB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DA87B6D-D330-43B0-B72E-098E2003DFB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DA87B6D-D330-43B0-B72E-098E2003DFB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59DBFEFB-BB60-4660-9CDA-F7120565E0DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59DBFEFB-BB60-4660-9CDA-F7120565E0DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59DBFEFB-BB60-4660-9CDA-F7120565E0DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59DBFEFB-BB60-4660-9CDA-F7120565E0DE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

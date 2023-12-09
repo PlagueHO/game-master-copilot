@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "secrets1": {
+      "type": "secrets"
+    },
+    "cosmosdb1": {
+      "type": "cosmosdb",
+      "connectionId": "DataStore::CosmosDb::ConnectionString",
+      "dynamicId": null
+    }
+  }
+}
