@@ -1,0 +1,34 @@
+name: build-gmcopilot
+
+on:
+  workflow_call:
+
+jobs:
+  build-gmcopilot:
+    name: Build GMC
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install .NET 8
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8
+
+      - name: Build publishable GMC
+        run: |
+          dotnet workload restore  
+          dotnet publish --configuration Release
+        working-directory: ./src/GMCopilot/
+
+      - name: Zip publishable GMC
+        run: |
+          zip -r gmcopilot.zip .
+        working-directory: ./src/GMCopilot/GMCopilot/GMCopilot/bin/Release/net8.0/publish
+
+      - name: Upload GMC as workflow artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: gmcopilot
+          path: ./src/GMCopilot/GMCopilot/GMCopilot/bin/Release/net8.0/publish/gmcopilot.zip

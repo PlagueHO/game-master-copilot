@@ -60,16 +60,16 @@ jobs:
   test-gmcopilot:
     uses: ./.github/workflows/test-gmcopilot.yml
 
-  build-gmcopilotbackend:
+  build-gmcopilot:
     needs:
       - test-gmcopilot
-    uses: ./.github/workflows/build-gmcopilotbackend.yml
+    uses: ./.github/workflows/build-gmcopilot.yml
   
-  publish-gmcopilotbackend:
+  publish-gmcopilot:
     needs:
-      - build-gmcopilotbackend
+      - build-gmcopilot
       - deploy-infrastructure
-    uses: ./.github/workflows/publish-gmcopilotbackend.yml
+    uses: ./.github/workflows/publish-gmcopilot.yml
     with:
       RESOURCE_GROUP_NAME: ${{ vars.RESOURCE_GROUP_NAME }}
       WEBAPPNAME: ${{ needs.deploy-infrastructure.outputs.WEBAPPNAME }}

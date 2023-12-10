@@ -19,8 +19,8 @@ jobs:
   test-gmcopilot:
     uses: ./.github/workflows/test-gmcopilot.yml
 
-  build-gmcopilotbackend:
+  build-gmcopilot:
     needs:
       - test-gmcopilot
-    uses: ./.github/workflows/build-gmcopilotbackend.yml
+    uses: ./.github/workflows/build-gmcopilot.yml
     
