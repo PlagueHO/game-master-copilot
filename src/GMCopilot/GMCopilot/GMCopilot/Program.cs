@@ -1,4 +1,4 @@
-using GMCopilot.Backend.Extensions;
+using GMCopilot.Extensions;
 using GMCopilot.Client.Pages;
 using GMCopilot.Components;
 using MudBlazor.Services;

@@ -4,9 +4,9 @@ using GMCopilot.Entities.Options;
 using Microsoft.Extensions.Options;
 using System.Reflection;
 
-namespace GMCopilot.Backend.Extensions;
+namespace GMCopilot.Extensions;
 
-public static class BackendServiceExtensions
+public static class ServiceExtensions
 {
     public static IServiceCollection AddOptions(this IServiceCollection services, ConfigurationManager configuration)
     {
