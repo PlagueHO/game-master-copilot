@@ -22,6 +22,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{6023
 	ProjectSection(SolutionItems) = preProject
 		..\..\infrastructure\bicep\modules\aiSearch.bicep = ..\..\infrastructure\bicep\modules\aiSearch.bicep
 		..\..\infrastructure\bicep\modules\appConfiguration.bicep = ..\..\infrastructure\bicep\modules\appConfiguration.bicep
+		..\..\infrastructure\bicep\modules\appServicePlan.bicep = ..\..\infrastructure\bicep\modules\appServicePlan.bicep
 		..\..\infrastructure\bicep\modules\b2c.bicep = ..\..\infrastructure\bicep\modules\b2c.bicep
 		..\..\infrastructure\bicep\modules\containerApp.bicep = ..\..\infrastructure\bicep\modules\containerApp.bicep
 		..\..\infrastructure\bicep\modules\containerRegistry.bicep = ..\..\infrastructure\bicep\modules\containerRegistry.bicep
@@ -31,6 +32,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{6023
 		..\..\infrastructure\bicep\modules\openAiService.bicep = ..\..\infrastructure\bicep\modules\openAiService.bicep
 		..\..\infrastructure\bicep\modules\roleAssignment.bicep = ..\..\infrastructure\bicep\modules\roleAssignment.bicep
 		..\..\infrastructure\bicep\modules\storageAccount.bicep = ..\..\infrastructure\bicep\modules\storageAccount.bicep
+		..\..\infrastructure\bicep\modules\webAppBlazor.bicep = ..\..\infrastructure\bicep\modules\webAppBlazor.bicep
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.Entities", "GMCopilot.Entities\GMCopilot.Entities.csproj", "{0C51CD4D-9995-4022-91C5-3F3A9419D8FF}"
