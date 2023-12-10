@@ -162,7 +162,7 @@ resource webApp 'Microsoft.Web/sites@2021-01-15' = {
     siteConfig: {
       numberOfWorkers: 1
       linuxFxVersion: 'DOTNETCORE|8.0'
-      healthCheckPath: '/'
+      healthCheckPath: '/health'
       appSettings: appSettings
       connectionStrings: connectionStrings
     }
@@ -176,7 +176,7 @@ resource webApp 'Microsoft.Web/sites@2021-01-15' = {
       logsDirectorySizeLimit: 35
       detailedErrorLoggingEnabled: true
       linuxFxVersion: 'DOTNETCORE|8.0'
-      healthCheckPath: '/'
+      healthCheckPath: '/health'
     }
   }
 }
@@ -195,7 +195,7 @@ resource WebAppStaging 'Microsoft.Web/sites/slots@2022-03-01' = {
     siteConfig: {
       numberOfWorkers: 1
       linuxFxVersion: 'DOTNETCORE|8.0'
-      healthCheckPath: '/'
+      healthCheckPath: '/health'
       appSettings: appSettings
       connectionStrings: connectionStrings
     }
@@ -209,7 +209,7 @@ resource WebAppStaging 'Microsoft.Web/sites/slots@2022-03-01' = {
       logsDirectorySizeLimit: 35
       detailedErrorLoggingEnabled: true
       linuxFxVersion: 'DOTNETCORE|8.0'
-      healthCheckPath: '/'
+      healthCheckPath: '/health'
     }
   }
 }
