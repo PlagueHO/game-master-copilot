@@ -1,4 +1,4 @@
-name: publish-gmcopilotbackend
+name: publish-gmcopilot
 
 on:
   workflow_call:
@@ -18,8 +18,8 @@ on:
         required: true
 
 jobs:
-  publish-gmcopilotbackend:
-    name: Publish GMC backend
+  publish-gmcopilot:
+    name: Publish GMC
     runs-on: ubuntu-latest
 
     steps:
@@ -33,11 +33,11 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
 
-      - name: Deploy GMC backend to staging slot
+      - name: Deploy GMC to staging slot
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ inputs.WEBAPPNAME }}
-          package: gmcopilot/gmcopilotbackend.zip
+          package: gmcopilot/gmcopilot.zip
           slot-name: 'staging'
 
       - name: Swap staging slot

@@ -16,16 +16,14 @@ This application uses the following Microsoft & Azure technologies, including:
 - [Azure Blob Storage](https://learn.microsoft.com/en-us/azure/storage/blobs/storage-blobs-overview): Provides general file storage for the application.
 - [Azure AD External Identities](https://learn.microsoft.com/en-us/azure/active-directory/external-identities/external-identities-overview): Provides consumer facing identity services to the application (will be changed to Azure AD B2C in future).
 - [Azure Application Insights](https://)
-- [.NET Blazor](https://dotnet.microsoft.com/en-us/apps/aspnet/web-apps/blazor): Application front-end.
-- [.NET 7 with ASP.NET Core 7](https://learn.microsoft.com/en-us/aspnet/core/release-notes/aspnetcore-7.0?view=aspnetcore-7.0): Application backend.
+- [.NET 8 Blazor WASM with Hosted Server](https://dotnet.microsoft.com/en-us/apps/aspnet/web-apps/blazor): Application.
 
 Future features planned:
 
 - [Azure Application Configuration](https://learn.microsoft.com/en-us/azure/azure-app-configuration/overview): Implement external application configuration.
 - [Azure Cache for Redis](https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/cache-overview): Implement caching.
 - [Azure Event Grid](https://learn.microsoft.com/en-us/azure/event-grid/overview): Implement event mechansim to drive processes.
-- [Azure Functions](https://learn.microsoft.com/en-us/azure/azure-functions/functions-overview): Move APIs out of backend.
-- [Azure Container Apps](https://learn.microsoft.com/en-us/azure/container-apps/overview): Break application down into more distributed components.
+- [Azure Container Apps](https://learn.microsoft.com/en-us/azure/container-apps/overview): Change application and API hosting to use in Azure Container Apps.
 
 ## Build and Deployment
 
