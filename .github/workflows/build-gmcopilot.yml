@@ -18,6 +18,7 @@ jobs:
 
       - name: Build publishable GMC
         run: |
+          dotnet workload restore  
           dotnet publish --configuration Release
         working-directory: ./src/GMCopilot/
 
