@@ -19,7 +19,7 @@ on:
 
 jobs:
   publish-gmcopilot:
-    name: Publish GMC
+    name: Publish GM Copilot
     runs-on: ubuntu-latest
 
     steps:
@@ -33,7 +33,7 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
 
-      - name: Deploy GMC to staging slot
+      - name: Deploy GM Copilot to staging slot
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ inputs.WEBAPPNAME }}
