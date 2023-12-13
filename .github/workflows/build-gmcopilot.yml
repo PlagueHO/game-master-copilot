@@ -27,7 +27,7 @@ jobs:
           zip -r gmcopilot.zip .
         working-directory: ./src/GMCopilot/GMCopilot/GMCopilot/bin/Release/net8.0/publish
 
-      - name: Upload GMC as workflow artifact
+      - name: Upload GM Copilot as workflow artifact
         uses: actions/upload-artifact@v3
         with:
           name: gmcopilot
