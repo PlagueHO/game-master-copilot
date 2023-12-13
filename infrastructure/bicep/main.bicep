@@ -400,3 +400,4 @@ output webAppHostName  string = webAppBlazor.outputs.webAppHostName
 output webAppStagingName string = webAppBlazor.outputs.webAppStagingName
 output webAppStagingHostName  string = webAppBlazor.outputs.webAppStagingHostName
 output openAiServiceEndpoint string = openAiService.outputs.openAiServiceEndpoint
+output containerRegistryName string = containerRegistry.outputs.containerRegistryName

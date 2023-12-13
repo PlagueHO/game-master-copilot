@@ -5,7 +5,7 @@ on:
 
 jobs:
   build-gmcopilot:
-    name: Build GMC
+    name: Build GM Copilot
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -16,13 +16,13 @@ jobs:
         with:
           dotnet-version: 8
 
-      - name: Build publishable GMC
+      - name: Build publishable GM Copilot
         run: |
           dotnet workload restore  
           dotnet publish --configuration Release
         working-directory: ./src/GMCopilot/
 
-      - name: Zip publishable GMC
+      - name: Zip publishable GM Copilot
         run: |
           zip -r gmcopilot.zip .
         working-directory: ./src/GMCopilot/GMCopilot/GMCopilot/bin/Release/net8.0/publish

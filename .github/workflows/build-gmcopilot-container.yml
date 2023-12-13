@@ -1,0 +1,37 @@
+name: build-gmcopilot-container
+
+on:
+  workflow_call:
+    inputs:
+      RESOURCE_GROUP_NAME:
+        required: true
+        type: string
+      CONTAINER_REGISTRY_NAME:
+        required: true
+        type: string
+    secrets:
+      AZURE_TENANT_ID:
+        required: true
+      AZURE_SUBSCRIPTION_ID:
+        required: true
+      AZURE_CLIENT_ID:
+        required: true
+  
+jobs:
+  build-gmcopilot-container:
+    name: Build and publish GM Copilot container
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+
+      - name: Build and push image to ACR      
+        run: az acr build --image gmcopilot:${{ github.sha }} --registry ${{ env.CONTAINER_REGISTRY_NAME }} -g ${{ env.RESOURCE_GROUP_NAME }} -f ./src/GMCopilot/GMCopilot/GMCopilot/Dockerfile ./

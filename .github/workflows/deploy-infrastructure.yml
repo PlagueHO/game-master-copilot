@@ -50,6 +50,9 @@ on:
       openAiServiceEndpoint:
         description: "The endpoint of the deployed OpenAI service"
         value: ${{ jobs.deploy.outputs.openAiServiceEndpoint }}
+      containerRegistryName:
+        description: "The name of the deployed container registry"
+        value: ${{ jobs.deploy.outputs.containerRegistryName }}
 
 jobs:
   deploy:
@@ -61,6 +64,7 @@ jobs:
       webAppStagingName: ${{ steps.deploy.outputs.webAppStagingName }}
       webAppStagingHostName: ${{ steps.deploy.outputs.webAppStagingHostName }}
       openAiServiceEndpoint: ${{ steps.deploy.outputs.openAiServiceEndpoint }}
+      containerRegistryName: ${{ steps.deploy.outputs.containerRegistryName }}
 
     steps:
       - name: Download build artifacts

@@ -7,8 +7,10 @@ jobs:
   lint-bicep:
     name: Lint Bicep
     runs-on: ubuntu-latest
+    
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
     - name: Install Bicep
       run: | 

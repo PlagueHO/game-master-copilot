@@ -65,6 +65,18 @@ jobs:
       - test-gmcopilot
     uses: ./.github/workflows/build-gmcopilot.yml
   
+  build-gmcopilot-container:
+    needs:
+      - deploy-infrastructure
+    uses: ./.github/workflows/build-gmcopilot-container.yml
+    with:
+      RESOURCE_GROUP_NAME: ${{ vars.RESOURCE_GROUP_NAME }}
+      CONTAINER_REGISTRY_NAME: ${{ needs.deploy-infrastructure.outputs.containerRegistryName }}
+    secrets:
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+    
   publish-gmcopilot:
     needs:
       - build-gmcopilot
@@ -72,7 +84,7 @@ jobs:
     uses: ./.github/workflows/publish-gmcopilot.yml
     with:
       RESOURCE_GROUP_NAME: ${{ vars.RESOURCE_GROUP_NAME }}
-      WEBAPPNAME: ${{ needs.deploy-infrastructure.outputs.WEBAPPNAME }}
+      WEBAPPNAME: ${{ needs.deploy-infrastructure.outputs.WebAppName }}
     secrets:
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
       AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
