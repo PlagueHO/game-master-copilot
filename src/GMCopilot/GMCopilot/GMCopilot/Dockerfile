@@ -14,7 +14,7 @@ COPY ["GMCopilot.Data/GMCopilot.Data.csproj", "GMCopilot.Data/"]
 COPY ["GMCopilot.Entities/GMCopilot.Entities.csproj", "GMCopilot.Entities/"]
 COPY ["GMCopilot.ServiceDefaults/GMCopilot.ServiceDefaults.csproj", "GMCopilot.ServiceDefaults/"]
 COPY ["GMCopilot/GMCopilot.Client/GMCopilot.Client.csproj", "GMCopilot/GMCopilot.Client/"]
-RUN dotnet restore "./GMCopilot/GMCopilot/./GMCopilot.csproj"
+RUN dotnet restore "./GMCopilot/GMCopilot/GMCopilot.csproj"
 COPY . .
 WORKDIR "/src/GMCopilot/GMCopilot"
 RUN dotnet build "./GMCopilot.csproj" -c $BUILD_CONFIGURATION -o /app/build

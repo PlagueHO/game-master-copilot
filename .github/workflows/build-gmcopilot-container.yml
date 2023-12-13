@@ -34,4 +34,4 @@ jobs:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
 
       - name: Build and push image to ACR      
-        run: az acr build --image gmcopilot:${{ github.sha }} --registry ${{ inputs.CONTAINER_REGISTRY_NAME }} -g ${{ inputs.RESOURCE_GROUP_NAME }} -f ./src/GMCopilot/GMCopilot/GMCopilot/Dockerfile ./src/GMCopilot/GMCopilot/GMCopilot/
+        run: az acr build --image gmcopilot:${{ github.sha }} --registry ${{ inputs.CONTAINER_REGISTRY_NAME }} -g ${{ inputs.RESOURCE_GROUP_NAME }} -f ./src/GMCopilot/GMCopilot/GMCopilot/Dockerfile ./src/GMCopilot/GMCopilot/GMCopilot
