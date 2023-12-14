@@ -15,14 +15,6 @@ on:
         description: "The Azure region to deploy the infrastructure to"
         required: true
         type: string
-      BASE_RESOURCE_NAME:
-        description: "The base name of the resources to deploy"
-        required: true
-        type: string
-      RESOURCE_GROUP_NAME:
-        description: "The name of the resource group to deploy the infrastructure to"
-        required: true
-        type: string
       APPSERVICEPLAN_CONFIGURATION:
         description: "The configuration of the app service plan to deploy the web app to"
         required: true
@@ -100,15 +92,15 @@ jobs:
         with:
           failOnStdErr: false
           deploymentName: '${{ github.action_ref }}-${{ github.run_number }}'
-          resourceGroupName: ${{ inputs.RESOURCE_GROUP_NAME }}
+          resourceGroupName: ${{ vars.RESOURCE_GROUP_NAME }}
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           template: ./applicationarmtemplate/application.json
           region: ${{ inputs.LOCATION }}
           scope: subscription
           parameters: >
             location=${{ inputs.LOCATION }}
-            baseResourceName=${{ inputs.BASE_RESOURCE_NAME }}
-            resourceGroupName=${{ inputs.RESOURCE_GROUP_NAME }}
+            baseResourceName=${{ vars.BASE_RESOURCE_NAME }}
+            resourceGroupName=${{ vars.RESOURCE_GROUP_NAME }}
             appServicePlanConfiguration=${{ inputs.APPSERVICEPLAN_CONFIGURATION }}
             azureAdInstance=${{ inputs.AZUREAD_INSTANCE }}
             azureAdDomain=${{ secrets.AZUREAD_DOMAIN }}

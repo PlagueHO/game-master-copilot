@@ -84,8 +84,6 @@ jobs:
       ENVIRONMENT: Test
       BUILD_VERSION: ${{ needs.set-build-variables.outputs.BUILD_VERSION }}
       LOCATION: ${{ vars.LOCATION }}
-      BASE_RESOURCE_NAME: ${{ vars.BASE_RESOURCE_NAME }}
-      RESOURCE_GROUP_NAME: ${{ vars.RESOURCE_GROUP_NAME }}
       APPSERVICEPLAN_CONFIGURATION: ${{ vars.APPSERVICEPLAN_CONFIGURATION }}
       AZUREAD_INSTANCE: ${{ vars.AZUREAD_INSTANCE }}
     secrets:
@@ -106,8 +104,6 @@ jobs:
       ENVIRONMENT: Test
       BUILD_VERSION: ${{ needs.set-build-variables.outputs.BUILD_VERSION }}
       LOCATION: ${{ vars.LOCATION }}
-      BASE_RESOURCE_NAME: ${{ vars.BASE_RESOURCE_NAME }}
-      RESOURCE_GROUP_NAME: ${{ vars.RESOURCE_GROUP_NAME }}
       APPSERVICEPLAN_CONFIGURATION: ${{ vars.APPSERVICEPLAN_CONFIGURATION }}
       AZUREAD_INSTANCE: ${{ vars.AZUREAD_INSTANCE }}
     secrets:
