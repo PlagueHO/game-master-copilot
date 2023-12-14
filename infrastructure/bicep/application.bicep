@@ -20,6 +20,9 @@ param location string = 'CanadaEast'
 @description('The name of the resource group that will contain all the resources.')
 param resourceGroupName string
 
+@description('The name of the resource group that contains shared resources (e.g., Container Registry).')
+param sharedResourceGroupName string
+
 @description('The base name that will prefixed to all Azure resources deployed to ensure they are unique.')
 param baseResourceName string
 
@@ -169,6 +172,10 @@ var openAiWebConfigration = [
 resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   name: resourceGroupName
   location: location
+}
+
+resource sharedrg 'Microsoft.Resources/resourceGroups@2021-04-01' existing = {
+  name: sharedResourceGroupName
 }
 
 module monitoring './modules/monitoring.bicep' = {
@@ -375,7 +382,7 @@ module appConfigurationWebAppRoleServicePrincipal 'modules/roleAssignment.bicep'
 }
 
 module containerRegistryAppConfigurationRoleServicePrincipal 'modules/roleAssignment.bicep' = {
-  scope: rg
+  scope: sharedrg
   name: 'containerRegistryAppConfigurationRoleServicePrincipal'
   params: {
     principalId: appConfiguration.outputs.appConfigurationIdentityPrincipalId
@@ -384,6 +391,15 @@ module containerRegistryAppConfigurationRoleServicePrincipal 'modules/roleAssign
   }
 }
 
+module containerRegistryWebAppRoleServicePrincipal 'modules/roleAssignment.bicep' = {
+  scope: sharedrg
+  name: 'containerRegistryWebAppRoleServicePrincipal'
+  params: {
+    principalId: webAppBlazor.outputs.webAppIdentityPrincipalId
+    roleDefinitionId: roles['AcrPull']
+    principalType: 'ServicePrincipal'
+  }
+}
 output webAppName string = webAppBlazor.outputs.webAppName
 output webAppHostName  string = webAppBlazor.outputs.webAppHostName
 output webAppStagingName string = webAppBlazor.outputs.webAppStagingName
