@@ -1,0 +1,13 @@
+name: generate-build-version
+
+on:
+  workflow_call:
+    outputs:
+      BUILD_VERSION:
+        description: The build version
+        value: ${{ startsWith(github.ref, 'refs/tags/') && github.ref || github.sha }}
+
+jobs:
+  generate-build-version:
+    name: Generate build version
+    runs-on: ubuntu-latest
