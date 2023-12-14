@@ -57,7 +57,7 @@ jobs:
           deploymentName: '${{ github.action_ref }}-${{ github.run_number }}'
           resourceGroupName: ${{ inputs.RESOURCE_GROUP_NAME_SHARED }}
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          template: ./armtemplate/shared.json
+          template: ./sharedarmtemplate/shared.json
           region: ${{ inputs.LOCATION }}
           scope: subscription
           parameters: >
