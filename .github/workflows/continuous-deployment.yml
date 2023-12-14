@@ -84,6 +84,7 @@ jobs:
       - build-armtemplates
     uses: ./.github/workflows/validate-application-infrastructure.yml
     with:
+      ENVIRONMENT: Test
       BUILD_VERSION: ${{ needs.set-build-variables.outputs.BUILD_VERSION }}
       LOCATION: ${{ vars.LOCATION }}
       BASE_RESOURCE_NAME: ${{ vars.BASE_RESOURCE_NAME }}
@@ -105,6 +106,7 @@ jobs:
       - validate-application-infrastructure
     uses: ./.github/workflows/deploy-application-infrastructure.yml
     with:
+      ENVIRONMENT: Test
       BUILD_VERSION: ${{ needs.set-build-variables.outputs.BUILD_VERSION }}
       LOCATION: ${{ vars.LOCATION }}
       BASE_RESOURCE_NAME: ${{ vars.BASE_RESOURCE_NAME }}

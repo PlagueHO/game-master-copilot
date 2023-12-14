@@ -3,6 +3,10 @@ name: validate-application-infrastructure
 on:
   workflow_call:
     inputs:
+      ENVIRONMENT:
+        description: "The environment to validate the application infrastructure for"
+        required: true
+        type: string
       BUILD_VERSION:
         description: "The version of the build to deploy to the application resources"
         required: true
@@ -52,7 +56,8 @@ on:
   
 jobs:
   validate-application-infrastructure:
-    name: Validate Application Infrastructure
+    name: Validate Application Infrastructure ${{ inputs.ENVIRONMENT }}
+    environment: ${{ inputs.ENVIRONMENT }}
     runs-on: ubuntu-latest
     steps:
       - name: Download build artifacts

@@ -3,6 +3,10 @@ name: deploy-application-infrastructure
 on:
   workflow_call:
     inputs:
+      ENVIRONMENT:
+        description: "The environment to deploy the application infrastructure for"
+        required: true
+        type: string
       BUILD_VERSION:
         description: "The version of the build to deploy to the infrastructure"
         required: true
@@ -69,7 +73,8 @@ on:
 
 jobs:
   deploy-application-infrastructure:
-    name: Deploy Application Infrastructure
+    name: Deploy Application Infrastructure ${{ inputs.ENVIRONMENT }}
+    environment: ${{ inputs.ENVIRONMENT }}
     runs-on: ubuntu-latest
     outputs:
       webAppName: ${{ steps.deploy.outputs.webAppName }}
