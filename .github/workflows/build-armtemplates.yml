@@ -3,6 +3,9 @@ name: build-armtemplates
 on:
   workflow_call:
 
+# We are building an ARM template rather than submitting the Bicep directly
+# because this allows us to use the latest version of the Bicep compiler.
+
 jobs:
   build-armtemplates:
     name: Build ARM Templates from Bicep

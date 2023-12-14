@@ -19,11 +19,16 @@ permissions:
   pull-requests: write
 
 jobs:
-  # We are building an ARM template rather than submitting the Bicep directly
-  # because this allows us to use the latest version of the Bicep compiler.
-
   set-build-variables:
     uses: ./.github/workflows/set-build-variables.yml
+
+  test-gmcopilot:
+    uses: ./.github/workflows/test-gmcopilot.yml
+
+  build-gmcopilot:
+    needs:
+      - test-gmcopilot
+    uses: ./.github/workflows/build-gmcopilot.yml
 
   build-armtemplates:
     uses: ./.github/workflows/build-armtemplates.yml
@@ -55,14 +60,6 @@ jobs:
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
       AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-
-  test-gmcopilot:
-    uses: ./.github/workflows/test-gmcopilot.yml
-
-  build-gmcopilot:
-    needs:
-      - test-gmcopilot
-    uses: ./.github/workflows/build-gmcopilot.yml
   
   build-gmcopilot-container:
     needs:
@@ -71,7 +68,7 @@ jobs:
     uses: ./.github/workflows/build-gmcopilot-container.yml
     with:
       BUILD_VERSION: ${{ needs.set-build-variables.outputs.BUILD_VERSION }}
-      RESOURCE_GROUP_NAME: ${{ vars.RESOURCE_GROUP_NAME }}
+      RESOURCE_GROUP_NAME: ${{ vars.RESOURCE_GROUP_NAME_SHARED }}
       CONTAINER_REGISTRY_NAME: ${{ needs.deploy-shared-infrastructure.outputs.containerRegistryName }}
     secrets:
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
