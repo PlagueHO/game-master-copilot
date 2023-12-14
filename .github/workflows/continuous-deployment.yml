@@ -25,50 +25,36 @@ jobs:
   set-build-variables:
     uses: ./.github/workflows/set-build-variables.yml
 
-  build-armtemplate:
-    uses: ./.github/workflows/build-armtemplate.yml
+  build-armtemplates:
+    uses: ./.github/workflows/build-armtemplates.yml
 
-  validate-infrastructure:
+  validate-shared-infrastructure:
     needs:
       - set-build-variables
-      - build-armtemplate
-    uses: ./.github/workflows/validate-infrastructure.yml
+      - build-armtemplates
+    uses: ./.github/workflows/validate-shared-infrastructure.yml
     with:
-      BUILD_VERSION: ${{ needs.set-build-variables.outputs.BUILD_VERSION }}
       LOCATION: ${{ vars.LOCATION }}
-      BASE_RESOURCE_NAME: ${{ vars.BASE_RESOURCE_NAME }}
-      RESOURCE_GROUP_NAME: ${{ vars.RESOURCE_GROUP_NAME }}
-      APPSERVICEPLAN_CONFIGURATION: ${{ vars.APPSERVICEPLAN_CONFIGURATION }}
-      AZUREAD_INSTANCE: ${{ vars.AZUREAD_INSTANCE }}
+      BASE_RESOURCE_NAME_SHARED: ${{ vars.BASE_RESOURCE_NAME_SHARED }}
+      RESOURCE_GROUP_NAME_SHARED: ${{ vars.RESOURCE_GROUP_NAME_SHARED }}
     secrets:
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
       AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-      AZUREAD_DOMAIN: ${{ secrets.AZUREAD_DOMAIN }}
-      AZUREAD_TENANT_ID: ${{ secrets.AZUREAD_TENANT_ID }}
-      AZUREAD_CLIENT_ID: ${{ secrets.AZUREAD_CLIENT_ID }}
-      AZUREAD_CLIENTSECRET: ${{ secrets.AZUREAD_CLIENTSECRET }}
-  
-  deploy-infrastructure:
+
+  deploy-shared-infrastructure:
     needs:
       - set-build-variables
-      - validate-infrastructure
-    uses: ./.github/workflows/deploy-infrastructure.yml
+      - validate-shared-infrastructure
+    uses: ./.github/workflows/deploy-shared-infrastructure.yml
     with:
-      BUILD_VERSION: ${{ needs.set-build-variables.outputs.BUILD_VERSION }}
       LOCATION: ${{ vars.LOCATION }}
-      BASE_RESOURCE_NAME: ${{ vars.BASE_RESOURCE_NAME }}
-      RESOURCE_GROUP_NAME: ${{ vars.RESOURCE_GROUP_NAME }}
-      APPSERVICEPLAN_CONFIGURATION: ${{ vars.APPSERVICEPLAN_CONFIGURATION }}
-      AZUREAD_INSTANCE: ${{ vars.AZUREAD_INSTANCE }}
+      BASE_RESOURCE_NAME_SHARED: ${{ vars.BASE_RESOURCE_NAME_SHARED }}
+      RESOURCE_GROUP_NAME_SHARED: ${{ vars.RESOURCE_GROUP_NAME_SHARED }}
     secrets:
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
       AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-      AZUREAD_DOMAIN: ${{ secrets.AZUREAD_DOMAIN }}
-      AZUREAD_TENANT_ID: ${{ secrets.AZUREAD_TENANT_ID }}
-      AZUREAD_CLIENT_ID: ${{ secrets.AZUREAD_CLIENT_ID }}
-      AZUREAD_CLIENTSECRET: ${{ secrets.AZUREAD_CLIENTSECRET }}
 
   test-gmcopilot:
     uses: ./.github/workflows/test-gmcopilot.yml
@@ -81,21 +67,63 @@ jobs:
   build-gmcopilot-container:
     needs:
       - set-build-variables
-      - deploy-infrastructure
+      - deploy-shared-infrastructure
     uses: ./.github/workflows/build-gmcopilot-container.yml
     with:
       BUILD_VERSION: ${{ needs.set-build-variables.outputs.BUILD_VERSION }}
       RESOURCE_GROUP_NAME: ${{ vars.RESOURCE_GROUP_NAME }}
-      CONTAINER_REGISTRY_NAME: ${{ needs.deploy-infrastructure.outputs.containerRegistryName }}
+      CONTAINER_REGISTRY_NAME: ${{ needs.deploy-shared-infrastructure.outputs.containerRegistryName }}
     secrets:
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
       AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      
+  validate-application-infrastructure:
+    needs:
+      - set-build-variables
+      - build-armtemplates
+    uses: ./.github/workflows/validate-application-infrastructure.yml
+    with:
+      BUILD_VERSION: ${{ needs.set-build-variables.outputs.BUILD_VERSION }}
+      LOCATION: ${{ vars.LOCATION }}
+      BASE_RESOURCE_NAME: ${{ vars.BASE_RESOURCE_NAME }}
+      RESOURCE_GROUP_NAME: ${{ vars.RESOURCE_GROUP_NAME }}
+      APPSERVICEPLAN_CONFIGURATION: ${{ vars.APPSERVICEPLAN_CONFIGURATION }}
+      AZUREAD_INSTANCE: ${{ vars.AZUREAD_INSTANCE }}
+    secrets:
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZUREAD_DOMAIN: ${{ secrets.AZUREAD_DOMAIN }}
+      AZUREAD_TENANT_ID: ${{ secrets.AZUREAD_TENANT_ID }}
+      AZUREAD_CLIENT_ID: ${{ secrets.AZUREAD_CLIENT_ID }}
+      AZUREAD_CLIENTSECRET: ${{ secrets.AZUREAD_CLIENTSECRET }}
+  
+  deploy-application-infrastructure:
+    needs:
+      - set-build-variables
+      - validate-application-infrastructure
+    uses: ./.github/workflows/deploy-application-infrastructure.yml
+    with:
+      BUILD_VERSION: ${{ needs.set-build-variables.outputs.BUILD_VERSION }}
+      LOCATION: ${{ vars.LOCATION }}
+      BASE_RESOURCE_NAME: ${{ vars.BASE_RESOURCE_NAME }}
+      RESOURCE_GROUP_NAME: ${{ vars.RESOURCE_GROUP_NAME }}
+      APPSERVICEPLAN_CONFIGURATION: ${{ vars.APPSERVICEPLAN_CONFIGURATION }}
+      AZUREAD_INSTANCE: ${{ vars.AZUREAD_INSTANCE }}
+    secrets:
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZUREAD_DOMAIN: ${{ secrets.AZUREAD_DOMAIN }}
+      AZUREAD_TENANT_ID: ${{ secrets.AZUREAD_TENANT_ID }}
+      AZUREAD_CLIENT_ID: ${{ secrets.AZUREAD_CLIENT_ID }}
+      AZUREAD_CLIENTSECRET: ${{ secrets.AZUREAD_CLIENTSECRET }}
     
   publish-gmcopilot:
     needs:
       - build-gmcopilot
-      - deploy-infrastructure
+      - deploy-application-infrastructure
     uses: ./.github/workflows/publish-gmcopilot.yml
     with:
       RESOURCE_GROUP_NAME: ${{ vars.RESOURCE_GROUP_NAME }}

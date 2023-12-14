@@ -69,7 +69,6 @@ var openAiServiceName = '${baseResourceName}-oai'
 var aiSearchName = '${baseResourceName}-aisearch'
 var cosmosDbAccountName = '${baseResourceName}-cdb'
 var storageAccountName = replace('${baseResourceName}data','-','')
-var containerRegistryName = replace('${baseResourceName}acr','-','')
 var containerAppEnvironmentName = '${baseResourceName}-cae'
 
 var openAiModelDeployments = [
@@ -295,16 +294,6 @@ module storageAccount './modules/storageAccount.bicep' = {
   }
 }
 
-module containerRegistry './modules/containerRegistry.bicep' = {
-  name: 'containerRegistry'
-  scope: rg
-  params: {
-    location: location
-    containerRegistryName: containerRegistryName
-    logAnalyticsWorkspaceId: monitoring.outputs.logAnalyticsWorkspaceId
-    logAnalyticsWorkspaceName: logAnalyticsWorkspaceName
-  }
-}
 module containerApp './modules/containerApp.bicep' = {
   name: 'containerApp'
   scope: rg
@@ -400,4 +389,3 @@ output webAppHostName  string = webAppBlazor.outputs.webAppHostName
 output webAppStagingName string = webAppBlazor.outputs.webAppStagingName
 output webAppStagingHostName  string = webAppBlazor.outputs.webAppStagingHostName
 output openAiServiceEndpoint string = openAiService.outputs.openAiServiceEndpoint
-output containerRegistryName string = containerRegistry.outputs.containerRegistryName

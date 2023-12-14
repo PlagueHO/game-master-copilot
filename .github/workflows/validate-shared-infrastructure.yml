@@ -1,0 +1,56 @@
+name: validate-shared-infrastructure
+
+on:
+  workflow_call:
+    inputs:
+      LOCATION:
+        description: "The Azure region to deploy the shared resources to"
+        required: true
+        type: string
+      BASE_RESOURCE_NAME_SHARED:
+        description: "The base name of the shared resources to deploy"
+        required: true
+        type: string
+      RESOURCE_GROUP_NAME_SHARED:
+        description: "The name of the resource group to deploy the shared resources to"
+        required: true
+        type: string
+    secrets:
+      AZURE_TENANT_ID:
+        description: "The Azure tenant ID to use for authentication to Azure for deployment"
+        required: true
+      AZURE_SUBSCRIPTION_ID:
+        description: "The Azure subscription ID to use for authentication to Azure for deployment"
+        required: true
+      AZURE_CLIENT_ID:
+        description: "The Azure client ID to use for authentication to Azure for deployment"
+        required: true  
+jobs:
+  validate-shared-infrastructure:
+    name: Validate Shared Infrastructure
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+
+      - name: Run what-if
+        uses: azure/arm-deploy@v1
+        with:
+          failOnStdErr: false
+          resourceGroupName: ${{ inputs.RESOURCE_GROUP_NAME_SHARED }}
+          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          template: ./sharedarmtemplate/shared.json
+          region: ${{ inputs.LOCATION }}
+          scope: subscription
+          parameters: >
+            location=${{ inputs.LOCATION }}
+            baseResourceName=${{ inputs.BASE_RESOURCE_NAME_SHARED }}
+            resourceGroupName=${{ inputs.RESOURCE_GROUP_NAME_SHARED }}
+          additionalArguments: --what-if

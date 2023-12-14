@@ -1,4 +1,4 @@
-name: validate-infrastructure
+name: deploy-application-infrastructure
 
 on:
   workflow_call:
@@ -50,10 +50,34 @@ on:
         description: "The client secret to use to connect to the Azure AD to perform application authentication"
         required: true
   
+    outputs:
+      webAppName:
+        description: "The name of the deployed web app"
+        value: ${{ jobs.deploy-application-infrastructure.outputs.webAppName }}
+      webAppHostName:
+        description: "The hostname of the deployed web app"
+        value: ${{ jobs.deploy-application-infrastructure.outputs.webAppHostName }}
+      webAppStagingName:
+        description: "The name of the deployed web app staging slot"
+        value: ${{ jobs.deploy-application-infrastructure.outputs.webAppStagingName }}
+      webAppStagingHostName:
+        description: "The hostname of the deployed web app staging slot"
+        value: ${{ jobs.deploy-application-infrastructure.outputs.webAppStagingHostName }}
+      openAiServiceEndpoint:
+        description: "The endpoint of the deployed OpenAI service"
+        value: ${{ jobs.deploy-application-infrastructure.outputs.openAiServiceEndpoint }}
+
 jobs:
-  validate-infrastructure:
-    name: Validate Infrastructure Deployment
+  deploy-application-infrastructure:
+    name: Deploy Application Infrastructure
     runs-on: ubuntu-latest
+    outputs:
+      webAppName: ${{ steps.deploy.outputs.webAppName }}
+      webAppHostName: ${{ steps.deploy.outputs.webAppHostName }}
+      webAppStagingName: ${{ steps.deploy.outputs.webAppStagingName }}
+      webAppStagingHostName: ${{ steps.deploy.outputs.webAppStagingHostName }}
+      openAiServiceEndpoint: ${{ steps.deploy.outputs.openAiServiceEndpoint }}
+
     steps:
       - name: Download build artifacts
         uses: actions/download-artifact@v3
@@ -65,10 +89,12 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
 
-      - name: Run what-if
+      - name: Deploy Azure resources
+        id: deploy
         uses: azure/arm-deploy@v1
         with:
           failOnStdErr: false
+          deploymentName: '${{ github.action_ref }}-${{ github.run_number }}'
           resourceGroupName: ${{ inputs.RESOURCE_GROUP_NAME }}
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           template: ./armtemplate/main.json
@@ -84,4 +110,3 @@ jobs:
             azureAdTenantId=${{ secrets.AZUREAD_TENANT_ID }}
             azureAdClientId=${{ secrets.AZUREAD_CLIENT_ID }}
             azureAdClientSecret=${{ secrets.AZUREAD_CLIENTSECRET }}
-          additionalArguments: --what-if

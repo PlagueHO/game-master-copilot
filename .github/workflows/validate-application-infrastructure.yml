@@ -1,22 +1,22 @@
-name: deploy-infrastructure
+name: validate-application-infrastructure
 
 on:
   workflow_call:
     inputs:
       BUILD_VERSION:
-        description: "The version of the build to deploy to the infrastructure"
+        description: "The version of the build to deploy to the application resources"
         required: true
         type: string
       LOCATION:
-        description: "The Azure region to deploy the infrastructure to"
+        description: "The Azure region to deploy the application resources to"
         required: true
         type: string
       BASE_RESOURCE_NAME:
-        description: "The base name of the resources to deploy"
+        description: "The base name of the application resources to deploy"
         required: true
         type: string
       RESOURCE_GROUP_NAME:
-        description: "The name of the resource group to deploy the infrastructure to"
+        description: "The name of the resource group to deploy the application resources to"
         required: true
         type: string
       APPSERVICEPLAN_CONFIGURATION:
@@ -50,38 +50,10 @@ on:
         description: "The client secret to use to connect to the Azure AD to perform application authentication"
         required: true
   
-    outputs:
-      webAppName:
-        description: "The name of the deployed web app"
-        value: ${{ jobs.deploy.outputs.webAppName }}
-      webAppHostName:
-        description: "The hostname of the deployed web app"
-        value: ${{ jobs.deploy.outputs.webAppHostName }}
-      webAppStagingName:
-        description: "The name of the deployed web app staging slot"
-        value: ${{ jobs.deploy.outputs.webAppStagingName }}
-      webAppStagingHostName:
-        description: "The hostname of the deployed web app staging slot"
-        value: ${{ jobs.deploy.outputs.webAppStagingHostName }}
-      openAiServiceEndpoint:
-        description: "The endpoint of the deployed OpenAI service"
-        value: ${{ jobs.deploy.outputs.openAiServiceEndpoint }}
-      containerRegistryName:
-        description: "The name of the deployed container registry"
-        value: ${{ jobs.deploy.outputs.containerRegistryName }}
-
 jobs:
-  deploy:
-    name: Deploy Infrastructure
+  validate-application-infrastructure:
+    name: Validate Application Infrastructure
     runs-on: ubuntu-latest
-    outputs:
-      webAppName: ${{ steps.deploy.outputs.webAppName }}
-      webAppHostName: ${{ steps.deploy.outputs.webAppHostName }}
-      webAppStagingName: ${{ steps.deploy.outputs.webAppStagingName }}
-      webAppStagingHostName: ${{ steps.deploy.outputs.webAppStagingHostName }}
-      openAiServiceEndpoint: ${{ steps.deploy.outputs.openAiServiceEndpoint }}
-      containerRegistryName: ${{ steps.deploy.outputs.containerRegistryName }}
-
     steps:
       - name: Download build artifacts
         uses: actions/download-artifact@v3
@@ -93,12 +65,10 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
 
-      - name: Deploy Azure resources
-        id: deploy
+      - name: Run what-if
         uses: azure/arm-deploy@v1
         with:
           failOnStdErr: false
-          deploymentName: '${{ github.action_ref }}-${{ github.run_number }}'
           resourceGroupName: ${{ inputs.RESOURCE_GROUP_NAME }}
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           template: ./armtemplate/main.json
@@ -114,3 +84,4 @@ jobs:
             azureAdTenantId=${{ secrets.AZUREAD_TENANT_ID }}
             azureAdClientId=${{ secrets.AZUREAD_CLIENT_ID }}
             azureAdClientSecret=${{ secrets.AZUREAD_CLIENTSECRET }}
+          additionalArguments: --what-if
