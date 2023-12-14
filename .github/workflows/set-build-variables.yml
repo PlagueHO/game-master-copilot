@@ -17,4 +17,4 @@ jobs:
       - name: Generate build version
         id: generate-build-version
         run: |
-          echo "::set-output name=build_version::${{ startsWith(github.ref, 'refs/tags/') && github.ref || github.sha }}"
+          echo "build_version=${{ startsWith(github.ref, 'refs/tags/') && github.ref || github.sha }}" >> "$GITHUB_ENV"
