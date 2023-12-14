@@ -91,7 +91,7 @@ jobs:
         uses: azure/arm-deploy@v1
         with:
           failOnStdErr: false
-          deploymentName: '${{ github.action_ref }}-${{ github.run_number }}'
+          deploymentName: 'app-${{ inputs.ENVIRONMENT }}-${{ github.action_ref }}-${{ github.run_number }}'
           resourceGroupName: ${{ vars.RESOURCE_GROUP_NAME }}
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           template: ./applicationarmtemplate/application.json

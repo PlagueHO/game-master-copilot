@@ -54,7 +54,7 @@ jobs:
         uses: azure/arm-deploy@v1
         with:
           failOnStdErr: false
-          deploymentName: '${{ github.action_ref }}-${{ github.run_number }}'
+          deploymentName: 'shared-${{ github.action_ref }}-${{ github.run_number }}'
           resourceGroupName: ${{ inputs.RESOURCE_GROUP_NAME_SHARED }}
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           template: ./sharedarmtemplate/shared.json
