@@ -4,8 +4,11 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:
+    tags:
+      - v*
 
+  workflow_dispatch:
+  
 env:
   BUILD_VERSION: ${{ startsWith(github.ref, 'refs/tags/') && github.ref || github.sha }}
     
