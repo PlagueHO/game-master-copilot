@@ -3,18 +3,27 @@ name: build-gmcopilot-container
 on:
   workflow_call:
     inputs:
+      BUILD_VERSION:
+        description: 'The version of the container to build'
+        required: true
+        type: string
       RESOURCE_GROUP_NAME:
+        description: 'The name of the resource group where the container registry is located'
         required: true
         type: string
       CONTAINER_REGISTRY_NAME:
+        description: 'The name of the container registry'
         required: true
         type: string
     secrets:
       AZURE_TENANT_ID:
+        description: 'The Azure tenant ID'
         required: true
       AZURE_SUBSCRIPTION_ID:
+        description: 'The Azure subscription ID'
         required: true
       AZURE_CLIENT_ID:
+        description: 'The Azure client ID'
         required: true
   
 jobs:
@@ -34,4 +43,4 @@ jobs:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
 
       - name: Build and push image to ACR      
-        run: az acr build --image gmcopilot/gmcopilot:${{ github.sha }} --registry ${{ inputs.CONTAINER_REGISTRY_NAME }} -g ${{ inputs.RESOURCE_GROUP_NAME }} --target base ./src/GMCopilot/GMCopilot/GMCopilot
+        run: az acr build --image gmcopilot/gmcopilot:${{ inputs.BUILD_VERSION }} --registry ${{ inputs.CONTAINER_REGISTRY_NAME }} -g ${{ inputs.RESOURCE_GROUP_NAME }} --target base ./src/GMCopilot/GMCopilot/GMCopilot

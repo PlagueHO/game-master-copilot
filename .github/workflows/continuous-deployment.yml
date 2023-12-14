@@ -12,6 +12,9 @@ permissions:
   checks: write
   pull-requests: write
 
+env:
+  BUILD_VERSION: ${{ startsWith(github.ref, 'refs/tags/') && github.ref || github.sha }}
+
 jobs:
   # We are building an ARM template rather than submitting the Bicep directly
   # because this allows us to use the latest version of the Bicep compiler.
@@ -24,6 +27,7 @@ jobs:
       - build-armtemplate
     uses: ./.github/workflows/validate-infrastructure.yml
     with:
+      BUILD_VERSION: ${{ env.BUILD_VERSION }}
       LOCATION: ${{ vars.LOCATION }}
       BASE_RESOURCE_NAME: ${{ vars.BASE_RESOURCE_NAME }}
       RESOURCE_GROUP_NAME: ${{ vars.RESOURCE_GROUP_NAME }}
@@ -43,6 +47,7 @@ jobs:
       - validate-infrastructure
     uses: ./.github/workflows/deploy-infrastructure.yml
     with:
+      BUILD_VERSION: ${{ env.BUILD_VERSION }}
       LOCATION: ${{ vars.LOCATION }}
       BASE_RESOURCE_NAME: ${{ vars.BASE_RESOURCE_NAME }}
       RESOURCE_GROUP_NAME: ${{ vars.RESOURCE_GROUP_NAME }}
@@ -70,6 +75,7 @@ jobs:
       - deploy-infrastructure
     uses: ./.github/workflows/build-gmcopilot-container.yml
     with:
+      BUILD_VERSION: ${{ env.BUILD_VERSION }}
       RESOURCE_GROUP_NAME: ${{ vars.RESOURCE_GROUP_NAME }}
       CONTAINER_REGISTRY_NAME: ${{ needs.deploy-infrastructure.outputs.containerRegistryName }}
     secrets:

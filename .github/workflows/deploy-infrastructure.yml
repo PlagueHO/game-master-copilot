@@ -3,35 +3,51 @@ name: deploy-infrastructure
 on:
   workflow_call:
     inputs:
+      BUILD_VERSION:
+        description: "The version of the build to deploy to the infrastructure"
+        required: true
+        type: string
       LOCATION:
+        description: "The Azure region to deploy the infrastructure to"
         required: true
         type: string
       BASE_RESOURCE_NAME:
+        description: "The base name of the resources to deploy"
         required: true
         type: string
       RESOURCE_GROUP_NAME:
+        description: "The name of the resource group to deploy the infrastructure to"
         required: true
         type: string
       APPSERVICEPLAN_CONFIGURATION:
+        description: "The configuration of the app service plan to deploy the web app to"
         required: true
         type: string
       AZUREAD_INSTANCE:
+        description: "The Azure AD instance to use for authentication"
         required: true
         type: string
     secrets:
       AZURE_TENANT_ID:
+        description: "The Azure tenant ID to use for authentication to Azure for deployment"
         required: true
       AZURE_SUBSCRIPTION_ID:
+        description: "The Azure subscription ID to use for authentication to Azure for deployment"
         required: true
       AZURE_CLIENT_ID:
+        description: "The Azure client ID to use for authentication to Azure for deployment"
         required: true
       AZUREAD_DOMAIN:
+        description: "The domain name of the Azure AD tenant to use for application authentication"
         required: true
       AZUREAD_TENANT_ID:
+        description: "The tenant ID of the Azure AD tenant to use for application authentication"
         required: true
       AZUREAD_CLIENT_ID:
+        description: "The client ID to use to connect to the Azure AD to perform application authentication"
         required: true
       AZUREAD_CLIENTSECRET:
+        description: "The client secret to use to connect to the Azure AD to perform application authentication"
         required: true
   
     outputs:
