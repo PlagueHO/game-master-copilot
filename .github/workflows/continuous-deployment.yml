@@ -75,7 +75,7 @@ jobs:
       AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       
-  validate-application-infrastructure:
+  validate-application-infrastructure-test:
     needs:
       - set-build-variables
       - build-armtemplates
@@ -97,10 +97,10 @@ jobs:
       AZUREAD_CLIENT_ID: ${{ secrets.AZUREAD_CLIENT_ID }}
       AZUREAD_CLIENTSECRET: ${{ secrets.AZUREAD_CLIENTSECRET }}
   
-  deploy-application-infrastructure:
+  deploy-application-infrastructure-test:
     needs:
       - set-build-variables
-      - validate-application-infrastructure
+      - validate-application-infrastructure-test
     uses: ./.github/workflows/deploy-application-infrastructure.yml
     with:
       ENVIRONMENT: Test
@@ -119,14 +119,14 @@ jobs:
       AZUREAD_CLIENT_ID: ${{ secrets.AZUREAD_CLIENT_ID }}
       AZUREAD_CLIENTSECRET: ${{ secrets.AZUREAD_CLIENTSECRET }}
     
-  publish-gmcopilot:
+  publish-gmcopilot-test:
     needs:
       - build-gmcopilot
-      - deploy-application-infrastructure
+      - deploy-application-infrastructure-test
     uses: ./.github/workflows/publish-gmcopilot.yml
     with:
       RESOURCE_GROUP_NAME: ${{ vars.RESOURCE_GROUP_NAME }}
-      WEBAPPNAME: ${{ needs.deploy-infrastructure.outputs.WebAppName }}
+      WEBAPPNAME: ${{ needs.deploy-application-infrastructure-test.outputs.WebAppName }}
     secrets:
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
       AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
