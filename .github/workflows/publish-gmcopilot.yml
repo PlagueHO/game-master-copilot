@@ -3,7 +3,8 @@ name: publish-gmcopilot
 on:
   workflow_call:
     inputs:
-      RESOURCE_GROUP_NAME:
+      ENVIRONMENT:
+        description: "The environment to publish the application to"
         required: true
         type: string
       WEBAPPNAME:
@@ -46,5 +47,5 @@ jobs:
           inlineScript: |
             az webapp deployment slot swap \
             --name ${{ inputs.WEBAPPNAME }} \
-            --resource-group ${{ inputs.RESOURCE_GROUP_NAME }} \
+            --resource-group ${{ vars.RESOURCE_GROUP_NAME }} \
             --slot staging

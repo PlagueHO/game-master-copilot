@@ -121,7 +121,7 @@ jobs:
       - deploy-application-infrastructure-test
     uses: ./.github/workflows/publish-gmcopilot.yml
     with:
-      RESOURCE_GROUP_NAME: ${{ vars.RESOURCE_GROUP_NAME }}
+      ENVIRONMENT: Test
       WEBAPPNAME: ${{ needs.deploy-application-infrastructure-test.outputs.WebAppName }}
     secrets:
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
