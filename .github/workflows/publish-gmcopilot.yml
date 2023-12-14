@@ -20,7 +20,8 @@ on:
 
 jobs:
   publish-gmcopilot:
-    name: Publish GM Copilot
+    name: Publish GM Copilot ${{ inputs.ENVIRONMENT }}
+    environment: ${{ inputs.ENVIRONMENT }}
     runs-on: ubuntu-latest
 
     steps:
