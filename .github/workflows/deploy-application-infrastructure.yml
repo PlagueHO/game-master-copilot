@@ -97,7 +97,7 @@ jobs:
           deploymentName: '${{ github.action_ref }}-${{ github.run_number }}'
           resourceGroupName: ${{ inputs.RESOURCE_GROUP_NAME }}
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          template: ./armtemplate/main.json
+          template: ./applicationarmtemplate/application.json
           region: ${{ inputs.LOCATION }}
           scope: subscription
           parameters: >
