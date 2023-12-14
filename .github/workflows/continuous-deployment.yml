@@ -19,19 +19,19 @@ jobs:
   # We are building an ARM template rather than submitting the Bicep directly
   # because this allows us to use the latest version of the Bicep compiler.
 
-  generate-build-version:
-    uses: ./.github/workflows/generate-build-version.yml
+  set-build-variables:
+    uses: ./.github/workflows/set-build-variables.yml
 
   build-armtemplate:
     uses: ./.github/workflows/build-armtemplate.yml
 
   validate-infrastructure:
     needs:
-      - generate-build-version
+      - set-build-variables
       - build-armtemplate
     uses: ./.github/workflows/validate-infrastructure.yml
     with:
-      BUILD_VERSION: ${{ needs.build-armtemplate.outputs.BUILD_VERSION }}
+      BUILD_VERSION: ${{ needs.set-build-variables.outputs.BUILD_VERSION }}
       LOCATION: ${{ vars.LOCATION }}
       BASE_RESOURCE_NAME: ${{ vars.BASE_RESOURCE_NAME }}
       RESOURCE_GROUP_NAME: ${{ vars.RESOURCE_GROUP_NAME }}
@@ -48,11 +48,11 @@ jobs:
   
   deploy-infrastructure:
     needs:
-      - generate-build-version
+      - set-build-variables
       - validate-infrastructure
     uses: ./.github/workflows/deploy-infrastructure.yml
     with:
-      BUILD_VERSION: ${{ needs.generate-build-version.outputs.BUILD_VERSION }}
+      BUILD_VERSION: ${{ needs.set-build-variables.outputs.BUILD_VERSION }}
       LOCATION: ${{ vars.LOCATION }}
       BASE_RESOURCE_NAME: ${{ vars.BASE_RESOURCE_NAME }}
       RESOURCE_GROUP_NAME: ${{ vars.RESOURCE_GROUP_NAME }}
@@ -77,11 +77,11 @@ jobs:
   
   build-gmcopilot-container:
     needs:
-      - generate-build-version
+      - set-build-variables
       - deploy-infrastructure
     uses: ./.github/workflows/build-gmcopilot-container.yml
     with:
-      BUILD_VERSION: ${{ needs.generate-build-version.outputs.BUILD_VERSION }}
+      BUILD_VERSION: ${{ needs.set-build-variables.outputs.BUILD_VERSION }}
       RESOURCE_GROUP_NAME: ${{ vars.RESOURCE_GROUP_NAME }}
       CONTAINER_REGISTRY_NAME: ${{ needs.deploy-infrastructure.outputs.containerRegistryName }}
     secrets:

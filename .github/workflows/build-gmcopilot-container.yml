@@ -4,7 +4,7 @@ on:
   workflow_call:
     inputs:
       BUILD_VERSION:
-        description: 'The version of the container to build'
+        description: 'The version to assign to the container image'
         required: true
         type: string
       RESOURCE_GROUP_NAME:
