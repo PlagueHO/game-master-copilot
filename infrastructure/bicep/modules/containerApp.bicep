@@ -47,7 +47,18 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
       containers: [
         {
           name: 'gmcopilot'
-          image: '${containerRegistryLoginServer}/gmcopilot/gmcopilot:${buildVersion}'
+          image: 'gmcopilot/gmcopilot:${buildVersion}'
+          probes: [
+            {
+              type: 'Liveness'
+              httpGet: {
+                path: '/health'
+                port: 8080
+              }
+              initialDelaySeconds: 3
+              periodSeconds: 3
+            }
+          ]
           resources: {
             cpu: json('0.25')
             memory: '0.5Gi'
