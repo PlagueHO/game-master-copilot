@@ -40,7 +40,7 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
       }
       registries: [
         {
-          identity: 'system'
+          identity: userAssignedManagedIdentity.id
           server: containerRegistryLoginServer
         }
       ]
