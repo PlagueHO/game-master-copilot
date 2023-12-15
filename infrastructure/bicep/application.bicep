@@ -102,11 +102,11 @@ var openAiConfigration = [
   }
   {
     name: 'SemanticKernel__AzureOpenAiTextCompletionServices__0__SetAsDefault'
-    value: true
+    value: 'true'
   }
   {
     name: 'SemanticKernel__AzureOpenAiChatCompletionServices__0__AlsoAsTextCompletion'
-    value: true
+    value: 'true'
   }
   {
     name: 'SemanticKernel__AzureOpenAiTextCompletionServices__1__Id'
@@ -122,11 +122,11 @@ var openAiConfigration = [
   }
   {
     name: 'SemanticKernel__AzureOpenAiTextCompletionServices__1__SetAsDefault'
-    value: false
+    value: 'false'
   }
   {
     name: 'SemanticKernel__AzureOpenAiChatCompletionServices__1__AlsoAsTextCompletion'
-    value: true
+    value: 'true'
   }
   {
     name: 'SemanticKernel__AzureOpenAiTextEmbeddingGenerationServices__2__Id'
@@ -142,7 +142,7 @@ var openAiConfigration = [
   }
   {
     name: 'SemanticKernel__AzureOpenAiTextEmbeddingGenerationServices__2__SetAsDefault'
-    value: true
+    value: 'true'
   }
   {
     name: 'SemanticKernel__AzureOpenAiImageGenerationServices__3__Id'
@@ -154,7 +154,7 @@ var openAiConfigration = [
   }
   {
     name: 'SemanticKernel__AzureOpenAiImageGenerationServices__3__SetAsDefault'
-    value: true
+    value: 'true'
   }
 ]
 
