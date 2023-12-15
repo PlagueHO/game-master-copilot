@@ -55,7 +55,7 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
       containers: [
         {
           name: 'gmcopilot'
-          image: 'gmcopilot/gmcopilot:${buildVersion}'
+          image: '${containerRegistryLoginServer}/gmcopilot/gmcopilot:${buildVersion}'
           probes: [
             {
               type: 'Liveness'
