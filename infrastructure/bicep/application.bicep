@@ -297,6 +297,7 @@ module containerApp './modules/containerApp.bicep' = {
     entraIdIssuerUrl: entraIdIssuerUrl
     entraIdTenantId: entraIdTenantId
     entraIdClientId: entraIdClientId
+    entraIdClientSecret: entraIdClientSecret
   }
 }
 

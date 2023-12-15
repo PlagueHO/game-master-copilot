@@ -13,6 +13,8 @@ param azureOpenAiConfiguration array
 param entraIdIssuerUrl string
 param entraIdTenantId string
 param entraIdClientId string
+@secure()
+param entraIdClientSecret string
 
 resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2023-05-01' existing = {
   name: containerAppEnvironmentName
@@ -53,8 +55,7 @@ var secrets = [
   }
   {
     name: 'authorization-entraid-clientsecret'
-    identity: userAssignedManagedIdentity.id
-    keyVaultUrl: 'https://${keyVaultName}.vault.azure.net/secrets/EntraIdClientSecret'
+    value: entraIdClientSecret
   }
 ]
 
