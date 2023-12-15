@@ -99,4 +99,4 @@ jobs:
             entraIdIssuerUrl=${{ inputs.ENTRAID_ISSUER_URL }}
             entraIdTenantId=${{ inputs.ENTRAID_TENANT_ID }}
             entraIdClientId=${{ inputs.ENTRAID_CLIENT_ID }}
-            entraIdClientSecret=${{ secrets.ENTRAID_CLIENTSECRET }}
+            entraIdClientSecret=${{ secrets.ENTRAID_CLIENT_SECRET }}

@@ -85,5 +85,5 @@ jobs:
             entraIdIssuerUrl=${{ inputs.ENTRAID_ISSUER_URL }}
             entraIdTenantId=${{ inputs.AZUREAD_TENANT_ID }}
             entraIdClientId=${{ inputs.AZUREAD_CLIENT_ID }}
-            entraIdClientSecret=${{ secrets.AZUREAD_CLIENTSECRET }}
+            entraIdClientSecret=${{ secrets.AZUREAD_CLIENT_SECRET }}
           additionalArguments: --what-if
