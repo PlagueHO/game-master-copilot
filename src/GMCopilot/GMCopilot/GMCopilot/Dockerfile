@@ -6,22 +6,21 @@ WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0.100-1 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["GMCopilot/GMCopilot/GMCopilot.csproj", "GMCopilot/GMCopilot/"]
-COPY ["GMCopilot/GMCopilot.Client/GMCopilot.Client.csproj", "GMCopilot/GMCopilot.Client/"]
-COPY ["GMCopilot.Data/GMCopilot.Data.csproj", "GMCopilot.Data/"]
-COPY ["GMCopilot.Entities/GMCopilot.Entities.csproj", "GMCopilot.Entities/"]
-COPY ["GMCopilot.ServiceDefaults/GMCopilot.ServiceDefaults.csproj", "GMCopilot.ServiceDefaults/"]
+COPY ["src/GMCopilot/GMCopilot/GMCopilot/GMCopilot.csproj", "GMCopilot/GMCopilot/"]
+COPY ["src/GMCopilot/GMCopilot/GMCopilot.Client/GMCopilot.Client.csproj", "GMCopilot/GMCopilot.Client/"]
+COPY ["src/GMCopilot/GMCopilot.Data/GMCopilot.Data.csproj", "GMCopilot.Data/"]
+COPY ["src/GMCopilot/GMCopilot.Entities/GMCopilot.Entities.csproj", "GMCopilot.Entities/"]
+COPY ["src/GMCopilot/GMCopilot.ServiceDefaults/GMCopilot.ServiceDefaults.csproj", "GMCopilot.ServiceDefaults/"]
 RUN dotnet restore "./GMCopilot/GMCopilot/GMCopilot.csproj"
-COPY . .
-WORKDIR "/src/GMCopilot/GMCopilot"
-RUN dotnet build "./GMCopilot.csproj" -c $BUILD_CONFIGURATION -o /app/build
+COPY src/GMCopilot/ .
+RUN dotnet build "./GMCopilot/GMCopilot/GMCopilot.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./GMCopilot.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./GMCopilot/GMCopilot/GMCopilot.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
