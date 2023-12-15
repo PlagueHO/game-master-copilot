@@ -17,14 +17,17 @@ targetScope = 'subscription'
 ])
 param location string = 'CanadaEast'
 
+@description('The base name that will prefixed to all Azure resources deployed to ensure they are unique.')
+param baseResourceName string
+
 @description('The name of the resource group that will contain all the resources.')
 param resourceGroupName string
 
 @description('The name of the resource group that contains shared resources (e.g., Container Registry).')
 param sharedResourceGroupName string
 
-@description('The base name that will prefixed to all Azure resources deployed to ensure they are unique.')
-param baseResourceName string
+@description('The build version to publish to the components.')
+param buildVersion string
 
 @description('The Azure App Service SKU for running the Blazor App.')
 @allowed([
@@ -73,6 +76,7 @@ var aiSearchName = '${baseResourceName}-aisearch'
 var cosmosDbAccountName = '${baseResourceName}-cdb'
 var storageAccountName = replace('${baseResourceName}data','-','')
 var containerAppEnvironmentName = '${baseResourceName}-cae'
+var containerRegistryName = replace('${baseResourceName}acr','-','')
 
 var openAiModelDeployments = [
   {
@@ -169,13 +173,21 @@ var openAiWebConfigration = [
   }
 ]
 
+// Shared resources that are deployed into a shared resource group
+resource sharedrg 'Microsoft.Resources/resourceGroups@2021-04-01' existing = {
+  name: sharedResourceGroupName
+}
+
+resource containerRegistry 'Microsoft.ContainerRegistry/registries@2023-01-01-preview' existing = {
+  name: containerRegistryName
+}
+
+var applicationContainerUrl = '${containerRegistry.properties.loginServer}/gmcopilot/gmcopilot:${buildVersion}'
+
+// The application resources that are deployed into the application resource group
 resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   name: resourceGroupName
   location: location
-}
-
-resource sharedrg 'Microsoft.Resources/resourceGroups@2021-04-01' existing = {
-  name: sharedResourceGroupName
 }
 
 module monitoring './modules/monitoring.bicep' = {
@@ -276,6 +288,7 @@ module webApp './modules/webApp.bicep' = {
     location: location
     appServicePlanId: appServicePlan.outputs.appServicePlanId
     webAppName: baseResourceName
+    containerUrl: applicationContainerUrl
     keyVaultName: keyVault.outputs.keyVaultName
     cosmosDbAccountName: cosmosDbAccount.outputs.cosmosDbAccountName
     openAiServiceName: openAiService.outputs.openAiServiceName
@@ -400,6 +413,7 @@ module containerRegistryWebAppRoleServicePrincipal 'modules/roleAssignment.bicep
     principalType: 'ServicePrincipal'
   }
 }
+
 output webAppName string = webApp.outputs.webAppName
 output webAppHostName  string = webApp.outputs.webAppHostName
 output webAppStagingName string = webApp.outputs.webAppStagingName

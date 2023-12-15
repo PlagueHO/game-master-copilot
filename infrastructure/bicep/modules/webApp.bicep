@@ -1,6 +1,7 @@
 param location string
 param appServicePlanId string
 param webAppName string
+param containerUrl string
 param keyVaultName string
 param cosmosDbAccountName string
 param openAiServiceName string
@@ -152,7 +153,7 @@ var connectionStrings = [
 resource webApp 'Microsoft.Web/sites@2021-01-15' = {
   name: webAppName
   location: location
-  kind: 'app,linux'
+  kind: 'app,linux,container'
   identity: {
     type: 'SystemAssigned'
   }
@@ -161,40 +162,8 @@ resource webApp 'Microsoft.Web/sites@2021-01-15' = {
     httpsOnly: true
     siteConfig: {
       numberOfWorkers: 1
-      linuxFxVersion: 'DOTNETCORE|8.0'
-      healthCheckPath: '/health'
-      appSettings: appSettings
-      connectionStrings: connectionStrings
-    }
-    clientAffinityEnabled: true
-  }
-
-  resource config 'config@2021-01-15' = {
-    name: 'web'
-    properties: {
-      httpLoggingEnabled: true
-      logsDirectorySizeLimit: 35
-      detailedErrorLoggingEnabled: true
-      linuxFxVersion: 'DOTNETCORE|8.0'
-      healthCheckPath: '/health'
-    }
-  }
-}
-
-resource WebAppStaging 'Microsoft.Web/sites/slots@2022-03-01' = {
-  name: 'staging'
-  parent: webApp
-  location: location
-  kind: 'app,linux'
-  identity: {
-    type: 'SystemAssigned'
-  }
-  properties: {
-    serverFarmId: appServicePlanId
-    httpsOnly: true
-    siteConfig: {
-      numberOfWorkers: 1
-      linuxFxVersion: 'DOTNETCORE|8.0'
+      linuxFxVersion: 'DOCKER|${containerUrl}'
+      acrUseManagedIdentityCreds: true
       healthCheckPath: '/health'
       appSettings: appSettings
       connectionStrings: connectionStrings
@@ -215,7 +184,5 @@ resource WebAppStaging 'Microsoft.Web/sites/slots@2022-03-01' = {
 }
 
 output webAppName string = webApp.name
-output webAppStagingName string = WebAppStaging.name
 output webAppHostName  string = webApp.properties.defaultHostName
-output webAppStagingHostName  string = WebAppStaging.properties.defaultHostName
 output webAppIdentityPrincipalId string = webApp.identity.principalId
