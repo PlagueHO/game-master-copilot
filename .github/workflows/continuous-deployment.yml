@@ -60,6 +60,7 @@ jobs:
     needs:
       - set-build-variables
       - deploy-shared-infrastructure
+      - test-gmcopilot
     uses: ./.github/workflows/build-gmcopilot-container.yml
     with:
       BUILD_VERSION: ${{ needs.set-build-variables.outputs.BUILD_VERSION }}
