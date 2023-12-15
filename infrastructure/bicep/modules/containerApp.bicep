@@ -57,7 +57,7 @@ var secrets = [
   {
     name: 'authorization-azuread-clientsecret'
     identity: userAssignedManagedIdentity.id
-    keyVaultUrl: 'https://${keyVaultName}.vault.azure.net/secrets/AzureAdClientSecret'
+    keyVaultUrl: '${keyVault.properties.vaultUri}/secrets/AzureAdClientSecret'
   }
 ]
 
@@ -104,7 +104,7 @@ var basicConfiguration = [
   }
   {
     name: 'Authorization__AzureAd__ClientSecret'
-    value: 'authorization-azuread-clientsecret'
+    secretRef: 'authorization-azuread-clientsecret'
   }
   {
     name: 'ApplicationInsights__ConnectionString'
@@ -116,7 +116,7 @@ var basicConfiguration = [
   }
   {
     name: 'SemanticKernel__AzureOpenAiApiKey'
-    value: 'semantickernel-azureopenaiapikey'
+    secretRef: 'semantickernel-azureopenaiapikey'
   }
   {
     name: 'DataStore__Type'
@@ -132,7 +132,7 @@ var basicConfiguration = [
   }
   {
     name: 'DataStore__CosmosDb__ConnectionString'
-    value: 'datastore-cosmosdb-connectionstring'
+    secretRef: 'datastore-cosmosdb-connectionstring'
   }
   {
     name: 'AppConfiguration__Endpoint'
