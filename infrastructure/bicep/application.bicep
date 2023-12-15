@@ -24,7 +24,10 @@ param baseResourceName string
 param resourceGroupName string
 
 @description('The name of the resource group that contains shared resources (e.g., Container Registry).')
-param sharedResourceGroupName string
+param resourceGroupNameShared string
+
+@description('The base name of the shared resources')
+param baseResourceNameShared string
 
 @description('The build version to publish to the components.')
 param buildVersion string
@@ -76,7 +79,7 @@ var aiSearchName = '${baseResourceName}-aisearch'
 var cosmosDbAccountName = '${baseResourceName}-cdb'
 var storageAccountName = replace('${baseResourceName}data','-','')
 var containerAppEnvironmentName = '${baseResourceName}-cae'
-var containerRegistryName = replace('${baseResourceName}acr','-','')
+var containerRegistryName = replace('${baseResourceNameShared}acr','-','')
 
 var openAiModelDeployments = [
   {
@@ -174,13 +177,13 @@ var openAiWebConfigration = [
 ]
 
 // Shared resources that are deployed into a shared resource group
-resource sharedrg 'Microsoft.Resources/resourceGroups@2021-04-01' existing = {
-  name: sharedResourceGroupName
+resource rgshared 'Microsoft.Resources/resourceGroups@2021-04-01' existing = {
+  name: resourceGroupNameShared
 }
 
 resource containerRegistry 'Microsoft.ContainerRegistry/registries@2023-01-01-preview' existing = {
   name: containerRegistryName
-  scope: sharedrg
+  scope: rgshared
 }
 
 var applicationContainerUrl = '${containerRegistry.properties.loginServer}/gmcopilot/gmcopilot:${buildVersion}'
@@ -396,7 +399,7 @@ module appConfigurationWebAppRoleServicePrincipal 'modules/roleAssignment.bicep'
 }
 
 module containerRegistryAppConfigurationRoleServicePrincipal 'modules/roleAssignment.bicep' = {
-  scope: sharedrg
+  scope: rgshared
   name: 'containerRegistryAppConfigurationRoleServicePrincipal'
   params: {
     principalId: appConfiguration.outputs.appConfigurationIdentityPrincipalId
@@ -406,7 +409,7 @@ module containerRegistryAppConfigurationRoleServicePrincipal 'modules/roleAssign
 }
 
 module containerRegistryWebAppRoleServicePrincipal 'modules/roleAssignment.bicep' = {
-  scope: sharedrg
+  scope: rgshared
   name: 'containerRegistryWebAppRoleServicePrincipal'
   params: {
     principalId: webApp.outputs.webAppIdentityPrincipalId

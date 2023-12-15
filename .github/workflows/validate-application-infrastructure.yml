@@ -27,6 +27,11 @@ on:
         description: "The name of the resource group that the shared resources are in"
         required: true
         type: string
+      BASE_RESOURCE_NAME_SHARED:
+        description: "The base name of the shared resources"
+        required: true
+        type: string
+          
     secrets:
       AZURE_TENANT_ID:
         description: "The Azure tenant ID to use for authentication to Azure for deployment"
@@ -79,7 +84,8 @@ jobs:
             location=${{ inputs.LOCATION }}
             baseResourceName=${{ vars.BASE_RESOURCE_NAME }}
             resourceGroupName=${{ vars.RESOURCE_GROUP_NAME }}
-            sharedResourceGroupName=${{ inputs.RESOURCE_GROUP_NAME_SHARED }}
+            resourceGroupNameShared=${{ inputs.RESOURCE_GROUP_NAME_SHARED }}
+            baseResourceNameShared=${{ inputs.BASE_RESOURCE_NAME_SHARED }}
             buildVersion=${{ inputs.BUILD_VERSION }}
             appServicePlanConfiguration=${{ inputs.APPSERVICEPLAN_CONFIGURATION }}
             azureAdInstance=${{ inputs.AZUREAD_INSTANCE }}
