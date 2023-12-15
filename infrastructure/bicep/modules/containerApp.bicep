@@ -3,12 +3,19 @@ param containerAppName string
 param containerRegistryLoginServer string
 param userAssignedManagedIdentityName string
 param containerAppEnvironmentName string
-param cosmosDbAccountName string
 param buildVersion string
-
-resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' existing = {
-  name: cosmosDbAccountName
-}
+param keyVaultName string
+param cosmosDbAccountName string
+param openAiServiceName string
+param appConfigurationName string
+param appInsightsConnectionString string
+param azureOpenAiConfiguration array
+param azureAdInstance string
+param azureAdDomain string
+@secure()
+param azureAdTenantId string
+@secure()
+param azureAdClientId string
 
 resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2023-05-01' existing = {
   name: containerAppEnvironmentName
@@ -17,6 +24,127 @@ resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2023-05-01' 
 resource userAssignedManagedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2022-01-31-preview' existing = {
   name: userAssignedManagedIdentityName
 }
+
+resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' existing = {
+  name: cosmosDbAccountName
+}
+
+resource keyVault 'Microsoft.KeyVault/vaults@2023-02-01' existing = {
+  name: keyVaultName
+}
+
+resource keyVaultAzureAdClientSecret 'Microsoft.KeyVault/vaults/secrets@2023-02-01' existing = {
+  name: 'AzureAdClientSecret'
+  parent: keyVault
+}
+
+resource openAiService 'Microsoft.CognitiveServices/accounts@2023-05-01' existing = {
+  name: openAiServiceName
+}
+
+resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2023-03-01' existing = {
+  name: appConfigurationName
+}
+
+var secrets = [
+  {
+    name: 'datastore-cosmosdb-connectionstring'
+    value: cosmosDbAccount.listConnectionStrings().connectionStrings[0].connectionString
+  }
+  {
+    name: 'applicationinsights-connectionstring'
+    value: appInsightsConnectionString
+  }
+  {
+    name: 'semantickernel-azureopenaiapikey'
+    value: openAiService.listKeys().key1
+  }
+  {
+    name: 'authorization-azuread-clientsecret'
+    value: keyVaultAzureAdClientSecret.properties.value
+  }
+]
+
+var basicConfiguration = [
+  {
+    name: 'DetailedErrors'
+    value: true
+  }
+  {
+    name: 'Logging__LogLevel__Default'
+    value: 'Information'
+  }
+  {
+    name: 'Logging__LogLevel__Microsoft.AspNetCore'
+    value: 'Warning'
+  }
+  {
+    name: 'ASPNETCORE_ENVIRONMENT'
+    value: 'Development'
+  }
+  {
+    name: 'Authorization__Type'
+    value: 'AzureAd'
+  }
+  {
+    name: 'Authorization__AzureAd__Instance'
+    value: azureAdInstance
+  }
+  {
+    name: 'Authorization__AzureAd__Instance'
+    value: azureAdInstance
+  }
+  {
+    name: 'Authorization__AzureAd__Domain'
+    value: azureAdDomain
+  }
+  {
+    name: 'Authorization__AzureAd__TenantId'
+    value: azureAdTenantId
+  }
+  {
+    name: 'Authorization__AzureAd__ClientId'
+    value: azureAdClientId
+  }
+  {
+    name: 'Authorization__AzureAd__ClientSecret'
+    value: 'authorization-azuread-clientsecret'
+  }
+  {
+    name: 'ApplicationInsights__ConnectionString'
+    value: 'applicationinsights-connectionstring'
+  }
+  {
+    name: 'SemanticKernel__PluginsDirectory'
+    value: 'Plugins'
+  }
+  {
+    name: 'SemanticKernel__AzureOpenAiApiKey'
+    value: 'semantickernel-azureopenaiapikey'
+  }
+  {
+    name: 'DataStore__Type'
+    value: 'CosmosDb'
+  }
+  {
+    name: 'DataStore__CosmosDb__EndpointUri'
+    value: cosmosDbAccount.properties.documentEndpoint
+  }
+  {
+    name: 'DataStore__CosmosDb__Database'
+    value: 'gmcopilot'
+  }
+  {
+    name: 'DataStore__CosmosDb__ConnectionString'
+    value: 'datastore-cosmosdb-connectionstring'
+  }
+  {
+    name: 'AppConfiguration__Endpoint'
+    value: appConfiguration.properties.endpoint
+  }
+]
+
+var environmentVariables = union(basicConfiguration, azureOpenAiConfiguration)
 
 resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
   name: containerAppName
@@ -45,12 +173,7 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
           server: containerRegistryLoginServer
         }
       ]
-      secrets: [
-        {
-          name: 'cosmosdb-connection-string'
-          value: cosmosDbAccount.listConnectionStrings().connectionStrings[0].connectionString
-        }
-      ]
+      secrets: secrets
     }
     template: {
       containers: [
@@ -72,28 +195,7 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
             cpu: json('0.25')
             memory: '0.5Gi'
           }
-          env: [
-            {
-              name: 'ASPNETCORE_ENVIRONMENT'
-              value: 'Development'
-            }
-            {
-              name: 'DataStore__Type'
-              value: 'CosmosDb'
-            }
-            {
-              name: 'DataStore__CosmosDb__EndpointUri'
-              value: cosmosDbAccount.properties.documentEndpoint
-            }
-            {
-              name: 'DataStore__CosmosDb__Database'
-              value: 'gmcopilot'
-            }
-            {
-              name: 'DataStore__CosmosDb__ConnectionString'
-              secretRef: 'cosmosdb-connection-string'
-            }
-          ]
+          env: environmentVariables
         }
       ]
       scale: {
@@ -103,3 +205,5 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
     }
   }
 }
+
+output applicationUrl string = containerApp.properties.ingress.fqdn

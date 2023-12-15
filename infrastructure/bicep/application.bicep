@@ -32,25 +32,6 @@ param baseResourceNameShared string
 @description('The build version to publish to the components.')
 param buildVersion string
 
-@description('The Azure App Service SKU for running the Blazor App.')
-@allowed([
-  'F1'
-  'B1'
-  'B2'
-  'B3'
-  'S1'
-  'S2'
-  'S3'
-  'P1V2'
-  'P2V2'
-  'P3V2'
-  'P0V3'
-  'P1V3'
-  'P2V3'
-  'P3V3'
-])
-param appServicePlanConfiguration string = 'P0V3'
-
 @description('The Azure AD instance to use for authentication.')
 param azureAdInstance string = environment().authentication.loginEndpoint
 
@@ -73,7 +54,6 @@ var logAnalyticsWorkspaceName = '${baseResourceName}-law'
 var applicationInsightsName = '${baseResourceName}-ai'
 var keyVaultName = '${baseResourceName}-akv'
 var appConfigurationName = '${baseResourceName}-appconfig'
-var appServiceName = '${baseResourceName}-asp'
 var openAiServiceName = '${baseResourceName}-oai'
 var aiSearchName = '${baseResourceName}-aisearch'
 var cosmosDbAccountName = '${baseResourceName}-cdb'
@@ -107,7 +87,7 @@ var openAiModelDeployments = [
   }
 ]
 
-var openAiWebConfigration = [
+var openAiConfigration = [
   {
     name: 'SemanticKernel__AzureOpenAiTextCompletionServices__0__Id'
     value: 'ChatCompletionGPT35TURBO'
@@ -189,7 +169,6 @@ resource containerRegistry 'Microsoft.ContainerRegistry/registries@2023-01-01-pr
 }
 
 var containerRegistryLoginServer = containerRegistry.properties.loginServer
-var applicationContainerUrl = '${containerRegistryLoginServer}/gmcopilot/gmcopilot:${buildVersion}'
 
 // The application resources that are deployed into the application resource group
 resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
@@ -272,44 +251,6 @@ module aiSearch './modules/aiSearch.bicep' = {
   }
 }
 
-module appServicePlan './modules/appServicePlan.bicep' = {
-  name: 'appServicePlan'
-  scope: rg
-  params: {
-    location: location
-    appServicePlanName: appServiceName
-    appServicePlanConfiguration: appServicePlanConfiguration
-  }
-}
-
-module webApp './modules/webApp.bicep' = {
-  name: 'webApp'
-  scope: rg
-  dependsOn: [
-    appServicePlan
-    cosmosDbAccount
-    openAiService
-    monitoring
-  ]
-  params: {
-    location: location
-    appServicePlanId: appServicePlan.outputs.appServicePlanId
-    webAppName: baseResourceName
-    containerUrl: applicationContainerUrl
-    keyVaultName: keyVault.outputs.keyVaultName
-    cosmosDbAccountName: cosmosDbAccount.outputs.cosmosDbAccountName
-    openAiServiceName: openAiService.outputs.openAiServiceName
-    appConfigurationName: appConfiguration.outputs.appConfigurationName
-    appInsightsInstrumentationKey: monitoring.outputs.applicationInsightsInstrumentationKey
-    appInsightsConnectionString: monitoring.outputs.applicationInsightsConnectionString
-    azureOpenAiWebConfiguration: openAiWebConfigration
-    azureAdInstance: azureAdInstance
-    azureAdDomain: azureAdDomain
-    azureAdTenantId: azureAdTenantId
-    azureAdClientId: azureAdClientId
-  }
-}
-
 module storageAccount './modules/storageAccount.bicep' = {
   name: 'storageAccount'
   scope: rg
@@ -349,8 +290,17 @@ module containerApp './modules/containerApp.bicep' = {
     containerRegistryLoginServer: containerRegistryLoginServer
     userAssignedManagedIdentityName: containerAppUserAssignedManagedIdentityName
     containerAppEnvironmentName: containerAppEnvironmentName
-    cosmosDbAccountName: cosmosDbAccount.outputs.cosmosDbAccountName
     buildVersion: buildVersion
+    keyVaultName: keyVault.outputs.keyVaultName
+    cosmosDbAccountName: cosmosDbAccount.outputs.cosmosDbAccountName
+    openAiServiceName: openAiService.outputs.openAiServiceName
+    appConfigurationName: appConfiguration.outputs.appConfigurationName
+    appInsightsConnectionString: monitoring.outputs.applicationInsightsConnectionString
+    azureOpenAiConfiguration: openAiConfigration
+    azureAdInstance: azureAdInstance
+    azureAdDomain: azureAdDomain
+    azureAdTenantId: azureAdTenantId
+    azureAdClientId: azureAdClientId
   }
 }
 
@@ -363,62 +313,12 @@ var roles = {
     AcrPull: '7f951dda-4ed3-4680-a7ca-43fe172d538d'
 }
 
-module openAiServiceWebAppRoleServicePrincipal 'modules/roleAssignment.bicep' = {
-  scope: rg
-  name: 'openAiServiceWebAppRoleServicePrincipal'
-  params: {
-    principalId: webApp.outputs.webAppIdentityPrincipalId
-    roleDefinitionId: roles['Cognitive Services OpenAI User']
-    principalType: 'ServicePrincipal'
-  }
-}
-
-module cosmosDbWebAppRoleServicePrincipal 'modules/roleAssignment.bicep' = {
-  scope: rg
-  name: 'cosmosDbWebAppRoleServicePrincipal'
-  params: {
-    principalId: webApp.outputs.webAppIdentityPrincipalId
-    roleDefinitionId: roles['Cosmos DB Account Reader Role']
-    principalType: 'ServicePrincipal'
-  }
-}
-
-module storageAccountWebAppRoleServicePrincipal 'modules/roleAssignment.bicep' = {
-  scope: rg
-  name: 'storageAccountWebAppRoleServicePrincipal'
-  params: {
-    principalId: webApp.outputs.webAppIdentityPrincipalId
-    roleDefinitionId: roles['Storage Blob Data Contributor']
-    principalType: 'ServicePrincipal'
-  }
-}
-
-module keyVaultWebAppRoleServicePrincipal 'modules/roleAssignment.bicep' = {
-  scope: rg
-  name: 'keyVaultWebAppRoleServicePrincipal'
-  params: {
-    principalId: webApp.outputs.webAppIdentityPrincipalId
-    roleDefinitionId: roles['Key Vault Secrets User']
-    principalType: 'ServicePrincipal'
-  }
-}
-
 module keyVaultAppConfigurationRoleServicePrincipal 'modules/roleAssignment.bicep' = {
   scope: rg
   name: 'keyVaultAppConfigurationRoleServicePrincipal'
   params: {
     principalId: appConfiguration.outputs.appConfigurationIdentityPrincipalId
     roleDefinitionId: roles['Key Vault Secrets User']
-    principalType: 'ServicePrincipal'
-  }
-}
-
-module appConfigurationWebAppRoleServicePrincipal 'modules/roleAssignment.bicep' = {
-  scope: rg
-  name: 'appConfigurationWebAppRoleServicePrincipal'
-  params: {
-    principalId: webApp.outputs.webAppIdentityPrincipalId
-    roleDefinitionId: roles['App Configuration Data Reader']
     principalType: 'ServicePrincipal'
   }
 }
@@ -433,16 +333,5 @@ module containerRegistryContainerAppRoleServicePrincipal 'modules/roleAssignment
   }
 }
 
-module containerRegistryWebAppRoleServicePrincipal 'modules/roleAssignment.bicep' = {
-  scope: rgshared
-  name: 'containerRegistryWebAppRoleServicePrincipal'
-  params: {
-    principalId: webApp.outputs.webAppIdentityPrincipalId
-    roleDefinitionId: roles['AcrPull']
-    principalType: 'ServicePrincipal'
-  }
-}
-
-output webAppName string = webApp.outputs.webAppName
-output webAppHostName  string = webApp.outputs.webAppHostName
+output applicationUrl string = containerApp.outputs.applicationUrl
 output openAiServiceEndpoint string = openAiService.outputs.openAiServiceEndpoint
