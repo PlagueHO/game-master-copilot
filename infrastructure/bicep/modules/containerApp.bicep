@@ -102,6 +102,3 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
     }
   }
 }
-
-output containerAppUrl string = containerApp.properties.url
-output containerAppIdentityPrincipalId string = containerApp.identity.principalId
