@@ -33,7 +33,7 @@ param baseResourceNameShared string
 param buildVersion string
 
 @description('The Entra ID issuer URL to use for authentication.')
-param entraIdIssuerURL string = environment().authentication.loginEndpoint
+param entraIdIssuerUrl string = environment().authentication.loginEndpoint
 
 @description('The Entra ID tenant ID to use for authentication.')
 @secure()
@@ -294,7 +294,7 @@ module containerApp './modules/containerApp.bicep' = {
     appConfigurationName: appConfiguration.outputs.appConfigurationName
     appInsightsConnectionString: monitoring.outputs.applicationInsightsConnectionString
     azureOpenAiConfiguration: openAiConfigration
-    entraIdIssuerUrl: entraIdIssuerURL
+    entraIdIssuerUrl: entraIdIssuerUrl
     entraIdTenantId: entraIdTenantId
     entraIdClientId: entraIdClientId
   }
