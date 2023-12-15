@@ -186,7 +186,8 @@ resource containerRegistry 'Microsoft.ContainerRegistry/registries@2023-01-01-pr
   scope: rgshared
 }
 
-var applicationContainerUrl = '${containerRegistry.properties.loginServer}/gmcopilot/gmcopilot:${buildVersion}'
+var containerRegistryLoginServer = containerRegistry.properties.loginServer
+var applicationContainerUrl = '${containerRegistryLoginServer}/gmcopilot/gmcopilot:${buildVersion}'
 
 // The application resources that are deployed into the application resource group
 resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
@@ -329,6 +330,18 @@ module containerAppEnvironment './modules/containerAppEnvironment.bicep' = {
   }
 }
 
+module containerApp './modules/containerApp.bicep' = {
+  name: 'containerApp'
+  scope: rg
+  params: {
+    location: location
+    containerAppEnvironmentName: containerAppEnvironmentName
+    containerRegistryLoginServer: containerRegistryLoginServer
+    cosmosDbAccountName: cosmosDbAccount.outputs.cosmosDbAccountName
+    buildVersion: buildVersion
+  }
+}
+
 var roles = {
     'Cognitive Services OpenAI User': '5e0bd9bd-7b93-4f28-af87-19fc36ad61bd'
     'Storage Blob Data Contributor': 'ba92f5b4-2d11-453d-a403-e96b0029c9fe'
@@ -398,11 +411,21 @@ module appConfigurationWebAppRoleServicePrincipal 'modules/roleAssignment.bicep'
   }
 }
 
-module containerRegistryAppConfigurationRoleServicePrincipal 'modules/roleAssignment.bicep' = {
+module containerRegistryContainerAppEnvironmentRoleServicePrincipal 'modules/roleAssignment.bicep' = {
   scope: rgshared
-  name: 'containerRegistryAppConfigurationRoleServicePrincipal'
+  name: 'containerRegistryContainerAppEnvironmentRoleServicePrincipal'
   params: {
-    principalId: appConfiguration.outputs.appConfigurationIdentityPrincipalId
+    principalId: containerAppEnvironment.outputs.containerAppEnvironmentIdentityPrincipalId
+    roleDefinitionId: roles['AcrPull']
+    principalType: 'ServicePrincipal'
+  }
+}
+
+module containerRegistryContainerAppRoleServicePrincipal 'modules/roleAssignment.bicep' = {
+  scope: rgshared
+  name: 'containerRegistryContainerAppRoleServicePrincipal'
+  params: {
+    principalId: containerApp.outputs.containerAppIdentityPrincipalId
     roleDefinitionId: roles['AcrPull']
     principalType: 'ServicePrincipal'
   }

@@ -3,6 +3,7 @@ param containerAppEnvironmentName string
 param logAnalyticsWorkspaceId string
 param logAnalyticsWorkspaceName string
 
+
 resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2023-05-01' = {
   name: containerAppEnvironmentName
   location: location
@@ -52,3 +53,4 @@ resource openAiServiceDiagnosticSetting 'Microsoft.Insights/diagnosticSettings@2
 
 output containerAppEnvironmentName string = containerAppEnvironment.name
 output containerAppEnvironmentId string = containerAppEnvironment.id
+output containerAppEnvironmentIdentityPrincipalId string = containerAppEnvironment.identity.principalId
