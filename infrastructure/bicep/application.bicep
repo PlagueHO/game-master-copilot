@@ -180,6 +180,7 @@ resource sharedrg 'Microsoft.Resources/resourceGroups@2021-04-01' existing = {
 
 resource containerRegistry 'Microsoft.ContainerRegistry/registries@2023-01-01-preview' existing = {
   name: containerRegistryName
+  scope: sharedrg
 }
 
 var applicationContainerUrl = '${containerRegistry.properties.loginServer}/gmcopilot/gmcopilot:${buildVersion}'
@@ -416,6 +417,4 @@ module containerRegistryWebAppRoleServicePrincipal 'modules/roleAssignment.bicep
 
 output webAppName string = webApp.outputs.webAppName
 output webAppHostName  string = webApp.outputs.webAppHostName
-output webAppStagingName string = webApp.outputs.webAppStagingName
-output webAppStagingHostName  string = webApp.outputs.webAppStagingHostName
 output openAiServiceEndpoint string = openAiService.outputs.openAiServiceEndpoint
