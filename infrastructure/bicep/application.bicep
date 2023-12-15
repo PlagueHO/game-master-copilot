@@ -323,6 +323,16 @@ module keyVaultAppConfigurationRoleServicePrincipal 'modules/roleAssignment.bice
   }
 }
 
+module keyVaultContainerAppRoleServicePrincipal 'modules/roleAssignment.bicep' = {
+  scope: rg
+  name: 'keyVaultContainerAppRoleServicePrincipal'
+  params: {
+    principalId: containerAppUserAssignedManagedIdentity.outputs.userAssignedManagedIdentityPrincipalId
+    roleDefinitionId: roles['Key Vault Secrets User']
+    principalType: 'ServicePrincipal'
+  }
+}
+
 module containerRegistryContainerAppRoleServicePrincipal 'modules/roleAssignment.bicep' = {
   scope: rgshared
   name: 'containerRegistryContainerAppRoleServicePrincipal'
