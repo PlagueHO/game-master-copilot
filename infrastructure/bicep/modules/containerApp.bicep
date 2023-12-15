@@ -202,4 +202,4 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
   }
 }
 
-output applicationUrl string = containerApp.properties.ingress.fqdn
+output applicationUrl string = containerApp.properties.latestRevisionFqdn
