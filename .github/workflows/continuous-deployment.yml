@@ -118,17 +118,3 @@ jobs:
       AZUREAD_TENANT_ID: ${{ secrets.AZUREAD_TENANT_ID }}
       AZUREAD_CLIENT_ID: ${{ secrets.AZUREAD_CLIENT_ID }}
       AZUREAD_CLIENTSECRET: ${{ secrets.AZUREAD_CLIENTSECRET }}
-    
-  publish-gmcopilot-test:
-    needs:
-      - build-gmcopilot
-      - deploy-application-infrastructure-test
-    uses: ./.github/workflows/publish-gmcopilot.yml
-    with:
-      ENVIRONMENT: Test
-      WEBAPPNAME: ${{ needs.deploy-application-infrastructure-test.outputs.WebAppName }}
-    secrets:
-      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-    
