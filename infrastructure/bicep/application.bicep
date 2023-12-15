@@ -79,6 +79,7 @@ var aiSearchName = '${baseResourceName}-aisearch'
 var cosmosDbAccountName = '${baseResourceName}-cdb'
 var storageAccountName = replace('${baseResourceName}data','-','')
 var containerAppEnvironmentName = '${baseResourceName}-cae'
+var containerAppName = baseResourceName
 var containerAppUserAssignedManagedIdentityName = '${baseResourceName}-caumi'
 var containerRegistryName = replace('${baseResourceNameShared}acr','-','')
 
@@ -344,6 +345,7 @@ module containerApp './modules/containerApp.bicep' = {
   scope: rg
   params: {
     location: location
+    containerAppName: containerAppName
     containerRegistryLoginServer: containerRegistryLoginServer
     userAssignedManagedIdentityName: containerAppUserAssignedManagedIdentityName
     containerAppEnvironmentName: containerAppEnvironmentName

@@ -1,4 +1,5 @@
 param location string
+param containerAppName string
 param containerRegistryLoginServer string
 param userAssignedManagedIdentityName string
 param containerAppEnvironmentName string
@@ -18,7 +19,7 @@ resource userAssignedManagedIdentity 'Microsoft.ManagedIdentity/userAssignedIden
 }
 
 resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
-  name: containerAppEnvironmentName
+  name: containerAppName
   location: location
   identity: {
     type: 'UserAssigned'
