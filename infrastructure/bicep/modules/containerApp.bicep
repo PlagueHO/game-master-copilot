@@ -57,7 +57,7 @@ var secrets = [
   {
     name: 'authorization-azuread-clientsecret'
     identity: userAssignedManagedIdentity.id
-    keyVaultUrl: '${keyVault.properties.vaultUri}/secrets/AzureAdClientSecret'
+    keyVaultUrl: 'https://${keyVault.properties.vaultUri}/secrets/AzureAdClientSecret'
   }
 ]
 
