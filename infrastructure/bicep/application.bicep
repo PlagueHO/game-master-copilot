@@ -32,23 +32,20 @@ param baseResourceNameShared string
 @description('The build version to publish to the components.')
 param buildVersion string
 
-@description('The Azure AD instance to use for authentication.')
-param azureAdInstance string = environment().authentication.loginEndpoint
+@description('The Entra ID issuer URL to use for authentication.')
+param entraIdIssuerURL string = environment().authentication.loginEndpoint
 
-@description('The Azure AD domain to use for authentication.')
-param azureAdDomain string
-
-@description('The Azure AD tenant ID to use for authentication.')
+@description('The Entra ID tenant ID to use for authentication.')
 @secure()
-param azureAdTenantId string
+param entraIdTenantId string
 
-@description('The Azure AD client ID to use for authentication.')
+@description('The Entra ID client ID to use for authentication.')
 @secure()
-param azureAdClientId string
+param entraIdClientId string
 
-@description('The Azure AD client secret to use for authentication.')
+@description('The Entra ID client secret to use for authentication.')
 @secure()
-param azureAdClientSecret string
+param entraIdClientSecret string
 
 var logAnalyticsWorkspaceName = '${baseResourceName}-law'
 var applicationInsightsName = '${baseResourceName}-ai'
@@ -194,7 +191,7 @@ module keyVault './modules/keyVault.bicep' = {
     keyVaultName: keyVaultName
     logAnalyticsWorkspaceId: monitoring.outputs.logAnalyticsWorkspaceId
     logAnalyticsWorkspaceName: logAnalyticsWorkspaceName
-    azureAdClientSecret: azureAdClientSecret
+    entraIdClientSecret: entraIdClientSecret
   }
 }
 
@@ -297,10 +294,9 @@ module containerApp './modules/containerApp.bicep' = {
     appConfigurationName: appConfiguration.outputs.appConfigurationName
     appInsightsConnectionString: monitoring.outputs.applicationInsightsConnectionString
     azureOpenAiConfiguration: openAiConfigration
-    azureAdInstance: azureAdInstance
-    azureAdDomain: azureAdDomain
-    azureAdTenantId: azureAdTenantId
-    azureAdClientId: azureAdClientId
+    entraIdIssuerUrl: entraIdIssuerURL
+    entraIdTenantId: entraIdTenantId
+    entraIdClientId: entraIdClientId
   }
 }
 

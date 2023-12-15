@@ -3,7 +3,7 @@ param keyVaultName string
 param logAnalyticsWorkspaceId string
 param logAnalyticsWorkspaceName string
 @secure()
-param azureAdClientSecret string
+param entraIdClientSecret string
 
 resource keyVault 'Microsoft.KeyVault/vaults@2023-02-01' = {
   name: keyVaultName
@@ -24,11 +24,11 @@ resource keyVault 'Microsoft.KeyVault/vaults@2023-02-01' = {
   }
 }
 
-resource keyVaultAzureAdClientSecret 'Microsoft.KeyVault/vaults/secrets@2023-02-01' = {
-  name: 'AzureAdClientSecret'
+resource keyVaultEntraIdClientSecret 'Microsoft.KeyVault/vaults/secrets@2023-02-01' = {
+  name: 'EntraIdClientSecret'
   parent: keyVault
   properties: {
-    value: azureAdClientSecret
+    value: entraIdClientSecret
     contentType: 'text/plain'
   }
 }  
@@ -64,4 +64,4 @@ resource keyVaultDiagnosticSetting 'Microsoft.Insights/diagnosticSettings@2021-0
 
 output keyVaultId string = keyVault.id
 output keyVaultName string = keyVault.name
-output keyVaultAzureAdClientSecretUri string = keyVaultAzureAdClientSecret.properties.secretUri
+output keyVaultEntraIdClientSecretUri string = keyVaultEntraIdClientSecret.properties.secretUri

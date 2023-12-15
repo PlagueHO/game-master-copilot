@@ -14,21 +14,25 @@ on:
       LOCATION:
         description: "The Azure region to deploy the application resources to"
         required: true
-        type: string
-      APPSERVICEPLAN_CONFIGURATION:
-        description: "The configuration of the app service plan to deploy the web app to"
-        required: true
-        type: string
-      AZUREAD_INSTANCE:
-        description: "The Azure AD instance to use for authentication"
-        required: true
-        type: string
+        type: string          
       RESOURCE_GROUP_NAME_SHARED:
         description: "The name of the resource group that the shared resources are in"
         required: true
         type: string
       BASE_RESOURCE_NAME_SHARED:
         description: "The base name of the shared resources"
+        required: true
+        type: string
+      ENTRAID_ISSUER_URL:
+        description: "The Entra ID Issuer URL to use for authentication"
+        required: true
+        type: string
+      ENTRAID_TENANT_ID:
+        description: "The tenant ID of the Entra ID tenant to use for application authentication"
+        required: true
+        type: string
+      ENTRAID_CLIENT_ID:
+        description: "The client ID to use to connect to the Entra ID to perform application authentication"
         required: true
         type: string
           
@@ -42,17 +46,8 @@ on:
       AZURE_CLIENT_ID:
         description: "The Azure client ID to use for authentication to Azure for deployment"
         required: true
-      AZUREAD_DOMAIN:
-        description: "The domain name of the Azure AD tenant to use for application authentication"
-        required: true
-      AZUREAD_TENANT_ID:
-        description: "The tenant ID of the Azure AD tenant to use for application authentication"
-        required: true
-      AZUREAD_CLIENT_ID:
-        description: "The client ID to use to connect to the Azure AD to perform application authentication"
-        required: true
-      AZUREAD_CLIENTSECRET:
-        description: "The client secret to use to connect to the Azure AD to perform application authentication"
+      ENTRAID_CLIENT_SECRET:
+        description: "The client secret to use to connect to the Entra ID to perform application authentication"
         required: true
   
 jobs:
@@ -87,9 +82,8 @@ jobs:
             resourceGroupNameShared=${{ inputs.RESOURCE_GROUP_NAME_SHARED }}
             baseResourceNameShared=${{ inputs.BASE_RESOURCE_NAME_SHARED }}
             buildVersion=${{ inputs.BUILD_VERSION }}
-            azureAdInstance=${{ inputs.AZUREAD_INSTANCE }}
-            azureAdDomain=${{ secrets.AZUREAD_DOMAIN }}
-            azureAdTenantId=${{ secrets.AZUREAD_TENANT_ID }}
-            azureAdClientId=${{ secrets.AZUREAD_CLIENT_ID }}
-            azureAdClientSecret=${{ secrets.AZUREAD_CLIENTSECRET }}
+            entraIdIssuerUrl=${{ inputs.ENTRAID_ISSUER_URL }}
+            entraIdTenantId=${{ inputs.AZUREAD_TENANT_ID }}
+            entraIdClientId=${{ inputs.AZUREAD_CLIENT_ID }}
+            entraIdClientSecret=${{ secrets.AZUREAD_CLIENTSECRET }}
           additionalArguments: --what-if

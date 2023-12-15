@@ -54,10 +54,15 @@ Currently the `continuous-delivery` only deploys the `test` environment, but in 
 
 The following _Actions Variables_ should be configured in the GitHub repository:
 
-- `AZUREAD_INSTANCE`: The Azure AD URL to use for authentication. For example, `https://login.microsoftonline.com/`.
 - `LOCATION`: The Azure region to deploy the resources to. For example, `EastUS`.
 - `BASE_RESOURCE_NAME_SHARED`: The base name that will prefixed to all _shared_ Azure resources deployed to ensure they are unique. For example, `dsr-gmcopilot-shared`.
 - `RESOURCE_GROUP_NAME_SHARED`: The name of the Azure resource group to create and add the _shared_ resources to. For example, `dsr-gmcopilot-shared-rg`.
+
+The following variables are used to configure authentcation to Entra ID for the application. See [Enable authentication and authorization in Azure Container Apps with Microsoft Entra ID](https://learn.microsoft.com/azure/container-apps/authentication-azure-active-directory) to learn more about how to configure the Application Registration to use.
+
+- `ENTRAID_ISSUER_URL`: The base Entra ID Issuer URL to use for authentication. For example, `https://login.microsoftonline.com/`.
+- `ENTRAID_TENANT_ID`: The Tenant ID of the Entra ID tenant to use for authentication.
+- `ENTRAID_CLIENT_ID`: The Client ID of the Entra ID Application Registration to use for authentication.
 
 The _shared_ resrouces are resources that are shared across all environments. These resources are:
 
@@ -81,10 +86,10 @@ The following _Actions Secrets_ need to be defined so that that the resources ca
 - `AZURE_CLIENT_ID`: The Application (Client) ID of the Service Principal used to authenticate to Azure. This is generated as part of configuring Workload Identity Federation.
 - `AZURE_TENANT_ID`: The Tenant ID of the Service Principal used to authenticate to Azure.
 - `AZURE_SUBSCRIPTION_ID`: The Subscription ID of the Azure Subscription to deploy to.
-- `AZUREAD_DOMAIN`: The domain name of the Azure AD tenant the application will use as an authentication source.
-- `AZUREAD_TENANT_ID`: The Tenant ID of the Azure AD tenant the application will use as an authentication source.
-- `AZUREAD_CLIENT_ID`: The client ID of the Azure AD Application that has been created in the Azure AD tenant to be used as an authentication source.
-- `AZUREAD_CLIENTSECRET`: The client secret of the Azure AD Application that has been created in the Azure AD tenant to be used as an authentication source.
+
+### Using Entra ID (Customer) as an Authentication Source
+
+- `ENTRAID_CLIENT_SECRET`: The client secret of the Entra ID application registration that has been created in the Entra ID tenant to be used as an authentication source.
 
 These values should be kept secret and care taken to ensure they are not shared with anyone.
 Your secrets should look like this:

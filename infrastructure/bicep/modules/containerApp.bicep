@@ -10,12 +10,9 @@ param openAiServiceName string
 param appConfigurationName string
 param appInsightsConnectionString string
 param azureOpenAiConfiguration array
-param azureAdInstance string
-param azureAdDomain string
-@secure()
-param azureAdTenantId string
-@secure()
-param azureAdClientId string
+param entraIdIssuerUrl string
+param entraIdTenantId string
+param entraIdClientId string
 
 resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2023-05-01' existing = {
   name: containerAppEnvironmentName
@@ -55,9 +52,9 @@ var secrets = [
     value: openAiService.listKeys().key1
   }
   {
-    name: 'authorization-azuread-clientsecret'
+    name: 'authorization-entraid-clientsecret'
     identity: userAssignedManagedIdentity.id
-    keyVaultUrl: 'https://${keyVaultName}.vault.azure.net/secrets/AzureAdClientSecret'
+    keyVaultUrl: 'https://${keyVaultName}.vault.azure.net/secrets/EntraIdClientSecret'
   }
 ]
 
@@ -80,31 +77,23 @@ var basicConfiguration = [
   }
   {
     name: 'Authorization__Type'
-    value: 'AzureAd'
+    value: 'EntraId'
   }
   {
-    name: 'Authorization__AzureAd__Instance'
-    value: azureAdInstance
+    name: 'Authorization__EntraId__IssurerUrl'
+    value: entraIdIssuerUrl
   }
   {
-    name: 'Authorization__AzureAd__Instance'
-    value: azureAdInstance
+    name: 'Authorization__EntraId__TenantId'
+    value: entraIdTenantId
   }
   {
-    name: 'Authorization__AzureAd__Domain'
-    value: azureAdDomain
+    name: 'Authorization__EntraId__ClientId'
+    value: entraIdClientId
   }
   {
-    name: 'Authorization__AzureAd__TenantId'
-    value: azureAdTenantId
-  }
-  {
-    name: 'Authorization__AzureAd__ClientId'
-    value: azureAdClientId
-  }
-  {
-    name: 'Authorization__AzureAd__ClientSecret'
-    secretRef: 'authorization-azuread-clientsecret'
+    name: 'Authorization__EntraId__ClientSecret'
+    secretRef: 'authorization-entraid-clientsecret'
   }
   {
     name: 'ApplicationInsights__ConnectionString'
