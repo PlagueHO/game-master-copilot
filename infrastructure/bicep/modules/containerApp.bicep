@@ -35,7 +35,13 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
           identity: 'system'
           server: containerRegistryLoginServer
         }
-      ]  
+      ]
+      secrets: [
+        {
+          name: 'cosmosdb-connection-string'
+          value: cosmosDbAccount.listConnectionStrings().connectionStrings[0].connectionString
+        }
+      ]
     }
     template: {
       containers: [
@@ -44,7 +50,7 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
           image: '${containerRegistryLoginServer}/gmcopilot/gmcopilot:${buildVersion}'
           resources: {
             cpu: json('0.25')
-            memoty: '.5Gi'
+            memory: '0.5Gi'
           }
           env: [
             {
@@ -65,7 +71,7 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
             }
             {
               name: 'DataStore__CosmosDb__ConnectionString'
-              value: cosmosDbAccount.listConnectionStrings().connectionStrings[0].connectionString
+              secretRef: 'cosmosdb-connection-string'
             }
           ]
         }
@@ -73,6 +79,7 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
     }
     scale: {
       minReplicas: 0
+      maxReplicas: 2
     }
   }
 }
