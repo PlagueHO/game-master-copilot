@@ -318,8 +318,8 @@ module storageAccount './modules/storageAccount.bicep' = {
   }
 }
 
-module containerApp './modules/containerApp.bicep' = {
-  name: 'containerApp'
+module containerAppEnvironment './modules/containerAppEnvironment.bicep' = {
+  name: 'containerAppEnvironment'
   scope: rg
   params: {
     location: location

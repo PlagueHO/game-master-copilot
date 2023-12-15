@@ -177,7 +177,7 @@ resource webApp 'Microsoft.Web/sites@2021-01-15' = {
       httpLoggingEnabled: true
       logsDirectorySizeLimit: 35
       detailedErrorLoggingEnabled: true
-      linuxFxVersion: 'DOTNETCORE|8.0'
+      linuxFxVersion: 'DOCKER|${containerUrl}'
       healthCheckPath: '/health'
     }
   }
