@@ -64,7 +64,7 @@ var secrets = [
 var basicConfiguration = [
   {
     name: 'DetailedErrors'
-    value: true
+    value: 'true'
   }
   {
     name: 'Logging__LogLevel__Default'
