@@ -43,7 +43,7 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
           name: 'gmcopilot'
           image: '${containerRegistryLoginServer}/gmcopilot/gmcopilot:${buildVersion}'
           resources: {
-            cpu: '0.25'
+            cpu: json('0.25')
             memoty: '.5Gi'
           }
           env: [

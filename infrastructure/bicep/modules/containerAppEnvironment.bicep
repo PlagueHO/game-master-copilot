@@ -61,4 +61,3 @@ resource openAiServiceDiagnosticSetting 'Microsoft.Insights/diagnosticSettings@2
 
 output containerAppEnvironmentName string = containerAppEnvironment.name
 output containerAppEnvironmentId string = containerAppEnvironment.id
-output containerAppEnvironmentIdentityPrincipalId string = containerAppEnvironment.identity.principalId

@@ -411,16 +411,6 @@ module appConfigurationWebAppRoleServicePrincipal 'modules/roleAssignment.bicep'
   }
 }
 
-module containerRegistryContainerAppEnvironmentRoleServicePrincipal 'modules/roleAssignment.bicep' = {
-  scope: rgshared
-  name: 'containerRegistryContainerAppEnvironmentRoleServicePrincipal'
-  params: {
-    principalId: containerAppEnvironment.outputs.containerAppEnvironmentIdentityPrincipalId
-    roleDefinitionId: roles['AcrPull']
-    principalType: 'ServicePrincipal'
-  }
-}
-
 module containerRegistryContainerAppRoleServicePrincipal 'modules/roleAssignment.bicep' = {
   scope: rgshared
   name: 'containerRegistryContainerAppRoleServicePrincipal'
