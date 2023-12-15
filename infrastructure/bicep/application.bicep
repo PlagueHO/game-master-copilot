@@ -263,8 +263,8 @@ module appServicePlan './modules/appServicePlan.bicep' = {
   }
 }
 
-module webAppBlazor './modules/webAppBlazor.bicep' = {
-  name: 'webAppBlazor'
+module webApp './modules/webApp.bicep' = {
+  name: 'webApp'
   scope: rg
   dependsOn: [
     appServicePlan
@@ -325,7 +325,7 @@ module openAiServiceWebAppRoleServicePrincipal 'modules/roleAssignment.bicep' = 
   scope: rg
   name: 'openAiServiceWebAppRoleServicePrincipal'
   params: {
-    principalId: webAppBlazor.outputs.webAppIdentityPrincipalId
+    principalId: webApp.outputs.webAppIdentityPrincipalId
     roleDefinitionId: roles['Cognitive Services OpenAI User']
     principalType: 'ServicePrincipal'
   }
@@ -335,7 +335,7 @@ module cosmosDbWebAppRoleServicePrincipal 'modules/roleAssignment.bicep' = {
   scope: rg
   name: 'cosmosDbWebAppRoleServicePrincipal'
   params: {
-    principalId: webAppBlazor.outputs.webAppIdentityPrincipalId
+    principalId: webApp.outputs.webAppIdentityPrincipalId
     roleDefinitionId: roles['Cosmos DB Account Reader Role']
     principalType: 'ServicePrincipal'
   }
@@ -345,7 +345,7 @@ module storageAccountWebAppRoleServicePrincipal 'modules/roleAssignment.bicep' =
   scope: rg
   name: 'storageAccountWebAppRoleServicePrincipal'
   params: {
-    principalId: webAppBlazor.outputs.webAppIdentityPrincipalId
+    principalId: webApp.outputs.webAppIdentityPrincipalId
     roleDefinitionId: roles['Storage Blob Data Contributor']
     principalType: 'ServicePrincipal'
   }
@@ -355,7 +355,7 @@ module keyVaultWebAppRoleServicePrincipal 'modules/roleAssignment.bicep' = {
   scope: rg
   name: 'keyVaultWebAppRoleServicePrincipal'
   params: {
-    principalId: webAppBlazor.outputs.webAppIdentityPrincipalId
+    principalId: webApp.outputs.webAppIdentityPrincipalId
     roleDefinitionId: roles['Key Vault Secrets User']
     principalType: 'ServicePrincipal'
   }
@@ -375,7 +375,7 @@ module appConfigurationWebAppRoleServicePrincipal 'modules/roleAssignment.bicep'
   scope: rg
   name: 'appConfigurationWebAppRoleServicePrincipal'
   params: {
-    principalId: webAppBlazor.outputs.webAppIdentityPrincipalId
+    principalId: webApp.outputs.webAppIdentityPrincipalId
     roleDefinitionId: roles['App Configuration Data Reader']
     principalType: 'ServicePrincipal'
   }
@@ -395,13 +395,13 @@ module containerRegistryWebAppRoleServicePrincipal 'modules/roleAssignment.bicep
   scope: sharedrg
   name: 'containerRegistryWebAppRoleServicePrincipal'
   params: {
-    principalId: webAppBlazor.outputs.webAppIdentityPrincipalId
+    principalId: webApp.outputs.webAppIdentityPrincipalId
     roleDefinitionId: roles['AcrPull']
     principalType: 'ServicePrincipal'
   }
 }
-output webAppName string = webAppBlazor.outputs.webAppName
-output webAppHostName  string = webAppBlazor.outputs.webAppHostName
-output webAppStagingName string = webAppBlazor.outputs.webAppStagingName
-output webAppStagingHostName  string = webAppBlazor.outputs.webAppStagingHostName
+output webAppName string = webApp.outputs.webAppName
+output webAppHostName  string = webApp.outputs.webAppHostName
+output webAppStagingName string = webApp.outputs.webAppStagingName
+output webAppStagingHostName  string = webApp.outputs.webAppStagingHostName
 output openAiServiceEndpoint string = openAiService.outputs.openAiServiceEndpoint
