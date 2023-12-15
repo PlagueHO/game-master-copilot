@@ -10,10 +10,10 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["GMCopilot/GMCopilot/GMCopilot.csproj", "GMCopilot/GMCopilot/"]
+COPY ["GMCopilot/GMCopilot.Client/GMCopilot.Client.csproj", "GMCopilot/GMCopilot.Client/"]
 COPY ["GMCopilot.Data/GMCopilot.Data.csproj", "GMCopilot.Data/"]
 COPY ["GMCopilot.Entities/GMCopilot.Entities.csproj", "GMCopilot.Entities/"]
 COPY ["GMCopilot.ServiceDefaults/GMCopilot.ServiceDefaults.csproj", "GMCopilot.ServiceDefaults/"]
-COPY ["GMCopilot/GMCopilot.Client/GMCopilot.Client.csproj", "GMCopilot/GMCopilot.Client/"]
 RUN dotnet restore "./GMCopilot/GMCopilot/GMCopilot.csproj"
 COPY . .
 WORKDIR "/src/GMCopilot/GMCopilot"
