@@ -79,6 +79,7 @@ var aiSearchName = '${baseResourceName}-aisearch'
 var cosmosDbAccountName = '${baseResourceName}-cdb'
 var storageAccountName = replace('${baseResourceName}data','-','')
 var containerAppEnvironmentName = '${baseResourceName}-cae'
+var containerAppUserAssignedManagedIdentityName = '${baseResourceName}-caumi'
 var containerRegistryName = replace('${baseResourceNameShared}acr','-','')
 
 var openAiModelDeployments = [
@@ -330,13 +331,22 @@ module containerAppEnvironment './modules/containerAppEnvironment.bicep' = {
   }
 }
 
+module containerAppUserAssignedManagedIdentity './modules/userAssignedManagedIdentity.bicep' = {
+  name: 'containerAppUserAssignedManagedIdentity'
+  scope: rg
+  params: {
+    location: location
+    userAssignedManagedIdentityName: containerAppUserAssignedManagedIdentityName
+  }
+}
 module containerApp './modules/containerApp.bicep' = {
   name: 'containerApp'
   scope: rg
   params: {
     location: location
-    containerAppEnvironmentName: containerAppEnvironmentName
     containerRegistryLoginServer: containerRegistryLoginServer
+    userAssignedManagedIdentityName: containerAppUserAssignedManagedIdentityName
+    containerAppEnvironmentName: containerAppEnvironmentName
     cosmosDbAccountName: cosmosDbAccount.outputs.cosmosDbAccountName
     buildVersion: buildVersion
   }
@@ -415,7 +425,7 @@ module containerRegistryContainerAppRoleServicePrincipal 'modules/roleAssignment
   scope: rgshared
   name: 'containerRegistryContainerAppRoleServicePrincipal'
   params: {
-    principalId: containerApp.outputs.containerAppIdentityPrincipalId
+    principalId: containerAppUserAssignedManagedIdentity.outputs.userAssignedManagedIdentityPrincipalId
     roleDefinitionId: roles['AcrPull']
     principalType: 'ServicePrincipal'
   }

@@ -1,5 +1,6 @@
 param location string
 param containerRegistryLoginServer string
+param userAssignedManagedIdentityName string
 param containerAppEnvironmentName string
 param cosmosDbAccountName string
 param buildVersion string
@@ -12,11 +13,18 @@ resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2023-05-01' 
   name: containerAppEnvironmentName
 }
 
+resource userAssignedManagedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2022-01-31-preview' existing = {
+  name: userAssignedManagedIdentityName
+}
+
 resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
   name: containerAppEnvironmentName
   location: location
   identity: {
-    type: 'SystemAssigned'
+    type: 'UserAssigned'
+    userAssignedIdentities: {
+      '${userAssignedManagedIdentity.id}': {}
+    }
   }
   properties: {
     managedEnvironmentId: containerAppEnvironment.id
