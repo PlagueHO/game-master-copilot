@@ -87,7 +87,6 @@ jobs:
             resourceGroupNameShared=${{ inputs.RESOURCE_GROUP_NAME_SHARED }}
             baseResourceNameShared=${{ inputs.BASE_RESOURCE_NAME_SHARED }}
             buildVersion=${{ inputs.BUILD_VERSION }}
-            appServicePlanConfiguration=${{ inputs.APPSERVICEPLAN_CONFIGURATION }}
             azureAdInstance=${{ inputs.AZUREAD_INSTANCE }}
             azureAdDomain=${{ secrets.AZUREAD_DOMAIN }}
             azureAdTenantId=${{ secrets.AZUREAD_TENANT_ID }}
