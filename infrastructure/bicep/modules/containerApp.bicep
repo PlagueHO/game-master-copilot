@@ -33,11 +33,6 @@ resource keyVault 'Microsoft.KeyVault/vaults@2023-02-01' existing = {
   name: keyVaultName
 }
 
-resource keyVaultAzureAdClientSecret 'Microsoft.KeyVault/vaults/secrets@2023-02-01' existing = {
-  name: 'AzureAdClientSecret'
-  parent: keyVault
-}
-
 resource openAiService 'Microsoft.CognitiveServices/accounts@2023-05-01' existing = {
   name: openAiServiceName
 }
@@ -61,7 +56,8 @@ var secrets = [
   }
   {
     name: 'authorization-azuread-clientsecret'
-    value: keyVaultAzureAdClientSecret.properties.value
+    identity: userAssignedManagedIdentity.id
+    keyVaultUrl: '${keyVault.properties.vaultUri}/secrets/AzureAdClientSecret'
   }
 ]
 
