@@ -391,28 +391,34 @@ var containerAppWebContainers = [
     image: '${containerRegistryLoginServer}/gmcopilot/gmcopilot:${buildVersion}'
     probes: [
       {
-        type: 'Liveness'
+        type: 'liveness'
         httpGet: {
-          path: '/alive'
+          path: '/health'
           port: 8080
+          httpHeaders: [
+            {
+              name: 'Custom-Header'
+              value: 'liveness probe'
+            }
+          ]
         }
-        initialDelaySeconds: 0
+        initialDelaySeconds: 7
         periodSeconds: 10
         timeoutSeconds: 1
         successThreshold: 1
         failureThreshold: 3
       }
       {
-        type: 'Readiness'
+        type: 'readiness'
         httpGet: {
-          path: '/health'
+          path: '/alive'
           port: 8080
         }
-        initialDelaySeconds: 3
+        initialDelaySeconds: 7
         periodSeconds: 5
         timeoutSeconds: 5
         successThreshold: 1
-        failureThreshold: 48
+        failureThreshold: 3
       }
     ]
     resources: {
