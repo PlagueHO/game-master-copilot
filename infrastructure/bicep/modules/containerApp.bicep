@@ -1,18 +1,37 @@
+@description('The Azure region to deploy the container app into')
 param location string
+
+@description('The name of the Container App to deploy')
 param containerAppName string
+
+@description('The URL of the container registry containing the image to deploy')
 param containerRegistryLoginServer string
+
+@description('The name of the user assigned managed identity to use for the container app')
 param userAssignedManagedIdentityName string
+
+@description('The name of the container app environment to deploy into')
 param containerAppEnvironmentName string
-param buildVersion string
-param keyVaultName string
-param cosmosDbAccountName string
-param openAiServiceName string
-param appConfigurationName string
-param appInsightsConnectionString string
-param azureOpenAiConfiguration array
-param entraIdIssuerUrl string
+
+@description('The containers to deploy')
+param containers array
+
+@description('An array of secrets to make available to the container app')
+param secrets array
+
+@description('Enable Entra ID authentication')
+param entraIdAuthentication bool = true
+
+@description('If Authorization is enabled, the issuing URL of the Entra ID tenant to use')
+param entraIdIssuerUrl string = environment().authentication.loginEndpoint
+
+@description('If Authorization is enabled, the tenant ID of the Entra ID tenant to use')
 param entraIdTenantId string
+
+@description('If Authorization is enabled, the client ID of the application registration in the Entra ID tenant')
 param entraIdClientId string
+
+@description('If Authorization is enabled, the client secret of the application registration in the Entra ID tenant')
 @secure()
 param entraIdClientSecret string
 
@@ -24,113 +43,14 @@ resource userAssignedManagedIdentity 'Microsoft.ManagedIdentity/userAssignedIden
   name: userAssignedManagedIdentityName
 }
 
-resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' existing = {
-  name: cosmosDbAccountName
-}
-
-resource keyVault 'Microsoft.KeyVault/vaults@2023-02-01' existing = {
-  name: keyVaultName
-}
-
-resource openAiService 'Microsoft.CognitiveServices/accounts@2023-05-01' existing = {
-  name: openAiServiceName
-}
-
-resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2023-03-01' existing = {
-  name: appConfigurationName
-}
-
-var secrets = [
-  {
-    name: 'datastore-cosmosdb-connectionstring'
-    value: cosmosDbAccount.listConnectionStrings().connectionStrings[0].connectionString
-  }
-  {
-    name: 'applicationinsights-connectionstring'
-    value: appInsightsConnectionString
-  }
-  {
-    name: 'semantickernel-azureopenaiapikey'
-    value: openAiService.listKeys().key1
-  }
-  {
-    name: 'authorization-entraid-clientsecret'
-    value: entraIdClientSecret
-  }
-]
-
-var basicConfiguration = [
-  {
-    name: 'ASPNETCORE_ENVIRONMENT'
-    value: 'Development'
-  }
-  {
-    name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
-    value: 'applicationinsights-connectionstring'
-  }
-  {
-    name: 'DetailedErrors'
-    value: 'true'
-  }
-  {
-    name: 'Logging__LogLevel__Default'
-    value: 'Information'
-  }
-  {
-    name: 'Logging__LogLevel__Microsoft.AspNetCore'
-    value: 'Warning'
-  }
-  {
-    name: 'Authorization__Type'
-    value: 'EntraId'
-  }
-  {
-    name: 'Authorization__EntraId__IssurerUrl'
-    value: entraIdIssuerUrl
-  }
-  {
-    name: 'Authorization__EntraId__TenantId'
-    value: entraIdTenantId
-  }
-  {
-    name: 'Authorization__EntraId__ClientId'
-    value: entraIdClientId
-  }
-  {
-    name: 'Authorization__EntraId__ClientSecret'
-    secretRef: 'authorization-entraid-clientsecret'
-  }
-  {
-    name: 'SemanticKernel__PluginsDirectory'
-    value: 'Plugins'
-  }
-  {
-    name: 'SemanticKernel__AzureOpenAiApiKey'
-    secretRef: 'semantickernel-azureopenaiapikey'
-  }
-  {
-    name: 'DataStore__Type'
-    value: 'CosmosDb'
-  }
-  {
-    name: 'DataStore__CosmosDb__EndpointUri'
-    value: cosmosDbAccount.properties.documentEndpoint
-  }
-  {
-    name: 'DataStore__CosmosDb__Database'
-    value: 'gmcopilot'
-  }
-  {
-    name: 'DataStore__CosmosDb__ConnectionString'
-    secretRef: 'datastore-cosmosdb-connectionstring'
-  }
-  {
-    name: 'AppConfiguration__Endpoint'
-    value: appConfiguration.properties.endpoint
-  }
-]
-
-var environmentVariables = union(basicConfiguration, azureOpenAiConfiguration)
+// If authentication is being used, set the authorization-entraid-clientsecret and add it to the secrets array
+var allSecrets = entraIdAuthentication ? union(secrets, [
+    {
+      name: 'authorization-entraid-clientsecret'
+      value: entraIdClientSecret
+    }
+  ]
+) : secrets
 
 resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
   name: containerAppName
@@ -159,31 +79,10 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
           server: containerRegistryLoginServer
         }
       ]
-      secrets: secrets
+      secrets: allSecrets
     }
     template: {
-      containers: [
-        {
-          name: 'gmcopilot'
-          image: '${containerRegistryLoginServer}/gmcopilot/gmcopilot:${buildVersion}'
-          probes: [
-            {
-              type: 'Liveness'
-              httpGet: {
-                path: '/health'
-                port: 8080
-              }
-              initialDelaySeconds: 3
-              periodSeconds: 3
-            }
-          ]
-          resources: {
-            cpu: json('0.25')
-            memory: '0.5Gi'
-          }
-          env: environmentVariables
-        }
-      ]
+      containers: containers
       scale: {
         minReplicas: 0
         maxReplicas: 2
@@ -192,7 +91,8 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
   }
 }
 
-resource containerAppAuth 'Microsoft.App/containerApps/authConfigs@2023-05-01' = {
+// Only add authentication if entraIdClientId is set
+resource containerAppAuth 'Microsoft.App/containerApps/authConfigs@2023-05-01' = if (entraIdClientId != null) {
   name: 'current'
   parent: containerApp
   properties: {

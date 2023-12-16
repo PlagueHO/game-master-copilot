@@ -17,6 +17,13 @@ targetScope = 'subscription'
 ])
 param location string = 'CanadaEast'
 
+@description('The environment to deploy the Game Master Copilot into.')
+param environmentCode string = 'test'
+@allowed([
+  'test'
+  'production'
+])
+
 @description('The base name that will prefixed to all Azure resources deployed to ensure they are unique.')
 param baseResourceName string
 
@@ -81,77 +88,6 @@ var openAiModelDeployments = [
     version: '2'
     sku: 'Standard'
     capacity: 50
-  }
-]
-
-var openAiConfigration = [
-  {
-    name: 'SemanticKernel__AzureOpenAiTextCompletionServices__0__Id'
-    value: 'ChatCompletionGPT35TURBO'
-  }
-  {
-    name: 'SemanticKernel__AzureOpenAiTextCompletionServices__0__Endpoint'
-    value: openAiService.outputs.openAiServiceEndpoint
-  }
-  {
-    name: 'SemanticKernel__AzureOpenAiTextCompletionServices__0__Deployment'
-    value: openAiModelDeployments[0].name
-  }
-  {
-    name: 'SemanticKernel__AzureOpenAiTextCompletionServices__0__SetAsDefault'
-    value: 'true'
-  }
-  {
-    name: 'SemanticKernel__AzureOpenAiChatCompletionServices__0__AlsoAsTextCompletion'
-    value: 'true'
-  }
-  {
-    name: 'SemanticKernel__AzureOpenAiTextCompletionServices__1__Id'
-    value: 'ChatCompletionGPT4'
-  }
-  {
-    name: 'SemanticKernel__AzureOpenAiTextCompletionServices__1__Endpoint'
-    value: openAiService.outputs.openAiServiceEndpoint
-  }
-  {
-    name: 'SemanticKernel__AzureOpenAiTextCompletionServices__1__Deployment'
-    value: openAiModelDeployments[1].name
-  }
-  {
-    name: 'SemanticKernel__AzureOpenAiTextCompletionServices__1__SetAsDefault'
-    value: 'false'
-  }
-  {
-    name: 'SemanticKernel__AzureOpenAiChatCompletionServices__1__AlsoAsTextCompletion'
-    value: 'true'
-  }
-  {
-    name: 'SemanticKernel__AzureOpenAiTextEmbeddingGenerationServices__2__Id'
-    value: 'Embeddings'
-  }
-  {
-    name: 'SemanticKernel__AzureOpenAiTextEmbeddingGenerationServices__2__Endpoint'
-    value: openAiService.outputs.openAiServiceEndpoint
-  }
-  {
-    name: 'SemanticKernel__AzureOpenAiTextEmbeddingGenerationServices__2__Deployment'
-    value: openAiModelDeployments[1].name
-  }
-  {
-    name: 'SemanticKernel__AzureOpenAiTextEmbeddingGenerationServices__2__SetAsDefault'
-    value: 'true'
-  }
-  {
-    name: 'SemanticKernel__AzureOpenAiImageGenerationServices__3__Id'
-    value: 'ImageGeneration'
-  }
-  {
-    name: 'SemanticKernel__AzureOpenAiImageGenerationServices__3__Endpoint'
-    value: openAiService.outputs.openAiServiceEndpoint
-  }
-  {
-    name: 'SemanticKernel__AzureOpenAiImageGenerationServices__3__SetAsDefault'
-    value: 'true'
   }
 ]
 
@@ -278,8 +214,217 @@ module containerAppUserAssignedManagedIdentity './modules/userAssignedManagedIde
     userAssignedManagedIdentityName: containerAppUserAssignedManagedIdentityName
   }
 }
-module containerApp './modules/containerApp.bicep' = {
-  name: 'containerApp'
+
+// Define the object that contains chunks of configuration information that can be used by each container app
+var containerAppEnvrionmentVariables = {
+  Default: [
+    {
+      name: 'ASPNETCORE_ENVIRONMENT'
+      value: environmentCode == 'production' ? 'Production' : 'Development'
+    }
+    {
+      name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
+      value: 'applicationinsights-connectionstring'
+    }
+    {
+      name: 'DetailedErrors'
+      value: 'true'
+    }
+    {
+      name: 'Logging__LogLevel__Default'
+      value: 'Information'
+    }
+    {
+      name: 'Logging__LogLevel__Microsoft.AspNetCore'
+      value: 'Warning'
+    }
+  ]
+  Authentication: [
+    {
+      name: 'Authorization__Type'
+      value: 'EntraId'
+    }
+    {
+      name: 'Authorization__EntraId__IssurerUrl'
+      value: entraIdIssuerUrl
+    }
+    {
+      name: 'Authorization__EntraId__TenantId'
+      value: entraIdTenantId
+    }
+    {
+      name: 'Authorization__EntraId__ClientId'
+      value: entraIdClientId
+    }
+    {
+      name: 'Authorization__EntraId__ClientSecret'
+      secretRef: 'authorization-entraid-clientsecret'
+    }
+  ]
+  SemanticKernel: [
+    {
+      name: 'SemanticKernel__PluginsDirectory'
+      value: 'Plugins'
+    }
+    {
+      name: 'SemanticKernel__AzureOpenAiApiKey'
+      secretRef: 'semantickernel-azureopenaiapikey'
+    }
+    {
+      name: 'SemanticKernel__AzureOpenAiTextCompletionServices__0__Id'
+      value: 'ChatCompletionGPT35TURBO'
+    }
+    {
+      name: 'SemanticKernel__AzureOpenAiTextCompletionServices__0__Endpoint'
+      value: openAiService.outputs.openAiServiceEndpoint
+    }
+    {
+      name: 'SemanticKernel__AzureOpenAiTextCompletionServices__0__Deployment'
+      value: openAiModelDeployments[0].name
+    }
+    {
+      name: 'SemanticKernel__AzureOpenAiTextCompletionServices__0__SetAsDefault'
+      value: 'true'
+    }
+    {
+      name: 'SemanticKernel__AzureOpenAiChatCompletionServices__0__AlsoAsTextCompletion'
+      value: 'true'
+    }
+    {
+      name: 'SemanticKernel__AzureOpenAiTextCompletionServices__1__Id'
+      value: 'ChatCompletionGPT4'
+    }
+    {
+      name: 'SemanticKernel__AzureOpenAiTextCompletionServices__1__Endpoint'
+      value: openAiService.outputs.openAiServiceEndpoint
+    }
+    {
+      name: 'SemanticKernel__AzureOpenAiTextCompletionServices__1__Deployment'
+      value: openAiModelDeployments[1].name
+    }
+    {
+      name: 'SemanticKernel__AzureOpenAiTextCompletionServices__1__SetAsDefault'
+      value: 'false'
+    }
+    {
+      name: 'SemanticKernel__AzureOpenAiChatCompletionServices__1__AlsoAsTextCompletion'
+      value: 'true'
+    }
+    {
+      name: 'SemanticKernel__AzureOpenAiTextEmbeddingGenerationServices__2__Id'
+      value: 'Embeddings'
+    }
+    {
+      name: 'SemanticKernel__AzureOpenAiTextEmbeddingGenerationServices__2__Endpoint'
+      value: openAiService.outputs.openAiServiceEndpoint
+    }
+    {
+      name: 'SemanticKernel__AzureOpenAiTextEmbeddingGenerationServices__2__Deployment'
+      value: openAiModelDeployments[1].name
+    }
+    {
+      name: 'SemanticKernel__AzureOpenAiTextEmbeddingGenerationServices__2__SetAsDefault'
+      value: 'true'
+    }
+    {
+      name: 'SemanticKernel__AzureOpenAiImageGenerationServices__3__Id'
+      value: 'ImageGeneration'
+    }
+    {
+      name: 'SemanticKernel__AzureOpenAiImageGenerationServices__3__Endpoint'
+      value: openAiService.outputs.openAiServiceEndpoint
+    }
+    {
+      name: 'SemanticKernel__AzureOpenAiImageGenerationServices__3__SetAsDefault'
+      value: 'true'
+    }
+  ]
+  DataStore: [
+    {
+      name: 'DataStore__Type'
+      value: 'CosmosDb'
+    }
+    {
+      name: 'DataStore__CosmosDb__Database'
+      value: 'gmcopilot'
+    }
+    {
+      name: 'DataStore__CosmosDb__ConnectionString'
+      secretRef: 'datastore-cosmosdb-connectionstring'
+    }
+  ]
+}
+
+// Define the objects (containers and secrets) used to create for the Container App Web (front end)
+resource cosmosDbAccountExisting 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' existing = {
+  name: cosmosDbAccountName
+}
+
+resource openAiServiceExisting 'Microsoft.CognitiveServices/accounts@2023-05-01' existing = {
+  name: openAiServiceName
+}
+
+var containerAppWebSecrets = [
+  {
+    name: 'datastore-cosmosdb-connectionstring'
+    value: cosmosDbAccountExisting.listConnectionStrings().connectionStrings[0].connectionString
+  }
+  {
+    name: 'applicationinsights-connectionstring'
+    value: monitoring.outputs.applicationInsightsConnectionString
+  }
+  {
+    name: 'semantickernel-azureopenaiapikey'
+    value: openAiServiceExisting.listKeys().key1
+  }
+  {
+    name: 'authorization-entraid-clientsecret'
+    value: entraIdClientSecret
+  }
+]
+
+var containerAppWebContainers = [
+  {
+    name: 'gmcopilot'
+    image: '${containerRegistryLoginServer}/gmcopilot/gmcopilot:${buildVersion}'
+    probes: [
+      {
+        type: 'Liveness'
+        httpGet: {
+          path: '/alive'
+          port: 8080
+        }
+        initialDelaySeconds: 0
+        periodSeconds: 10
+        timeoutSeconds: 1
+        successThreshold: 1
+        failureThreshold: 3
+      }
+      {
+        type: 'Readiness'
+        httpGet: {
+          path: '/health'
+          port: 8080
+        }
+        initialDelaySeconds: 3
+        periodSeconds: 5
+        timeoutSeconds: 5
+        successThreshold: 1
+        failureThreshold: 48
+      }
+    ]
+    resources: {
+      cpu: json('0.25')
+      memory: '0.5Gi'
+    }
+    env: containerAppEnvrionmentVariables.Default
+
+  }
+]
+
+
+module containerAppWeb './modules/containerApp.bicep' = {
+  name: 'containerAppWeb'
   scope: rg
   params: {
     location: location
@@ -287,13 +432,8 @@ module containerApp './modules/containerApp.bicep' = {
     containerRegistryLoginServer: containerRegistryLoginServer
     userAssignedManagedIdentityName: containerAppUserAssignedManagedIdentityName
     containerAppEnvironmentName: containerAppEnvironmentName
-    buildVersion: buildVersion
-    keyVaultName: keyVault.outputs.keyVaultName
-    cosmosDbAccountName: cosmosDbAccount.outputs.cosmosDbAccountName
-    openAiServiceName: openAiService.outputs.openAiServiceName
-    appConfigurationName: appConfiguration.outputs.appConfigurationName
-    appInsightsConnectionString: monitoring.outputs.applicationInsightsConnectionString
-    azureOpenAiConfiguration: openAiConfigration
+    containers: containerAppWebContainers
+    secrets: containerAppWebSecrets
     entraIdIssuerUrl: entraIdIssuerUrl
     entraIdTenantId: entraIdTenantId
     entraIdClientId: entraIdClientId
@@ -301,6 +441,7 @@ module containerApp './modules/containerApp.bicep' = {
   }
 }
 
+// Configure all the RBAC roles to allow the services to access each other
 var roles = {
     'Cognitive Services OpenAI User': '5e0bd9bd-7b93-4f28-af87-19fc36ad61bd'
     'Storage Blob Data Contributor': 'ba92f5b4-2d11-453d-a403-e96b0029c9fe'
@@ -340,5 +481,5 @@ module containerRegistryContainerAppRoleServicePrincipal 'modules/roleAssignment
   }
 }
 
-output applicationUrl string = containerApp.outputs.applicationUrl
+output applicationUrl string = containerAppWeb.outputs.applicationUrl
 output openAiServiceEndpoint string = openAiService.outputs.openAiServiceEndpoint
