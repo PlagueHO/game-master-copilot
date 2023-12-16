@@ -193,7 +193,7 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
 }
 
 resource containerAppAuth 'Microsoft.App/containerApps/authConfigs@2023-05-01' = {
-  name: 'authConfigs'
+  name: 'current'
   parent: containerApp
   properties: {
     globalValidation: {
