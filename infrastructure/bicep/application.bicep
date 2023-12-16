@@ -358,10 +358,12 @@ var containerAppEnvrionmentVariables = {
 // Define the objects (containers and secrets) used to create for the Container App Web (front end)
 resource cosmosDbAccountExisting 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' existing = {
   name: cosmosDbAccountName
+  scope: rg
 }
 
 resource openAiServiceExisting 'Microsoft.CognitiveServices/accounts@2023-05-01' existing = {
   name: openAiServiceName
+  scope: rg
 }
 
 var containerAppWebSecrets = [
