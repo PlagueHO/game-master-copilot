@@ -19,10 +19,10 @@ param location string = 'CanadaEast'
 
 @description('The environment to deploy the Game Master Copilot into.')
 @allowed([
-  'test'
-  'production'
+  'Test'
+  'Production'
 ])
-param environmentCode string = 'test'
+param environmentCode string = 'Test'
 
 @description('The base name that will prefixed to all Azure resources deployed to ensure they are unique.')
 param baseResourceName string
@@ -220,7 +220,7 @@ var containerAppEnvrionmentVariables = {
   Default: [
     {
       name: 'ASPNETCORE_ENVIRONMENT'
-      value: environmentCode == 'production' ? 'Production' : 'Development'
+      value: environmentCode == 'Production' ? 'Production' : 'Development'
     }
     {
       name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
