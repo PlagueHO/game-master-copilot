@@ -224,7 +224,7 @@ var containerAppEnvrionmentVariables = {
     }
     {
       name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
-      value: 'applicationinsights-connectionstring'
+      secretRef: 'applicationinsights-connectionstring'
     }
     {
       name: 'DetailedErrors'
