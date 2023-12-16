@@ -1,6 +1,6 @@
-﻿using GMCopilot.Entities.Types;
+﻿using GMCopilot.Core.Types;
 
-namespace GMCopilot.Entities.Test.Types
+namespace GMCopilot.Core.Test.Types
 {
     [TestClass]
     public class HeightTests

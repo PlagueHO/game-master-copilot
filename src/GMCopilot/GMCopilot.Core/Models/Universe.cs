@@ -1,8 +1,8 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
-using GMCopilot.Entities.Types;
+using GMCopilot.Core.Types;
 
-namespace GMCopilot.Entities.Models
+namespace GMCopilot.Core.Models
 {
     /// <summary>
     /// Represents a universe page entity.

@@ -1,4 +1,4 @@
-﻿using GMCopilot.Entities.Models;
+﻿using GMCopilot.Core.Models;
 
 namespace GMCopilot.Data.Repositories;
 

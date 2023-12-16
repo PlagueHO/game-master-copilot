@@ -12,7 +12,7 @@ WORKDIR /src
 COPY ["src/GMCopilot/GMCopilot/GMCopilot/GMCopilot.csproj", "GMCopilot/GMCopilot/"]
 COPY ["src/GMCopilot/GMCopilot/GMCopilot.Client/GMCopilot.Client.csproj", "GMCopilot/GMCopilot.Client/"]
 COPY ["src/GMCopilot/GMCopilot.Data/GMCopilot.Data.csproj", "GMCopilot.Data/"]
-COPY ["src/GMCopilot/GMCopilot.Entities/GMCopilot.Entities.csproj", "GMCopilot.Entities/"]
+COPY ["src/GMCopilot/GMCopilot.Core/GMCopilot.Core.csproj", "GMCopilot.Core/"]
 COPY ["src/GMCopilot/GMCopilot.ServiceDefaults/GMCopilot.ServiceDefaults.csproj", "GMCopilot.ServiceDefaults/"]
 RUN dotnet restore "./GMCopilot/GMCopilot/GMCopilot.csproj"
 COPY src/GMCopilot/ .

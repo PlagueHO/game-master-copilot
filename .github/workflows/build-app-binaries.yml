@@ -1,11 +1,11 @@
-name: build-gmcopilot
+name: build-app-binaries
 
 on:
   workflow_call:
 
 jobs:
-  build-gmcopilot:
-    name: Build GM Copilot
+  build-app-binaries:
+    name: Build application binaries
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -16,18 +16,18 @@ jobs:
         with:
           dotnet-version: 8
 
-      - name: Build publishable GM Copilot
+      - name: Build publishable application binaries
         run: |
           dotnet workload restore  
           dotnet publish --configuration Release
         working-directory: ./src/GMCopilot/
 
-      - name: Zip publishable GM Copilot
+      - name: Zip publishable application binaries
         run: |
           zip -r gmcopilot.zip .
         working-directory: ./src/GMCopilot/GMCopilot/GMCopilot/bin/Release/net8.0/publish
 
-      - name: Upload GM Copilot as workflow artifact
+      - name: Upload application binaries as workflow artifact
         uses: actions/upload-artifact@v3
         with:
           name: gmcopilot

@@ -1,4 +1,4 @@
-﻿namespace GMCopilot.Entities.Types;
+﻿namespace GMCopilot.Core.Types;
 
 /// <summary>
 /// Represents a weight measurement in grams.

@@ -25,8 +25,8 @@ jobs:
   build-armtemplates:
     uses: ./.github/workflows/build-armtemplates.yml
 
-  test-gmcopilot:
-    uses: ./.github/workflows/test-gmcopilot.yml
+  test-run-unit-tests:
+    uses: ./.github/workflows/test-run-unit-tests.yml
   
   validate-shared-infrastructure:
     needs:
@@ -56,12 +56,12 @@ jobs:
       AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
   
-  build-gmcopilot-container:
+  build-app-containers:
     needs:
       - set-build-variables
       - deploy-shared-infrastructure
-      - test-gmcopilot
-    uses: ./.github/workflows/build-gmcopilot-container.yml
+      - test-run-unit-tests
+    uses: ./.github/workflows/build-app-containers.yml
     with:
       BUILD_VERSION: ${{ needs.set-build-variables.outputs.BUILD_VERSION }}
       RESOURCE_GROUP_NAME: ${{ vars.RESOURCE_GROUP_NAME_SHARED }}
@@ -74,7 +74,7 @@ jobs:
   validate-application-infrastructure-test:
     needs:
       - set-build-variables
-      - build-gmcopilot-container
+      - build-app-containers
     uses: ./.github/workflows/validate-application-infrastructure.yml
     with:
       ENVIRONMENT: Test
