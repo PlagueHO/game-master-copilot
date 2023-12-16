@@ -425,8 +425,7 @@ var containerAppWebContainers = [
       cpu: json('0.25')
       memory: '0.5Gi'
     }
-    env: containerAppEnvrionmentVariables.Default
-
+    env: union(containerAppEnvrionmentVariables.Default, containerAppEnvrionmentVariables.DataStore)
   }
 ]
 
