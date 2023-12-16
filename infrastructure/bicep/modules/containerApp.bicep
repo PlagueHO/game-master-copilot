@@ -192,4 +192,31 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
   }
 }
 
+resource containerAppAuth 'Microsoft.App/containerApps/authConfigs@2023-05-01' = {
+  name: 'authConfigs'
+  parent: containerApp
+  properties: {
+    globalValidation: {
+      redirectToProvider: 'azureactivedirectory'
+      unauthenticatedClientAction: 'RedirectToLoginPage'
+    }
+    identityProviders: {
+      azureActiveDirectory: {
+        isAutoProvisioned: false
+        registration: {
+          clientId: entraIdClientId
+          clientSecretSettingName: 'authorization-entraid-clientsecret'
+          openIdIssuer: '${entraIdIssuerUrl}/${entraIdTenantId}'
+        }
+        validation: {
+          allowedAudiences: []
+        }
+      }
+    }
+    platform: {
+      enabled: true
+    }
+  }
+}
+
 output applicationUrl string = containerApp.properties.latestRevisionFqdn
