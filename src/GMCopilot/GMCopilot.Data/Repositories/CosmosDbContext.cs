@@ -1,4 +1,4 @@
-﻿using GMCopilot.Entities.Models;
+﻿using GMCopilot.Core.Models;
 using Microsoft.Azure.Cosmos;
 using System.Net;
 

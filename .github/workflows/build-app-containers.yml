@@ -1,4 +1,4 @@
-name: build-gmcopilot-container
+name: build-app-containers
 
 on:
   workflow_call:
@@ -27,8 +27,8 @@ on:
         required: true
   
 jobs:
-  build-gmcopilot-container:
-    name: Build and publish GM Copilot container
+  build-app-containers:
+    name: Build and publish app containers
     runs-on: ubuntu-latest
 
     steps:
@@ -42,5 +42,5 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
 
-      - name: Build and push image to ACR      
+      - name: Build and push image web app container to ACR      
         run: az acr build --image gmcopilot/gmcopilot:${{ inputs.BUILD_VERSION }} --registry ${{ inputs.CONTAINER_REGISTRY_NAME }} -g ${{ inputs.RESOURCE_GROUP_NAME }} --target final -f ./src/GMCopilot/GMCopilot/GMCopilot/Dockerfile .

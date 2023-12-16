@@ -35,9 +35,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{6023
 		..\..\infrastructure\bicep\modules\webAppBlazor.bicep = ..\..\infrastructure\bicep\modules\webAppBlazor.bicep
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.Entities", "GMCopilot.Entities\GMCopilot.Entities.csproj", "{0C51CD4D-9995-4022-91C5-3F3A9419D8FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.Core", "GMCopilot.Core\GMCopilot.Core.csproj", "{0C51CD4D-9995-4022-91C5-3F3A9419D8FF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.Entities.Test", "GMCopilot.Entities.Test\GMCopilot.Entities.Test.csproj", "{4DA87B6D-D330-43B0-B72E-098E2003DFB9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.Core.Test", "GMCopilot.Core.Test\GMCopilot.Core.Test.csproj", "{4DA87B6D-D330-43B0-B72E-098E2003DFB9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.Data", "GMCopilot.Data\GMCopilot.Data.csproj", "{59DBFEFB-BB60-4660-9CDA-F7120565E0DE}"
 EndProject

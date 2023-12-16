@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace GMCopilot.Entities.Options;
+namespace GMCopilot.Core.Options;
 
 /// <summary>
 /// Data Store Configuration options for GMCopilot.

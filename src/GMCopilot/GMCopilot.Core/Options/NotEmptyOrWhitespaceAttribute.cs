@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace GMCopilot.Entities.Options;
+namespace GMCopilot.Core.Options;
 
 /// <summary>
 /// If the string is set, it must not be empty or whitespace.

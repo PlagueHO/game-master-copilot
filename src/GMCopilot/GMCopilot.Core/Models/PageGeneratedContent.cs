@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace GMCopilot.Entities.Models;
+namespace GMCopilot.Core.Models;
 
 /// <summary>
 /// The type of method used to generate the content of the page.

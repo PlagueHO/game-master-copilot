@@ -15,7 +15,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="[1.19.6-Preview.1, 1.19.6]" />
     <PackageReference Include="MudBlazor" Version="6.11.1" />
     <ProjectReference Include="..\..\GMCopilot.Data\GMCopilot.Data.csproj" />
-    <ProjectReference Include="..\..\GMCopilot.Entities\GMCopilot.Entities.csproj" />
+    <ProjectReference Include="..\..\GMCopilot.Core\GMCopilot.Core.csproj" />
     <ProjectReference Include="..\..\GMCopilot.ServiceDefaults\GMCopilot.ServiceDefaults.csproj" />
     <ProjectReference Include="..\GMCopilot.Client\GMCopilot.Client.csproj" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.0" />

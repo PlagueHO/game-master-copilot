@@ -1,4 +1,4 @@
-﻿namespace GMCopilot.Entities.Types;
+﻿namespace GMCopilot.Core.Types;
 
 /// <summary>
 /// The possible types of page storage entities.

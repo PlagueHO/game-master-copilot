@@ -13,13 +13,13 @@ jobs:
   set-build-variables:
     uses: ./.github/workflows/set-build-variables.yml
 
-  test-gmcopilot:
-    uses: ./.github/workflows/test-gmcopilot.yml
+  test-run-unit-tests:
+    uses: ./.github/workflows/test-run-unit-tests.yml
 
-  build-gmcopilot:
+  build-app-binaries:
     needs:
-      - test-gmcopilot
-    uses: ./.github/workflows/build-gmcopilot.yml
+      - test-run-unit-tests
+    uses: ./.github/workflows/build-app-binaries.yml
     
   build-armtemplates:
     uses: ./.github/workflows/build-armtemplates.yml

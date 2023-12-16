@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace GMCopilot.Entities.Options;
+namespace GMCopilot.Core.Options;
 
 /// <summary>
 /// Configuration settings for connecting to Azure CosmosDB.

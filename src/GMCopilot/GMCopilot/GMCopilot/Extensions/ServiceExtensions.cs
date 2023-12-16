@@ -1,6 +1,6 @@
 ﻿using GMCopilot.Data.Repositories;
-using GMCopilot.Entities.Models;
-using GMCopilot.Entities.Options;
+using GMCopilot.Core.Models;
+using GMCopilot.Core.Options;
 using Microsoft.Extensions.Options;
 using System.Reflection;
 

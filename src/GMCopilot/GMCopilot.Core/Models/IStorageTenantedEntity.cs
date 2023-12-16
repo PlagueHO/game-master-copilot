@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace GMCopilot.Entities.Models;
+namespace GMCopilot.Core.Models;
 
 public interface IStorageTenantedEntity : IStorageEntity
 {
