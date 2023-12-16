@@ -18,11 +18,11 @@ targetScope = 'subscription'
 param location string = 'CanadaEast'
 
 @description('The environment to deploy the Game Master Copilot into.')
-param environmentCode string = 'test'
 @allowed([
   'test'
   'production'
 ])
+param environmentCode string = 'test'
 
 @description('The base name that will prefixed to all Azure resources deployed to ensure they are unique.')
 param baseResourceName string
