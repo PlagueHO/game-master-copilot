@@ -61,6 +61,14 @@ var secrets = [
 
 var basicConfiguration = [
   {
+    name: 'ASPNETCORE_ENVIRONMENT'
+    value: 'Development'
+  }
+  {
+    name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
+    value: 'applicationinsights-connectionstring'
+  }
+  {
     name: 'DetailedErrors'
     value: 'true'
   }
@@ -71,10 +79,6 @@ var basicConfiguration = [
   {
     name: 'Logging__LogLevel__Microsoft.AspNetCore'
     value: 'Warning'
-  }
-  {
-    name: 'ASPNETCORE_ENVIRONMENT'
-    value: 'Development'
   }
   {
     name: 'Authorization__Type'
@@ -95,10 +99,6 @@ var basicConfiguration = [
   {
     name: 'Authorization__EntraId__ClientSecret'
     secretRef: 'authorization-entraid-clientsecret'
-  }
-  {
-    name: 'ApplicationInsights__ConnectionString'
-    value: 'applicationinsights-connectionstring'
   }
   {
     name: 'SemanticKernel__PluginsDirectory'
