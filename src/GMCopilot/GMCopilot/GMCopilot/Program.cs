@@ -1,4 +1,3 @@
-using GMCopilot.Extensions;
 using GMCopilot.Client.Pages;
 using GMCopilot.Components;
 using MudBlazor.Services;
@@ -11,15 +10,6 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
         builder.AddServiceDefaults();
-
-        // Load configuration
-        builder.Services.AddOptions(builder.Configuration);
-
-        // Add logging and telemetry
-        builder.Services.AddLoggingAndTelemetry(builder.Configuration);
-
-        // Add the Data Store
-        builder.Services.AddDataStore();
 
         // Add services to the container.
         builder.Services.AddRazorComponents()

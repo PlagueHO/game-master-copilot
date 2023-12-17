@@ -9,19 +9,19 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0.100-1 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["src/GMCopilot/GMCopilot/GMCopilot/GMCopilot.csproj", "GMCopilot/GMCopilot/"]
-COPY ["src/GMCopilot/GMCopilot/GMCopilot.Client/GMCopilot.Client.csproj", "GMCopilot/GMCopilot.Client/"]
+COPY ["src/GMCopilot/GMCopilot.AccessApi/GMCopilot.AccessApi.csproj", "GMCopilot.AccessApi/"]
 COPY ["src/GMCopilot/GMCopilot.Core/GMCopilot.Core.csproj", "GMCopilot.Core/"]
 COPY ["src/GMCopilot/GMCopilot.ServiceDefaults/GMCopilot.ServiceDefaults.csproj", "GMCopilot.ServiceDefaults/"]
-RUN dotnet restore "./GMCopilot/GMCopilot/GMCopilot.csproj"
+RUN dotnet restore "./GMCopilot/GMCopilot.AccessApi/GMCopilot.AccessApi.csproj"
 COPY src/GMCopilot/ .
-RUN dotnet build "./GMCopilot/GMCopilot/GMCopilot.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "./GMCopilot.AccessApi/GMCopilot.AccessApi.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dir
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./GMCopilot/GMCopilot/GMCopilot.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./GMCopilot.AccessApi/GMCopilot.AccessApi.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "GMCopilot.dll"]
+ENTRYPOINT ["dotnet", "GMCopilot.AccessApi.dll"]

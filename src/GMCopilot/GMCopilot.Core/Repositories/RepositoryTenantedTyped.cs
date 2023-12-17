@@ -1,6 +1,6 @@
 ﻿using GMCopilot.Core.Models;
 
-namespace GMCopilot.Data.Repositories;
+namespace GMCopilot.Core.Repositories;
 
 /// <summary>
 /// Defines the basic CRUD operations for a repository that is tenanted and typed.
@@ -11,7 +11,7 @@ public class RepositoryTenantedTyped<T> : RepositoryTenanted<T>, IRepositoryTena
     /// Initializes a new instance of the RepositoryTenantedType class.
     /// </summary>
     public RepositoryTenantedTyped(IStorageContext<T> storageContext)
-        : base(storageContext) 
+        : base(storageContext)
     {
     }
 

@@ -223,7 +223,7 @@ var containerAppEnvrionmentVariables = {
       value: environmentCode == 'Production' ? 'Production' : 'Development'
     }
     {
-      name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
+      name: 'ApplicationInsights__ConnectionString'
       secretRef: 'applicationinsights-connectionstring'
     }
     {

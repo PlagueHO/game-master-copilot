@@ -1,6 +1,6 @@
 ﻿using GMCopilot.Core.Models;
 
-namespace GMCopilot.Data.Repositories;
+namespace GMCopilot.Core.Repositories;
 
 public class UniverseRepository : RepositoryTenanted<Universe>
 {
@@ -20,9 +20,9 @@ public class UniverseRepository : RepositoryTenanted<Universe>
     /// <returns>A universe record with the universe Id.</returns>
     public Task<Universe> FindByUniverseIdAsync(string universeId, string tenantId)
     {
-        return base.FindByIdAsync(universeId, tenantId);
+        return FindByIdAsync(universeId, tenantId);
     }
-    
+
     /// <summary>
     /// Finds the universes using a tenant id.
     /// </summary>
@@ -30,6 +30,6 @@ public class UniverseRepository : RepositoryTenanted<Universe>
     /// <returns>A list of universe records with the tenant Id.</returns>
     public Task<IEnumerable<Universe>> FindByTenantIdAsync(string tenantId)
     {
-        return base.StorageContext.QueryEntitiesAsync(e => e.TenantId == tenantId);
+        return StorageContext.QueryEntitiesAsync(e => e.TenantId == tenantId);
     }
 }

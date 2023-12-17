@@ -1,6 +1,6 @@
 ﻿using GMCopilot.Core.Models;
 
-namespace GMCopilot.Data.Repositories;
+namespace GMCopilot.Core.Repositories;
 
 public class TenantRepository : Repository<Tenant>
 {
@@ -20,7 +20,7 @@ public class TenantRepository : Repository<Tenant>
     /// <returns>The tenant record.</returns>
     public Task<Tenant> FindByTenantIdAsync(string tenantId)
     {
-        return base.FindByIdAsync(tenantId);
+        return FindByIdAsync(tenantId);
     }
 
     /// <summary>
@@ -30,7 +30,7 @@ public class TenantRepository : Repository<Tenant>
     /// <returns>The tenant record.</returns>
     public async Task<bool> TryFindByTenantIdAsync(string tenantId, Action<Tenant?> tenant)
     {
-        return await base.TryFindByIdAsync(tenantId, tenant);
+        return await TryFindByIdAsync(tenantId, tenant);
     }
 
     /// <summary>
@@ -39,6 +39,6 @@ public class TenantRepository : Repository<Tenant>
     /// <returns>A list of all tenant records.</returns>
     public Task<IEnumerable<Tenant>> ReadAllAsync()
     {
-        return base.StorageContext.QueryEntitiesAsync(tenant => true);
-    }   
+        return StorageContext.QueryEntitiesAsync(tenant => true);
+    }
 }
