@@ -13,7 +13,7 @@ COPY ["src/GMCopilot/GMCopilot.AccessApi/GMCopilot.AccessApi.csproj", "GMCopilot
 COPY ["src/GMCopilot/GMCopilot.Core/GMCopilot.Core.csproj", "GMCopilot.Core/"]
 COPY ["src/GMCopilot/GMCopilot.ServiceDefaults/GMCopilot.ServiceDefaults.csproj", "GMCopilot.ServiceDefaults/"]
 RUN dotnet restore "./GMCopilot/GMCopilot.AccessApi/GMCopilot.AccessApi.csproj"
-COPY src/GMCopilot/ .
+COPY src/ .
 RUN dotnet build "./GMCopilot.AccessApi/GMCopilot.AccessApi.csproj" -c $BUILD_CONFIGURATION -o /app/build
 RUN dir
 
