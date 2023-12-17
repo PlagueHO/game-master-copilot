@@ -27,8 +27,8 @@ on:
         required: true
   
 jobs:
-  build-app-containers:
-    name: Build and publish app containers
+  build-app-container:
+    name: Build and publish web app container
     runs-on: ubuntu-latest
 
     steps:
@@ -44,6 +44,21 @@ jobs:
 
       - name: Build and push web app container image to ACR      
         run: az acr build --image gmcopilot/gmcopilot:${{ inputs.BUILD_VERSION }} --registry ${{ inputs.CONTAINER_REGISTRY_NAME }} -g ${{ inputs.RESOURCE_GROUP_NAME }} --target final -f ./src/GMCopilot/GMCopilot/GMCopilot/Dockerfile .
+
+  build-accessapi-container:
+    name: Build and publish access API containers
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
 
       - name: Build and push access API container image to ACR      
         run: az acr build --image gmcopilot/gmcopilot.accessapi:${{ inputs.BUILD_VERSION }} --registry ${{ inputs.CONTAINER_REGISTRY_NAME }} -g ${{ inputs.RESOURCE_GROUP_NAME }} --target final -f ./src/GMCopilot/GMCopilot.AccessApi/Dockerfile .
