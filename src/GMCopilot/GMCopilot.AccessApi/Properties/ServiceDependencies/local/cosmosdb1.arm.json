@@ -4,7 +4,7 @@
   "parameters": {
     "resourceGroupName": {
       "type": "string",
-      "defaultValue": "dsr-gmcopilot-rg",
+      "defaultValue": "dsr-gmcopilot-test-rg",
       "metadata": {
         "_parameterType": "resourceGroup",
         "description": "Name of the resource group for the resource. It is recommended to put resources under same resource group for better tracking."
@@ -36,7 +36,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "name": "[concat(parameters('resourceGroupName'), 'Deployment', uniqueString(concat('dsr-gmcopilot-cdb', subscription().subscriptionId)))]",
+      "name": "[concat(parameters('resourceGroupName'), 'Deployment', uniqueString(concat('dsr-gmcopilot-test-cdb', subscription().subscriptionId)))]",
       "resourceGroup": "[parameters('resourceGroupName')]",
       "apiVersion": "2019-10-01",
       "dependsOn": [
@@ -49,12 +49,12 @@
           "contentVersion": "1.0.0.0",
           "resources": [
             {
-              "name": "dsr-gmcopilot-cdb",
+              "name": "dsr-gmcopilot-test-cdb",
               "location": "[parameters('resourceLocation')]",
               "type": "Microsoft.DocumentDB/databaseAccounts",
               "kind": "GlobalDocumentDB",
               "systemData": {
-                "createdAt": "2023-10-13T18:16:06.00878+13:00"
+                "createdAt": "2023-12-14T10:21:43.5814949Z"
               },
               "properties": {
                 "databaseAccountOfferType": "Standard"

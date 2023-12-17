@@ -1,6 +1,6 @@
 ﻿using GMCopilot.Core.Models;
 
-namespace GMCopilot.Data.Repositories;
+namespace GMCopilot.Core.Repositories;
 
 public class AccountRepository : Repository<Account>
 {
@@ -20,6 +20,6 @@ public class AccountRepository : Repository<Account>
     /// <returns>The account record.</returns>
     public Task<Account> FindByAccountIdAsync(string accountId)
     {
-        return base.StorageContext.ReadAsync(accountId);
+        return StorageContext.ReadAsync(accountId);
     }
 }

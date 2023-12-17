@@ -2,7 +2,7 @@
 using Microsoft.Azure.Cosmos;
 using System.Net;
 
-namespace GMCopilot.Data.Repositories;
+namespace GMCopilot.Core.Repositories;
 
 /// <summary>
 /// A storage context that stores entities in a CosmosDB container.
@@ -25,25 +25,17 @@ public class CosmosDbContext<T> : IStorageContext<T>, IDisposable where T : ISto
     /// <param name="connectionString">The CosmosDB connection string.</param>
     /// <param name="database">The CosmosDB database name.</param>
     /// <param name="container">The CosmosDB container name.</param>
-    public CosmosDbContext(string connectionString, string database, string container)
+    public CosmosDbContext(CosmosClient client, string database, string container)
     {
-        // Configure JsonSerializerOptions
-        var options = new CosmosClientOptions
-        {
-            SerializerOptions = new CosmosSerializationOptions
-            {
-                PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase
-            },
-        };
-        this._client = new CosmosClient(connectionString, options);
-        this._container = this._client.GetContainer(database, container);
+        _client = client;
+        _container = _client.GetContainer(database, container);
     }
 
     /// <inheritdoc/>
     public async Task<IEnumerable<T>> QueryEntitiesAsync(Func<T, bool> predicate)
     {
         return await Task.Run<IEnumerable<T>>(
-            () => this._container.GetItemLinqQueryable<T>(true).Where(predicate).AsEnumerable());
+            () => _container.GetItemLinqQueryable<T>(true).Where(predicate).AsEnumerable());
     }
 
     /// <inheritdoc/>
@@ -51,10 +43,10 @@ public class CosmosDbContext<T> : IStorageContext<T>, IDisposable where T : ISto
     {
         if (string.IsNullOrWhiteSpace(entity.Id))
         {
-            throw new ArgumentOutOfRangeException(nameof(entity.Id), "Entity Id cannot be null or empty.");
+            throw new ArgumentOutOfRangeException(nameof(entity), "Entity Id cannot be null or empty.");
         }
 
-        await this._container.CreateItemAsync(entity);
+        await _container.CreateItemAsync(entity);
     }
 
     /// <inheritdoc/>
@@ -62,10 +54,10 @@ public class CosmosDbContext<T> : IStorageContext<T>, IDisposable where T : ISto
     {
         if (string.IsNullOrWhiteSpace(entity.Id))
         {
-            throw new ArgumentOutOfRangeException(nameof(entity.Id), "Entity Id cannot be null or empty.");
+            throw new ArgumentOutOfRangeException(nameof(entity), "Entity Id cannot be null or empty.");
         }
 
-        await this._container.DeleteItemAsync<T>(entity.Id, BuildPartitionKey(entity));
+        await _container.DeleteItemAsync<T>(entity.Id, BuildPartitionKey(entity));
     }
 
     /// <summary>
@@ -79,7 +71,7 @@ public class CosmosDbContext<T> : IStorageContext<T>, IDisposable where T : ISto
     {
         try
         {
-            var response = await this._container.ReadItemAsync<T>(entityId, partitionKey);
+            var response = await _container.ReadItemAsync<T>(entityId, partitionKey);
             return response.Resource;
         }
         catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
@@ -155,15 +147,15 @@ public class CosmosDbContext<T> : IStorageContext<T>, IDisposable where T : ISto
     {
         if (string.IsNullOrWhiteSpace(entity.Id))
         {
-            throw new ArgumentOutOfRangeException(nameof(entity.Id), "Entity Id cannot be null or empty.");
+            throw new ArgumentOutOfRangeException(nameof(entity), "Entity Id cannot be null or empty.");
         }
 
-        await this._container.UpsertItemAsync(entity);
+        await _container.UpsertItemAsync(entity);
     }
 
     public void Dispose()
     {
-        this.Dispose(true);
+        Dispose(true);
         GC.SuppressFinalize(this);
     }
 
@@ -171,7 +163,7 @@ public class CosmosDbContext<T> : IStorageContext<T>, IDisposable where T : ISto
     {
         if (disposing)
         {
-            this._client.Dispose();
+            _client.Dispose();
         }
     }
 

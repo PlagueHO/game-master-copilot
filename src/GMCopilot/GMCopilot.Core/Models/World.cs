@@ -94,7 +94,24 @@ namespace GMCopilot.Core.Models
         /// <returns>A new <see cref="World"/> object based on the provided JSON string.</returns>
         public static World FromJson(string json)
         {
-            return JsonSerializer.Deserialize<World>(json);
+            if (string.IsNullOrWhiteSpace(json))
+            {
+                throw new ArgumentNullException(nameof(json));
+            }
+
+            try
+            {
+                var world = JsonSerializer.Deserialize<World>(json);
+                if (world == null)
+                {
+                    throw new ArgumentException("Unable to deserialize the provided JSON string.", nameof(json));
+                }
+                return world;
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException("Unable to deserialize the provided JSON string.", nameof(json), ex);
+            }
         }
     }
 }

@@ -78,7 +78,24 @@ namespace GMCopilot.Core.Models
         /// <returns>A new <see cref="Universe"/> object based on the provided JSON string.</returns>
         public static Universe FromJson(string json)
         {
-            return JsonSerializer.Deserialize<Universe>(json);
+            if (string.IsNullOrWhiteSpace(json))
+            {
+                throw new ArgumentNullException(nameof(json));
+            }
+
+            try
+            {
+                var universe = JsonSerializer.Deserialize<Universe>(json);
+                if (universe == null)
+                {
+                    throw new ArgumentException("Unable to deserialize the provided JSON string.", nameof(json));
+                }
+                return universe;
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException("Unable to deserialize the provided JSON string.", nameof(json), ex);
+            }
         }
     }
 }
