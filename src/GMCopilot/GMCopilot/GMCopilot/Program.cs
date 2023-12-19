@@ -1,6 +1,9 @@
-using GMCopilot.Client.Pages;
 using GMCopilot.Components;
+using GMCopilot.Client.Pages;
 using MudBlazor.Services;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.Identity.Web;
 
 namespace GMCopilot;
 
@@ -11,10 +14,15 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
         builder.AddServiceDefaults();
 
+        builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+            .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("EntraId"));
+
         // Add services to the container.
         builder.Services.AddRazorComponents()
             .AddInteractiveServerComponents()
             .AddInteractiveWebAssemblyComponents();
+
+        builder.Services.AddScoped<AuthenticationStateProvider, PersistingAuthenticationStateProvider>();
 
         // Add Mudblazor
         builder.Services.AddMudServices();
@@ -40,10 +48,14 @@ public class Program
         app.UseStaticFiles();
         app.UseAntiforgery();
 
+        app.UseAuthorization();
+
         app.MapRazorComponents<App>()
             .AddInteractiveServerRenderMode()
             .AddInteractiveWebAssemblyRenderMode()
             .AddAdditionalAssemblies(typeof(Counter).Assembly);
+
+        app.MapGroup("/authentication").MapLoginAndLogout();
 
         app.Run();
     }

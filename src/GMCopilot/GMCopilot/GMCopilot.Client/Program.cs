@@ -1,9 +1,23 @@
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Services;
 
-var builder = WebAssemblyHostBuilder.CreateDefault(args);
+namespace GMCopilot.Client;
 
-// Add Mudblazor
-builder.Services.AddMudServices();
+public class Program
+{
+    private static async Task Main(string[] args)
+    {
+        var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
-await builder.Build().RunAsync();
+        builder.Services.AddAuthorizationCore();
+        builder.Services.AddSingleton<AuthenticationStateProvider, PersistentAuthenticationStateProvider>();
+
+        // Add Mudblazor
+        builder.Services.AddMudServices();
+
+        await builder.Build().RunAsync();
+    }
+}
