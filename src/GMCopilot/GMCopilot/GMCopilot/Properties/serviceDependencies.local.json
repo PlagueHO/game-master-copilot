@@ -2,6 +2,12 @@
   "dependencies": {
     "secrets1": {
       "type": "secrets.user"
+    },
+    "identityapp1": {
+      "connectionInfo": "App registration: game-master-copilot-app, Tenant: Game Master Copilot (gmcopilot.onmicrosoft.com - Microsoft Entra External ID)",
+      "secretStore": "LocalSecretsFile",
+      "type": "identityapp.secretStore",
+      "connectionId": "AzureAD:ClientSecret"
     }
   }
 }

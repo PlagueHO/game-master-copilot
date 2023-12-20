@@ -1,14 +1,9 @@
-﻿@rendermode InteractiveAuto
+﻿@implements IDisposable
 
-<!--TODO: Add Authentication support and access management-->
-<!--Using:
-    <AuthorizeView>
-        <Authorized>
-        </Authorized>
-        <NotAuthorized>
-        </NotAuthorized>
-    </AuthorizeView>
--->
+@rendermode InteractiveAuto
+
+@inject NavigationManager Navigation
+
 
 <MudSpacer />
 
@@ -16,26 +11,51 @@
     <MudIconButton Variant="Variant.Filled" Icon="@Icons.Material.Outlined.PeopleAlt" OnClick="@((e) => OpenAccountDrawer())" />
 </MudToolBar>
 
-<MudDrawer @bind-Open="@_accountDrawerOpen" Anchor="Anchor.End" Elevation="1" Variant="@DrawerVariant.Temporary">
-    <MudDrawerHeader>
-        <MudIcon Icon="@Icons.Material.Outlined.PeopleOutline" />                    
-        <MudText Typo="Typo.h6" Class="px-4">Account</MudText>
-    </MudDrawerHeader>
-    <MudDrawerContainer>
-        <MudNavMenu>
-            <MudText Typo="Typo.body1" Class="px-4 mud-text-secondary">TODO: Name</MudText>
-            <MudText Typo="Typo.body2" Class="px-4 mud-text-secondary">TODO: Email</MudText>
-            <MudDivider Class="my-2" />
-            <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Logout" Href="MicrosoftIdentity/Account/SignOut">Logout</MudNavLink>
-        </MudNavMenu>
-    </MudDrawerContainer>
-</MudDrawer>
+<AuthorizeView>
+    <Authorized>
+        <MudDrawer @bind-Open="@_accountDrawerOpen" Anchor="Anchor.End" Elevation="1" Variant="@DrawerVariant.Temporary">
+            <MudDrawerHeader>
+                <MudIcon Icon="@Icons.Material.Outlined.PeopleOutline" />
+                <MudText Typo="Typo.h6" Class="px-4">Account</MudText>
+            </MudDrawerHeader>
+            <MudDrawerContainer>
+                <MudNavMenu>
+                    <MudText Typo="Typo.body1" Class="px-4 mud-text-secondary">@context.User.Identity?.Name</MudText>
+                    <MudDivider Class="my-2" />
+                    <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Logout" Href="authentication/logout">Logout</MudNavLink>
+                </MudNavMenu>
+            </MudDrawerContainer>
+        </MudDrawer>
+    </Authorized>
+    <NotAuthorized>
+        <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Logout" Href="@($"authentication/login?returnUrl={currentUrl}")">Login</MudNavLink>
+    </NotAuthorized>
+</AuthorizeView>
+
 
 @code {
     bool _accountDrawerOpen = false;
+    private string? currentUrl;
 
     void OpenAccountDrawer()
     {
         _accountDrawerOpen = !_accountDrawerOpen;
+    }
+
+    protected override void OnInitialized()
+    {
+        currentUrl = Navigation.ToBaseRelativePath(Navigation.Uri);
+        Navigation.LocationChanged += OnLocationChanged;
+    }
+
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        currentUrl = Navigation.ToBaseRelativePath(e.Location);
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        Navigation.LocationChanged -= OnLocationChanged;
     }
 }

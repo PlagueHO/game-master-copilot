@@ -40,19 +40,28 @@ param baseResourceNameShared string
 param buildVersion string
 
 @description('The Entra ID issuer URL to use for authentication.')
-param entraIdIssuerUrl string = environment().authentication.loginEndpoint
+param entraIdIssuerUrl string
 
 @description('The Entra ID tenant ID to use for authentication.')
 @secure()
 param entraIdTenantId string
 
-@description('The Entra ID client ID to use for authentication.')
+@description('The domain name of the Entra ID tenant')
 @secure()
-param entraIdClientId string
+param entraIdDomain string
 
-@description('The Entra ID client secret to use for authentication.')
+@description('The client ID that the app will used to connect to the Entra ID to perform application authentication.')
 @secure()
-param entraIdClientSecret string
+param entraIdClientIdApp string
+
+@description('The client ID that the WASM client will used to connect to the Entra ID to perform application authentication.')
+@secure()
+param entraIdClientIdClient string
+
+@description('The client ID that the APIs will used to connect to the Entra ID to perform application authentication.')
+@secure()
+param entraIdClientIdApi string
+
 
 var logAnalyticsWorkspaceName = '${baseResourceName}-law'
 var applicationInsightsName = '${baseResourceName}-ai'
@@ -127,7 +136,6 @@ module keyVault './modules/keyVault.bicep' = {
     keyVaultName: keyVaultName
     logAnalyticsWorkspaceId: monitoring.outputs.logAnalyticsWorkspaceId
     logAnalyticsWorkspaceName: logAnalyticsWorkspaceName
-    entraIdClientSecret: entraIdClientSecret
   }
 }
 
@@ -241,24 +249,28 @@ var containerAppEnvrionmentVariables = {
   ]
   Authentication: [
     {
-      name: 'Authorization__Type'
-      value: 'EntraId'
-    }
-    {
-      name: 'Authorization__EntraId__IssurerUrl'
+      name: 'EntraId__IssurerUrl'
       value: entraIdIssuerUrl
     }
     {
-      name: 'Authorization__EntraId__TenantId'
+      name: 'EntraId__TenantId'
       value: entraIdTenantId
     }
     {
-      name: 'Authorization__EntraId__ClientId'
-      value: entraIdClientId
+      name: 'EntraId__Domain'
+      value: entraIdDomain
     }
     {
-      name: 'Authorization__EntraId__ClientSecret'
-      secretRef: 'authorization-entraid-clientsecret'
+      name: 'EntraId__ClientId'
+      value: entraIdClientIdApp
+    }
+    {
+      name: 'EntraId__CallbackPath'
+      value: '/signin-oidc'
+    }
+    {
+      name: 'EntraId__Scopes'
+      value: '/api_access'
     }
   ]
   SemanticKernel: [
@@ -379,10 +391,6 @@ var containerAppWebSecrets = [
     name: 'semantickernel-azureopenaiapikey'
     value: openAiServiceExisting.listKeys().key1
   }
-  {
-    name: 'authorization-entraid-clientsecret'
-    value: entraIdClientSecret
-  }
 ]
 
 var containerAppWebContainers = [
@@ -441,10 +449,6 @@ module containerAppWeb './modules/containerApp.bicep' = {
     containerAppEnvironmentName: containerAppEnvironmentName
     containers: containerAppWebContainers
     secrets: containerAppWebSecrets
-    entraIdIssuerUrl: entraIdIssuerUrl
-    entraIdTenantId: entraIdTenantId
-    entraIdClientId: entraIdClientId
-    entraIdClientSecret: entraIdClientSecret
   }
 }
 
