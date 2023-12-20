@@ -20,7 +20,7 @@ namespace GMCopilot.Client.Models
         /// <summary>
         /// The claim type for the user ID.
         /// </summary>
-        public const string UserIdClaimType = "preferred_username";
+        public const string UserIdClaimType = ClaimTypes.NameIdentifier;
 
         /// <summary>
         /// The claim type for the user name.
@@ -57,7 +57,15 @@ namespace GMCopilot.Client.Models
         /// <param name="claimType">The type of the claim to retrieve.</param>
         /// <returns>The value of the claim, or null if the claim is not found.</returns>
         /// <exception cref="InvalidOperationException">Thrown when the required claim is not found.</exception>
-        private static string GetRequiredClaim(ClaimsPrincipal principal, string claimType) =>
-            principal.FindFirst(claimType)?.Value ?? throw new InvalidOperationException($"Could not find required '{claimType}' claim.");
+        private static string GetRequiredClaim(ClaimsPrincipal principal, string claimType)
+        {
+            var claim = principal.FindFirst(claimType)?.Value;
+            if (claim == null)
+            {
+                throw new InvalidOperationException($"Could not find required '{claimType}' claim.");
+            }
+
+            return claim;
+        }
     }
 }
