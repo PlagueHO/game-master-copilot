@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using GMCopilot.Client.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 

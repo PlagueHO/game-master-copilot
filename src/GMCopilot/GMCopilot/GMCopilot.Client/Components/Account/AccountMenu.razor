@@ -4,34 +4,46 @@
 
 @inject NavigationManager Navigation
 
-
 <MudSpacer />
 
 <MudToolBar>
-    <MudIconButton Variant="Variant.Filled" Icon="@Icons.Material.Outlined.PeopleAlt" OnClick="@((e) => OpenAccountDrawer())" />
+    <AuthorizeView>
+        <Authorized>
+            Hello, @context.User.Identity?.Name
+        </Authorized>
+
+        <NotAuthorized>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" Href="@($"authentication/login?returnUrl={currentUrl}")">Login</MudButton>
+        </NotAuthorized>
+    </AuthorizeView>
+
+    <MudSpacer />
+
+    <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@Icons.Material.Outlined.PeopleAlt" OnClick="@((e) => OpenAccountDrawer())" />
 </MudToolBar>
 
-<AuthorizeView>
-    <Authorized>
-        <MudDrawer @bind-Open="@_accountDrawerOpen" Anchor="Anchor.End" Elevation="1" Variant="@DrawerVariant.Temporary">
-            <MudDrawerHeader>
-                <MudIcon Icon="@Icons.Material.Outlined.PeopleOutline" />
-                <MudText Typo="Typo.h6" Class="px-4">Account</MudText>
-            </MudDrawerHeader>
-            <MudDrawerContainer>
-                <MudNavMenu>
+<MudDrawer @bind-Open="@_accountDrawerOpen" Anchor="Anchor.End" Elevation="1" Variant="@DrawerVariant.Temporary">
+    <MudDrawerHeader>
+        <MudIcon Icon="@Icons.Material.Outlined.PeopleOutline" />
+        <MudText Typo="Typo.h6" Class="px-4">Account</MudText>
+    </MudDrawerHeader>
+    <MudDrawerContainer>
+        <MudNavMenu>
+            <AuthorizeView>
+                <Authorized>
                     <MudText Typo="Typo.body1" Class="px-4 mud-text-secondary">@context.User.Identity?.Name</MudText>
                     <MudDivider Class="my-2" />
                     <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Logout" Href="authentication/logout">Logout</MudNavLink>
-                </MudNavMenu>
-            </MudDrawerContainer>
-        </MudDrawer>
-    </Authorized>
-    <NotAuthorized>
-        <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Logout" Href="@($"authentication/login?returnUrl={currentUrl}")">Login</MudNavLink>
-    </NotAuthorized>
-</AuthorizeView>
+                </Authorized>
 
+                <NotAuthorized>
+                    <MudText Typo="Typo.body1" Class="px-4 mud-text-secondary">Not logged in</MudText>
+                    <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Logout" Href="@($"authentication/login?returnUrl={currentUrl}")">Login</MudNavLink>
+                </NotAuthorized>
+            </AuthorizeView>
+        </MudNavMenu>
+    </MudDrawerContainer>
+</MudDrawer>
 
 @code {
     bool _accountDrawerOpen = false;

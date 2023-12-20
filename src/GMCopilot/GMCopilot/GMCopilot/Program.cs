@@ -14,15 +14,17 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
         builder.AddServiceDefaults();
 
+        // Add authentication services.
         builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
             .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("EntraId"));
 
-        // Add services to the container.
+        // The AuthenticationStateProvider service shares the logged in user context with the WASM client.
+        builder.Services.AddScoped<AuthenticationStateProvider, PersistingAuthenticationStateProvider>();
+
+        // Add component services
         builder.Services.AddRazorComponents()
             .AddInteractiveServerComponents()
             .AddInteractiveWebAssemblyComponents();
-
-        builder.Services.AddScoped<AuthenticationStateProvider, PersistingAuthenticationStateProvider>();
 
         // Add Mudblazor
         builder.Services.AddMudServices();
