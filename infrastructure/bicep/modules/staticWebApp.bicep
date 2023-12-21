@@ -28,6 +28,6 @@ resource staticWebApp 'Microsoft.Web/staticSites@2022-09-01' = {
   }
 }
 
-output appConfigurationName string = staticWebApp.name
-output appConfigurationId string = staticWebApp.id
-output appConfigurationEndpoint string = staticWebApp.properties.defaultHostname
+output staticWebAppName string = staticWebApp.name
+output staticWebAppId string = staticWebApp.id
+output staticWebAppHostName string = staticWebApp.properties.defaultHostname

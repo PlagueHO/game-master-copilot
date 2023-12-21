@@ -507,5 +507,5 @@ module containerRegistryContainerAppRoleServicePrincipal 'modules/roleAssignment
   }
 }
 
-output applicationUrl string = containerAppWeb.outputs.applicationUrl
-output openAiServiceEndpoint string = openAiService.outputs.openAiServiceEndpoint
+output staticWebAppName string = staticWebApp.outputs.staticWebAppName
+output staticWebAppHostName string = staticWebApp.outputs.staticWebAppHostName

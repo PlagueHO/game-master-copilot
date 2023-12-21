@@ -1,4 +1,4 @@
-name: build-app-containers
+name: build-application-containers
 
 on:
   workflow_call:
