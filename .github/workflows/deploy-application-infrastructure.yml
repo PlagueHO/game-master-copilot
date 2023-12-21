@@ -15,14 +15,6 @@ on:
         description: "The Azure region to deploy the application resources to"
         required: true
         type: string
-      RESOURCE_GROUP_NAME:
-        description: "The name of the resource group to deploy the application resources to"
-        required: true
-        type: string
-      BASE_RESOURCE_NAME:
-        description: "The base name of the application resources"
-        required: true
-        type: string 
       RESOURCE_GROUP_NAME_SHARED:
         description: "The name of the resource group that the shared resources are in"
         required: true
@@ -97,7 +89,7 @@ jobs:
         with:
           failOnStdErr: false
           deploymentName: 'app-${{ inputs.ENVIRONMENT }}-${{ github.action_ref }}-${{ github.run_number }}'
-          resourceGroupName: ${{ inputs.RESOURCE_GROUP_NAME }}
+          resourceGroupName: ${{ vars.RESOURCE_GROUP_NAME }}
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           template: ./applicationarmtemplate/application.json
           region: ${{ inputs.LOCATION }}
@@ -105,8 +97,8 @@ jobs:
           parameters: >
             location=${{ inputs.LOCATION }}
             environmentCode=${{ inputs.ENVIRONMENT }}
-            baseResourceName=${{ inputs.BASE_RESOURCE_NAME }}
-            resourceGroupName=${{ inputs.RESOURCE_GROUP_NAME }}
+            baseResourceName=${{ vars.BASE_RESOURCE_NAME }}
+            resourceGroupName=${{ vars.RESOURCE_GROUP_NAME }}
             resourceGroupNameShared=${{ inputs.RESOURCE_GROUP_NAME_SHARED }}
             baseResourceNameShared=${{ inputs.BASE_RESOURCE_NAME_SHARED }}
             buildVersion=${{ inputs.BUILD_VERSION }}

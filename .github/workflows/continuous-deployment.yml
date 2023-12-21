@@ -80,8 +80,6 @@ jobs:
       ENVIRONMENT: Test
       BUILD_VERSION: ${{ needs.set-build-variables.outputs.BUILD_VERSION }}
       LOCATION: ${{ vars.LOCATION }}
-      RESOURCE_GROUP_NAME: ${{ vars.RESOURCE_GROUP_NAME }}
-      BASE_RESOURCE_NAME: ${{ vars.BASE_RESOURCE_NAME }}
       ENTRAID_ISSUER_URL: ${{ vars.ENTRAID_ISSUER_URL }}
       ENTRAID_TENANT_ID: ${{ vars.ENTRAID_TENANT_ID }}
       ENTRAID_DOMAIN: ${{ vars.ENTRAID_DOMAIN }}
@@ -103,8 +101,6 @@ jobs:
       ENVIRONMENT: Test
       BUILD_VERSION: ${{ needs.set-build-variables.outputs.BUILD_VERSION }}
       LOCATION: ${{ vars.LOCATION }}
-      RESOURCE_GROUP_NAME: ${{ vars.RESOURCE_GROUP_NAME }}
-      BASE_RESOURCE_NAME: ${{ vars.BASE_RESOURCE_NAME }}
       ENTRAID_ISSUER_URL: ${{ vars.ENTRAID_ISSUER_URL }}
       ENTRAID_TENANT_ID: ${{ vars.ENTRAID_TENANT_ID }}
       ENTRAID_DOMAIN: ${{ vars.ENTRAID_DOMAIN }}
@@ -124,7 +120,6 @@ jobs:
     uses: ./.github/workflows/deploy-application-client.yml
     with:
       STATIC_WEB_APP_NAME: ${{ needs.deploy-application-infrastructure-test.outputs.staticWebAppName }}
-      RESOURCE_GROUP_NAME: ${{ vars.RESOURCE_GROUP_NAME }}
     secrets:
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
       AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
