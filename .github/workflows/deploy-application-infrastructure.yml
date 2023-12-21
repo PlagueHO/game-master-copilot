@@ -35,10 +35,6 @@ on:
         description: "The domain name of the Entra ID tenant"
         required: true
         type: string
-      ENTRAID_CLIENT_ID_APP:
-        description: "The client ID that the app will used to connect to the Entra ID to perform application authentication"
-        required: true
-        type: string
       ENTRAID_CLIENT_ID_CLIENT:
         description: "The client ID that the WASM client will used to connect to the Entra ID to perform application authentication"
         required: true
@@ -60,12 +56,12 @@ on:
         required: true
   
     outputs:
-      applicationUrl:
-        description: "The endpoint of the deployed application"
-        value: ${{ jobs.deploy-application-infrastructure.outputs.applicationUrl }}
-      openAiServiceEndpoint:
-        description: "The endpoint of the deployed OpenAI service"
-        value: ${{ jobs.deploy-application-infrastructure.outputs.openAiServiceEndpoint }}
+      staticWebAppName:
+        description: "The name of the Static Web Application that the client is deployed to"
+        value: ${{ jobs.deploy-application-infrastructure.outputs.staticWebAppName }}
+      staticWebAppHostName:
+        description: "The host name of the Static Web Application that the client is deployed to"
+        value: ${{ jobs.deploy-application-infrastructure.outputs.staticWebAppHostName }}
 
 jobs:
   deploy-application-infrastructure:
@@ -73,8 +69,8 @@ jobs:
     environment: ${{ inputs.ENVIRONMENT }}
     runs-on: ubuntu-latest
     outputs:
-      applicationUrl: ${{ steps.deploy.outputs.applicationUrl }}
-      openAiServiceEndpoint: ${{ steps.deploy.outputs.openAiServiceEndpoint }}
+      staticWebAppName: ${{ steps.deploy.outputs.staticWebAppName }}
+      staticWebAppHostName: ${{ steps.deploy.outputs.staticWebAppHostName }}
 
     steps:
       - name: Download build artifacts
@@ -109,6 +105,5 @@ jobs:
             entraIdIssuerUrl=${{ inputs.ENTRAID_ISSUER_URL }}
             entraIdTenantId=${{ inputs.ENTRAID_TENANT_ID }}
             entraIdDomain=${{ inputs.ENTRAID_DOMAIN }}
-            entraIdClientIdApp=${{ inputs.ENTRAID_CLIENT_ID_APP }}
             entraIdClientIdClient=${{ inputs.ENTRAID_CLIENT_ID_CLIENT }}
             entraIdClientIdApi=${{ inputs.ENTRAID_CLIENT_ID_API }}

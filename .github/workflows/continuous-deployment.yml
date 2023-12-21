@@ -56,12 +56,12 @@ jobs:
       AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
   
-  build-app-containers:
+  build-application-containers:
     needs:
       - set-build-variables
       - deploy-shared-infrastructure
       - test-run-unit-tests
-    uses: ./.github/workflows/build-app-containers.yml
+    uses: ./.github/workflows/build-application-containers.yml
     with:
       BUILD_VERSION: ${{ needs.set-build-variables.outputs.BUILD_VERSION }}
       RESOURCE_GROUP_NAME: ${{ vars.RESOURCE_GROUP_NAME_SHARED }}
@@ -74,7 +74,7 @@ jobs:
   validate-application-infrastructure-test:
     needs:
       - set-build-variables
-      - build-app-containers
+      - build-application-containers
     uses: ./.github/workflows/validate-application-infrastructure.yml
     with:
       ENVIRONMENT: Test
@@ -83,7 +83,6 @@ jobs:
       ENTRAID_ISSUER_URL: ${{ vars.ENTRAID_ISSUER_URL }}
       ENTRAID_TENANT_ID: ${{ vars.ENTRAID_TENANT_ID }}
       ENTRAID_DOMAIN: ${{ vars.ENTRAID_DOMAIN }}
-      ENTRAID_CLIENT_ID_APP: ${{ vars.ENTRAID_CLIENT_ID_APP }}
       ENTRAID_CLIENT_ID_CLIENT: ${{ vars.ENTRAID_CLIENT_ID_CLIENT }}
       ENTRAID_CLIENT_ID_API: ${{ vars.ENTRAID_CLIENT_ID_API }}
       RESOURCE_GROUP_NAME_SHARED: ${{ vars.RESOURCE_GROUP_NAME_SHARED }}
@@ -105,7 +104,6 @@ jobs:
       ENTRAID_ISSUER_URL: ${{ vars.ENTRAID_ISSUER_URL }}
       ENTRAID_TENANT_ID: ${{ vars.ENTRAID_TENANT_ID }}
       ENTRAID_DOMAIN: ${{ vars.ENTRAID_DOMAIN }}
-      ENTRAID_CLIENT_ID_APP: ${{ vars.ENTRAID_CLIENT_ID_APP }}
       ENTRAID_CLIENT_ID_CLIENT: ${{ vars.ENTRAID_CLIENT_ID_CLIENT }}
       ENTRAID_CLIENT_ID_API: ${{ vars.ENTRAID_CLIENT_ID_API }}
       RESOURCE_GROUP_NAME_SHARED: ${{ vars.RESOURCE_GROUP_NAME_SHARED }}
@@ -113,4 +111,16 @@ jobs:
     secrets:
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
       AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}     
+
+  deploy-application-client:
+    needs:
+      - set-build-variables
+      - deploy-application-infrastructure-test
+    uses: ./.github/workflows/deploy-application-client.yml
+    with:
+      STATIC_WEB_APP_NAME: ${{ needs.deploy-application-infrastructure-test.outputs.staticWebAppName }}
+    secrets:
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}  

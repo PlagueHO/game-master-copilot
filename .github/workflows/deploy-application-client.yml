@@ -1,0 +1,43 @@
+name: deploy-application-client
+
+on:
+  workflow_call:
+    inputs:
+      STATIC_WEB_APP_NAME:
+        description: 'The name of the static web app to deploy the client to'
+        required: true
+        type: string
+    secrets:
+      AZURE_TENANT_ID:
+        description: 'The Azure tenant ID'
+        required: true
+      AZURE_SUBSCRIPTION_ID:
+        description: 'The Azure subscription ID'
+        required: true
+      AZURE_CLIENT_ID:
+        description: 'The Azure client ID'
+        required: true
+  
+jobs:
+  build-accessapi-container:
+    name: Deploy client to static web app
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          client-id: ${{ secrets.AZURE_CLIENT_ID }} 
+
+      - name: Build and publish
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ vars.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          action: "upload"
+          app_location: "src/GMCopilot/GMCopilot"
+          output_location: "bin/wwwroot"

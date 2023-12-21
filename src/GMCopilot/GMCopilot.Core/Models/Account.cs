@@ -30,7 +30,7 @@ public class Account : IStorageEntity
     /// Gets or sets the list of Tenant Roles associated with the account.
     /// </summary>
     [JsonPropertyName("tenantroles")]
-    public List<AccountTenantRole> TenantRoles { get; set; } = new List<AccountTenantRole>();
+    public List<AccountTenantRole> TenantRoles { get; set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Account"/> class.

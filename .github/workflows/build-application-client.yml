@@ -1,0 +1,39 @@
+name: build-application-client
+
+on:
+  workflow_call:
+    inputs:
+      BUILD_CONFIGURATION:
+        description: 'The version to assign to the client'
+        type: string
+        default: 'Debug'
+
+jobs:
+  build-app-client:
+    name: Build application client
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install .NET 8
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8
+
+      - name: Build publishable application client
+        run: |
+          dotnet workload restore  
+          dotnet publish --configuration ${{ inputs.BUILD_CONFIGURATION }}
+        working-directory: ./src/GMCopilot/
+
+      - name: Zip publishable application client
+        run: |
+          zip -r gmcopilot-client.zip .
+        working-directory: ./src/GMCopilot/GMCopilot/bin/${{ inputs.BUILD_CONFIGURATION }}/net8.0/publish
+
+      - name: Upload application client as workflow artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: gmcopilot-client
+          path: ./src/GMCopilot/GMCopilot/bin/${{ inputs.BUILD_CONFIGURATION }}/net8.0/publish/gmcopilot-client.zip

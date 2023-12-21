@@ -16,10 +16,12 @@ jobs:
   test-run-unit-tests:
     uses: ./.github/workflows/test-run-unit-tests.yml
 
-  build-app-binaries:
+  build-application-client:
     needs:
       - test-run-unit-tests
-    uses: ./.github/workflows/build-app-binaries.yml
+    uses: ./.github/workflows/build-application-client.yml
+    with:
+      BUILD_CONFIGURATION: Debug
     
   build-armtemplates:
     uses: ./.github/workflows/build-armtemplates.yml

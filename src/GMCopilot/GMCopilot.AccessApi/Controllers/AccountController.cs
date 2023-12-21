@@ -1,40 +1,50 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Web.Resource;
-using Microsoft.Graph;
 using GMCopilot.Core.Models;
 using GMCopilot.Core.Repositories;
-using Microsoft.IdentityModel.Tokens;
+using GMCopilot.Core.Authorization;
 
 namespace GMCopilot.AccessApi.Controllers;
 
-[Authorize]
 [ApiController]
 [Route("[controller]")]
-[RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
+[Produces("application/json")]
 public class AccountController : ControllerBase
 {
-    private readonly GraphServiceClient _graphServiceClient;
-    private readonly AccountRepository _accountRepository;
-
     private readonly ILogger<AccountController> _logger;
+    private readonly AccountRepository _accountRepository;
+    private readonly ClaimsProviderService _claimsProvider;
 
-    public AccountController(ILogger<AccountController> logger, GraphServiceClient graphServiceClient, AccountRepository accountRepository)
+    public AccountController(
+        ILogger<AccountController> logger,
+        AccountRepository accountRepository,
+        ClaimsProviderService claimsProvider)
     {
         _logger = logger;
-        _graphServiceClient = graphServiceClient;
         _accountRepository = accountRepository;
+        _claimsProvider = claimsProvider;
     }
 
+    /// <summary>
+    /// Gets the user ID from the claims.
+    /// </summary>
+    /// <returns>The user ID as a string.</returns>
+    private string GetUserIdFromClaims()
+    {
+        // TODO: Change all StorageEntityId to be Guids
+        return _claimsProvider.GetUserId(HttpContext).ToString();
+    }
     
-    // GET: Account of currently logged in user
-    [HttpGet(Name = "GetAccountCurrentUser")]
-    public async Task<ActionResult<Account>> Get()
+    // <summary>
+    // Gets the account of the currently logged in user.
+    // </summary>
+    [HttpGet(Name = "GetAccount")]
+    [Authorize(Policy = AuthorizationScopes.GMCopilotUser)]
+    public async Task<ActionResult<Account>> GetAccount()
     {
         try
         {
-            var user = await _graphServiceClient.Me.Request().GetAsync();
-            var account = await _accountRepository.FindByAccountIdAsync(user.Id);
+            var account = await _accountRepository.FindByAccountIdAsync(GetUserIdFromClaims());
             return Ok(account);
         }
         catch (Exception ex)
@@ -44,9 +54,75 @@ public class AccountController : ControllerBase
         }
     }
 
-    // GET: Account by Id
+    // <summary>
+    // Updates the account of the currently logged in user.
+    // </summary>
+    // <param name="account">The account to update.</param>
+    [HttpPut(Name = "UpdateAccount")]
+    [Authorize(Policy = AuthorizationScopes.GMCopilotUser)]
+    public async Task<ActionResult> UpdateAccount(Account account)
+    {
+        try
+        {
+            if (account == null)
+            {
+                return BadRequest();
+            }
+
+            if (account.Id != GetUserIdFromClaims())
+            {
+                // Can't change the account of another user without AccountsAdmin scope
+                return Unauthorized();
+            }
+
+            await _accountRepository.UpsertAsync(account);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error creating account.");
+            return StatusCode(500);
+        }
+    }
+
+    // <summary>
+    // Creates a new account for the current user.
+    // </summary>
+    // <param name="account">The account to create.</param>
+    [HttpPost(Name = "CreateAccount")]
+    [Authorize(Policy = AuthorizationScopes.GMCopilotUser)]
+    public async Task<ActionResult> CreateAccount(Account account)
+    {
+        try
+        {
+            if (account == null)
+            {
+                return BadRequest();
+            }
+
+            if (account.Id != GetUserIdFromClaims())
+            {
+                // Can't create an account for another user without AccountsAdmin scope
+                return Unauthorized();
+            }
+
+            await _accountRepository.CreateAsync(account);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error creating account.");
+            return StatusCode(500);
+        }
+    }
+
+    // <summary>
+    // Gets the account of a specific user.
+    // </summary>
+    // <param name="id">The ID of the user to get the account for.</param>
     [HttpGet("{id}", Name = "GetAccountById")]
-    public async Task<ActionResult<Account>> Get(string id)
+    [Authorize(Policy = AuthorizationScopes.GMCopilotAdmin)]
+    public async Task<ActionResult<Account>> GetAccountById(string id)
     {
         try
         {
@@ -65,51 +141,10 @@ public class AccountController : ControllerBase
         }
     }
 
-    // POST: Account
-    [HttpPost(Name = "CreateAccount")]
-    public async Task<ActionResult> Create(Account account)
-    {
-        try
-        {
-            if (account == null)
-            {
-                return BadRequest();
-            }
-
-            await _accountRepository.CreateAsync(account);
-            return Ok();
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error creating account.");
-            return StatusCode(500);
-        }
-    }
-
-    // PUT: Account
-    [HttpPut("{id}", Name = "UpsertAccount")]
-    public async Task<ActionResult> Upsert(Account account)
-    {
-        try
-        {
-            if (account == null)
-            {
-                return BadRequest();
-            }
-
-            await _accountRepository.UpsertAsync(account);
-            return Ok();
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error creating account.");
-            return StatusCode(500);
-        }
-    }
-
     // DELETE: Account by Id
     [HttpDelete("{id}", Name = "DeleteAccount")]
-    public async Task<ActionResult> Delete(string id)
+    [Authorize(Policy = AuthorizationScopes.GMCopilotAdmin)]
+    public async Task<ActionResult> DeleteAccount(string id)
     {
         try
         {
