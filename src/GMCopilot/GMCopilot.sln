@@ -1,31 +1,34 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.9.34321.82
+VisualStudioVersion = 17.9.34407.89
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot", "GMCopilot\GMCopilot\GMCopilot.csproj", "{5D4679D5-8CD5-4ED3-8DF7-0EC7935040D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot", "GMCopilot\GMCopilot.csproj", "{9B403BD7-E25C-49AC-857C-468E3789B46C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.Client", "GMCopilot\GMCopilot.Client\GMCopilot.Client.csproj", "{E96BFDE8-1C06-4273-883E-E6E084F81B03}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.AppHost", "GMCopilot.AppHost\GMCopilot.AppHost.csproj", "{9A6278E5-08C1-439C-B4CF-01355A61F84B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.AppHost", "GMCopilot.AppHost\GMCopilot.AppHost.csproj", "{947A6781-CC9E-40C6-BD2A-CAC741BB9DDC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.ServiceDefaults", "GMCopilot.ServiceDefaults\GMCopilot.ServiceDefaults.csproj", "{359FC019-6C61-4BD9-B029-11A5617010BA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.ServiceDefaults", "GMCopilot.ServiceDefaults\GMCopilot.ServiceDefaults.csproj", "{F133D4FC-27E9-4B5E-BECF-567B45912536}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.AccessApi", "GMCopilot.AccessApi\GMCopilot.AccessApi.csproj", "{C9F20293-32E3-4CE3-8939-125BCBBF891E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "infrastructure", "infrastructure", "{AC637440-6306-456A-B8B4-78B20E27C464}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.Core", "GMCopilot.Core\GMCopilot.Core.csproj", "{B5CCEE6B-F318-416D-BFAE-DDAD3A316894}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "bicep", "bicep", "{10D81E03-BA52-490A-B458-7604EEB53DFB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.Core.Test", "GMCopilot.Core.Test\GMCopilot.Core.Test.csproj", "{9E6BE8B3-D2AD-496A-913B-E621283A9DA8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "infrastructure", "infrastructure", "{8861140B-0A07-468C-B890-B95786A5B098}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "bicep", "bicep", "{F8B728E9-BF37-4893-BE3A-2C72B501F21F}"
 	ProjectSection(SolutionItems) = preProject
 		..\..\infrastructure\bicep\application.bicep = ..\..\infrastructure\bicep\application.bicep
 		..\..\infrastructure\bicep\shared.bicep = ..\..\infrastructure\bicep\shared.bicep
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{602364DA-368C-48BD-A57C-477B96AC5875}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{5712E846-39C2-495A-A7AD-97DD04C422FF}"
 	ProjectSection(SolutionItems) = preProject
 		..\..\infrastructure\bicep\modules\aiSearch.bicep = ..\..\infrastructure\bicep\modules\aiSearch.bicep
 		..\..\infrastructure\bicep\modules\appConfiguration.bicep = ..\..\infrastructure\bicep\modules\appConfiguration.bicep
-		..\..\infrastructure\bicep\modules\appServicePlan.bicep = ..\..\infrastructure\bicep\modules\appServicePlan.bicep
-		..\..\infrastructure\bicep\modules\b2c.bicep = ..\..\infrastructure\bicep\modules\b2c.bicep
 		..\..\infrastructure\bicep\modules\containerApp.bicep = ..\..\infrastructure\bicep\modules\containerApp.bicep
+		..\..\infrastructure\bicep\modules\containerAppEnvironment.bicep = ..\..\infrastructure\bicep\modules\containerAppEnvironment.bicep
 		..\..\infrastructure\bicep\modules\containerRegistry.bicep = ..\..\infrastructure\bicep\modules\containerRegistry.bicep
 		..\..\infrastructure\bicep\modules\cosmosDbAccount.bicep = ..\..\infrastructure\bicep\modules\cosmosDbAccount.bicep
 		..\..\infrastructure\bicep\modules\keyVault.bicep = ..\..\infrastructure\bicep\modules\keyVault.bicep
@@ -33,14 +36,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{6023
 		..\..\infrastructure\bicep\modules\openAiService.bicep = ..\..\infrastructure\bicep\modules\openAiService.bicep
 		..\..\infrastructure\bicep\modules\roleAssignment.bicep = ..\..\infrastructure\bicep\modules\roleAssignment.bicep
 		..\..\infrastructure\bicep\modules\storageAccount.bicep = ..\..\infrastructure\bicep\modules\storageAccount.bicep
-		..\..\infrastructure\bicep\modules\webAppBlazor.bicep = ..\..\infrastructure\bicep\modules\webAppBlazor.bicep
+		..\..\infrastructure\bicep\modules\userAssignedManagedIdentity.bicep = ..\..\infrastructure\bicep\modules\userAssignedManagedIdentity.bicep
 	EndProjectSection
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.Core", "GMCopilot.Core\GMCopilot.Core.csproj", "{0C51CD4D-9995-4022-91C5-3F3A9419D8FF}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.Core.Test", "GMCopilot.Core.Test\GMCopilot.Core.Test.csproj", "{4DA87B6D-D330-43B0-B72E-098E2003DFB9}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.AccessApi", "GMCopilot.AccessApi\GMCopilot.AccessApi.csproj", "{85BCB97B-DA50-4E4E-B396-D3F96291130D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,43 +45,39 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5D4679D5-8CD5-4ED3-8DF7-0EC7935040D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5D4679D5-8CD5-4ED3-8DF7-0EC7935040D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5D4679D5-8CD5-4ED3-8DF7-0EC7935040D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5D4679D5-8CD5-4ED3-8DF7-0EC7935040D1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E96BFDE8-1C06-4273-883E-E6E084F81B03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E96BFDE8-1C06-4273-883E-E6E084F81B03}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E96BFDE8-1C06-4273-883E-E6E084F81B03}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E96BFDE8-1C06-4273-883E-E6E084F81B03}.Release|Any CPU.Build.0 = Release|Any CPU
-		{947A6781-CC9E-40C6-BD2A-CAC741BB9DDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{947A6781-CC9E-40C6-BD2A-CAC741BB9DDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{947A6781-CC9E-40C6-BD2A-CAC741BB9DDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{947A6781-CC9E-40C6-BD2A-CAC741BB9DDC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F133D4FC-27E9-4B5E-BECF-567B45912536}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F133D4FC-27E9-4B5E-BECF-567B45912536}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F133D4FC-27E9-4B5E-BECF-567B45912536}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F133D4FC-27E9-4B5E-BECF-567B45912536}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0C51CD4D-9995-4022-91C5-3F3A9419D8FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0C51CD4D-9995-4022-91C5-3F3A9419D8FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0C51CD4D-9995-4022-91C5-3F3A9419D8FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0C51CD4D-9995-4022-91C5-3F3A9419D8FF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4DA87B6D-D330-43B0-B72E-098E2003DFB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4DA87B6D-D330-43B0-B72E-098E2003DFB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4DA87B6D-D330-43B0-B72E-098E2003DFB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4DA87B6D-D330-43B0-B72E-098E2003DFB9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{85BCB97B-DA50-4E4E-B396-D3F96291130D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{85BCB97B-DA50-4E4E-B396-D3F96291130D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{85BCB97B-DA50-4E4E-B396-D3F96291130D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{85BCB97B-DA50-4E4E-B396-D3F96291130D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B403BD7-E25C-49AC-857C-468E3789B46C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B403BD7-E25C-49AC-857C-468E3789B46C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B403BD7-E25C-49AC-857C-468E3789B46C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B403BD7-E25C-49AC-857C-468E3789B46C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A6278E5-08C1-439C-B4CF-01355A61F84B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A6278E5-08C1-439C-B4CF-01355A61F84B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A6278E5-08C1-439C-B4CF-01355A61F84B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A6278E5-08C1-439C-B4CF-01355A61F84B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{359FC019-6C61-4BD9-B029-11A5617010BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{359FC019-6C61-4BD9-B029-11A5617010BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{359FC019-6C61-4BD9-B029-11A5617010BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{359FC019-6C61-4BD9-B029-11A5617010BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9F20293-32E3-4CE3-8939-125BCBBF891E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9F20293-32E3-4CE3-8939-125BCBBF891E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9F20293-32E3-4CE3-8939-125BCBBF891E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9F20293-32E3-4CE3-8939-125BCBBF891E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5CCEE6B-F318-416D-BFAE-DDAD3A316894}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5CCEE6B-F318-416D-BFAE-DDAD3A316894}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5CCEE6B-F318-416D-BFAE-DDAD3A316894}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5CCEE6B-F318-416D-BFAE-DDAD3A316894}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E6BE8B3-D2AD-496A-913B-E621283A9DA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E6BE8B3-D2AD-496A-913B-E621283A9DA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E6BE8B3-D2AD-496A-913B-E621283A9DA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E6BE8B3-D2AD-496A-913B-E621283A9DA8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{10D81E03-BA52-490A-B458-7604EEB53DFB} = {AC637440-6306-456A-B8B4-78B20E27C464}
-		{602364DA-368C-48BD-A57C-477B96AC5875} = {10D81E03-BA52-490A-B458-7604EEB53DFB}
+		{F8B728E9-BF37-4893-BE3A-2C72B501F21F} = {8861140B-0A07-468C-B890-B95786A5B098}
+		{5712E846-39C2-495A-A7AD-97DD04C422FF} = {F8B728E9-BF37-4893-BE3A-2C72B501F21F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {5AF7AFCB-A536-477A-AF4B-C6E5D0593636}
+		SolutionGuid = {5EDFCB30-204B-4496-9C18-7AFB0D5186DC}
 	EndGlobalSection
 EndGlobal

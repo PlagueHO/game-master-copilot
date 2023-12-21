@@ -1,9 +1,8 @@
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Identity.Web;
-using Microsoft.Identity.Abstractions;
-using Microsoft.Identity.Web.Resource;
-using GMCopilot.Extensions;
+using GMCopilot.AccessApi.Data;
+using GMCopilot.Core.Authorization;
+using Microsoft.OpenApi.Models;
 
 namespace GMCopilot.AccessApi;
 
@@ -15,16 +14,55 @@ public class Program
         builder.AddServiceDefaults();
 
         // Add the data stores
-        builder.AddDataStore();
+        builder.AddDataStores();
 
-        // Add services to the container.
+        // Add authentication
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
+            .AddMicrosoftIdentityWebApi(options =>
+            {
+                builder.Configuration.Bind("EntraId", options);
+                options.TokenValidationParameters.NameClaimType = "name";
+            }, options =>
+            {
+                builder.Configuration.Bind("EntraId", options);
+            });
 
+        // Add authorization
+        builder.AddAccessAuthorization();
+
+        // Add API Controllers
         builder.Services.AddControllers();
+        
+        // Add the ClaimsProviderService to provide access to the user's claims
+        builder.Services.AddScoped<ClaimsProviderService>();
+
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
+        builder.Services.AddSwaggerGen(options =>
+        {
+            options.SwaggerDoc("v1", new OpenApiInfo { Title = "Access API", Version = "v1" });
+            options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                Name = "Authorization",
+                In = ParameterLocation.Header,
+                Type = SecuritySchemeType.ApiKey
+            });
+            options.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    new string[]{}
+                }
+            });
+        });
 
         var app = builder.Build();
 
@@ -39,6 +77,7 @@ public class Program
 
         app.UseHttpsRedirection();
 
+        app.UseAuthentication();
         app.UseAuthorization();
 
         app.MapControllers();

@@ -1,0 +1,26 @@
+﻿@page "/"
+
+@inject NavigationManager Navigation
+
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+
+<PageTitle>Game Master Copilot - Home</PageTitle>
+
+<h1>Welcome to Game Master Copilot</h1>
+
+<p>This application will help you build and manage content for your table top role playing games using generative AI.</p>
+
+<AuthorizeView>
+    <Authorized>
+        <p>Welcome back to Game Master Copilot, <b>@context.User.Identity?.Name</b>.</p>
+    </Authorized>
+
+    <NotAuthorized>
+        <p>
+            Please
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@((e) => Navigation.NavigateToLogout("authentication/login"))">Login</MudButton>
+            to continue.
+        </p>
+    </NotAuthorized>
+</AuthorizeView>
+

@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -6,17 +6,15 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsAspireHost>true</IsAspireHost>
-    <UserSecretsId>ccb6c43d-fc2c-426c-8671-491511f852c9</UserSecretsId>
+    <UserSecretsId>73d9923c-be8f-4868-ab8e-fbba969d5627</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Aspire.Hosting" Version="8.0.0-preview.1.23557.2" />
-    <PackageReference Include="Aspire.Microsoft.Azure.Cosmos" Version="8.0.0-preview.1.23557.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\GMCopilot.AccessApi\GMCopilot.AccessApi.csproj" />
-    <ProjectReference Include="..\GMCopilot\GMCopilot\GMCopilot.csproj" />
   </ItemGroup>
 
 </Project>

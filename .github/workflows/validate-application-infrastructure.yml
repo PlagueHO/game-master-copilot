@@ -35,10 +35,6 @@ on:
         description: "The domain name of the Entra ID tenant"
         required: true
         type: string
-      ENTRAID_CLIENT_ID_APP:
-        description: "The client ID that the app will used to connect to the Entra ID to perform application authentication"
-        required: true
-        type: string
       ENTRAID_CLIENT_ID_CLIENT:
         description: "The client ID that the WASM client will used to connect to the Entra ID to perform application authentication"
         required: true
@@ -95,7 +91,6 @@ jobs:
             entraIdIssuerUrl=${{ inputs.ENTRAID_ISSUER_URL }}
             entraIdTenantId=${{ inputs.ENTRAID_TENANT_ID }}
             entraIdDomain=${{ inputs.ENTRAID_DOMAIN }}
-            entraIdClientIdApp=${{ inputs.ENTRAID_CLIENT_ID_APP }}
             entraIdClientIdClient=${{ inputs.ENTRAID_CLIENT_ID_CLIENT }}
             entraIdClientIdApi=${{ inputs.ENTRAID_CLIENT_ID_API }}
           additionalArguments: --what-if

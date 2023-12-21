@@ -16,10 +16,6 @@ if (dataStoreCosmosDbConnectionString == null)
     throw new InvalidOperationException("DataStore:CosmosDb:ConnectionString is required.");
 }
 
-// Add the Application project
-builder.AddProject<Projects.GMCopilot>("gmcopilot")
-    .WithEnvironment("ApplicationInsights:ConnectionString",applicationInsightsConnectionString);
-
 // Add the Access API project
 builder.AddProject<Projects.GMCopilot_AccessApi>("gmcopilot.accessapi")
     .WithEnvironment("ApplicationInsights:ConnectionString", applicationInsightsConnectionString)

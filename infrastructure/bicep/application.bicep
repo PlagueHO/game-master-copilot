@@ -17,6 +17,16 @@ targetScope = 'subscription'
 ])
 param location string = 'CanadaEast'
 
+@description('The location to deploy the Game Master Copilot static web app into.')
+@allowed([
+  'CentralUS'
+  'EastUS2'
+  'EastAsia'
+  'WestEurope'
+  'WestUS2'
+])
+param staticWebAppLocation string = 'CentralUS'
+
 @description('The environment to deploy the Game Master Copilot into.')
 @allowed([
   'Test'
@@ -50,10 +60,6 @@ param entraIdTenantId string
 @secure()
 param entraIdDomain string
 
-@description('The client ID that the app will used to connect to the Entra ID to perform application authentication.')
-@secure()
-param entraIdClientIdApp string
-
 @description('The client ID that the WASM client will used to connect to the Entra ID to perform application authentication.')
 @secure()
 param entraIdClientIdClient string
@@ -66,6 +72,7 @@ param entraIdClientIdApi string
 var logAnalyticsWorkspaceName = '${baseResourceName}-law'
 var applicationInsightsName = '${baseResourceName}-ai'
 var keyVaultName = '${baseResourceName}-akv'
+var staticWebAppName = baseResourceName
 var appConfigurationName = '${baseResourceName}-appconfig'
 var openAiServiceName = '${baseResourceName}-oai'
 var aiSearchName = '${baseResourceName}-aisearch'
@@ -262,7 +269,7 @@ var containerAppEnvrionmentVariables = {
     }
     {
       name: 'EntraId__ClientId'
-      value: entraIdClientIdApp
+      value: entraIdClientIdApi
     }
     {
       name: 'EntraId__CallbackPath'
@@ -395,8 +402,8 @@ var containerAppWebSecrets = [
 
 var containerAppWebContainers = [
   {
-    name: 'gmcopilot'
-    image: '${containerRegistryLoginServer}/gmcopilot/gmcopilot:${buildVersion}'
+    name: 'gmcopilot-access-api'
+    image: '${containerRegistryLoginServer}/gmcopilot/gmcopilot.accessapi:${buildVersion}'
     probes: [
       {
         type: 'liveness'
@@ -437,7 +444,6 @@ var containerAppWebContainers = [
   }
 ]
 
-
 module containerAppWeb './modules/containerApp.bicep' = {
   name: 'containerAppWeb'
   scope: rg
@@ -449,6 +455,15 @@ module containerAppWeb './modules/containerApp.bicep' = {
     containerAppEnvironmentName: containerAppEnvironmentName
     containers: containerAppWebContainers
     secrets: containerAppWebSecrets
+  }
+}
+
+module staticWebApp './modules/staticWebApp.bicep' = {
+  name: 'staticWebApp'
+  scope: rg
+  params: {
+    location: staticWebAppLocation
+    staticWebAppName: staticWebAppName
   }
 }
 
