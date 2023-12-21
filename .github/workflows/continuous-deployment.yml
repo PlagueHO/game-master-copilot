@@ -119,6 +119,7 @@ jobs:
       - deploy-application-infrastructure-test
     uses: ./.github/workflows/deploy-application-client.yml
     with:
+      ENVIRONMENT: Test
       STATIC_WEB_APP_NAME: ${{ needs.deploy-application-infrastructure-test.outputs.staticWebAppName }}
     secrets:
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}

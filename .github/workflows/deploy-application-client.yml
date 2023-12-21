@@ -3,6 +3,10 @@ name: deploy-application-client
 on:
   workflow_call:
     inputs:
+      ENVIRONMENT:
+        description: "The environment to validate the application infrastructure for"
+        required: true
+        type: string
       STATIC_WEB_APP_NAME:
         description: 'The name of the static web app to deploy the client to'
         required: true
@@ -21,6 +25,7 @@ on:
 jobs:
   build-accessapi-container:
     name: Deploy client to static web app
+    environment: ${{ inputs.ENVIRONMENT }}
     runs-on: ubuntu-latest
 
     steps:
