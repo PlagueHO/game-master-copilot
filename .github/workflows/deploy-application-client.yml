@@ -7,6 +7,10 @@ on:
         description: 'The name of the static web app to deploy the client to'
         required: true
         type: string
+      RESOURCE_GROUP_NAME:
+        description: 'The name of the resource group the static web app is in'
+        required: true
+        type: string
     secrets:
       AZURE_TENANT_ID:
         description: 'The Azure tenant ID'
@@ -37,7 +41,7 @@ jobs:
       - name: Get static web app token
         id: get-static-web-app-token
         run: |
-          api_secret=$(az staticwebapp secrets list --name ${{ inputs.STATIC_WEB_APP_NAME }} --resource-group ${{ vars.RESOURCE_GROUP_NAME }} | jq -r '.api')
+          api_secret=$(az staticwebapp secrets list --name ${{ inputs.STATIC_WEB_APP_NAME }} --resource-group ${{ inputs.RESOURCE_GROUP_NAME }} | jq -r '.api')
           echo "api_secret==$api_secret" >> "$GITHUB_OUTPUT"
   
       - name: Build and publish
