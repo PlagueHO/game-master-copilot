@@ -19,6 +19,7 @@ resource staticWebApp 'Microsoft.Web/staticSites@2022-09-01' = {
   sku: {
     name: sku
     tier: sku
+    size: sku
   }
   identity: {
     type: 'SystemAssigned'
