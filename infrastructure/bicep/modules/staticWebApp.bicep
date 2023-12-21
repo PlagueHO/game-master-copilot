@@ -7,7 +7,10 @@
 ])
 param location string
 param staticWebAppName string
-@allowed([ 'Free', 'Standard' ])
+@allowed([
+  'Free'
+  'Standard'
+])
 param sku string = 'Free'
 
 resource staticWebApp 'Microsoft.Web/staticSites@2022-09-01' = {
@@ -15,7 +18,7 @@ resource staticWebApp 'Microsoft.Web/staticSites@2022-09-01' = {
   location: location
   sku: {
     name: sku
-    size: sku
+    tier: sku
   }
   identity: {
     type: 'SystemAssigned'

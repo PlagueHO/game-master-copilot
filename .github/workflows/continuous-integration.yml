@@ -23,5 +23,5 @@ jobs:
     with:
       BUILD_CONFIGURATION: Debug
     
-  build-armtemplates:
-    uses: ./.github/workflows/build-armtemplates.yml
+  build-arm-templates:
+    uses: ./.github/workflows/build-arm-templates.yml

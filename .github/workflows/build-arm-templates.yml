@@ -1,4 +1,4 @@
-name: build-armtemplates
+name: build-arm-templates
 
 on:
   workflow_call:

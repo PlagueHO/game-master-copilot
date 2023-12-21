@@ -22,8 +22,8 @@ jobs:
   set-build-variables:
     uses: ./.github/workflows/set-build-variables.yml
 
-  build-armtemplates:
-    uses: ./.github/workflows/build-armtemplates.yml
+  build-arm-templates:
+    uses: ./.github/workflows/build-arm-templates.yml
 
   test-run-unit-tests:
     uses: ./.github/workflows/test-run-unit-tests.yml
@@ -31,7 +31,7 @@ jobs:
   validate-shared-infrastructure:
     needs:
       - set-build-variables
-      - build-armtemplates
+      - build-arm-templates
     uses: ./.github/workflows/validate-shared-infrastructure.yml
     with:
       LOCATION: ${{ vars.LOCATION }}
