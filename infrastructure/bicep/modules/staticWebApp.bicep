@@ -13,16 +13,12 @@ param staticWebAppName string
 ])
 param sku string = 'Free'
 
-resource staticWebApp 'Microsoft.Web/staticSites@2022-09-01' = {
+resource staticWebApp 'Microsoft.Web/staticSites@2023-01-01' = {
   name: staticWebAppName
   location: location
   sku: {
     name: sku
     tier: sku
-    size: sku
-  }
-  identity: {
-    type: 'SystemAssigned'
   }
   properties: {
     disableLocalAuth: false
