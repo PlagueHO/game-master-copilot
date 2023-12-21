@@ -30,10 +30,10 @@ jobs:
       - name: Zip publishable application client
         run: |
           zip -r gmcopilot-client.zip .
-        working-directory: ./src/GMCopilot/GMCopilot/GMCopilot/bin/${{ inputs.BUILD_CONFIGURATION }}/net8.0/publish
+        working-directory: ./src/GMCopilot/GMCopilot/bin/${{ inputs.BUILD_CONFIGURATION }}/net8.0/publish
 
       - name: Upload application client as workflow artifact
         uses: actions/upload-artifact@v3
         with:
           name: gmcopilot-client
-          path: ./src/GMCopilot/GMCopilot/GMCopilot/bin/${{ inputs.BUILD_CONFIGURATION }}/net8.0/publish/gmcopilot-client.zip
+          path: ./src/GMCopilot/GMCopilot/bin/${{ inputs.BUILD_CONFIGURATION }}/net8.0/publish/gmcopilot-client.zip
