@@ -42,13 +42,13 @@ jobs:
       - name: Get static web app token
         id: get-static-web-app-token
         run: |
-          api_secret=$(az staticwebapp secrets list --name ${{ inputs.STATIC_WEB_APP_NAME }} --resource-group ${{ vars.RESOURCE_GROUP_NAME }} | jq -r '.api')
-          echo "api_secret==$api_secret" >> "$GITHUB_OUTPUT"
+          api_token=$(az staticwebapp secrets list --name ${{ inputs.STATIC_WEB_APP_NAME }} --resource-group ${{ vars.RESOURCE_GROUP_NAME }} | jq -r '.properties.apiKey')
+          echo "api_token=$api_token" >> "$GITHUB_OUTPUT"
   
       - name: Build and publish
         uses: Azure/static-web-apps-deploy@v1
         with:
-          azure_static_web_apps_api_token: ${{ steps.get-static-web-app-token.outputs.api_secret }}
+          azure_static_web_apps_api_token: ${{ steps.get-static-web-app-token.outputs.api_token }}
           action: "upload"
           app_location: "src/GMCopilot/GMCopilot"
           output_location: "bin/wwwroot"
