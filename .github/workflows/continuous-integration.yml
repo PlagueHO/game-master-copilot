@@ -20,6 +20,8 @@ jobs:
     needs:
       - test-run-unit-tests
     uses: ./.github/workflows/build-application-client.yml
+    with:
+      BUILD_CONFIGURATION: Debug
     
   build-armtemplates:
     uses: ./.github/workflows/build-armtemplates.yml
