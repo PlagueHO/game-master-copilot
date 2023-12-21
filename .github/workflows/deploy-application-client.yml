@@ -51,5 +51,4 @@ jobs:
           azure_static_web_apps_api_token: ${{ steps.get-static-web-app-token.outputs.api_token }}
           action: "upload"
           app_location: "src/GMCopilot/GMCopilot"
-          output_location: "bin/Release/net8.0/wwwroot"
           app_build_command: "dotnet publish -c Release -o bin"

@@ -3,7 +3,6 @@
   "configurations": {
     "game-master-copilot": {
       "appLocation": "src\\GMCopilot\\GMCopilot",
-      "outputLocation": "bin\\wwwroot",
       "appBuildCommand": "dotnet publish -c Release -o bin",
       "run": "dotnet watch run",
       "appDevserverUrl": "http://localhost:8000"
