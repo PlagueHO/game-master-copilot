@@ -14,7 +14,7 @@ builder.Services.AddScoped(sp => new HttpClient {
 builder.Services.AddMsalAuthentication(options =>
 {
     builder.Configuration.Bind("EntraId", options.ProviderOptions.Authentication);
-    options.ProviderOptions.LoginMode = "redirect";
+    // options.ProviderOptions.LoginMode = "redirect";
     options.ProviderOptions.DefaultAccessTokenScopes.Add("openid");
     options.ProviderOptions.DefaultAccessTokenScopes.Add("offline_access");
 });
