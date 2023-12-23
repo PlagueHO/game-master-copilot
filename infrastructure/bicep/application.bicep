@@ -79,7 +79,7 @@ var aiSearchName = '${baseResourceName}-aisearch'
 var cosmosDbAccountName = '${baseResourceName}-cdb'
 var storageAccountName = replace('${baseResourceName}data','-','')
 var containerAppEnvironmentName = '${baseResourceName}-cae'
-var containerAppName = baseResourceName
+var containerAppApiName = '${baseResourceName}-api'
 var containerAppUserAssignedManagedIdentityName = '${baseResourceName}-caumi'
 var containerRegistryName = replace('${baseResourceNameShared}acr','-','')
 
@@ -385,7 +385,7 @@ resource openAiServiceExisting 'Microsoft.CognitiveServices/accounts@2023-05-01'
   scope: rg
 }
 
-var containerAppWebSecrets = [
+var containerAppApiSecrets = [
   {
     name: 'datastore-cosmosdb-connectionstring'
     value: cosmosDbAccountExisting.listConnectionStrings().connectionStrings[0].connectionString
@@ -400,7 +400,7 @@ var containerAppWebSecrets = [
   }
 ]
 
-var containerAppWebContainers = [
+var containerAppApiContainers = [
   {
     name: 'gmcopilot-access-api'
     image: '${containerRegistryLoginServer}/gmcopilot/gmcopilot.accessapi:${buildVersion}'
@@ -444,17 +444,17 @@ var containerAppWebContainers = [
   }
 ]
 
-module containerAppWeb './modules/containerApp.bicep' = {
-  name: 'containerAppWeb'
+module containerAppApi './modules/containerApp.bicep' = {
+  name: 'containerAppApi'
   scope: rg
   params: {
     location: location
-    containerAppName: containerAppName
+    containerAppName: containerAppApiName
     containerRegistryLoginServer: containerRegistryLoginServer
     userAssignedManagedIdentityName: containerAppUserAssignedManagedIdentityName
     containerAppEnvironmentName: containerAppEnvironmentName
-    containers: containerAppWebContainers
-    secrets: containerAppWebSecrets
+    containers: containerAppApiContainers
+    secrets: containerAppApiSecrets
   }
 }
 
