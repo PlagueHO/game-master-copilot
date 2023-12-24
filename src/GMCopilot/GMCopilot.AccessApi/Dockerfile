@@ -11,6 +11,7 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["src/GMCopilot/GMCopilot.AccessApi/GMCopilot.AccessApi.csproj", "GMCopilot.AccessApi/"]
 COPY ["src/GMCopilot/GMCopilot.Core/GMCopilot.Core.csproj", "GMCopilot.Core/"]
+COPY ["src/GMCopilot/GMCopilot.Data/GMCopilot.Data.csproj", "GMCopilot.Data/"]
 COPY ["src/GMCopilot/GMCopilot.ServiceDefaults/GMCopilot.ServiceDefaults.csproj", "GMCopilot.ServiceDefaults/"]
 RUN dotnet restore "./GMCopilot.AccessApi/GMCopilot.AccessApi.csproj"
 COPY src/GMCopilot/ .

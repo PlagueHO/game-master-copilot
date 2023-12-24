@@ -1,6 +1,6 @@
 ﻿using GMCopilot.Core.Models;
 
-namespace GMCopilot.Core.Repositories;
+namespace GMCopilot.Data.Repositories;
 
 /// <summary>
 /// Defines the extended CRUD operations for a tenanted and typed repository.

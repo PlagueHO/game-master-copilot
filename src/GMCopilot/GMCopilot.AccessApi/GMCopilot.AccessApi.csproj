@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GMCopilot.Core\GMCopilot.Core.csproj" />
+    <ProjectReference Include="..\GMCopilot.Data\GMCopilot.Data.csproj" />
     <ProjectReference Include="..\GMCopilot.ServiceDefaults\GMCopilot.ServiceDefaults.csproj" />
   </ItemGroup>
 

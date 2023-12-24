@@ -39,6 +39,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{5712
 		..\..\infrastructure\bicep\modules\userAssignedManagedIdentity.bicep = ..\..\infrastructure\bicep\modules\userAssignedManagedIdentity.bicep
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMCopilot.Data", "GMCopilot.Data\GMCopilot.Data.csproj", "{7FA7DBB5-B7FF-483F-BD67-ECBD5BADF932}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{9E6BE8B3-D2AD-496A-913B-E621283A9DA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E6BE8B3-D2AD-496A-913B-E621283A9DA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9E6BE8B3-D2AD-496A-913B-E621283A9DA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FA7DBB5-B7FF-483F-BD67-ECBD5BADF932}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FA7DBB5-B7FF-483F-BD67-ECBD5BADF932}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FA7DBB5-B7FF-483F-BD67-ECBD5BADF932}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FA7DBB5-B7FF-483F-BD67-ECBD5BADF932}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

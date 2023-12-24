@@ -2,7 +2,7 @@
 using Microsoft.Azure.Cosmos;
 using System.Net;
 
-namespace GMCopilot.Core.Repositories;
+namespace GMCopilot.Data.Repositories;
 
 /// <summary>
 /// A storage context that stores entities in a CosmosDB container.

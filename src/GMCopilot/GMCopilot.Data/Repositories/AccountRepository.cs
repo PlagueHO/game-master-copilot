@@ -1,6 +1,6 @@
 ﻿using GMCopilot.Core.Models;
 
-namespace GMCopilot.Core.Repositories;
+namespace GMCopilot.Data.Repositories;
 
 public class AccountRepository : Repository<Account>
 {
