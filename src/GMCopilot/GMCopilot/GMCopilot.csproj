@@ -16,8 +16,4 @@
     <PackageReference Include="MudBlazor" Version="6.11.2" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\GMCopilot.Core\GMCopilot.Core.csproj" />
-  </ItemGroup>
-
 </Project>

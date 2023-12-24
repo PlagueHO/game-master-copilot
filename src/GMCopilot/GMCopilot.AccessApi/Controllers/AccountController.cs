@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using GMCopilot.Core.Models;
-using GMCopilot.Core.Repositories;
+using GMCopilot.Data.Repositories;
 using GMCopilot.Core.Authorization;
 
 namespace GMCopilot.AccessApi.Controllers;

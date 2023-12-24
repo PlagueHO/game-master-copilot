@@ -1,6 +1,6 @@
 ﻿using Microsoft.Azure.Cosmos;
 using GMCopilot.Core.Models;
-using GMCopilot.Core.Repositories;
+using GMCopilot.Data.Repositories;
 
 namespace GMCopilot.AccessApi.Extensions;
 

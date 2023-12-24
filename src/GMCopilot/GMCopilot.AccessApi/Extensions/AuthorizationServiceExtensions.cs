@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using GMCopilot.Core.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace GMCopilot.Core.Authorization
+namespace GMCopilot.AccessApi.Extensions
 {
     public static class AuthorizationServiceExtensions
     {
