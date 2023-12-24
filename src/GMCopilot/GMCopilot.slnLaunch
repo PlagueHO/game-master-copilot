@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "WASM Client",
+    "Projects": [
+      {
+        "Name": "GMCopilot\\GMCopilot.csproj",
+        "Action": "Start"
+      },
+      {
+        "Name": "GMCopilot.AppHost\\GMCopilot.AppHost.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

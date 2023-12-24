@@ -23,8 +23,8 @@ on:
         description: "The base name of the shared resources"
         required: true
         type: string
-      ENTRAID_ISSUER_URL:
-        description: "The Entra ID Issuer URL to use for authentication"
+      ENTRAID_AUTHORITY:
+        description: "The Entra ID Authority URL to use for authentication"
         required: true
         type: string
       ENTRAID_TENANT_ID:
@@ -88,7 +88,7 @@ jobs:
             resourceGroupNameShared=${{ inputs.RESOURCE_GROUP_NAME_SHARED }}
             baseResourceNameShared=${{ inputs.BASE_RESOURCE_NAME_SHARED }}
             buildVersion=${{ inputs.BUILD_VERSION }}
-            entraIdIssuerUrl=${{ inputs.ENTRAID_ISSUER_URL }}
+            entraIdAuthority=${{ inputs.ENTRAID_AUTHORITY }}
             entraIdTenantId=${{ inputs.ENTRAID_TENANT_ID }}
             entraIdDomain=${{ inputs.ENTRAID_DOMAIN }}
             entraIdClientIdClient=${{ inputs.ENTRAID_CLIENT_ID_CLIENT }}

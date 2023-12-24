@@ -49,8 +49,8 @@ param baseResourceNameShared string
 @description('The build version to publish to the components.')
 param buildVersion string
 
-@description('The Entra ID issuer URL to use for authentication.')
-param entraIdIssuerUrl string
+@description('The Entra ID authority URL to use for authentication.')
+param entraIdAuthority string
 
 @description('The Entra ID tenant ID to use for authentication.')
 @secure()
@@ -256,16 +256,16 @@ var containerAppEnvrionmentVariables = {
   ]
   Authentication: [
     {
-      name: 'EntraId__IssurerUrl'
-      value: entraIdIssuerUrl
-    }
-    {
-      name: 'EntraId__TenantId'
-      value: entraIdTenantId
+      name: 'EntraId__Authority'
+      value: entraIdAuthority
     }
     {
       name: 'EntraId__Domain'
       value: entraIdDomain
+    }
+    {
+      name: 'EntraId__TenantId'
+      value: entraIdTenantId
     }
     {
       name: 'EntraId__ClientId'
@@ -276,8 +276,8 @@ var containerAppEnvrionmentVariables = {
       value: '/signin-oidc'
     }
     {
-      name: 'EntraId__Scopes'
-      value: '/api_access'
+      name: 'EntraId__SignUpSignInPolicyId'
+      value: '/susi'
     }
   ]
   SemanticKernel: [

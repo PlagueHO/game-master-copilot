@@ -2,14 +2,14 @@
 using GMCopilot.Core.Models;
 using GMCopilot.Core.Repositories;
 
-namespace GMCopilot.AccessApi.Data;
+namespace GMCopilot.AccessApi.Extensions;
 
-public static class DataServiceExtensions
+public static class DataStoreServiceExtensions
 {
     /// <summary>
     /// Add data store services.
     /// </summary>
-    public static IHostApplicationBuilder AddDataStores(this IHostApplicationBuilder builder)
+    public static IHostApplicationBuilder AddDataStore(this IHostApplicationBuilder builder)
     {
         // Create the Cosmos DB Client
         var dataStoreCosmosDbConnectionString =

@@ -7,22 +7,19 @@ namespace GMCopilot.Core.Options;
 /// </summary>
 public class CosmosDbOptions
 {
-    /// <summary>
-    /// Cosmos DB endpoint URI
-    /// </summary>
-    [Required, Url]
-    public string? EndpointUri { get; set; } = string.Empty;
-
-    /// <summary>
-    /// Cosmos DB database name
-    /// </summary>
-    public string? DatabaseName { get; set; } = "gmcopilot";
+    // The settings key that contains the CosmosDB options
+    public const string PropertyName = "CosmosDb";
 
     /// <summary>
     /// Cosmos DB connection string
     /// </summary>
     [Required, NotEmptyOrWhitespace]
     public string? ConnectionString { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Cosmos DB database name
+    /// </summary>
+    public string? DatabaseName { get; set; } = "gmcopilot";
 
     /// <summary>
     /// Cosmos DB container name for storing accounts

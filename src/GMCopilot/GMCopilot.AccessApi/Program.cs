@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Identity.Web;
-using GMCopilot.AccessApi.Data;
 using GMCopilot.Core.Authorization;
 using Microsoft.OpenApi.Models;
+using GMCopilot.AccessApi.Extensions;
 
 namespace GMCopilot.AccessApi;
 
@@ -13,8 +13,11 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
         builder.AddServiceDefaults();
 
-        // Add the data stores
-        builder.AddDataStores();
+        // Add the options services
+        builder.AddOptions();
+
+        // Add the data store services
+        builder.AddDataStore();
 
         // Add authentication
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

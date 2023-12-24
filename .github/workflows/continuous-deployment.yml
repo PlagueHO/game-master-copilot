@@ -80,7 +80,7 @@ jobs:
       ENVIRONMENT: Test
       BUILD_VERSION: ${{ needs.set-build-variables.outputs.BUILD_VERSION }}
       LOCATION: ${{ vars.LOCATION }}
-      ENTRAID_ISSUER_URL: ${{ vars.ENTRAID_ISSUER_URL }}
+      ENTRAID_AUTHORITY: ${{ vars.ENTRAID_AUTHORITY }}
       ENTRAID_TENANT_ID: ${{ vars.ENTRAID_TENANT_ID }}
       ENTRAID_DOMAIN: ${{ vars.ENTRAID_DOMAIN }}
       ENTRAID_CLIENT_ID_CLIENT: ${{ vars.ENTRAID_CLIENT_ID_CLIENT }}
@@ -101,7 +101,7 @@ jobs:
       ENVIRONMENT: Test
       BUILD_VERSION: ${{ needs.set-build-variables.outputs.BUILD_VERSION }}
       LOCATION: ${{ vars.LOCATION }}
-      ENTRAID_ISSUER_URL: ${{ vars.ENTRAID_ISSUER_URL }}
+      ENTRAID_AUTHORITY: ${{ vars.ENTRAID_AUTHORITY }}
       ENTRAID_TENANT_ID: ${{ vars.ENTRAID_TENANT_ID }}
       ENTRAID_DOMAIN: ${{ vars.ENTRAID_DOMAIN }}
       ENTRAID_CLIENT_ID_CLIENT: ${{ vars.ENTRAID_CLIENT_ID_CLIENT }}
