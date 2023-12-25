@@ -42,7 +42,7 @@ jobs:
       - name: Update appsettings.json
         run: |
           # Output the current appsettings.json file
-          cat src/GMCopilot/GMCopilot/appsettings.json
+          cat src/GMCopilot/GMCopilot/wwwroot/appsettings.json
 
       - name: Get static web app token
         id: get-static-web-app-token
