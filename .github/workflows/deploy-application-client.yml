@@ -39,6 +39,11 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           client-id: ${{ secrets.AZURE_CLIENT_ID }} 
 
+      - name: Update appsettings.json
+        run: |
+          # Output the current appsettings.json file
+          cat src/GMCopilot/GMCopilot/appsettings.json
+
       - name: Get static web app token
         id: get-static-web-app-token
         run: |
