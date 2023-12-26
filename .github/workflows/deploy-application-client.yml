@@ -66,7 +66,7 @@ jobs:
           jq --arg tenantid "${{ inputs.ENTRAID_TENANT_ID }}" '.EntraId.TenantId = $tenantid' src/GMCopilot/GMCopilot/wwwroot/appsettings.json > tmp.$$.json && mv tmp.$$.json src/GMCopilot/GMCopilot/wwwroot/appsettings.json
           jq --arg domain "${{ inputs.ENTRAID_DOMAIN }}" '.EntraId.Domain = $domain' src/GMCopilot/GMCopilot/wwwroot/appsettings.json > tmp.$$.json && mv tmp.$$.json src/GMCopilot/GMCopilot/wwwroot/appsettings.json
           jq --arg clientid "${{ inputs.ENTRAID_CLIENT_ID_CLIENT }}" '.EntraId.ClientId = $clientid' src/GMCopilot/GMCopilot/wwwroot/appsettings.json > tmp.$$.json && mv tmp.$$.json src/GMCopilot/GMCopilot/wwwroot/appsettings.json
-          jq --arg accessapiurl "${{ inputs.ACCESS_API_URL }}" '.Services.access = $accessapiurl' src/GMCopilot/GMCopilot/wwwroot/appsettings.json > tmp.$$.json && mv tmp.$$.json src/GMCopilot/GMCopilot/wwwroot/appsettings.json
+          jq --arg accessapiurl "${{ inputs.ACCESS_API_URL }}" '.Services.Access = $accessapiurl' src/GMCopilot/GMCopilot/wwwroot/appsettings.json > tmp.$$.json && mv tmp.$$.json src/GMCopilot/GMCopilot/wwwroot/appsettings.json
           cat src/GMCopilot/GMCopilot/wwwroot/appsettings.json
 
       - name: Get static web app token
