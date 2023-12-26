@@ -509,3 +509,4 @@ module containerRegistryContainerAppRoleServicePrincipal 'modules/roleAssignment
 
 output staticWebAppName string = staticWebApp.outputs.staticWebAppName
 output staticWebAppHostName string = staticWebApp.outputs.staticWebAppHostName
+output containerAppApiUrl string = containerAppApi.outputs.applicationUrl

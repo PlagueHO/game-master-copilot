@@ -71,6 +71,7 @@ jobs:
     outputs:
       staticWebAppName: ${{ steps.deploy.outputs.staticWebAppName }}
       staticWebAppHostName: ${{ steps.deploy.outputs.staticWebAppHostName }}
+      containerAppApiUrl: ${{ steps.deploy.outputs.containerAppApiUrl }}
 
     steps:
       - name: Download build artifacts
