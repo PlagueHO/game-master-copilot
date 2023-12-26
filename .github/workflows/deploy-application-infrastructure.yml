@@ -62,6 +62,9 @@ on:
       staticWebAppHostName:
         description: "The host name of the Static Web Application that the client is deployed to"
         value: ${{ jobs.deploy-application-infrastructure.outputs.staticWebAppHostName }}
+      containerAppApiUrl:
+        description: "The URL of the Access API"
+        value: ${{ jobs.deploy-application-infrastructure.outputs.containerAppApiUrl }}
 
 jobs:
   deploy-application-infrastructure:
