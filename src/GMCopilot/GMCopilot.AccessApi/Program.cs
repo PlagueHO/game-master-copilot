@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Identity.Web;
-using GMCopilot.Core.Authorization;
+using GMCopilot.Core.Services;
 using Microsoft.OpenApi.Models;
 using GMCopilot.AccessApi.Extensions;
 

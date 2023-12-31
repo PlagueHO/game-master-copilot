@@ -36,14 +36,11 @@ public class Account : IStorageEntity
     /// </summary>
     /// <param name="id">The unique id for the account.</param>
     /// <param name="name">The name of the account.</param>
-    /// <param name="email">The email address associated with the account.</param>
-    /// <param name="activeTenantId">The currently active tenant.</param>
     /// <param name="tenantRoles">The roles the account has in any tenants.</param>
-    public Account(Guid id, string name, string activeTenantId, List<AccountTenantRole> tenantRoles)
+    public Account(Guid id, string name, List<AccountTenantRole> tenantRoles)
     {
         Id = id;
         Name = name;
-        ActiveTenantId = activeTenantId;
         TenantRoles = tenantRoles;
     }
 

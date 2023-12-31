@@ -39,12 +39,12 @@ public class Tenant : IStorageEntity
     /// Gets or sets the account of the owner of the tenant. This is the email address of the owner.
     /// </summary>
     [JsonPropertyName("owneraccount")]
-    public string OwnerAccount { get; set; }
+    public Guid OwnerAccount { get; set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Tenant"/> class.
     /// </summary>
-    public Tenant(Guid id, string name, string ownerAccount, TenantType type = TenantType.Individual)
+    public Tenant(Guid id, string name, Guid ownerAccount, TenantType type = TenantType.Individual)
     {
         Id = id;
         Type = type;
