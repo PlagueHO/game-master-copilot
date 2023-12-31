@@ -20,7 +20,7 @@ public class Tenant : IStorageEntity
     /// Gets or sets the unique identifier for the tenant.
     /// </summary>
     [JsonPropertyName("id")]
-    public string Id { get; set; }
+    public Guid Id { get; set; }
 
     /// <summary>
     /// Gets or sets the type of the tenant.
@@ -30,6 +30,7 @@ public class Tenant : IStorageEntity
 
     /// <summary>
     /// Gets or sets the name of the tenant.
+    /// This will be the name of the individual or the name of the organization.
     /// </summary>
     [JsonPropertyName("name")]
     public string Name { get; set; }
@@ -43,7 +44,7 @@ public class Tenant : IStorageEntity
     /// <summary>
     /// Initializes a new instance of the <see cref="Tenant"/> class.
     /// </summary>
-    public Tenant(string id, string name, string ownerAccount, TenantType type = TenantType.Individual)
+    public Tenant(Guid id, string name, string ownerAccount, TenantType type = TenantType.Individual)
     {
         Id = id;
         Type = type;

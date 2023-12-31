@@ -23,11 +23,6 @@ public class Repository<T> : IRepository<T> where T : IStorageEntity
     /// <inheritdoc/>
     public Task CreateAsync(T entity)
     {
-        if (string.IsNullOrWhiteSpace(entity.Id))
-        {
-            throw new ArgumentOutOfRangeException(nameof(entity.Id), "Entity Id cannot be null or empty.");
-        }
-
         return StorageContext.CreateAsync(entity);
     }
 
@@ -38,25 +33,25 @@ public class Repository<T> : IRepository<T> where T : IStorageEntity
     }
 
     /// <inheritdoc/>
-    public Task<T> FindByIdAsync(string id)
+    public Task<T> FindByIdAsync(Guid id)
     {
         return StorageContext.ReadAsync(id);
     }
 
     /// <inheritdoc/>
-    public Task<T> FindByIdAsync(string id, string tenantId)
+    public Task<T> FindByIdAsync(Guid id, Guid tenantId)
     {
         return StorageContext.ReadAsync(id, tenantId);
     }
 
     /// <inheritdoc/>
-    public Task<T> FindByIdAsync(string id, string type, string tenantId)
+    public Task<T> FindByIdAsync(Guid id, string type, Guid tenantId)
     {
         return StorageContext.ReadAsync(id, type, tenantId);
     }
 
     /// <inheritdoc/>
-    public async Task<bool> TryFindByIdAsync(string id, Action<T?> entity)
+    public async Task<bool> TryFindByIdAsync(Guid id, Action<T?> entity)
     {
         try
         {

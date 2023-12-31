@@ -13,7 +13,7 @@ namespace GMCopilot.Core.Models
         /// Gets or sets the unique identifier for the world.
         /// </summary>
         [JsonPropertyName("id")]
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
         /// <inheritdoc/>
         [JsonPropertyName("type")]
@@ -23,7 +23,7 @@ namespace GMCopilot.Core.Models
         /// Gets or sets the unique identifier for the world.
         /// </summary>
         [JsonPropertyName("tenantid")]
-        public string TenantId { get; set; }
+        public Guid TenantId { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the world.
@@ -70,7 +70,7 @@ namespace GMCopilot.Core.Models
         /// <summary>
         /// Initializes a new instance of the <see cref="world"/> class.
         /// </summary>
-        public World(string id, string tenantId, string name, string? description = null)
+        public World(Guid id, Guid tenantId, string name, string? description = null)
         {
             Id = id;
             TenantId = tenantId;

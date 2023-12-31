@@ -8,5 +8,5 @@ public interface IStorageEntity
     /// Gets or sets the unique identifier for the storage entity.
     /// </summary>
     [JsonPropertyName("id")]
-    public string Id { get; set; }
+    public Guid Id { get; set; }
 }

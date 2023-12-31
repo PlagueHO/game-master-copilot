@@ -41,23 +41,13 @@ public class CosmosDbContext<T> : IStorageContext<T>, IDisposable where T : ISto
     /// <inheritdoc/>
     public async Task CreateAsync(T entity)
     {
-        if (string.IsNullOrWhiteSpace(entity.Id))
-        {
-            throw new ArgumentOutOfRangeException(nameof(entity), "Entity Id cannot be null or empty.");
-        }
-
         await _container.CreateItemAsync(entity);
     }
 
     /// <inheritdoc/>
     public async Task DeleteAsync(T entity)
     {
-        if (string.IsNullOrWhiteSpace(entity.Id))
-        {
-            throw new ArgumentOutOfRangeException(nameof(entity), "Entity Id cannot be null or empty.");
-        }
-
-        await _container.DeleteItemAsync<T>(entity.Id, BuildPartitionKey(entity));
+        await _container.DeleteItemAsync<T>(entity.Id.ToString(), BuildPartitionKey(entity));
     }
 
     /// <summary>
@@ -67,11 +57,11 @@ public class CosmosDbContext<T> : IStorageContext<T>, IDisposable where T : ISto
     /// <param name="partitionKey"></param>
     /// <returns></returns>
     /// <exception cref="KeyNotFoundException"></exception>
-    internal async Task<T> ReadAsync(string entityId, PartitionKey partitionKey)
+    internal async Task<T> ReadAsync(Guid entityId, PartitionKey partitionKey)
     {
         try
         {
-            var response = await _container.ReadItemAsync<T>(entityId, partitionKey);
+            var response = await _container.ReadItemAsync<T>(entityId.ToString(), partitionKey);
             return response.Resource;
         }
         catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
@@ -81,29 +71,14 @@ public class CosmosDbContext<T> : IStorageContext<T>, IDisposable where T : ISto
     }
 
     /// <inheritdoc/>
-    public async Task<T> ReadAsync(string entityId)
+    public async Task<T> ReadAsync(Guid entityId)
     {
-        if (string.IsNullOrWhiteSpace(entityId))
-        {
-            throw new ArgumentOutOfRangeException(nameof(entityId), "Entity Id cannot be null or empty.");
-        }
-
         return await ReadAsync(entityId, BuildPartitionKey(entityId));
     }
 
     /// <inheritdoc/>
-    public async Task<T> ReadAsync(string entityId, string tenantId)
+    public async Task<T> ReadAsync(Guid entityId, Guid tenantId)
     {
-        if (string.IsNullOrWhiteSpace(entityId))
-        {
-            throw new ArgumentOutOfRangeException(nameof(entityId), "Entity Id cannot be null or empty.");
-        }
-
-        if (string.IsNullOrWhiteSpace(tenantId))
-        {
-            throw new ArgumentOutOfRangeException(nameof(tenantId), "Tenant Id cannot be null or empty.");
-        }
-
         try
         {
             return await ReadAsync(entityId, BuildPartitionKey(entityId, tenantId));
@@ -115,21 +90,11 @@ public class CosmosDbContext<T> : IStorageContext<T>, IDisposable where T : ISto
     }
 
     /// <inheritdoc/>
-    public async Task<T> ReadAsync(string entityId, string type, string tenantId)
+    public async Task<T> ReadAsync(Guid entityId, string type, Guid tenantId)
     {
-        if (string.IsNullOrWhiteSpace(entityId))
-        {
-            throw new ArgumentOutOfRangeException(nameof(entityId), "Entity Id cannot be null or empty.");
-        }
-
         if (string.IsNullOrWhiteSpace(type))
         {
             throw new ArgumentOutOfRangeException(nameof(type), "Type cannot be null or empty.");
-        }
-
-        if (string.IsNullOrWhiteSpace(tenantId))
-        {
-            throw new ArgumentOutOfRangeException(nameof(tenantId), "Tenant Id cannot be null or empty.");
         }
 
         try
@@ -145,11 +110,6 @@ public class CosmosDbContext<T> : IStorageContext<T>, IDisposable where T : ISto
     /// <inheritdoc/>
     public async Task UpsertAsync(T entity)
     {
-        if (string.IsNullOrWhiteSpace(entity.Id))
-        {
-            throw new ArgumentOutOfRangeException(nameof(entity), "Entity Id cannot be null or empty.");
-        }
-
         await _container.UpsertItemAsync(entity);
     }
 
@@ -172,9 +132,9 @@ public class CosmosDbContext<T> : IStorageContext<T>, IDisposable where T : ISto
     /// </summary>
     /// <param name="entity">The entity.</param>
     /// <returns>The partition key.</returns>
-    internal PartitionKey BuildPartitionKey(string entityId)
+    internal PartitionKey BuildPartitionKey(Guid entityId)
     {
-        return new PartitionKeyBuilder().Add(entityId).Build();
+        return new PartitionKeyBuilder().Add(entityId.ToString()).Build();
     }
 
     /// <summary>
@@ -183,9 +143,9 @@ public class CosmosDbContext<T> : IStorageContext<T>, IDisposable where T : ISto
     /// <param name="entityid">The entity id.</param>
     /// <param name="tenantId">The tenant id.</param>
     /// <returns>The partition key.</returns>
-    internal PartitionKey BuildPartitionKey(string entityId, string tenantId)
+    internal PartitionKey BuildPartitionKey(Guid entityId, Guid tenantId)
     {
-        return new PartitionKeyBuilder().Add(entityId).Add(tenantId).Build();
+        return new PartitionKeyBuilder().Add(entityId.ToString()).Add(tenantId.ToString()).Build();
     }
 
     /// <summary>
@@ -195,9 +155,9 @@ public class CosmosDbContext<T> : IStorageContext<T>, IDisposable where T : ISto
     /// <param name="type">The entity type.</param>
     /// <param name="tenantId">The tenant id.</param>
     /// <returns>The partition key.</returns>
-    internal PartitionKey BuildPartitionKey(string entityId, string type, string tenantId)
+    internal PartitionKey BuildPartitionKey(Guid entityId, string type, Guid tenantId)
     {
-        return new PartitionKeyBuilder().Add(entityId).Add(type).Add(tenantId).Build();
+        return new PartitionKeyBuilder().Add(entityId.ToString()).Add(type).Add(tenantId.ToString()).Build();
     }
 
     /// <summary>
@@ -207,10 +167,10 @@ public class CosmosDbContext<T> : IStorageContext<T>, IDisposable where T : ISto
     /// <returns>The partition key.</returns>
     internal PartitionKey BuildPartitionKey(T entity)
     {
-        var partitionKeyBuilder = new PartitionKeyBuilder().Add(entity.Id);
+        var partitionKeyBuilder = new PartitionKeyBuilder().Add(entity.Id.ToString());
 
         if (entity is IStorageTenantedEntity tenantEntity)
-            partitionKeyBuilder.Add(tenantEntity.TenantId);
+            partitionKeyBuilder.Add(tenantEntity.TenantId.ToString());
 
         if (entity is IStorageTenantedTypedEntity tenantStorageEntity)
             partitionKeyBuilder.Add(tenantStorageEntity.Type.ToString());

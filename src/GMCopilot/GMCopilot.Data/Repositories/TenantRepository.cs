@@ -18,7 +18,7 @@ public class TenantRepository : Repository<Tenant>
     /// </summary>
     /// <param name="id">The tenant id.</param>
     /// <returns>The tenant record.</returns>
-    public Task<Tenant> FindByTenantIdAsync(string tenantId)
+    public Task<Tenant> FindByTenantIdAsync(Guid tenantId)
     {
         return FindByIdAsync(tenantId);
     }
@@ -28,7 +28,7 @@ public class TenantRepository : Repository<Tenant>
     /// </summary>
     /// <param name="id">The tenant id.</param>
     /// <returns>The tenant record.</returns>
-    public async Task<bool> TryFindByTenantIdAsync(string tenantId, Action<Tenant?> tenant)
+    public async Task<bool> TryFindByTenantIdAsync(Guid tenantId, Action<Tenant?> tenant)
     {
         return await TryFindByIdAsync(tenantId, tenant);
     }

@@ -9,10 +9,9 @@ public class Account : IStorageEntity
 {
     /// <summary>
     /// Gets or sets the unique identifier for the account.
-    /// This will be the email address of the user.
     /// </summary>
     [JsonPropertyName("id")]
-    public string Id { get; set; }
+    public Guid Id { get; set; }
 
     /// <summary>
     /// Gets or sets the name of the account.
@@ -40,7 +39,7 @@ public class Account : IStorageEntity
     /// <param name="email">The email address associated with the account.</param>
     /// <param name="activeTenantId">The currently active tenant.</param>
     /// <param name="tenantRoles">The roles the account has in any tenants.</param>
-    public Account(string id, string name, string activeTenantId, List<AccountTenantRole> tenantRoles)
+    public Account(Guid id, string name, string activeTenantId, List<AccountTenantRole> tenantRoles)
     {
         Id = id;
         Name = name;
@@ -84,13 +83,7 @@ public enum TenantRole
 public class AccountTenantRole
 {
     [JsonPropertyName("tenantid")]
-    public string TenantId { get; set; }
-
-    [JsonPropertyName("email")]
-    public string Email { get; set; }
-
-    [JsonPropertyName("name")]
-    public string Name { get; set; }
+    public Guid TenantId { get; set; }
 
     [JsonPropertyName("type")]
     public TenantType Type { get; set; }
@@ -98,11 +91,9 @@ public class AccountTenantRole
     [JsonPropertyName("role")]
     public TenantRole Role { get; set; }
 
-    public AccountTenantRole(string tenantId, string email, string name, TenantType type, TenantRole role)
+    public AccountTenantRole(Guid tenantId, TenantType type, TenantRole role)
     {
         TenantId = tenantId;
-        Email = email;
-        Name = name;
         Type = type;
         Role = role;
     }
