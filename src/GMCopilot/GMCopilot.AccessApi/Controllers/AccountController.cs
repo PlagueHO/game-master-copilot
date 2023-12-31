@@ -44,7 +44,10 @@ public class AccountController : ControllerBase
     {
         try
         {
-            var account = await _accountRepository.FindByAccountIdAsync(GetUserIdFromClaims());
+            // TODO: Refactor this out into a method
+            Guid userIdClaimAsGuid = Guid.Parse(GetUserIdFromClaims());
+
+            var account = await _accountRepository.FindByAccountIdAsync(userIdClaimAsGuid);
             return Ok(account);
         }
         catch (Exception ex)
@@ -69,7 +72,9 @@ public class AccountController : ControllerBase
                 return BadRequest();
             }
 
-            if (account.Id != GetUserIdFromClaims())
+            Guid userIdClaimAsGuid = Guid.Parse(GetUserIdFromClaims());
+
+            if (account.Id != userIdClaimAsGuid)
             {
                 // Can't change the account of another user without AccountsAdmin scope
                 return Unauthorized();
@@ -100,7 +105,9 @@ public class AccountController : ControllerBase
                 return BadRequest();
             }
 
-            if (account.Id != GetUserIdFromClaims())
+            Guid userIdClaimAsGuid = Guid.Parse(GetUserIdFromClaims());
+
+            if (account.Id != userIdClaimAsGuid)
             {
                 // Can't create an account for another user without AccountsAdmin scope
                 return Unauthorized();
@@ -122,15 +129,10 @@ public class AccountController : ControllerBase
     // <param name="id">The ID of the user to get the account for.</param>
     [HttpGet("{id}", Name = "GetAccountById")]
     [Authorize(Policy = AuthorizationScopes.GMCopilotAdmin)]
-    public async Task<ActionResult<Account>> GetAccountById(string id)
+    public async Task<ActionResult<Account>> GetAccountById(Guid id)
     {
         try
         {
-            if (string.IsNullOrEmpty(id))
-            {
-                return BadRequest();
-            }
-
             var account = await _accountRepository.FindByAccountIdAsync(id);
             return (account == null ? NotFound() : Ok(account));
         }
@@ -144,15 +146,10 @@ public class AccountController : ControllerBase
     // DELETE: Account by Id
     [HttpDelete("{id}", Name = "DeleteAccount")]
     [Authorize(Policy = AuthorizationScopes.GMCopilotAdmin)]
-    public async Task<ActionResult> DeleteAccount(string id)
+    public async Task<ActionResult> DeleteAccount(Guid id)
     {
         try
         {
-            if (string.IsNullOrEmpty(id))
-            {
-                return BadRequest();
-            }
-
             var account = await _accountRepository.FindByAccountIdAsync(id);
             await _accountRepository.DeleteAsync(account);
             return Ok();

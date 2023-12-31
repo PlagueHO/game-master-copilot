@@ -17,7 +17,7 @@ public interface IStorageContext<T> where T : IStorageEntity
     /// </summary>
     /// <param name="entityId">The entity id.</param>
     /// <returns>The entity.</returns>
-    Task<T> ReadAsync(string entityId);
+    Task<T> ReadAsync(Guid entityId);
 
     /// <summary>
     /// Read an entity from a multi-tenanted storage context by id and tenant id.
@@ -25,7 +25,7 @@ public interface IStorageContext<T> where T : IStorageEntity
     /// <param name="entityId">The entity id.</param>
     /// <param name="tenantId">The tenant id.</param>
     /// <returns>The entity.</returns>
-    Task<T> ReadAsync(string entityId, string tenantId);
+    Task<T> ReadAsync(Guid entityId, Guid tenantId);
 
     /// <summary>
     /// Read an entity from a multi-typed, multi-tenanted storage context by id and tenant id.
@@ -34,7 +34,7 @@ public interface IStorageContext<T> where T : IStorageEntity
     /// <param name="type">The type of the entity.</param>
     /// <param name="tenantId">The tenant id.</param>
     /// <returns>The entity.</returns>
-    Task<T> ReadAsync(string entityId, string type, string tenantId);
+    Task<T> ReadAsync(Guid entityId, string type, Guid tenantId);
 
     /// <summary>
     /// Create an entity in the storage context.

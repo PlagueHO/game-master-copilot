@@ -8,5 +8,5 @@ public interface IStorageTenantedEntity : IStorageEntity
     /// Gets or sets the tenant identifier for the storage entity.
     /// </summary>
     [JsonPropertyName("tenantid")]
-    public string TenantId { get; set; }
+    public Guid TenantId { get; set; }
 }

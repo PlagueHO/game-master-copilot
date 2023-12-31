@@ -18,7 +18,7 @@ public class UniverseRepository : RepositoryTenanted<Universe>
     /// </summary>
     /// <param name="universeid">The universe id</param>
     /// <returns>A universe record with the universe Id.</returns>
-    public Task<Universe> FindByUniverseIdAsync(string universeId, string tenantId)
+    public Task<Universe> FindByUniverseIdAsync(Guid universeId, Guid tenantId)
     {
         return FindByIdAsync(universeId, tenantId);
     }
@@ -28,7 +28,7 @@ public class UniverseRepository : RepositoryTenanted<Universe>
     /// </summary>
     /// <param name="tenantId">The tenant id.</param>
     /// <returns>A list of universe records with the tenant Id.</returns>
-    public Task<IEnumerable<Universe>> FindByTenantIdAsync(string tenantId)
+    public Task<IEnumerable<Universe>> FindByTenantIdAsync(Guid tenantId)
     {
         return StorageContext.QueryEntitiesAsync(e => e.TenantId == tenantId);
     }

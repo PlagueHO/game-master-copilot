@@ -13,13 +13,13 @@ namespace GMCopilot.Core.Models
         /// Gets or sets the unique identifier for the universe.
         /// </summary>
         [JsonPropertyName("id")]
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
         /// <summary>
         /// Gets or sets the unique identifier for the universe.
         /// </summary>
         [JsonPropertyName("tenantid")]
-        public string TenantId { get; set; }
+        public Guid TenantId { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the universe.
@@ -54,7 +54,7 @@ namespace GMCopilot.Core.Models
         /// <summary>
         /// Initializes a new instance of the <see cref="Universe"/> class.
         /// </summary>
-        public Universe(string id, string tenantId, string name, string? description = null)
+        public Universe(Guid id, Guid tenantId, string name, string? description = null)
         {
             Id = id;
             TenantId = tenantId;

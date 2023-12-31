@@ -16,13 +16,13 @@ public class RepositoryTenanted<T> : Repository<T>, IRepositoryTenanted<T> where
     }
 
     /// <inheritdoc/>
-    public new Task<T> FindByIdAsync(string id, string tenantId)
+    public new Task<T> FindByIdAsync(Guid id, Guid tenantId)
     {
         return StorageContext.ReadAsync(id, tenantId);
     }
 
     /// <inheritdoc/>
-    public async Task<bool> TryFindByIdAsync(string id, string tenantId, Action<T?> entity)
+    public async Task<bool> TryFindByIdAsync(Guid id, Guid tenantId, Action<T?> entity)
     {
         try
         {

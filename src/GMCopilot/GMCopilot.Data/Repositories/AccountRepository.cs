@@ -18,7 +18,7 @@ public class AccountRepository : Repository<Account>
     /// </summary>
     /// <param name="id">The account id.</param>
     /// <returns>The account record.</returns>
-    public Task<Account> FindByAccountIdAsync(string accountId)
+    public Task<Account> FindByAccountIdAsync(Guid accountId)
     {
         return StorageContext.ReadAsync(accountId);
     }

@@ -16,13 +16,13 @@ public class RepositoryTenantedTyped<T> : RepositoryTenanted<T>, IRepositoryTena
     }
 
     /// <inheritdoc/>
-    public new Task<T> FindByIdAsync(string id, string type, string tenantId)
+    public new Task<T> FindByIdAsync(Guid id, string type, Guid tenantId)
     {
         return StorageContext.ReadAsync(id, type, tenantId);
     }
 
     /// <inheritdoc/>
-    public async Task<bool> TryFindByIdAsync(string id, string type, string tenantId, Action<T?> entity)
+    public async Task<bool> TryFindByIdAsync(Guid id, string type, Guid tenantId, Action<T?> entity)
     {
         try
         {

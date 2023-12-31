@@ -30,7 +30,7 @@ public interface IRepository<T> where T : IStorageEntity
     /// </summary>
     /// <param name="id">Id of the entity.</param>
     /// <returns>An entity</returns>
-    Task<T> FindByIdAsync(string id);
+    Task<T> FindByIdAsync(Guid id);
 
     /// <summary>
     /// Tries to find an entity by its id.
@@ -38,5 +38,5 @@ public interface IRepository<T> where T : IStorageEntity
     /// <param name="id">Id of the entity.</param>
     /// <param name="entity">The entity delegate. Note async methods don't support ref or out parameters.</param>
     /// <returns>True if the entity was found, false otherwise.</returns>
-    Task<bool> TryFindByIdAsync(string id, Action<T?> entity);
+    Task<bool> TryFindByIdAsync(Guid id, Action<T?> entity);
 }
