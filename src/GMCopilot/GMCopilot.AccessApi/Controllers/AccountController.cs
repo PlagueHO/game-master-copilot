@@ -38,7 +38,7 @@ public class AccountController : ControllerBase
     /// </summary>
     /// <returns>The account record of the user.</returns>
     [HttpGet("GetOrCreateAccount", Name = "GetOrCreateAccount")]
-    [Authorize(Policy = AuthorizationScopes.GMCopilotUser)]
+    [Authorize(Policy = AuthorizationScopes.GMCopilotRead)]
     public async Task<ActionResult<Account>> GetOrCreateAccount()
     {
         // TODO: Refactor this method and move it into an AccessService
@@ -78,7 +78,7 @@ public class AccountController : ControllerBase
     /// </summary>
     /// <returns>The account record of the user.</returns>
     [HttpGet(Name = "GetAccount")]
-    [Authorize(Policy = AuthorizationScopes.GMCopilotUser)]
+    [Authorize(Policy = AuthorizationScopes.GMCopilotRead)]
     public async Task<ActionResult<Account>> GetAccount()
     {
         try
@@ -99,7 +99,7 @@ public class AccountController : ControllerBase
     /// <param name="account">The account to update.</param>
     /// <returns>An HTTP result code.</returns>
     [HttpPut(Name = "UpdateAccount")]
-    [Authorize(Policy = AuthorizationScopes.GMCopilotUser)]
+    [Authorize(Policy = AuthorizationScopes.GMCopilotReadWrite)]
     public async Task<ActionResult> UpdateAccount(Account account)
     {
         try
@@ -131,7 +131,7 @@ public class AccountController : ControllerBase
     /// <param name="account">The account to create.</param>
     /// <returns>An HTTP result code.</returns>
     [HttpPost(Name = "CreateAccount")]
-    [Authorize(Policy = AuthorizationScopes.GMCopilotUser)]
+    [Authorize(Policy = AuthorizationScopes.GMCopilotReadWrite)]
     public async Task<ActionResult> CreateAccount(Account account)
     {
         try
@@ -163,7 +163,7 @@ public class AccountController : ControllerBase
     /// <param name="id">The Id of the user to get the account for.</param>
     /// <returns>The account record of the user.</returns>
     [HttpGet("{id}", Name = "GetAccountById")]
-    [Authorize(Policy = AuthorizationScopes.GMCopilotAdmin)]
+    [Authorize(Policy = AuthorizationScopes.GMCopilotRead)]
     public async Task<ActionResult<Account>> GetAccountById(Guid id)
     {
         try
@@ -184,7 +184,7 @@ public class AccountController : ControllerBase
     /// <param name="id"></param>
     /// <returns>An HTTP result code.</returns>
     [HttpDelete("{id}", Name = "DeleteAccount")]
-    [Authorize(Policy = AuthorizationScopes.GMCopilotAdmin)]
+    [Authorize(Policy = AuthorizationScopes.GMCopilotReadWrite)]
     public async Task<ActionResult> DeleteAccount(Guid id)
     {
         try

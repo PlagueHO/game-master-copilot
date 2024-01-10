@@ -1,0 +1,31 @@
+﻿@page "/settings"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using GMCopilot.Core.Models;
+
+@attribute [Authorize]
+
+@inject IAccessTokenProvider TokenProvider
+@inject IHttpClientFactory ClientFactory
+@inject IHttpClientFactory HttpClientFactory
+
+<h3>Account</h3>
+
+@code {
+    private Account? account;
+
+    private HttpClient _httpClient;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _httpClient = HttpClientFactory.CreateClient("AccessApi");
+        try
+        {
+            account = await _httpClient.GetFromJsonAsync<Account>("Account");
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
+    }
+}

@@ -39,7 +39,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{5712
 		..\..\infrastructure\bicep\modules\userAssignedManagedIdentity.bicep = ..\..\infrastructure\bicep\modules\userAssignedManagedIdentity.bicep
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMCopilot.Data", "GMCopilot.Data\GMCopilot.Data.csproj", "{7FA7DBB5-B7FF-483F-BD67-ECBD5BADF932}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.Data", "GMCopilot.Data\GMCopilot.Data.csproj", "{7FA7DBB5-B7FF-483F-BD67-ECBD5BADF932}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

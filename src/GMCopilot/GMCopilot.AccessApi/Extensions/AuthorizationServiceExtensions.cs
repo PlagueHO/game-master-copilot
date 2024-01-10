@@ -14,8 +14,8 @@ namespace GMCopilot.AccessApi.Extensions
             return builder.Services.AddAuthorization(options =>
             {
                 AddPolicy(options, AuthorizationScopes.UserRead);
-                AddPolicy(options, AuthorizationScopes.GMCopilotUser);
-                AddPolicy(options, AuthorizationScopes.GMCopilotAdmin);
+                AddPolicy(options, AuthorizationScopes.GMCopilotRead);
+                AddPolicy(options, AuthorizationScopes.GMCopilotReadWrite);
             });
         }
 
