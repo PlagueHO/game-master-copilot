@@ -61,12 +61,16 @@ jobs:
 
       - name: Update appsettings.json
         run: |
-          # Update the EntraID.Authority setting in the appsettings.json file using jq command
+          # Update the EntraID.Authority settings in the appsettings.json file using jq command
           jq --arg authority "${{ inputs.ENTRAID_AUTHORITY }}" '.EntraId.Authority = $authority' src/GMCopilot/GMCopilot/wwwroot/appsettings.json > tmp.$$.json && mv tmp.$$.json src/GMCopilot/GMCopilot/wwwroot/appsettings.json
           jq --arg tenantid "${{ inputs.ENTRAID_TENANT_ID }}" '.EntraId.TenantId = $tenantid' src/GMCopilot/GMCopilot/wwwroot/appsettings.json > tmp.$$.json && mv tmp.$$.json src/GMCopilot/GMCopilot/wwwroot/appsettings.json
           jq --arg domain "${{ inputs.ENTRAID_DOMAIN }}" '.EntraId.Domain = $domain' src/GMCopilot/GMCopilot/wwwroot/appsettings.json > tmp.$$.json && mv tmp.$$.json src/GMCopilot/GMCopilot/wwwroot/appsettings.json
           jq --arg clientid "${{ inputs.ENTRAID_CLIENT_ID_CLIENT }}" '.EntraId.ClientId = $clientid' src/GMCopilot/GMCopilot/wwwroot/appsettings.json > tmp.$$.json && mv tmp.$$.json src/GMCopilot/GMCopilot/wwwroot/appsettings.json
-          jq --arg accessapiurl "${{ inputs.ACCESS_API_URL }}" '.Services.Access.BaseAddress = $accessapiurl' src/GMCopilot/GMCopilot/wwwroot/appsettings.json > tmp.$$.json && mv tmp.$$.json src/GMCopilot/GMCopilot/wwwroot/appsettings.json
+          # Update the API settings in the appsettings.json file using jq command
+          jq --arg accessapiurl "${{ inputs.ACCESS_API_URL }}" '.Apis.Access.BaseAddress = $accessapiurl' src/GMCopilot/GMCopilot/wwwroot/appsettings.json > tmp.$$.json && mv tmp.$$.json src/GMCopilot/GMCopilot/wwwroot/appsettings.json
+          # Update the Logging settings in the appsettings.json file using jq command, setting Logging.LogLevel.Default to 'Warning'
+          jq '.Logging.LogLevel.Default = "Warning"' src/GMCopilot/GMCopilot/wwwroot/appsettings.json > tmp.$$.json && mv tmp.$$.json src/GMCopilot/GMCopilot/wwwroot/appsettings.json
+          # Output the appsettings.json file to the console
           cat src/GMCopilot/GMCopilot/wwwroot/appsettings.json
 
       - name: Get static web app token
