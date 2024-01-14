@@ -30,6 +30,7 @@
             <AuthorizeView>
                 <Authorized>
                     <MudText Typo="Typo.body1" Class="px-4 mud-text-secondary">@context.User.Identity?.Name</MudText>
+                    <MudText Typo="Typo.body1" Class="px-4 mud-text-secondary">@GetPreferredUsername(context)</MudText>
                     <MudDivider Class="my-2" />
                     <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Logout" OnClick="@((e) => Navigation.NavigateToLogout("authentication/logout"))">Logout</MudNavLink>
                 </Authorized>
@@ -46,8 +47,26 @@
 @code {
     bool _accountDrawerOpen = false;
 
+    /// <summary>
+    /// Open/Closes the account drawer
+    /// </summary>
     void OpenAccountDrawer()
     {
         _accountDrawerOpen = !_accountDrawerOpen;
     }
+
+    /// <summary>
+    /// Get the current users preferred username from the token claims.
+    /// </summary>
+    /// <returns>The users preferred username.</returns>
+    public string GetPreferredUsername(AuthenticationState authenticationState)
+    {
+        var preferredUsername = authenticationState.User.FindFirst(c => c.Type == "preferred_username")?.Value;
+        if (preferredUsername == null)
+        {
+            preferredUsername = "Not specified";
+        }
+        return preferredUsername;
+    }
+
 }
