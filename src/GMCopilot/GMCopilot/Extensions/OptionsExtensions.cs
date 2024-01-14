@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-
 using System.Reflection;
 using GMCopilot.Core.Options;
 
 namespace GMCopilot.Client.Extensions;
 
-public static class OptionsServiceExtensions
+public static class OptionsExtensions
 {
-    public static WebAssemblyHostBuilder AddOptions(this WebAssemblyHostBuilder builder)
+    public static WebAssemblyHostBuilder AddClientOptions(this WebAssemblyHostBuilder builder)
     {
         // Add the Entra ID Configuration options
         builder.Services.AddOptions<EntraIdOptions>()

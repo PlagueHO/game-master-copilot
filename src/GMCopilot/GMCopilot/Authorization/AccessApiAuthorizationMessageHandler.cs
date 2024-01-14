@@ -5,7 +5,10 @@ namespace GMCopilot.Authorization;
 
 public class AccessApiAuthorizationMessageHandler : AuthorizationMessageHandler
 {
-    private readonly ILogger<AccessApiAuthorizationMessageHandler> _logger = default!;
+    /// <summary>
+    /// The logger for the AccessApiAuthorizationMessageHandler class.
+    /// </summary>
+    private readonly ILogger<AccessApiAuthorizationMessageHandler> _logger;
 
     public AccessApiAuthorizationMessageHandler(IAccessTokenProvider provider,
         NavigationManager navigationManager,
@@ -14,10 +17,11 @@ public class AccessApiAuthorizationMessageHandler : AuthorizationMessageHandler
     {
         _logger = logger;
 
-        logger.LogDebug($"Setting up {nameof(AccessApiAuthorizationMessageHandler)} to authorize the base url: {"https://localhost:7144"}");
+        var baseUri = new Uri("https://localhost:7144");
+        _logger.LogDebug("Setting up {AccessApiAuthorizationHandler} to authorize the base url: {AccessApiBaseUrl}", nameof(AccessApiAuthorizationMessageHandler), baseUri.AbsoluteUri);
 
         ConfigureHandler(
-           authorizedUrls: new[] { "https://localhost:7144" },
+           authorizedUrls: new[] { baseUri.AbsoluteUri },
            scopes: new[] { "api://b1a02918-c873-4c7f-ba43-248171c138fe/GMCopilot.Read", "api://b1a02918-c873-4c7f-ba43-248171c138fe/GMCopilot.ReadWrite" });
     }
 }
