@@ -20,7 +20,7 @@ public static class DataStoreServiceExtensions
             throw new InvalidOperationException("DataStore:CosmosDb:ConnectionString is required.");
         }
 
-        builder.AddAzureCosmosDB(dataStoreCosmosDbConnectionString,
+        builder.AddAzureCosmosClient(dataStoreCosmosDbConnectionString,
             configureClientOptions: clientOptions => clientOptions.ApplicationName = "game-master-copilot-access-api");
 
         // Create the Account context and repository

@@ -17,7 +17,7 @@ if (dataStoreCosmosDbConnectionString == null)
 }
 
 // Add the Access API project
-builder.AddProject<Projects.GMCopilot_AccessApi>("gmcopilot.accessapi")
+builder.AddProject<Projects.GMCopilot_AccessApi>("gmcopilot-accessapi")
     .WithEnvironment("ApplicationInsights:ConnectionString", applicationInsightsConnectionString)
     .WithEnvironment("DataStore:CosmosDb:ConnectionString", dataStoreCosmosDbConnectionString);
 
