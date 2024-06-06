@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using System.Security.Claims;
 
 namespace GMCopilot.Core.Services;
@@ -9,6 +10,12 @@ namespace GMCopilot.Core.Services;
 public class ClaimsProviderService
 {
     private const string _oidClaimType = "http://schemas.microsoft.com/identity/claims/objectidentifier";
+    private readonly ILogger<ClaimsProviderService> _logger;
+
+    public ClaimsProviderService(ILogger<ClaimsProviderService> logger)
+    {
+        _logger = logger;
+    }
 
     /// <summary>
     /// Extracts the User Id from the claims provided in an HTTP request.
@@ -20,9 +27,18 @@ public class ClaimsProviderService
     {
         var oidClaim = context.User.Claims.FirstOrDefault(c => c.Type == _oidClaimType);
         if (null == oidClaim)
+        {
+            _logger.LogError("No oid claim found in the user's claims.");
             throw new InvalidOperationException("No oid claim!");
+        }
 
-        var oid = Guid.Parse(oidClaim.Value);
+        Guid oid;
+        if (!Guid.TryParse(oidClaim.Value, out oid))
+        {
+            _logger.LogError($"Failed to parse oid claim value: {oidClaim.Value}");
+            throw new InvalidOperationException("Failed to parse oid claim!");
+        }
+
         return oid;
     }
 
@@ -36,7 +52,10 @@ public class ClaimsProviderService
     {
         var nameClaim = context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name);
         if (null == nameClaim)
+        {
+            _logger.LogError("No name claim found in the user's claims.");
             throw new InvalidOperationException("No name claim!");
+        }
 
         var name = nameClaim.Value;
         return name;
