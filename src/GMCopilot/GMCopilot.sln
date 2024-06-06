@@ -13,8 +13,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.AccessApi", "GMCo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.Core", "GMCopilot.Core\GMCopilot.Core.csproj", "{B5CCEE6B-F318-416D-BFAE-DDAD3A316894}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.Core.Test", "GMCopilot.Core.Test\GMCopilot.Core.Test.csproj", "{9E6BE8B3-D2AD-496A-913B-E621283A9DA8}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "infrastructure", "infrastructure", "{8861140B-0A07-468C-B890-B95786A5B098}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "bicep", "bicep", "{F8B728E9-BF37-4893-BE3A-2C72B501F21F}"
@@ -40,6 +38,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{5712
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.Data", "GMCopilot.Data\GMCopilot.Data.csproj", "{7FA7DBB5-B7FF-483F-BD67-ECBD5BADF932}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{80DC0780-AE42-4710-AF4F-09D176880B28}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.Core.Test", "Tests\GMCopilot.Core.Test\GMCopilot.Core.Test.csproj", "{8CE72F2D-F2C8-4DE8-945B-EB8DCBECE388}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMCopilot.AccessApi.Test", "Tests\GMCopilot.AccessApi.Test\GMCopilot.AccessApi.Test.csproj", "{603DA1AC-D837-4E9D-974C-6A0FAC8F354E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,14 +71,18 @@ Global
 		{B5CCEE6B-F318-416D-BFAE-DDAD3A316894}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B5CCEE6B-F318-416D-BFAE-DDAD3A316894}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B5CCEE6B-F318-416D-BFAE-DDAD3A316894}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9E6BE8B3-D2AD-496A-913B-E621283A9DA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9E6BE8B3-D2AD-496A-913B-E621283A9DA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9E6BE8B3-D2AD-496A-913B-E621283A9DA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9E6BE8B3-D2AD-496A-913B-E621283A9DA8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7FA7DBB5-B7FF-483F-BD67-ECBD5BADF932}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7FA7DBB5-B7FF-483F-BD67-ECBD5BADF932}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7FA7DBB5-B7FF-483F-BD67-ECBD5BADF932}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7FA7DBB5-B7FF-483F-BD67-ECBD5BADF932}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CE72F2D-F2C8-4DE8-945B-EB8DCBECE388}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CE72F2D-F2C8-4DE8-945B-EB8DCBECE388}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CE72F2D-F2C8-4DE8-945B-EB8DCBECE388}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CE72F2D-F2C8-4DE8-945B-EB8DCBECE388}.Release|Any CPU.Build.0 = Release|Any CPU
+		{603DA1AC-D837-4E9D-974C-6A0FAC8F354E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{603DA1AC-D837-4E9D-974C-6A0FAC8F354E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{603DA1AC-D837-4E9D-974C-6A0FAC8F354E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{603DA1AC-D837-4E9D-974C-6A0FAC8F354E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -82,6 +90,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{F8B728E9-BF37-4893-BE3A-2C72B501F21F} = {8861140B-0A07-468C-B890-B95786A5B098}
 		{5712E846-39C2-495A-A7AD-97DD04C422FF} = {F8B728E9-BF37-4893-BE3A-2C72B501F21F}
+		{8CE72F2D-F2C8-4DE8-945B-EB8DCBECE388} = {80DC0780-AE42-4710-AF4F-09D176880B28}
+		{603DA1AC-D837-4E9D-974C-6A0FAC8F354E} = {80DC0780-AE42-4710-AF4F-09D176880B28}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5EDFCB30-204B-4496-9C18-7AFB0D5186DC}

@@ -19,17 +19,17 @@ jobs:
       - name: Run unit tests on GMCopilot.Core
         run: |
           dotnet test --configuration Release --logger trx
-        working-directory: ./src/GMCopilot/GMCopilot.Core.Test/
+        working-directory: ./src/GMCopilot/Tests/GMCopilot.Core.Test/
 
       - name: Upload test results for GMCopilot.Core
         uses: actions/upload-artifact@v2
         with:
           name: GMCopilot.Core.Test
-          path: ./src/GMCopilot/GMCopilot.Core.Test/TestResults/*.trx
+          path: ./src/GMCopilot/Tests/GMCopilot.Core.Test/TestResults/*.trx
 
       - name: Publish test results for GMCopilot.Core
         uses: EnricoMi/publish-unit-test-result-action@v2
         if: always()
         with:
             files: |
-              ./src/GMCopilot/GMCopilot.Core.Test/TestResults/*.trx
+              ./src/GMCopilot/Tests/GMCopilot.Core.Test/TestResults/*.trx
