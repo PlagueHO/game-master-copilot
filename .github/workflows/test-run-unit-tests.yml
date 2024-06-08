@@ -12,7 +12,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install .NET 8
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8
 
@@ -22,7 +22,7 @@ jobs:
         working-directory: ./src/GMCopilot/Tests/GMCopilot.Core.Test/
 
       - name: Upload test results for GMCopilot.Core
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: GMCopilot.Core.Test
           path: ./src/GMCopilot/Tests/GMCopilot.Core.Test/TestResults/*.trx
