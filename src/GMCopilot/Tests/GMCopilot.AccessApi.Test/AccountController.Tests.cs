@@ -13,8 +13,8 @@ public class AccountControllerTests
     {
         // Arrange
         var mockLogger = new Mock<ILogger<AccountController>>();
-        var mockAccountRepository = new Mock<IAccountRepository>();
-        var mockTenantRepository = new Mock<ITenantRepository>();
+        var mockAccountRepository = new Mock<AccountRepository>();
+        var mockTenantRepository = new Mock<TenantRepository>();
         var mockClaimsProvider = new Mock<ClaimsProviderService>();
 
         var controller = new AccountController(mockLogger.Object, mockAccountRepository.Object, mockTenantRepository.Object, mockClaimsProvider.Object);
