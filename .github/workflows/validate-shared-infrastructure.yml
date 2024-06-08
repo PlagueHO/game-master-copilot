@@ -24,7 +24,11 @@ on:
         required: true
       AZURE_CLIENT_ID:
         description: "The Azure client ID to use for authentication to Azure for deployment"
-        required: true  
+        required: true
+      ENTRAID_TENANT_ID:
+        description: "The Tenant ID of the Entra External ID CIAM tenant to use for the application"
+        required: true
+
 jobs:
   validate-shared-infrastructure:
     name: Validate Shared Infrastructure

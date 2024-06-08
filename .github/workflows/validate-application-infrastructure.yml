@@ -27,10 +27,6 @@ on:
         description: "The Entra ID Authority URL to use for authentication"
         required: true
         type: string
-      ENTRAID_TENANT_ID:
-        description: "The tenant ID of the Entra ID tenant to use for application authentication"
-        required: true
-        type: string
       ENTRAID_DOMAIN:
         description: "The domain name of the Entra ID tenant"
         required: true
@@ -53,6 +49,9 @@ on:
         required: true
       AZURE_CLIENT_ID:
         description: "The Azure client ID to use for authentication to Azure for deployment"
+        required: true
+      ENTRAID_TENANT_ID:
+        description: "The tenant ID of the Entra ID directory to use for application authentication"
         required: true
   
 jobs:
@@ -89,7 +88,7 @@ jobs:
             baseResourceNameShared=${{ inputs.BASE_RESOURCE_NAME_SHARED }}
             buildVersion=${{ inputs.BUILD_VERSION }}
             entraIdAuthority=${{ inputs.ENTRAID_AUTHORITY }}
-            entraIdTenantId=${{ inputs.ENTRAID_TENANT_ID }}
+            entraIdTenantId=${{ secrets.ENTRAID_TENANT_ID }}
             entraIdDomain=${{ inputs.ENTRAID_DOMAIN }}
             entraIdClientIdClient=${{ inputs.ENTRAID_CLIENT_ID_CLIENT }}
             entraIdClientIdApi=${{ inputs.ENTRAID_CLIENT_ID_API }}

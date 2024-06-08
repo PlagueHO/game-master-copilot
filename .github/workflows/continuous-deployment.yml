@@ -41,6 +41,7 @@ jobs:
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
       AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ENTRAID_TENANT_ID: ${{ secrets.ENTRAID_TENANT_ID }}
 
   deploy-shared-infrastructure:
     needs:
@@ -55,7 +56,8 @@ jobs:
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
       AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-  
+      ENTRAID_TENANT_ID: ${{ secrets.ENTRAID_TENANT_ID }}
+
   build-application-containers:
     needs:
       - set-build-variables
@@ -81,7 +83,6 @@ jobs:
       BUILD_VERSION: ${{ needs.set-build-variables.outputs.BUILD_VERSION }}
       LOCATION: ${{ vars.LOCATION }}
       ENTRAID_AUTHORITY: ${{ vars.ENTRAID_AUTHORITY }}
-      ENTRAID_TENANT_ID: ${{ vars.ENTRAID_TENANT_ID }}
       ENTRAID_DOMAIN: ${{ vars.ENTRAID_DOMAIN }}
       ENTRAID_CLIENT_ID_CLIENT: ${{ vars.ENTRAID_CLIENT_ID_CLIENT }}
       ENTRAID_CLIENT_ID_API: ${{ vars.ENTRAID_CLIENT_ID_API }}
@@ -91,6 +92,7 @@ jobs:
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
       AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ENTRAID_TENANT_ID: ${{ secrets.ENTRAID_TENANT_ID }}
   
   deploy-application-infrastructure-test:
     needs:
@@ -102,7 +104,6 @@ jobs:
       BUILD_VERSION: ${{ needs.set-build-variables.outputs.BUILD_VERSION }}
       LOCATION: ${{ vars.LOCATION }}
       ENTRAID_AUTHORITY: ${{ vars.ENTRAID_AUTHORITY }}
-      ENTRAID_TENANT_ID: ${{ vars.ENTRAID_TENANT_ID }}
       ENTRAID_DOMAIN: ${{ vars.ENTRAID_DOMAIN }}
       ENTRAID_CLIENT_ID_CLIENT: ${{ vars.ENTRAID_CLIENT_ID_CLIENT }}
       ENTRAID_CLIENT_ID_API: ${{ vars.ENTRAID_CLIENT_ID_API }}
@@ -112,6 +113,7 @@ jobs:
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
       AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}     
+      ENTRAID_TENANT_ID: ${{ secrets.ENTRAID_TENANT_ID }}
 
   deploy-application-client:
     needs:
@@ -122,11 +124,11 @@ jobs:
       ENVIRONMENT: Test
       STATIC_WEB_APP_NAME: ${{ needs.deploy-application-infrastructure-test.outputs.staticWebAppName }}
       ENTRAID_AUTHORITY: ${{ vars.ENTRAID_AUTHORITY }}
-      ENTRAID_TENANT_ID: ${{ vars.ENTRAID_TENANT_ID }}
       ENTRAID_DOMAIN: ${{ vars.ENTRAID_DOMAIN }}
       ENTRAID_CLIENT_ID_CLIENT: ${{ vars.ENTRAID_CLIENT_ID_CLIENT }}
       ACCESS_API_URL: ${{ needs.deploy-application-infrastructure-test.outputs.containerAppApiUrl }}
     secrets:
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
       AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}  
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ENTRAID_TENANT_ID: ${{ secrets.ENTRAID_TENANT_ID }}

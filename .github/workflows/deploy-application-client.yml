@@ -15,10 +15,6 @@ on:
         description: "The Entra ID Authority URL to use for authentication"
         required: true
         type: string
-      ENTRAID_TENANT_ID:
-        description: "The tenant ID of the Entra ID tenant to use for application authentication"
-        required: true
-        type: string
       ENTRAID_DOMAIN:
         description: "The domain name of the Entra ID tenant"
         required: true
@@ -41,6 +37,9 @@ on:
       AZURE_CLIENT_ID:
         description: 'The Azure client ID'
         required: true
+      ENTRAID_TENANT_ID:
+        description: "The Tenant ID of the Entra External ID CIAM tenant to use for the application"
+        required: true
   
 jobs:
   build-accessapi-container:
@@ -50,7 +49,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Azure Login
         uses: azure/login@v1
@@ -63,7 +62,7 @@ jobs:
         run: |
           # Update the EntraID.Authority settings in the appsettings.json file using jq command
           jq --arg authority "${{ inputs.ENTRAID_AUTHORITY }}" '.EntraId.Authority = $authority' src/GMCopilot/GMCopilot/wwwroot/appsettings.json > tmp.$$.json && mv tmp.$$.json src/GMCopilot/GMCopilot/wwwroot/appsettings.json
-          jq --arg tenantid "${{ inputs.ENTRAID_TENANT_ID }}" '.EntraId.TenantId = $tenantid' src/GMCopilot/GMCopilot/wwwroot/appsettings.json > tmp.$$.json && mv tmp.$$.json src/GMCopilot/GMCopilot/wwwroot/appsettings.json
+          jq --arg tenantid "${{ secrets.ENTRAID_TENANT_ID }}" '.EntraId.TenantId = $tenantid' src/GMCopilot/GMCopilot/wwwroot/appsettings.json > tmp.$$.json && mv tmp.$$.json src/GMCopilot/GMCopilot/wwwroot/appsettings.json
           jq --arg domain "${{ inputs.ENTRAID_DOMAIN }}" '.EntraId.Domain = $domain' src/GMCopilot/GMCopilot/wwwroot/appsettings.json > tmp.$$.json && mv tmp.$$.json src/GMCopilot/GMCopilot/wwwroot/appsettings.json
           jq --arg clientid "${{ inputs.ENTRAID_CLIENT_ID_CLIENT }}" '.EntraId.ClientId = $clientid' src/GMCopilot/GMCopilot/wwwroot/appsettings.json > tmp.$$.json && mv tmp.$$.json src/GMCopilot/GMCopilot/wwwroot/appsettings.json
           # Update the API settings in the appsettings.json file using jq command

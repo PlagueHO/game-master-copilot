@@ -32,6 +32,14 @@ public class AccountController : ControllerBase
         _claimsProvider = claimsProvider;
     }
 
+    // Create a test API that allows anonymous access
+    [HttpGet("Test", Name = "Test")]
+    [AllowAnonymous]
+    public ActionResult Test()
+    {
+        return Ok("Test");
+    }
+
     /// <summary>
     /// Get a user account for the current user.
     /// It will create a new account and tenant if one does not exist.

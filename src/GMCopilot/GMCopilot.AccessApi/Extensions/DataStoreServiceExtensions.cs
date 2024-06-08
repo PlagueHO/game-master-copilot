@@ -12,15 +12,7 @@ public static class DataStoreServiceExtensions
     public static IHostApplicationBuilder AddDataStore(this IHostApplicationBuilder builder)
     {
         // Create the Cosmos DB Client
-        var dataStoreCosmosDbConnectionString =
-            builder.Configuration["DataStore:CosmosDb:ConnectionString"];
-
-        if (dataStoreCosmosDbConnectionString == null)
-        {
-            throw new InvalidOperationException("DataStore:CosmosDb:ConnectionString is required.");
-        }
-
-        builder.AddAzureCosmosClient(dataStoreCosmosDbConnectionString,
+        builder.AddAzureCosmosClient("CosmosDb",
             configureClientOptions: clientOptions => clientOptions.ApplicationName = "game-master-copilot-access-api");
 
         // Create the Account context and repository
@@ -29,7 +21,7 @@ public static class DataStoreServiceExtensions
             var cosmosClient = service.GetService<CosmosClient>();
             if (cosmosClient == null)
             {
-                throw new InvalidOperationException("CosmosClient could not be instantiated.");
+                throw new InvalidOperationException("CosmosDbClient could not be instantiated.");
             }
 
             return new CosmosDbContext<Account>(cosmosClient, "gmcopilot", "accounts");
@@ -59,15 +51,15 @@ public static class DataStoreServiceExtensions
         });
 
 
-        builder.Services.AddScoped<AccountRepository>((service) =>
+        builder.Services.AddScoped<TenantRepository>((service) =>
         {
-            var accountStorageContext = service.GetService<CosmosDbContext<Account>>();
-            if (accountStorageContext == null)
+            var tenantStorageContext = service.GetService<CosmosDbContext<Tenant>>();
+            if (tenantStorageContext == null)
             {
-                throw new InvalidOperationException("CosmosDbContext<Account> could not be instantiated.");
+                throw new InvalidOperationException("CosmosDbContext<Tenant> could not be instantiated.");
             }
 
-            return new AccountRepository(accountStorageContext);
+            return new TenantRepository(tenantStorageContext);
         });
 
         return builder;

@@ -24,7 +24,11 @@ on:
         required: true
       AZURE_CLIENT_ID:
         description: "The Azure client ID to use for authentication to Azure for deployment"
-        required: true  
+        required: true
+      ENTRAID_TENANT_ID:
+        description: "The tenant ID of the Entra ID directory to use for application authentication"
+        required: true
+
   
     outputs:
       containerRegistryName:

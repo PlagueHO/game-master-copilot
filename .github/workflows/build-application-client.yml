@@ -14,10 +14,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install .NET 8
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8
 
@@ -33,7 +33,7 @@ jobs:
         working-directory: ./src/GMCopilot/GMCopilot/bin/${{ inputs.BUILD_CONFIGURATION }}/net8.0/publish
 
       - name: Upload application client as workflow artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: gmcopilot-client
           path: ./src/GMCopilot/GMCopilot/bin/${{ inputs.BUILD_CONFIGURATION }}/net8.0/publish/gmcopilot-client.zip
