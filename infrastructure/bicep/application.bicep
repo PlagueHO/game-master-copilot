@@ -87,23 +87,23 @@ var openAiModelDeployments = [
   {
     name: 'gpt-35-turbo'
     modelName: 'gpt-35-turbo'
-    version: '1106'
+    version: '0125'
     sku: 'Standard'
-    capacity: 80
+    capacity: 120
   }
   {
-    name: 'gpt-4'
+    name: 'gpt-4-turbo'
     modelName: 'gpt-4'
-    version: '0613'
+    version: 'turbo-2024-04-09'
     sku: 'Standard'
-    capacity: 80
+    capacity: 60
   }
   {
-    name: 'text-embedding-3-large'
+    name: 'embedding'
     modelName: 'text-embedding-3-large'
     version: '1'
     sku: 'Standard'
-    capacity: 80
+    capacity: 120
   }
 ]
 
