@@ -6,23 +6,21 @@ provider microsoftGraph
 resource clientApplication 'Microsoft.Graph/applications@v1.0' = {
   uniqueName: 'game-master-copilot-client'
   displayName: 'game-master-copilot-client'
-  id: '996fbc46-fa66-4d29-ac35-492eb70975ca'
-  appId: '7ff3f349-5bf4-48c7-8ea7-6e5536d0ae51'
+  // id: '996fbc46-fa66-4d29-ac35-492eb70975ca'
+  // appId: '7ff3f349-5bf4-48c7-8ea7-6e5536d0ae51'
   signInAudience: 'AzureADMyOrg'
-  publisherDomain: 'gmcopilot.onmicrosoft.com'
   identifierUris: [
     'api://b1a02918-c873-4c7f-ba43-248171c138fe'
   ]
-  replyUrlsWithType: [
-    {
-        url: 'https://delightful-desert-035df1d10.4.azurestaticapps.net/authentication/login-callback'
-        type: 'Spa'
+  web: {
+    redirectUris: [
+      'https://delightful-desert-035df1d10.4.azurestaticapps.net/authentication/login-callback'
+      'https://localhost:7217/authentication/login-callback'
+    ]
+    implicitGrantSettings: {
+      enableIdTokenIssuance: true
     }
-    {
-        url: 'https://localhost:7217/authentication/login-callback'
-        type: 'Spa'
-    }
-  ]
+  }
   requiredResourceAccess: [
     {
       resourceAppId: 'b1a02918-c873-4c7f-ba43-248171c138fe'
@@ -71,10 +69,9 @@ resource clientServicePrincipal 'Microsoft.Graph/servicePrincipals@v1.0' = {
 
 resource apiApplication 'Microsoft.Graph/applications@v1.0' = {
   uniqueName: 'game-master-copilot-api'
-  displayName: 'game-master-copilot-api'
-  id: '8bd06f81-dde9-4628-97f0-3ea81505f331'
+  // displayName: 'game-master-copilot-api'
+  // id: '8bd06f81-dde9-4628-97f0-3ea81505f331'
   signInAudience: 'AzureADMyOrg'
-  publisherDomain: 'gmcopilot.onmicrosoft.com'
   identifierUris: [
     'api://b1a02918-c873-4c7f-ba43-248171c138fe'
   ]
@@ -115,33 +112,32 @@ resource apiApplication 'Microsoft.Graph/applications@v1.0' = {
       isEnabled: true
     }
   ]
-  oauth2AllowIdTokenImplicitFlow: false
-  oauth2AllowImplicitFlow: false
-  oauth2Permissions: [
-    {
-        adminConsentDescription: 'Allow the app to read and write the user\'s Game Master Copilot data.'
-        adminConsentDisplayName: 'Read and write Game Master Copilot data for the user'
-        id: 'c1c32cf0-1329-4662-bb0f-cdfc06807bf8'
-        isEnabled: true
-        origin: 'Application'
-        type: 'User'
-        userConsentDescription: 'Allow the app to read and write your Game Master Copilot data.'
-        userConsentDisplayName: 'Read and write your Game Master Copilot data'
-        value: 'GMCopilot.ReadWrite'
-    }
-    {
-        adminConsentDescription: 'Allow the app to read the user\'s Game Master Copilot data.'
-        adminConsentDisplayName: 'Read Game Master Copilot data for the user'
-        id: 'a60075de-c430-41df-b7d6-9c98540bc6b6'
-        isEnabled: true
-        origin: 'Application'
-        type: 'User'
-        userConsentDescription: 'Allow the app to read your Game Master Copilot data.'
-        userConsentDisplayName: 'Read your Game Master Copilot data'
-        value: 'GMCopilot.Read'
-    }
-  ]
-  oauth2RequirePostResponse: false
+  api: {
+    oauth2PermissionScopes: [
+      {
+          adminConsentDescription: 'Allow the app to read and write the user\'s Game Master Copilot data.'
+          adminConsentDisplayName: 'Read and write Game Master Copilot data for the user'
+          id: 'c1c32cf0-1329-4662-bb0f-cdfc06807bf8'
+          isEnabled: true
+          origin: 'Application'
+          type: 'User'
+          userConsentDescription: 'Allow the app to read and write your Game Master Copilot data.'
+          userConsentDisplayName: 'Read and write your Game Master Copilot data'
+          value: 'GMCopilot.ReadWrite'
+      }
+      {
+          adminConsentDescription: 'Allow the app to read the user\'s Game Master Copilot data.'
+          adminConsentDisplayName: 'Read Game Master Copilot data for the user'
+          id: 'a60075de-c430-41df-b7d6-9c98540bc6b6'
+          isEnabled: true
+          origin: 'Application'
+          type: 'User'
+          userConsentDescription: 'Allow the app to read your Game Master Copilot data.'
+          userConsentDisplayName: 'Read your Game Master Copilot data'
+          value: 'GMCopilot.Read'
+      }
+    ]
+  }
 }
 
 resource apiServicePrincipal 'Microsoft.Graph/servicePrincipals@v1.0' = {
