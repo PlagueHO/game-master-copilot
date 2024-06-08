@@ -87,7 +87,7 @@ var openAiModelDeployments = [
   {
     name: 'gpt-35-turbo'
     modelName: 'gpt-35-turbo'
-    version: '0125'
+    version: '0613'
     sku: 'Standard'
     capacity: 120
   }
@@ -173,7 +173,7 @@ module openAiService './modules/openAiService.bicep' = {
     monitoring
   ]
   params: {
-    location: 'EastUS' // location
+    location: 'EastUS2' // location
     openAiServiceName: openAiServiceName
     openAiModeldeployments: openAiModelDeployments
     logAnalyticsWorkspaceId: monitoring.outputs.logAnalyticsWorkspaceId
