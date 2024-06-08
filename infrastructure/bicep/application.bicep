@@ -96,7 +96,7 @@ var openAiModelDeployments = [
     modelName: 'gpt-4'
     version: 'turbo-2024-04-09'
     sku: 'Standard'
-    capacity: 120
+    capacity: 80
   }
   {
     name: 'embedding'
