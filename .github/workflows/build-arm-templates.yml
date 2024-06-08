@@ -27,7 +27,7 @@ jobs:
         bicep build ./infrastructure/bicep/shared.bicep
 
     - name: Upload Shared ARM Template as workflow artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: sharedarmtemplate
         path: ./infrastructure/bicep/shared.json
@@ -37,7 +37,7 @@ jobs:
         bicep build ./infrastructure/bicep/entraid.bicep
 
     - name: Upload Entra Id ARM Template as workflow artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: entraidarmtemplate
         path: ./infrastructure/bicep/entraid.json
@@ -47,7 +47,7 @@ jobs:
         bicep build ./infrastructure/bicep/application.bicep
   
     - name: Upload Application ARM Template as workflow artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: applicationarmtemplate
         path: ./infrastructure/bicep/application.json
