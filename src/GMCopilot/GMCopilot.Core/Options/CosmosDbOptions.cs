@@ -11,12 +11,6 @@ public class CosmosDbOptions
     public const string PropertyName = "CosmosDb";
 
     /// <summary>
-    /// Cosmos DB connection string
-    /// </summary>
-    [Required, NotEmptyOrWhitespace]
-    public string? ConnectionString { get; set; } = string.Empty;
-
-    /// <summary>
     /// Cosmos DB database name
     /// </summary>
     public string? DatabaseName { get; set; } = "gmcopilot";
