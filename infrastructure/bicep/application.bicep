@@ -92,11 +92,11 @@ var openAiModelDeployments = [
     capacity: 120
   }
   {
-    name: 'gpt-4-turbo'
+    name: 'gpt-4'
     modelName: 'gpt-4'
     version: 'turbo-2024-04-09'
     sku: 'Standard'
-    capacity: 60
+    capacity: 120
   }
   {
     name: 'embedding'
@@ -173,7 +173,7 @@ module openAiService './modules/openAiService.bicep' = {
     monitoring
   ]
   params: {
-    location: location
+    location: 'EastUS' // location
     openAiServiceName: openAiServiceName
     openAiModeldeployments: openAiModelDeployments
     logAnalyticsWorkspaceId: monitoring.outputs.logAnalyticsWorkspaceId

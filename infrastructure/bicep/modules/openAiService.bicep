@@ -1,3 +1,20 @@
+@allowed([
+  'AustraliaEast'
+  'CentralUS'
+  'EastUS'
+  'EastUS2'
+  'FranceCentral'
+  'JapanEast'
+  'NorthCentralUS'
+  'NorwayEast'
+  'SouthCentralUS'
+  'SwedenCentral'
+  'SwitzerlandNorth'
+  'UKSouth'
+  'WestEurope'
+  'WestUS'
+  'WestUS3'
+])
 param location string
 param openAiServiceName string
 param openAiModeldeployments array
