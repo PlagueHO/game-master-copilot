@@ -1,7 +1,7 @@
-﻿using GMCopilot.Core.Authorization;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.Identity.Web;
+using GMCopilot.Core.Authorization;
+
 
 namespace GMCopilot.AccessApi.Extensions
 {
@@ -13,9 +13,13 @@ namespace GMCopilot.AccessApi.Extensions
         {
             return builder.Services.AddAuthorization(options =>
             {
-                AddPolicy(options, AuthorizationScopes.UserRead);
-                AddPolicy(options, AuthorizationScopes.GMCopilotRead);
-                AddPolicy(options, AuthorizationScopes.GMCopilotReadWrite);
+                options.AddPolicy("AuthZPolicy", policyBuilder =>
+                    policyBuilder.Requirements.Add(new ScopeAuthorizationRequirement() {
+                        RequiredScopesConfigurationKey = $"EntraId:Scopes"
+                    }));
+                //AddPolicy(options, AuthorizationScopes.UserRead);
+                //AddPolicy(options, AuthorizationScopes.GMCopilotRead);
+                //AddPolicy(options, AuthorizationScopes.GMCopilotReadWrite);
             });
         }
 

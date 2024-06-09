@@ -89,26 +89,22 @@ resource apiApplication 'Microsoft.Graph/applications@v1.0' = {
   appRoles: [
     {
       allowedMemberTypes: [
-        'User'
         'Application'
       ]
-      description: 'Administrator Game Master Copilot'
-      displayName: 'GMCopilot Administrator '
-      id: '1b4f816e-5eaf-48b9-8613-7923830595ad'
-      value: 'GMCopilot.Administrator'
-      origin: 'Application'
+      description: 'Allow the app to read and write every user\'s GMCopilot data using the API.'
+      displayName: 'GMCopilot.ReadWrite.All'
+      id: '7af025ca-40a8-41d9-8049-4d46d54494d3'
+      value: 'GMCopilot.ReadWrite.All'
       isEnabled: true
     }
     {
       allowedMemberTypes: [
-        'User'
         'Application'
       ]
-      displayName: 'GMCopilot User'
+      displayName: 'GMCopilot.Read.All'
       id: '1b4f816e-5eaf-48b9-8613-7923830595ae'
-      value: 'GMCopilot.User'
-      description: 'Access Game Master Copilot as a User'
-      origin: 'Application'
+      value: 'GMCopilot.Read.All'
+      description: 'Allow the app to read every user\'s GMCopilot data using the API.'
       isEnabled: true
     }
   ]

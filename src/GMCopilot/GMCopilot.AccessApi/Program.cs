@@ -3,6 +3,7 @@ using Microsoft.Identity.Web;
 using GMCopilot.Core.Services;
 using Microsoft.OpenApi.Models;
 using GMCopilot.AccessApi.Extensions;
+using Microsoft.IdentityModel.Tokens;
 
 namespace GMCopilot.AccessApi;
 
@@ -20,7 +21,11 @@ public class Program
         builder.AddDataStore();
 
         // Add authentication
-        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        builder.Services.AddAuthentication(option =>
+            {
+                option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
             .AddMicrosoftIdentityWebApi(options =>
             {
                 builder.Configuration.Bind("EntraId", options);
@@ -31,7 +36,7 @@ public class Program
             });
 
         // Add authorization
-        builder.AddAccessAuthorization();
+        // builder.AddAccessAuthorization();
 
         // Add API Controllers
         builder.Services.AddControllers();

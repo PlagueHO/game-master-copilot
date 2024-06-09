@@ -1,6 +1,7 @@
 ﻿using Microsoft.Azure.Cosmos;
 using GMCopilot.Core.Models;
 using GMCopilot.Data.Repositories;
+using System.Net.Http;
 
 namespace GMCopilot.AccessApi.Extensions;
 
@@ -13,7 +14,23 @@ public static class DataStoreServiceExtensions
     {
         // Create the Cosmos DB Client
         builder.AddAzureCosmosClient("CosmosDb",
-            configureClientOptions: clientOptions => clientOptions.ApplicationName = "game-master-copilot-access-api");
+            configureSettings: settings => settings.DisableTracing = false,
+            configureClientOptions: clientOptions => {
+                clientOptions.ApplicationName = "game-master-copilot-access-api";
+                // TODO: This skips SSL certification check so that Cosmos DB emulator can work.
+                // This is not recommended for production.
+                clientOptions.HttpClientFactory = () =>
+                {
+                    HttpMessageHandler httpMessageHandler = new HttpClientHandler()
+                    {
+                        ServerCertificateCustomValidationCallback = (req, cert, chain, errors) => true
+                    };
+
+                    return new HttpClient(httpMessageHandler);
+                };
+                clientOptions.ConnectionMode = ConnectionMode.Gateway;
+                clientOptions.LimitToEndpoint = true;
+            });
 
         // Create the Account context and repository
         builder.Services.AddScoped<CosmosDbContext<Account>>((service) =>

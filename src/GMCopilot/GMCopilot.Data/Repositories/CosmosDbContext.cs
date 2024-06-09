@@ -121,10 +121,6 @@ public class CosmosDbContext<T> : IStorageContext<T>, IDisposable where T : ISto
 
     protected virtual void Dispose(bool disposing)
     {
-        if (disposing)
-        {
-            _client.Dispose();
-        }
     }
 
     /// <summary>

@@ -4,6 +4,8 @@ using GMCopilot.Core.Models;
 using GMCopilot.Data.Repositories;
 using GMCopilot.Core.Authorization;
 using GMCopilot.Core.Services;
+using Microsoft.Identity.Web;
+using Microsoft.Identity.Web.Resource;
 
 namespace GMCopilot.AccessApi.Controllers;
 
@@ -30,14 +32,22 @@ public class AccountController : ControllerBase
         _accountRepository = accountRepository;
         _tenantRepository = tenantRepository;
         _claimsProvider = claimsProvider;
+
+        // Log that the AccountController has been created
+        _logger.LogInformation("AccountController created.");
     }
 
-    // Create a test API that allows anonymous access
-    [HttpGet("Test", Name = "Test")]
-    [AllowAnonymous]
-    public ActionResult Test()
+    /// <summary>
+    /// Health check endpoint for the API.
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("HealthCheck", Name = "HealthCheck")]
+    public ActionResult HealthCheck()
     {
-        return Ok("Test");
+        // Write the Authorization headers to log
+        _logger.LogInformation("Authorization headers: {0}", HttpContext.Request.Headers.Authorization);
+        HttpContext.VerifyUserHasAnyAcceptedScope("GMCopilot.Read");
+        return Ok();
     }
 
     /// <summary>
@@ -54,10 +64,10 @@ public class AccountController : ControllerBase
         {
             var accountId = _claimsProvider.GetUserId(HttpContext);
             var account = await _accountRepository.FindByAccountIdAsync(accountId);
-            
+
             if (account == null)
             {
-                var userName = _claimsProvider.GetUserName(HttpContext);               
+                var userName = _claimsProvider.GetUserName(HttpContext);
 
                 var tenantRoles = new List<AccountTenantRole> {
                     new(accountId, TenantType.Individual, TenantRole.Owner)
@@ -187,7 +197,7 @@ public class AccountController : ControllerBase
     }
 
     /// <summary>
-    /// 
+    /// Deletes the account of a specific user.
     /// </summary>
     /// <param name="id"></param>
     /// <returns>An HTTP result code.</returns>
@@ -206,5 +216,32 @@ public class AccountController : ControllerBase
             _logger.LogError(ex, "Error creating account.");
             return StatusCode(500);
         }
+    }
+
+    private bool IsAppMakingRequest()
+    {
+        if (HttpContext.User.Claims.Any(c => c.Type == "idtyp"))
+        {
+            return HttpContext.User.Claims.Any(c => c.Type == "idtyp" && c.Value == "app");
+        }
+        else
+        {
+            return HttpContext.User.Claims.Any(c => c.Type == "roles") && !HttpContext.User.Claims.Any(c => c.Type == "scp");
+        }
+    }
+
+    private bool RequestCanAccessUser(Guid userId)
+    {
+        return IsAppMakingRequest() || (userId == GetUserId());
+    }
+
+    private Guid GetUserId()
+    {
+        Guid userId;
+        if (!Guid.TryParse(HttpContext.User.GetObjectId(), out userId))
+        {
+            throw new Exception("User ID is not valid.");
+        }
+        return userId;
     }
 }

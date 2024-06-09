@@ -8,6 +8,12 @@ public class EntraIdOptions
     public const string PropertyName = "EntraId";
 
     /// <summary>
+    /// The base URL of the Entra ID authority endpoints. E.g., https://gmcopilot.ciamlogin.com
+    /// </summary>
+    [Required, NotEmptyOrWhitespace]
+    public string Instance { get; set; } = string.Empty;
+
+    /// <summary>
     /// The base URL of the Entra ID authority endpoints. E.g., https://gmcopilot.ciamlogin.com/gmcopilot.onmicrosoft.com
     /// </summary>
     [Required, NotEmptyOrWhitespace]
@@ -41,11 +47,6 @@ public class EntraIdOptions
     /// </summary>
     [Required, NotEmptyOrWhitespace]
     public string CallbackPath { get; set; } = string.Empty;
-
-    /// <summary>
-    /// The scopes to request from the Entra ID authority
-    /// </summary>
-    public string? Scopes { get; set; }
 
     /// <summary>
     /// The SignUpSignIn policy ID if using Azure AD B2C/Entra ID External Identity
