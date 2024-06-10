@@ -24,9 +24,6 @@ public class Program
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("EntraId"));
 
-        // Add authorization
-        // builder.AddAccessAuthorization();
-
         // Add API Controllers
         builder.Services.AddControllers();
         

@@ -2,9 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using GMCopilot.Core.Models;
 using GMCopilot.Data.Repositories;
-using GMCopilot.Core.Authorization;
 using GMCopilot.Core.Services;
-using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.Resource;
 
 namespace GMCopilot.AccessApi.Controllers;
@@ -38,29 +36,27 @@ public class AccountController : ControllerBase
     }
 
     /// <summary>
-    /// Health check endpoint for the API. Any logged in user or app can access this endpoint.
+    /// Health check endpoint for the API.
     /// </summary>
     /// <returns></returns>
     [HttpGet("HealthCheck", Name = "HealthCheck")]
-    [Authorize]
+    [AllowAnonymous]
     public ActionResult HealthCheck()
     {
-        // Write the Authorization headers to log
-        _logger.LogInformation("Authorization headers: {0}", HttpContext.Request.Headers.Authorization);
-        HttpContext.VerifyUserHasAnyAcceptedScope("GMCopilot.Read");
         return Ok();
     }
 
     /// <summary>
-    /// Get a user account for the current user.
+    /// Initializes an account for the logged in user.
     /// It will create a new account and tenant if one does not exist.
+    /// It will also create a new individual tenant for the account if one does not exist.
+    /// It can only be called when user claims are provided.
     /// </summary>
     /// <returns>The account record of the user.</returns>
-    [HttpGet("GetOrCreateAccount", Name = "GetOrCreateAccount")]
-    [Authorize(Policy = AuthorizationScopes.GMCopilotRead)]
+    [HttpGet("Initialize", Name = "Initialize")]
+    [RequiredScope("GMCopilot.ReadWrite")]
     public async Task<ActionResult<Account>> GetOrCreateAccount()
     {
-        // TODO: Refactor this method and move it into an AccessService
         try
         {
             var accountId = _claimsProvider.GetUserId(HttpContext);
@@ -97,7 +93,7 @@ public class AccountController : ControllerBase
     /// </summary>
     /// <returns>The account record of the user.</returns>
     [HttpGet(Name = "GetAccount")]
-    [Authorize(Policy = AuthorizationScopes.GMCopilotRead)]
+    [RequiredScope("GMCopilot.Read")]
     public async Task<ActionResult<Account>> GetAccount()
     {
         try
@@ -118,7 +114,7 @@ public class AccountController : ControllerBase
     /// <param name="account">The account to update.</param>
     /// <returns>An HTTP result code.</returns>
     [HttpPut(Name = "UpdateAccount")]
-    [Authorize(Policy = AuthorizationScopes.GMCopilotReadWrite)]
+    [RequiredScope("GMCopilot.Read")]
     public async Task<ActionResult> UpdateAccount(Account account)
     {
         try
@@ -150,7 +146,7 @@ public class AccountController : ControllerBase
     /// <param name="account">The account to create.</param>
     /// <returns>An HTTP result code.</returns>
     [HttpPost(Name = "CreateAccount")]
-    [Authorize(Policy = AuthorizationScopes.GMCopilotReadWrite)]
+    [RequiredScope("GMCopilot.Read")]
     public async Task<ActionResult> CreateAccount(Account account)
     {
         try
@@ -182,7 +178,6 @@ public class AccountController : ControllerBase
     /// <param name="id">The Id of the user to get the account for.</param>
     /// <returns>The account record of the user.</returns>
     [HttpGet("{id}", Name = "GetAccountById")]
-    [Authorize(Policy = AuthorizationScopes.GMCopilotRead)]
     public async Task<ActionResult<Account>> GetAccountById(Guid id)
     {
         try
@@ -203,7 +198,6 @@ public class AccountController : ControllerBase
     /// <param name="id"></param>
     /// <returns>An HTTP result code.</returns>
     [HttpDelete("{id}", Name = "DeleteAccount")]
-    [Authorize(Policy = AuthorizationScopes.GMCopilotReadWrite)]
     public async Task<ActionResult> DeleteAccount(Guid id)
     {
         try
@@ -217,32 +211,5 @@ public class AccountController : ControllerBase
             _logger.LogError(ex, "Error creating account.");
             return StatusCode(500);
         }
-    }
-
-    private bool IsAppMakingRequest()
-    {
-        if (HttpContext.User.Claims.Any(c => c.Type == "idtyp"))
-        {
-            return HttpContext.User.Claims.Any(c => c.Type == "idtyp" && c.Value == "app");
-        }
-        else
-        {
-            return HttpContext.User.Claims.Any(c => c.Type == "roles") && !HttpContext.User.Claims.Any(c => c.Type == "scp");
-        }
-    }
-
-    private bool RequestCanAccessUser(Guid userId)
-    {
-        return IsAppMakingRequest() || (userId == GetUserId());
-    }
-
-    private Guid GetUserId()
-    {
-        Guid userId;
-        if (!Guid.TryParse(HttpContext.User.GetObjectId(), out userId))
-        {
-            throw new Exception("User ID is not valid.");
-        }
-        return userId;
     }
 }
