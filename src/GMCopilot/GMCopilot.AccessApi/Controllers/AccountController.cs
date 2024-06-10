@@ -38,10 +38,11 @@ public class AccountController : ControllerBase
     }
 
     /// <summary>
-    /// Health check endpoint for the API.
+    /// Health check endpoint for the API. Any logged in user or app can access this endpoint.
     /// </summary>
     /// <returns></returns>
     [HttpGet("HealthCheck", Name = "HealthCheck")]
+    [Authorize]
     public ActionResult HealthCheck()
     {
         // Write the Authorization headers to log

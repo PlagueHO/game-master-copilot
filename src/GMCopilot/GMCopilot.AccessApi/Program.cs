@@ -21,19 +21,8 @@ public class Program
         builder.AddDataStore();
 
         // Add authentication
-        builder.Services.AddAuthentication(option =>
-            {
-                option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddMicrosoftIdentityWebApi(options =>
-            {
-                builder.Configuration.Bind("EntraId", options);
-                options.TokenValidationParameters.NameClaimType = "name";
-            }, options =>
-            {
-                builder.Configuration.Bind("EntraId", options);
-            });
+        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("EntraId"));
 
         // Add authorization
         // builder.AddAccessAuthorization();
