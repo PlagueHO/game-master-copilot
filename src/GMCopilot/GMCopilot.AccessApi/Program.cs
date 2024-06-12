@@ -24,11 +24,15 @@ public class Program
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("EntraId"));
 
+        // Add the AuthorizationService to provide authorization services to the API controllers
+        builder.Services.AddScoped<AuthorizationService>();
+
+        // Add Health Check
+        builder.Services.AddHealthChecks()
+            .AddCheck<AccessApiHealthCheck>("Access API");
+
         // Add API Controllers
         builder.Services.AddControllers();
-        
-        // Add the ClaimsProviderService to provide access to the user's claims
-        builder.Services.AddScoped<ClaimsProviderService>();
 
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
@@ -75,6 +79,9 @@ public class Program
         app.UseAuthorization();
 
         app.MapControllers();
+
+        // Map Health Check endpoints
+        app.MapHealthChecks("/healthz");
 
         app.Run();
     }

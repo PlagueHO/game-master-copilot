@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System.Security.Claims;
 
@@ -8,12 +7,12 @@ namespace GMCopilot.Core.Services;
 /// <summary>
 /// Provides extraction of claims and access control for use by API controllers.
 /// </summary>
-public class ClaimsProviderService
+public class AuthorizationService
 {
     private const string _oidClaimType = "http://schemas.microsoft.com/identity/claims/objectidentifier";
-    private readonly ILogger<ClaimsProviderService> _logger;
+    private readonly ILogger<AuthorizationService> _logger;
 
-    public ClaimsProviderService(ILogger<ClaimsProviderService> logger)
+    public AuthorizationService(ILogger<AuthorizationService> logger)
     {
         _logger = logger;
     }
@@ -69,7 +68,7 @@ public class ClaimsProviderService
     /// </summary>
     /// <param name="context">The HTTP context from the request</param>
     /// <returns>True if the request is made by an application, false otherwise.</returns>
-    private bool IsAppMakingRequest(HttpContext context)
+    public bool IsAppMakingRequest(HttpContext context)
     {
         // Check if the "idtyp" claim exists
         if (context.User.Claims.Any(c => c.Type == "idtyp"))
@@ -85,12 +84,23 @@ public class ClaimsProviderService
     }
 
     /// <summary>
+    /// Check if the current request is made by an application and has the specified permission.
+    /// </summary>
+    /// <param name="context">The HTTP context from the request</param>
+    /// <param name="permission">The permission to check for.</param>
+    /// <returns>True if the request is made by an application and has the specified permission, false otherwise.</returns>
+    public bool AppHasPermission(HttpContext context, string permission)
+    {
+        return IsAppMakingRequest(context) && context.User.Claims.Any(c => c.Type == "roles" && c.Value == permission);
+    }
+
+    /// <summary>
     /// Checks if the current request can access the user with the specified userId.
     /// </summary>
     /// <param name="context">The HTTP context from the request</param>
     /// <param name="userId">The Id of the user to check access for.</param>
     /// <returns>True if the request can access the user, false otherwise.</returns>
-    private bool RequestCanAccessUser(HttpContext context, Guid userId)
+    public bool RequestCanAccessUser(HttpContext context, Guid userId)
     {
         return IsAppMakingRequest(context) || (userId == GetUserId(context));
     }
