@@ -37,7 +37,7 @@ public class AccountController : ControllerBase
 
     /// <summary>
     /// Initializes an account for the logged in user.
-    /// It will create a new account and tenant if one does not exist.
+    /// It will create a new account if one does not exist.
     /// It will also create a new individual tenant for the account if one does not exist.
     /// It can only be called when user claims are provided.
     /// </summary>
@@ -87,12 +87,19 @@ public class AccountController : ControllerBase
     {
         try
         {
-            var account = await _accountRepository.FindByAccountIdAsync(_authorizationService.GetUserId(HttpContext));
+            if (_authorizationService.IsAppMakingRequest(HttpContext))
+            {
+                return BadRequest("Application request not permitted.");
+            }
+
+            var userIdFromClaims = _authorizationService.GetUserId(HttpContext);
+
+            var account = await _accountRepository.FindByAccountIdAsync(userIdFromClaims);
             return Ok(account);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error getting account by id.");
+            _logger.LogError(ex, "Error getting account.");
             return StatusCode(500);
         }
     }
@@ -101,10 +108,10 @@ public class AccountController : ControllerBase
     /// Creates a new account for the currently logged in user.
     /// </summary>
     /// <param name="account">The account to create.</param>
-    /// <returns>An HTTP result code.</returns>
+    /// <returns>The account record of the user.</returns>
     [HttpPost(Name = "CreateAccount")]
-    [RequiredScopeOrAppPermission(["GMCopilot.ReadWrite.All"], ["GMCopilot.ReadWrite"])]
-    public async Task<ActionResult> CreateAccount(Account account)
+    [RequiredScope(["GMCopilot.ReadWrite"])]
+    public async Task<ActionResult<Account>> CreateAccount(Account account)
     {
         try
         {
@@ -113,10 +120,17 @@ public class AccountController : ControllerBase
                 return BadRequest();
             }
 
-            if (account.Id != _authorizationService.GetUserId(HttpContext))
+            if (_authorizationService.IsAppMakingRequest(HttpContext))
             {
-                // Can't create an account for another user without AccountsAdmin scope
-                return Unauthorized();
+                return BadRequest("Application request not permitted.");
+            }
+
+            var userIdFromClaims = _authorizationService.GetUserId(HttpContext);
+
+            if (account.Id != userIdFromClaims)
+            {
+                // Can't create an account for another user
+                return Unauthorized("Can't create an account for another user.");
             }
 
             await _accountRepository.CreateAsync(account);
@@ -142,13 +156,20 @@ public class AccountController : ControllerBase
         {
             if (account == null)
             {
-                return BadRequest();
+                return BadRequest("Account is not specified.");
             }
 
-            if (account.Id != _authorizationService.GetUserId(HttpContext))
+            if (_authorizationService.IsAppMakingRequest(HttpContext))
             {
-                // Can't change the account of another user without AccountsAdmin scope
-                return Unauthorized();
+                return BadRequest("Application request not permitted.");
+            }
+            
+            var userIdFromClaims = _authorizationService.GetUserId(HttpContext);
+
+            if (account.Id != userIdFromClaims)
+            {
+                // Can't change the account of another user
+                return Unauthorized("Can't update the account of another user.");
             }
 
             await _accountRepository.UpsertAsync(account);
@@ -156,7 +177,7 @@ public class AccountController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error creating account.");
+            _logger.LogError(ex, "Error updating account.");
             return StatusCode(500);
         }
     }
@@ -171,13 +192,20 @@ public class AccountController : ControllerBase
     {
         try
         {
-            var account = await _accountRepository.FindByAccountIdAsync(_authorizationService.GetUserId(HttpContext));
+            if (_authorizationService.IsAppMakingRequest(HttpContext))
+            {
+                return BadRequest("Application request not permitted.");
+            }
+
+            var userIdFromClaims = _authorizationService.GetUserId(HttpContext);
+
+            var account = await _accountRepository.FindByAccountIdAsync(userIdFromClaims);
             await _accountRepository.DeleteAsync(account);
             return Ok();
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error creating account.");
+            _logger.LogError(ex, "Error deleting account.");
             return StatusCode(500);
         }
     }
