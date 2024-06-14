@@ -2,24 +2,57 @@
 
 namespace GMCopilot.Data.Repositories;
 
-public class AccountRepository : Repository<Account>
+public class AccountRepository : IAccountRepository
 {
     /// <summary>
-    /// Initializes a new instance of the AccountRepositoryNew class.
+    /// The storage context.
     /// </summary>
-    /// <param name="storageContext">The storage context.</param>
-    public AccountRepository(IStorageContext<Account> storageContext)
-        : base(storageContext)
-    {
-    }
+    protected IStorageContext<Account> StorageContext { get; set; }
 
     /// <summary>
-    /// Founds the account record using account id.
+    /// Initializes a new instance of the Repository class.
     /// </summary>
-    /// <param name="id">The account id.</param>
-    /// <returns>The account record.</returns>
-    public Task<Account> FindByAccountIdAsync(Guid accountId)
+    public AccountRepository(IStorageContext<Account> storageContext)
     {
-        return StorageContext.ReadAsync(accountId);
+        StorageContext = storageContext;
+    }
+
+    /// <inheritdoc/>
+    public Task CreateAsync(Account account)
+    {
+        return StorageContext.CreateAsync(account);
+    }
+
+    /// <inheritdoc/>
+    public Task DeleteAsync(Account account)
+    {
+        return StorageContext.DeleteAsync(account);
+    }
+
+    /// <inheritdoc/>
+    public Task<Account> FindByIdAsync(Guid id)
+    {
+        return StorageContext.ReadAsync(id);
+    }
+
+    /// <inheritdoc/>
+    public async Task<bool> TryFindByIdAsync(Guid id, Action<Account?> account)
+    {
+        try
+        {
+            account(await FindByIdAsync(id));
+            return true;
+        }
+        catch (Exception ex) when (ex is ArgumentOutOfRangeException || ex is KeyNotFoundException)
+        {
+            account(default(Account?));
+            return false;
+        }
+    }
+
+    /// <inheritdoc/>
+    public Task UpsertAsync(Account account)
+    {
+        return StorageContext.UpsertAsync(account);
     }
 }

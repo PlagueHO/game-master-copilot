@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using GMCopilot.Core.Models;
 using GMCopilot.Data.Repositories;
@@ -55,7 +54,7 @@ public class AccountController : ControllerBase
 
             var userIdFromClaims = _authorizationService.GetUserId(HttpContext);
             
-            var account = await _accountRepository.FindByAccountIdAsync(userIdFromClaims);
+            var account = await _accountRepository.FindByIdAsync(userIdFromClaims);
 
             if (account == null)
             {
@@ -99,7 +98,7 @@ public class AccountController : ControllerBase
             }
 
             var userIdFromClaims = _authorizationService.GetUserId(HttpContext);
-            var account = await _accountRepository.FindByAccountIdAsync(userIdFromClaims);
+            var account = await _accountRepository.FindByIdAsync(userIdFromClaims);
 
             if (account == null)
             {
@@ -211,7 +210,7 @@ public class AccountController : ControllerBase
 
             var userIdFromClaims = _authorizationService.GetUserId(HttpContext);
 
-            var account = await _accountRepository.FindByAccountIdAsync(userIdFromClaims);
+            var account = await _accountRepository.FindByIdAsync(userIdFromClaims);
 
             if (account == null)
             {
@@ -240,7 +239,7 @@ public class AccountController : ControllerBase
     {
         try
         {
-            var account = await _accountRepository.FindByAccountIdAsync(id);
+            var account = await _accountRepository.FindByIdAsync(id);
             return (account == null ? NotFound() : Ok(account));
         }
         catch (Exception ex)
@@ -294,7 +293,7 @@ public class AccountController : ControllerBase
     {
         try
         {
-            var account = await _accountRepository.FindByAccountIdAsync(id);
+            var account = await _accountRepository.FindByIdAsync(id);
             await _accountRepository.DeleteAsync(account);
             return Ok();
         }

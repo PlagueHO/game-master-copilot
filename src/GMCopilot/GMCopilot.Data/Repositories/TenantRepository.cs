@@ -2,43 +2,63 @@
 
 namespace GMCopilot.Data.Repositories;
 
-public class TenantRepository : Repository<Tenant>
+public class TenantRepository : ITenantRepository
 {
     /// <summary>
-    /// Initializes a new instance of the TenantRepository class.
+    /// The storage context.
     /// </summary>
-    /// <param name="storageContext">The storage context.</param>
+    protected IStorageContext<Tenant> StorageContext { get; set; }
+
+    /// <summary>
+    /// Initializes a new instance of the Repository class.
+    /// </summary>
     public TenantRepository(IStorageContext<Tenant> storageContext)
-        : base(storageContext)
     {
+        StorageContext = storageContext;
     }
 
-    /// <summary>
-    /// Finds the tenant using a tenant id.
-    /// </summary>
-    /// <param name="id">The tenant id.</param>
-    /// <returns>The tenant record.</returns>
-    public Task<Tenant> FindByTenantIdAsync(Guid tenantId)
+    /// <inheritdoc/>
+    public Task CreateAsync(Tenant tenant)
     {
-        return FindByIdAsync(tenantId);
+        return StorageContext.CreateAsync(tenant);
     }
 
-    /// <summary>
-    /// Tries to find the tenant using a tenant id.
-    /// </summary>
-    /// <param name="id">The tenant id.</param>
-    /// <returns>The tenant record.</returns>
-    public async Task<bool> TryFindByTenantIdAsync(Guid tenantId, Action<Tenant?> tenant)
+    /// <inheritdoc/>
+    public Task DeleteAsync(Tenant tenant)
     {
-        return await TryFindByIdAsync(tenantId, tenant);
+        return StorageContext.DeleteAsync(tenant);
     }
 
-    /// <summary>
-    /// Read all the tenants.
-    /// </summary>
-    /// <returns>A list of all tenant records.</returns>
-    public Task<IEnumerable<Tenant>> ReadAllAsync()
+    /// <inheritdoc/>
+    public Task<Tenant> FindByIdAsync(Guid id)
     {
-        return StorageContext.QueryEntitiesAsync(tenant => true);
+        return StorageContext.ReadAsync(id);
+    }
+
+    /// <inheritdoc/>
+    public Task<Tenant> FindByIdAsync(Guid id, Guid tenantId)
+    {
+        return StorageContext.ReadAsync(id, tenantId);
+    }
+
+    /// <inheritdoc/>
+    public async Task<bool> TryFindByIdAsync(Guid id, Action<Tenant?> tenant)
+    {
+        try
+        {
+            tenant(await FindByIdAsync(id));
+            return true;
+        }
+        catch (Exception ex) when (ex is ArgumentOutOfRangeException || ex is KeyNotFoundException)
+        {
+            tenant(default(Tenant?));
+            return false;
+        }
+    }
+
+    /// <inheritdoc/>
+    public Task UpsertAsync(Tenant tenant)
+    {
+        return StorageContext.UpsertAsync(tenant);
     }
 }

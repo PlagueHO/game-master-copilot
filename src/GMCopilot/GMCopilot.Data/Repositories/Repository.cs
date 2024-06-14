@@ -4,6 +4,8 @@ namespace GMCopilot.Data.Repositories;
 
 /// <summary>
 /// Defines the basic CRUD operations for a repository.
+/// This should not be used. Instead, should create an model specific interface that
+/// extends this interface.
 /// </summary>
 public class Repository<T> : IRepository<T> where T : IStorageEntity
 {

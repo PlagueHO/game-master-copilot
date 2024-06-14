@@ -4,6 +4,8 @@ namespace GMCopilot.Data.Repositories;
 
 /// <summary>
 /// Defines the basic CRUD operations for a repository that is tenanted and typed.
+/// This should not be used. Instead, should create an model specific interface that
+/// extends this interface.
 /// </summary>
 public class RepositoryTenantedTyped<T> : RepositoryTenanted<T>, IRepositoryTenantedTyped<T> where T : IStorageTenantedTypedEntity
 {

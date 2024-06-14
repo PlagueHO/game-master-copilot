@@ -1,6 +1,0 @@
-@GMCopilot.AccessApi_HostAddress = http://localhost:5053
-
-GET {{GMCopilot.AccessApi_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
