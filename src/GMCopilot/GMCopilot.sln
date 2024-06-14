@@ -49,7 +49,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "APIs", "APIs", "{EDEFD969-1
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMCopilot.ApiCore", "GMCopilot.ApiCore\GMCopilot.ApiCore.csproj", "{0997EF48-D169-4107-B044-EF3EA815B1C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMCopilot.Data.Test", "GMCopilot.Data.Test\GMCopilot.Data.Test.csproj", "{E19F213B-208B-4233-8166-410E4FA2EC68}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMCopilot.Data.Test", "Tests\GMCopilot.Data.Test\GMCopilot.Data.Test.csproj", "{E19F213B-208B-4233-8166-410E4FA2EC68}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
