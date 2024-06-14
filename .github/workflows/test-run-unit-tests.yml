@@ -7,6 +7,9 @@ jobs:
   test-run-unit-tests:
     name: Run unit tests
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        project: ['GMCopilot.Core', 'GMCopilot.Data']
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -16,20 +19,21 @@ jobs:
         with:
           dotnet-version: 8
 
-      - name: Run unit tests on GMCopilot.Core
+      - name: Run unit tests on ${{ matrix.project }}
         run: |
           dotnet test --configuration Release --logger trx
-        working-directory: ./src/GMCopilot/Tests/GMCopilot.Core.Test/
+        working-directory: ./src/GMCopilot/Tests/${{ matrix.project }}.Test/
 
-      - name: Upload test results for GMCopilot.Core
+      - name: Upload test results for ${{ matrix.project }}
         uses: actions/upload-artifact@v4
         with:
-          name: GMCopilot.Core.Test
-          path: ./src/GMCopilot/Tests/GMCopilot.Core.Test/TestResults/*.trx
+          name: ${{ matrix.project }}.Test
+          path: ./src/GMCopilot/Tests/${{ matrix.project }}.Test/TestResults/*.trx
 
-      - name: Publish test results for GMCopilot.Core
+      - name: Publish test results for ${{ matrix.project }}
         uses: EnricoMi/publish-unit-test-result-action@v2
         if: always()
         with:
             files: |
-              ./src/GMCopilot/Tests/GMCopilot.Core.Test/TestResults/*.trx
+              ./src/GMCopilot/Tests/${{ matrix.project }}.Test/TestResults/*.trx
+              
