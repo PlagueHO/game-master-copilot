@@ -48,23 +48,29 @@ public class AccountController : ControllerBase
     {
         try
         {
-            var accountId = _authorizationService.GetUserId(HttpContext);
-            var account = await _accountRepository.FindByAccountIdAsync(accountId);
+            if (_authorizationService.IsAppMakingRequest(HttpContext))
+            {
+                return BadRequest("Application request not permitted.");
+            }
+
+            var userIdFromClaims = _authorizationService.GetUserId(HttpContext);
+            
+            var account = await _accountRepository.FindByAccountIdAsync(userIdFromClaims);
 
             if (account == null)
             {
                 var userName = _authorizationService.GetUserName(HttpContext);
 
                 var tenantRoles = new List<AccountTenantRole> {
-                    new(accountId, TenantType.Individual, TenantRole.Owner)
+                    new(userIdFromClaims, TenantType.Individual, TenantRole.Owner)
                 };
 
                 // Create a new account
-                account = new Account(accountId, userName, tenantRoles);
+                account = new Account(userIdFromClaims, userName, tenantRoles);
                 await _accountRepository.CreateAsync(account);
 
                 // Create a new individual tenant for the account
-                var tenant = new Tenant(accountId, userName, accountId, TenantType.Individual);
+                var tenant = new Tenant(userIdFromClaims, userName, userIdFromClaims, TenantType.Individual);
                 await _tenantRepository.CreateAsync(tenant);
             }
 
@@ -93,8 +99,14 @@ public class AccountController : ControllerBase
             }
 
             var userIdFromClaims = _authorizationService.GetUserId(HttpContext);
-
             var account = await _accountRepository.FindByAccountIdAsync(userIdFromClaims);
+
+            if (account == null)
+            {
+                _logger.LogInformation($"Account with ID {userIdFromClaims} not found.");
+                return NotFound($"Account with ID {userIdFromClaims} not found.");
+            }
+
             return Ok(account);
         }
         catch (Exception ex)
@@ -200,6 +212,13 @@ public class AccountController : ControllerBase
             var userIdFromClaims = _authorizationService.GetUserId(HttpContext);
 
             var account = await _accountRepository.FindByAccountIdAsync(userIdFromClaims);
+
+            if (account == null)
+            {
+                _logger.LogInformation($"Account with ID {userIdFromClaims} not found.");
+                return NotFound($"Account with ID {userIdFromClaims} not found.");
+            }
+
             await _accountRepository.DeleteAsync(account);
             return Ok();
         }

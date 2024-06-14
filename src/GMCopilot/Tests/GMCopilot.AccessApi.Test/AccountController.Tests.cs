@@ -20,7 +20,7 @@ public class AccountControllerTests
         var controller = new AccountController(mockLogger.Object, mockAccountRepository.Object, mockTenantRepository.Object, mockClaimsProvider.Object);
 
         // Act
-        var result = controller.GetOrCreateAccount();
+        var result = controller.InitializeAccount();
 
         // Assert
         // Assert something about the result here
