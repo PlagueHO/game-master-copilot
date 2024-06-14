@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\GMCopilot.Core\GMCopilot.Core.csproj" />
+    <ProjectReference Include="..\..\..\GMCopilot.Core\GMCopilot.Core.csproj" />
   </ItemGroup>
 
 </Project>

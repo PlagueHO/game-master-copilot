@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\GMCopilot.AccessApi\GMCopilot.AccessApi.csproj" />
+    <ProjectReference Include="..\..\..\GMCopilot.AccessApi\GMCopilot.AccessApi.csproj" />
   </ItemGroup>
 
 </Project>
