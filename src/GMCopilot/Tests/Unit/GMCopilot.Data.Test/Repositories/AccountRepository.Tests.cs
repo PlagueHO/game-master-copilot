@@ -47,6 +47,20 @@ namespace GMCopilot.Tests.Repositories
         }
 
         [TestMethod]
+        public async Task FindByIdAsync_ShouldThrowException_WhenAccountDoesNotExist()
+        {
+            // Arrange
+            var accountId = Guid.NewGuid();
+            _mockStorageContext.Setup(x => x.ReadAsync(accountId)).ThrowsAsync(new KeyNotFoundException());
+
+            // Act
+            Func<Task> act = async () => await _accountRepository.FindByIdAsync(accountId);
+
+            // Assert
+            await act.Should().ThrowAsync<KeyNotFoundException>();
+        }
+
+        [TestMethod]
         public async Task TryFindByIdAsync_ShouldReturnFalse_WhenAccountDoesNotExist()
         {
             // Arrange

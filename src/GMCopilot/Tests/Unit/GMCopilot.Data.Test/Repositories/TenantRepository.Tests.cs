@@ -47,6 +47,21 @@ namespace GMCopilot.Tests.Repositories
         }
 
         [TestMethod]
+        public async Task FindByIdAsync_ShouldThrowException_WhenTenantDoesNotExist()
+        {
+            // Arrange
+            var TenantId = Guid.NewGuid();
+            var expectedTenant = GenerateTestTenant(TenantId);
+            _mockStorageContext.Setup(x => x.ReadAsync(TenantId)).ThrowsAsync(new KeyNotFoundException());
+
+            // Act
+            Func<Task> act = async () => await _TenantRepository.FindByIdAsync(TenantId);
+
+            // Assert
+            await act.Should().ThrowAsync<KeyNotFoundException>();
+        }
+
+        [TestMethod]
         public async Task TryFindByIdAsync_ShouldReturnFalse_WhenTenantDoesNotExist()
         {
             // Arrange
