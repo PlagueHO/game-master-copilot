@@ -14,6 +14,7 @@ public interface IStorageContext<T> where T : IStorageEntity
 
     /// <summary>
     /// Read an entity from the storage context by id.
+    /// If the entity can not be found then a KeyNotFoundException is thrown.
     /// </summary>
     /// <param name="entityId">The entity id.</param>
     /// <returns>The entity.</returns>
@@ -21,6 +22,7 @@ public interface IStorageContext<T> where T : IStorageEntity
 
     /// <summary>
     /// Read an entity from a multi-tenanted storage context by id and tenant id.
+    /// If the entity can not be found then a KeyNotFoundException is thrown.
     /// </summary>
     /// <param name="entityId">The entity id.</param>
     /// <param name="tenantId">The tenant id.</param>
@@ -29,6 +31,7 @@ public interface IStorageContext<T> where T : IStorageEntity
 
     /// <summary>
     /// Read an entity from a multi-typed, multi-tenanted storage context by id and tenant id.
+    /// If the entity can not be found then a KeyNotFoundException is thrown.
     /// </summary>
     /// <param name="entityId">The entity id.</param>
     /// <param name="type">The type of the entity.</param>

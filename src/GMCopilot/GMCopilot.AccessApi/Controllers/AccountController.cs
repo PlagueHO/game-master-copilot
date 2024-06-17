@@ -52,12 +52,25 @@ public class AccountController : ControllerBase
                 return BadRequest("Application request not permitted.");
             }
 
+            // Get the user ID from the claims
             var userIdFromClaims = _authorizationService.GetUserId(HttpContext);
-            
-            var account = await _accountRepository.FindByIdAsync(userIdFromClaims);
+
+            Account? account;
+            Tenant? tenant;
+
+            // Find the account for the logged in user
+            try {
+                account = await _accountRepository.FindByIdAsync(userIdFromClaims);
+            }
+            catch (KeyNotFoundException)
+            {
+                
+                account = null;
+            }
 
             if (account == null)
             {
+                // The user account does not exist, so create it
                 var userName = _authorizationService.GetUserName(HttpContext);
 
                 var tenantRoles = new List<AccountTenantRole> {
@@ -69,8 +82,10 @@ public class AccountController : ControllerBase
                 await _accountRepository.CreateAsync(account);
 
                 // Create a new individual tenant for the account
-                var tenant = new Tenant(userIdFromClaims, userName, userIdFromClaims, TenantType.Individual);
+                tenant = new Tenant(userIdFromClaims, userName, userIdFromClaims, TenantType.Individual);
                 await _tenantRepository.CreateAsync(tenant);
+
+                _logger.LogInformation($"Account and Individual Tenant created for user ID {userIdFromClaims}.");
             }
 
             return Ok(account);

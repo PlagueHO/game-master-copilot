@@ -84,7 +84,8 @@ public class CosmosDbContextTests
     {
         public Guid Id { get; set; }
     }
-    
+
+    // Define a fake that implements ItemResponse<T> for testing purposes
     public class ItemResponseFake<T> : ItemResponse<T>
     {
         private readonly T _item;
