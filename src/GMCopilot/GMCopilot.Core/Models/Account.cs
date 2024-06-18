@@ -23,7 +23,7 @@ public class Account : IStorageEntity
     /// Gets or sets the active tenant for the account.
     /// </summary>
     [JsonPropertyName("activetenantid")]
-    public string ActiveTenantId { get; set; }
+    public Guid ActiveTenantId { get; set; }
 
     /// <summary>
     /// Gets or sets the list of Tenant Roles associated with the account.
@@ -42,6 +42,7 @@ public class Account : IStorageEntity
         Id = id;
         Name = name;
         TenantRoles = tenantRoles;
+        ActiveTenantId = id;
     }
 
     /// <summary>

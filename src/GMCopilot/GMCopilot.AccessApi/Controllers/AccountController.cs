@@ -61,6 +61,8 @@ public class AccountController : ControllerBase
 
             if (account == null)
             {
+                _logger.LogInformation($"Account with ID {userIdFromClaims} not found.");
+
                 // The user account does not exist, so create it
                 var userNameFromClaims = _authorizationService.GetUserName(HttpContext);
 
@@ -113,7 +115,10 @@ public class AccountController : ControllerBase
             }
 
             var userIdFromClaims = _authorizationService.GetUserId(HttpContext);
-            var account = await _accountRepository.FindByIdAsync(userIdFromClaims);
+
+            // Does the user account exist?
+            Account? account = null;
+            await _accountRepository.TryFindByIdAsync(userIdFromClaims, (Account? a) => account = a);
 
             if (account == null)
             {
@@ -158,7 +163,7 @@ public class AccountController : ControllerBase
                 // Can't create an account for another user
                 return Unauthorized("Can't create an account for another user.");
             }
-
+            
             await _accountRepository.CreateAsync(account);
             return Ok();
         }

@@ -12,7 +12,7 @@ public static class ApiClientExtensions
 
         // Add the Authentication/Authorization for the APIs
         builder.Services.AddScoped<AccessApiAuthorizationMessageHandler>();
-
+        
         var accessApiBaseAddress = new Uri(builder.Configuration["Apis:Access:BaseAddress"]);
 
         builder.Services.AddHttpClient("AccessApi",

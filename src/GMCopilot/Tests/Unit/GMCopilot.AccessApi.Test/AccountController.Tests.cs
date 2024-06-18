@@ -49,6 +49,7 @@ namespace Tests.Unit.GMCopilot.AccessApi.Test
             };
         }
 
+        // InitializeAccount tests
         [TestMethod]
         public async Task InitializeAccount_AccountAndTenantExistsSuccessfulCreation_ReturnsOk()
         {
@@ -121,9 +122,142 @@ namespace Tests.Unit.GMCopilot.AccessApi.Test
             var result = await _controller.InitializeAccount();
 
             // Assert
-            Assert.IsInstanceOfType(result.Result, typeof(StatusCodeResult));
+            Assert.IsNotNull(result.Result);
             var statusCodeResult = result.Result as StatusCodeResult;
+            Assert.IsNotNull(statusCodeResult);
+            Assert.AreEqual(500, statusCodeResult?.StatusCode);
+        }
+
+        // GetAccount tests
+        [TestMethod]
+        public async Task GetAccount_AccountExists_ReturnsOkWithAccount()
+        {
+            // Arrange
+            var userId = _testUserId; // Assuming _testUserId is the user ID you want to test with
+            var expectedAccount = new Account(userId, _testUserName, new List<AccountTenantRole>());
+            _authorizationServiceMock.Setup(x => x.IsAppMakingRequest(It.IsAny<HttpContext>())).Returns(false);
+            _authorizationServiceMock.Setup(x => x.GetUserId(It.IsAny<HttpContext>())).Returns(userId);
+            _accountRepositoryMock.Setup(x => x.TryFindByIdAsync(userId, It.IsAny<Action<Account?>>()))
+                .Callback<Guid, Action<Account?>>((id, callback) => callback(expectedAccount));
+
+            // Act
+            var result = await _controller.GetAccount();
+
+            // Assert
+            Assert.IsNotNull(result);
+            var okResult = result.Result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+            var accountResult = okResult.Value as Account;
+            Assert.IsNotNull(accountResult);
+            Assert.AreEqual(userId, accountResult.Id);
+        }
+
+        [TestMethod]
+        public async Task GetAccount_AccountDoesNotExist_ReturnsNotFound()
+        {
+            // Arrange
+            var userId = _testUserId;
+            _authorizationServiceMock.Setup(x => x.IsAppMakingRequest(It.IsAny<HttpContext>())).Returns(false);
+            _authorizationServiceMock.Setup(x => x.GetUserId(It.IsAny<HttpContext>())).Returns(userId);
+            _accountRepositoryMock.Setup(x => x.TryFindByIdAsync(userId, It.IsAny<Action<Account?>>()))
+                .Callback<Guid, Action<Account?>>((id, callback) => callback(null)); // Simulate account not found
+
+            // Act
+            var result = await _controller.GetAccount();
+
+            // Assert
+            Assert.IsNotNull(result);
+            var notFoundResult = result.Result as NotFoundObjectResult;
+            Assert.IsNotNull(notFoundResult);
+            Assert.AreEqual($"Account with ID {userId} not found.", notFoundResult.Value);
+        }
+
+        [TestMethod]
+        public async Task GetAccount_ExceptionThrown_ReturnsInternalServerError()
+        {
+            // Arrange
+            _authorizationServiceMock.Setup(x => x.IsAppMakingRequest(It.IsAny<HttpContext>())).Returns(false);
+            _authorizationServiceMock.Setup(x => x.GetUserId(It.IsAny<HttpContext>())).Throws(new Exception("Test exception"));
+
+            // Act
+            var result = await _controller.GetAccount();
+
+            // Assert
+            Assert.IsNotNull(result);
+            var statusCodeResult = result.Result as StatusCodeResult;
+            Assert.IsNotNull(statusCodeResult);
             Assert.AreEqual(500, statusCodeResult.StatusCode);
+        }
+
+        [TestMethod]
+        public async Task CreateAccount_SuccessfulCreation_ReturnsOk()
+        {
+            // Arrange
+            var newAccount = new Account(_testUserId, _testUserName, new List<AccountTenantRole>());
+            _authorizationServiceMock.Setup(x => x.IsAppMakingRequest(It.IsAny<HttpContext>())).Returns(false);
+            _authorizationServiceMock.Setup(x => x.GetUserId(It.IsAny<HttpContext>())).Returns(_testUserId);
+            _accountRepositoryMock.Setup(x => x.CreateAsync(It.IsAny<Account>())).Returns(Task.CompletedTask);
+
+            // Act
+            var result = await _controller.CreateAccount(newAccount);
+
+            // Assert
+            Assert.IsNotNull(result);
+            var okResult = result.Result as OkResult;
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(200, okResult.StatusCode);
+        }
+
+        [TestMethod]
+        public async Task CreateAccount_NullAccount_ReturnsBadRequest()
+        {
+            // Arrange
+            Account nullAccount = null;
+
+            // Act
+            var result = await _controller.CreateAccount(nullAccount);
+
+            // Assert
+            Assert.IsNotNull(result);
+            var badRequestResult = result.Result as BadRequestResult;
+            Assert.IsNotNull(badRequestResult);
+            Assert.AreEqual(400, badRequestResult.StatusCode);
+        }
+
+        [TestMethod]
+        public async Task CreateAccount_UnauthorizedCreationAttempt_ReturnsUnauthorized()
+        {
+            // Arrange
+            var unauthorizedAccount = new Account(Guid.NewGuid(), "UnauthorizedUser", new List<AccountTenantRole>());
+            _authorizationServiceMock.Setup(x => x.IsAppMakingRequest(It.IsAny<HttpContext>())).Returns(false);
+            _authorizationServiceMock.Setup(x => x.GetUserId(It.IsAny<HttpContext>())).Returns(_testUserId);
+
+            // Act
+            var result = await _controller.CreateAccount(unauthorizedAccount);
+
+            // Assert
+            Assert.IsNotNull(result);
+            var unauthorizedResult = result.Result as UnauthorizedObjectResult;
+            Assert.IsNotNull(unauthorizedResult);
+            Assert.AreEqual("Can't create an account for another user.", unauthorizedResult.Value);
+        }
+
+        [TestMethod]
+        public async Task CreateAccount_ExceptionThrown_ReturnsInternalServerError()
+        {
+            // Arrange
+            var newAccount = new Account(_testUserId, _testUserName, new List<AccountTenantRole>());
+            _authorizationServiceMock.Setup(x => x.IsAppMakingRequest(It.IsAny<HttpContext>())).Returns(false);
+            _authorizationServiceMock.Setup(x => x.GetUserId(It.IsAny<HttpContext>())).Throws(new Exception("Test exception"));
+
+            // Act
+            var result = await _controller.CreateAccount(newAccount);
+
+            // Assert
+            Assert.IsNotNull(result);
+            var statusCodeResult = result.Result as StatusCodeResult;
+            Assert.IsNotNull(statusCodeResult);
+            Assert.AreEqual(500, statusCodeResult?.StatusCode);
         }
     }
 }
