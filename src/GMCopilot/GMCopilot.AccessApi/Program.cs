@@ -1,9 +1,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Identity.Web;
-using GMCopilot.Core.Services;
+using GMCopilot.ApiCore.Services;
 using Microsoft.OpenApi.Models;
 using GMCopilot.AccessApi.Extensions;
-using Microsoft.IdentityModel.Tokens;
 
 namespace GMCopilot.AccessApi;
 

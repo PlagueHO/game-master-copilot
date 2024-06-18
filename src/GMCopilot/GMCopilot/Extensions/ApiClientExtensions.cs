@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.Extensions.Options;
 using GMCopilot.Authorization;
-using GMCopilot.Core.Options;
 
 namespace GMCopilot.Client.Extensions;
 

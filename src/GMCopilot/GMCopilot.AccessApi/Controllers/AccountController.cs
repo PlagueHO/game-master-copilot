@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using GMCopilot.Core.Models;
 using GMCopilot.Data.Repositories;
-using GMCopilot.Core.Services;
+using GMCopilot.ApiCore.Services;
 using Microsoft.Identity.Web.Resource;
 
 namespace GMCopilot.AccessApi.Controllers;
@@ -15,15 +15,15 @@ namespace GMCopilot.AccessApi.Controllers;
 public class AccountController : ControllerBase
 {
     private readonly ILogger<AccountController> _logger;
-    private readonly AccountRepository _accountRepository;
-    private readonly TenantRepository _tenantRepository;
-    private readonly AuthorizationService _authorizationService;
+    private readonly IAccountRepository _accountRepository;
+    private readonly ITenantRepository _tenantRepository;
+    private readonly IAuthorizationService _authorizationService;
 
     public AccountController(
         ILogger<AccountController> logger,
-        AccountRepository accountRepository,
-        TenantRepository tenantRepository,
-        AuthorizationService authorizationService)
+        IAccountRepository accountRepository,
+        ITenantRepository tenantRepository,
+        IAuthorizationService authorizationService)
     {
         _logger = logger;
         _accountRepository = accountRepository;
@@ -55,37 +55,37 @@ public class AccountController : ControllerBase
             // Get the user ID from the claims
             var userIdFromClaims = _authorizationService.GetUserId(HttpContext);
 
-            Account? account;
-            Tenant? tenant;
-
-            // Find the account for the logged in user
-            try {
-                account = await _accountRepository.FindByIdAsync(userIdFromClaims);
-            }
-            catch (KeyNotFoundException)
-            {
-                
-                account = null;
-            }
+            // Does the user account exist?
+            Account? account = null;
+            await _accountRepository.TryFindByIdAsync(userIdFromClaims, (Account? a) => account = a);
 
             if (account == null)
             {
                 // The user account does not exist, so create it
-                var userName = _authorizationService.GetUserName(HttpContext);
+                var userNameFromClaims = _authorizationService.GetUserName(HttpContext);
 
                 var tenantRoles = new List<AccountTenantRole> {
                     new(userIdFromClaims, TenantType.Individual, TenantRole.Owner)
                 };
 
                 // Create a new account
-                account = new Account(userIdFromClaims, userName, tenantRoles);
+                account = new Account(userIdFromClaims, userNameFromClaims, tenantRoles);
                 await _accountRepository.CreateAsync(account);
 
-                // Create a new individual tenant for the account
-                tenant = new Tenant(userIdFromClaims, userName, userIdFromClaims, TenantType.Individual);
-                await _tenantRepository.CreateAsync(tenant);
+                _logger.LogInformation($"Account created for user ID {userIdFromClaims}.");
 
-                _logger.LogInformation($"Account and Individual Tenant created for user ID {userIdFromClaims}.");
+                // Does the individual tenant for the account exist?
+                Tenant? tenant = null;
+                await _tenantRepository.TryFindByIdAsync(userIdFromClaims, (Tenant? t) => tenant = t);
+
+                if (tenant == null)
+                {
+                    // Create a new individual tenant for the account
+                    tenant = new Tenant(userIdFromClaims, userNameFromClaims, userIdFromClaims, TenantType.Individual);
+                    await _tenantRepository.CreateAsync(tenant);
+
+                    _logger.LogInformation($"Tenant (Individual) created for user ID {userIdFromClaims}.");
+                }
             }
 
             return Ok(account);

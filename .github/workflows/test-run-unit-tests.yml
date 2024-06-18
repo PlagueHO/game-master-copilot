@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        project: ['GMCopilot.Core', 'GMCopilot.Data']
+        project: ['GMCopilot.Core', 'GMCopilot.Data', 'GMCopilot.AccessApi']
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4

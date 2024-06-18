@@ -2,12 +2,12 @@
 using Microsoft.Extensions.Logging;
 using System.Security.Claims;
 
-namespace GMCopilot.Core.Services;
+namespace GMCopilot.ApiCore.Services;
 
 /// <summary>
 /// Provides extraction of claims and access control for use by API controllers.
 /// </summary>
-public class AuthorizationService
+public class AuthorizationService : IAuthorizationService
 {
     private const string _oidClaimType = "http://schemas.microsoft.com/identity/claims/objectidentifier";
     private readonly ILogger<AuthorizationService> _logger;
