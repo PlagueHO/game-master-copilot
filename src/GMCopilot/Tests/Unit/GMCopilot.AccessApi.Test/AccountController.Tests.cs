@@ -92,7 +92,6 @@ namespace Tests.Unit.GMCopilot.AccessApi.Test
             _tenantRepositoryMock.Verify(x => x.CreateAsync(It.IsAny<Tenant>()), Times.Never);
         }
 
-
         [TestMethod]
         public async Task InitializeAccount_AccountExists_ReturnsOk()
         {
@@ -126,6 +125,22 @@ namespace Tests.Unit.GMCopilot.AccessApi.Test
             var statusCodeResult = result.Result as StatusCodeResult;
             Assert.IsNotNull(statusCodeResult);
             Assert.AreEqual(500, statusCodeResult?.StatusCode);
+        }
+
+        [TestMethod]
+        public async Task InitializeAccount_AppRequest_ReturnsUnauthorized()
+        {
+            // Arrange
+            _authorizationServiceMock.Setup(x => x.IsAppMakingRequest(It.IsAny<HttpContext>())).Returns(true);
+
+            // Act
+            var result = await _controller.InitializeAccount();
+
+            // Assert
+            Assert.IsNotNull(result.Result);
+            var unauthorizedResult = result.Result as UnauthorizedObjectResult;
+            Assert.IsNotNull(unauthorizedResult);
+            Assert.AreEqual("Application request not permitted.", unauthorizedResult.Value);
         }
 
         // GetAccount tests
@@ -190,6 +205,23 @@ namespace Tests.Unit.GMCopilot.AccessApi.Test
         }
 
         [TestMethod]
+        public async Task GetAccount_AppRequest_ReturnsUnauthorized()
+        {
+            // Arrange
+            _authorizationServiceMock.Setup(x => x.IsAppMakingRequest(It.IsAny<HttpContext>())).Returns(true);
+
+            // Act
+            var result = await _controller.GetAccount();
+
+            // Assert
+            Assert.IsNotNull(result);
+            var unauthorizedResult = result.Result as UnauthorizedObjectResult;
+            Assert.IsNotNull(unauthorizedResult);
+            Assert.AreEqual("Application request not permitted.", unauthorizedResult.Value);
+        }
+
+        // CreateAccount tests
+        [TestMethod]
         public async Task CreateAccount_SuccessfulCreation_ReturnsOk()
         {
             // Arrange
@@ -203,7 +235,7 @@ namespace Tests.Unit.GMCopilot.AccessApi.Test
 
             // Assert
             Assert.IsNotNull(result);
-            var okResult = result.Result as OkResult;
+            var okResult = result as OkResult;
             Assert.IsNotNull(okResult);
             Assert.AreEqual(200, okResult.StatusCode);
         }
@@ -219,9 +251,9 @@ namespace Tests.Unit.GMCopilot.AccessApi.Test
 
             // Assert
             Assert.IsNotNull(result);
-            var badRequestResult = result.Result as BadRequestResult;
-            Assert.IsNotNull(badRequestResult);
-            Assert.AreEqual(400, badRequestResult.StatusCode);
+            var badRequestObjectResult = result as BadRequestObjectResult;
+            Assert.IsNotNull(badRequestObjectResult);
+            Assert.AreEqual(400, badRequestObjectResult.StatusCode);
         }
 
         [TestMethod]
@@ -237,9 +269,9 @@ namespace Tests.Unit.GMCopilot.AccessApi.Test
 
             // Assert
             Assert.IsNotNull(result);
-            var unauthorizedResult = result.Result as UnauthorizedObjectResult;
+            var unauthorizedResult = result as UnauthorizedObjectResult;
             Assert.IsNotNull(unauthorizedResult);
-            Assert.AreEqual("Can't create an account for another user.", unauthorizedResult.Value);
+            Assert.AreEqual("Creating an account for another user not permitted.", unauthorizedResult.Value);
         }
 
         [TestMethod]
@@ -255,9 +287,154 @@ namespace Tests.Unit.GMCopilot.AccessApi.Test
 
             // Assert
             Assert.IsNotNull(result);
-            var statusCodeResult = result.Result as StatusCodeResult;
+            var statusCodeResult = result as StatusCodeResult;
             Assert.IsNotNull(statusCodeResult);
             Assert.AreEqual(500, statusCodeResult?.StatusCode);
+        }
+
+        [TestMethod]
+        public async Task CreateAccount_AppRequest_ReturnsUnauthorized()
+        {
+            // Arrange
+            var newAccount = new Account(_testUserId, _testUserName, new List<AccountTenantRole>());
+            _authorizationServiceMock.Setup(x => x.IsAppMakingRequest(It.IsAny<HttpContext>())).Returns(true);
+
+            // Act
+            var result = await _controller.CreateAccount(newAccount);
+
+            // Assert
+            Assert.IsNotNull(result);
+            var unauthorizedResult = result as UnauthorizedObjectResult;
+            Assert.IsNotNull(unauthorizedResult);
+            Assert.AreEqual("Application request not permitted.", unauthorizedResult.Value);
+        }
+
+        // UpdateAccount tests
+        [TestMethod]
+        public async Task UpdateAccount_SuccessfulUpdate_ReturnsOk()
+        {
+            // Arrange
+            var updatedAccount = new Account(_testUserId, _testUserName, new List<AccountTenantRole>());
+            _authorizationServiceMock.Setup(x => x.IsAppMakingRequest(It.IsAny<HttpContext>())).Returns(false);
+            _authorizationServiceMock.Setup(x => x.GetUserId(It.IsAny<HttpContext>())).Returns(_testUserId);
+            _accountRepositoryMock.Setup(x => x.UpsertAsync(It.IsAny<Account>())).Returns(Task.CompletedTask);
+
+            // Act
+            var result = await _controller.UpdateAccount(updatedAccount);
+
+            // Assert
+            Assert.IsNotNull(result);
+            var okResult = result as OkResult;
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(200, okResult.StatusCode);
+        }
+
+        [TestMethod]
+        public async Task UpdateAccount_NullAccount_ReturnsBadRequest()
+        {
+            // Arrange
+            Account nullAccount = null;
+
+            // Act
+            var result = await _controller.UpdateAccount(nullAccount);
+
+            // Assert
+            Assert.IsNotNull(result);
+            var badRequestObjectResult = result as BadRequestObjectResult;
+            Assert.IsNotNull(badRequestObjectResult);
+            Assert.AreEqual(400, badRequestObjectResult.StatusCode);
+        }
+
+        [TestMethod]
+        public async Task UpdateAccount_UnauthorizedUpdateAttempt_ReturnsUnauthorized()
+        {
+            // Arrange
+            var unauthorizedAccount = new Account(Guid.NewGuid(), "UnauthorizedUser", new List<AccountTenantRole>());
+            _authorizationServiceMock.Setup(x => x.IsAppMakingRequest(It.IsAny<HttpContext>())).Returns(false);
+            _authorizationServiceMock.Setup(x => x.GetUserId(It.IsAny<HttpContext>())).Returns(_testUserId);
+
+            // Act
+            var result = await _controller.UpdateAccount(unauthorizedAccount);
+
+            // Assert
+            Assert.IsNotNull(result);
+            var unauthorizedResult = result as UnauthorizedObjectResult;
+            Assert.IsNotNull(unauthorizedResult);
+            Assert.AreEqual("Updating the account of another user not permitted.", unauthorizedResult.Value);
+        }
+
+        [TestMethod]
+        public async Task UpdateAccount_AppRequest_ReturnsUnauthorized()
+        {
+            // Arrange
+            var updatedAccount = new Account(_testUserId, _testUserName, new List<AccountTenantRole>());
+            _authorizationServiceMock.Setup(x => x.IsAppMakingRequest(It.IsAny<HttpContext>())).Returns(true);
+
+            // Act
+            var result = await _controller.UpdateAccount(updatedAccount);
+
+            // Assert
+            Assert.IsNotNull(result);
+            var unauthorizedResult = result as UnauthorizedObjectResult;
+            Assert.IsNotNull(unauthorizedResult);
+            Assert.AreEqual("Application request not permitted.", unauthorizedResult.Value);
+        }
+
+        // DeleteAccount tests
+        [TestMethod]
+        public async Task DeleteAccount_SuccessfulDeletion_ReturnsOk()
+        {
+            // Arrange
+            _authorizationServiceMock.Setup(x => x.IsAppMakingRequest(It.IsAny<HttpContext>())).Returns(false);
+            _authorizationServiceMock.Setup(x => x.GetUserId(It.IsAny<HttpContext>())).Returns(_testUserId);
+            _accountRepositoryMock.Setup(x => x.TryFindByIdAsync(_testUserId, It.IsAny<Action<Account?>>()))
+                .Callback<Guid, Action<Account?>>((id, callback) => callback(new Account(_testUserId, _testUserName, new List<AccountTenantRole>())));
+            _accountRepositoryMock.Setup(x => x.DeleteAsync(It.IsAny<Account>())).Returns(Task.CompletedTask);
+
+            // Act
+            var result = await _controller.DeleteAccount();
+
+            // Assert
+            Assert.IsNotNull(result);
+            var okResult = result as OkResult;
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(200, okResult.StatusCode);
+        }
+
+        [TestMethod]
+        public async Task DeleteAccount_AccountDoesNotExist_ReturnsNotFound()
+        {
+            // Arrange
+            var userId = _testUserId;
+            _authorizationServiceMock.Setup(x => x.IsAppMakingRequest(It.IsAny<HttpContext>())).Returns(false);
+            _authorizationServiceMock.Setup(x => x.GetUserId(It.IsAny<HttpContext>())).Returns(userId);
+            _accountRepositoryMock.Setup(x => x.TryFindByIdAsync(userId, It.IsAny<Action<Account?>>()))
+                .Callback<Guid, Action<Account?>>((id, callback) => callback(null)); // Simulate account not found
+
+            // Act
+            var result = await _controller.DeleteAccount();
+
+            // Assert
+            Assert.IsNotNull(result);
+            var notFoundResult = result as NotFoundObjectResult;
+            Assert.IsNotNull(notFoundResult);
+            Assert.AreEqual($"Account with ID {userId} not found.", notFoundResult.Value);
+        }
+
+        [TestMethod]
+        public async Task DeleteAccount_AppRequest_ReturnsUnauthorized()
+        {
+            // Arrange
+            _authorizationServiceMock.Setup(x => x.IsAppMakingRequest(It.IsAny<HttpContext>())).Returns(true);
+
+            // Act
+            var result = await _controller.DeleteAccount();
+
+            // Assert
+            Assert.IsNotNull(result);
+            var unauthorizedResult = result as UnauthorizedObjectResult;
+            Assert.IsNotNull(unauthorizedResult);
+            Assert.AreEqual("Application request not permitted.", unauthorizedResult.Value);
         }
     }
 }

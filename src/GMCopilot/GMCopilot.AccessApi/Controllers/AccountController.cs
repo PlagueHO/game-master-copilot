@@ -49,7 +49,7 @@ public class AccountController : ControllerBase
         {
             if (_authorizationService.IsAppMakingRequest(HttpContext))
             {
-                return BadRequest("Application request not permitted.");
+                return Unauthorized("Application request not permitted.");
             }
 
             // Get the user ID from the claims
@@ -111,7 +111,7 @@ public class AccountController : ControllerBase
         {
             if (_authorizationService.IsAppMakingRequest(HttpContext))
             {
-                return BadRequest("Application request not permitted.");
+                return Unauthorized("Application request not permitted.");
             }
 
             var userIdFromClaims = _authorizationService.GetUserId(HttpContext);
@@ -142,18 +142,18 @@ public class AccountController : ControllerBase
     /// <returns>The account record of the user.</returns>
     [HttpPost(Name = "CreateAccount")]
     [RequiredScope(["GMCopilot.ReadWrite"])]
-    public async Task<ActionResult<Account>> CreateAccount(Account account)
+    public async Task<ActionResult> CreateAccount(Account account)
     {
         try
         {
             if (account == null)
             {
-                return BadRequest();
+                return BadRequest("Account is not specified.");
             }
 
             if (_authorizationService.IsAppMakingRequest(HttpContext))
             {
-                return BadRequest("Application request not permitted.");
+                return Unauthorized("Application request not permitted.");
             }
 
             var userIdFromClaims = _authorizationService.GetUserId(HttpContext);
@@ -161,7 +161,7 @@ public class AccountController : ControllerBase
             if (account.Id != userIdFromClaims)
             {
                 // Can't create an account for another user
-                return Unauthorized("Can't create an account for another user.");
+                return Unauthorized("Creating an account for another user not permitted.");
             }
             
             await _accountRepository.CreateAsync(account);
@@ -192,7 +192,7 @@ public class AccountController : ControllerBase
 
             if (_authorizationService.IsAppMakingRequest(HttpContext))
             {
-                return BadRequest("Application request not permitted.");
+                return Unauthorized("Application request not permitted.");
             }
             
             var userIdFromClaims = _authorizationService.GetUserId(HttpContext);
@@ -200,7 +200,7 @@ public class AccountController : ControllerBase
             if (account.Id != userIdFromClaims)
             {
                 // Can't change the account of another user
-                return Unauthorized("Can't update the account of another user.");
+                return Unauthorized("Updating the account of another user not permitted.");
             }
 
             await _accountRepository.UpsertAsync(account);
@@ -225,16 +225,18 @@ public class AccountController : ControllerBase
         {
             if (_authorizationService.IsAppMakingRequest(HttpContext))
             {
-                return BadRequest("Application request not permitted.");
+                return Unauthorized("Application request not permitted.");
             }
 
             var userIdFromClaims = _authorizationService.GetUserId(HttpContext);
 
-            var account = await _accountRepository.FindByIdAsync(userIdFromClaims);
+            // Get the account for the current user
+            Account? account = null;
+            await _accountRepository.TryFindByIdAsync(userIdFromClaims, (Account? a) => account = a);
 
             if (account == null)
             {
-                _logger.LogInformation($"Account with ID {userIdFromClaims} not found.");
+                _logger.LogInformation("Account with ID {userIdFromClaims} not found.", userIdFromClaims);
                 return NotFound($"Account with ID {userIdFromClaims} not found.");
             }
 
