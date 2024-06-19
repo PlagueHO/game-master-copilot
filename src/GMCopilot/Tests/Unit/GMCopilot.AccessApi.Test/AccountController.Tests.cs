@@ -39,8 +39,8 @@ namespace Tests.Unit.GMCopilot.AccessApi.Test
             // Mock HttpContext to simulate user claims
             var testUser = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
             {
-                new Claim(ClaimTypes.NameIdentifier, _testUserId.ToString()),
-                new Claim(ClaimTypes.Name, _testUserName)
+                new(ClaimTypes.NameIdentifier, _testUserId.ToString()),
+                new(ClaimTypes.Name, _testUserName)
             }));
 
             _controller.ControllerContext = new ControllerContext()

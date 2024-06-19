@@ -7,15 +7,11 @@ namespace GMCopilot.ApiCore.Services;
 /// <summary>
 /// Provides extraction of claims and access control for use by API controllers.
 /// </summary>
-public class AuthorizationService : IAuthorizationService
+public class AuthorizationService(ILogger<AuthorizationService> logger) : IAuthorizationService
 {
-    private const string _oidClaimType = "http://schemas.microsoft.com/identity/claims/objectidentifier";
-    private readonly ILogger<AuthorizationService> _logger;
+    private ILogger<AuthorizationService> _logger => logger;
 
-    public AuthorizationService(ILogger<AuthorizationService> logger)
-    {
-        _logger = logger;
-    }
+    private const string _oidClaimType = "http://schemas.microsoft.com/identity/claims/objectidentifier";
 
     /// <summary>
     /// Extracts the User Id from the claims provided in an HTTP request.
@@ -29,16 +25,14 @@ public class AuthorizationService : IAuthorizationService
 
         if (null == oidClaim)
         {
-            _logger.LogError("No oid claim found in the user's claims.");
-            throw new InvalidOperationException("No oid claim!");
+            _logger.LogError("No oid claim found in claims.");
+            throw new InvalidOperationException("No oid claim.");
         }
 
-        Guid oid;
-
-        if (!Guid.TryParse(oidClaim.Value, out oid))
+        if (!Guid.TryParse(oidClaim.Value, out Guid oid))
         {
-            _logger.LogError($"Failed to parse oid claim value: {oidClaim.Value}");
-            throw new InvalidOperationException("Failed to parse oid claim!");
+            _logger.LogError("Failed to parse oid claim {claimValue}.", oidClaim.Value);
+            throw new InvalidOperationException("Failed to parse oid claim.");
         }
 
         return oid;
@@ -53,14 +47,14 @@ public class AuthorizationService : IAuthorizationService
     public string GetUserName(HttpContext context)
     {
         var nameClaim = context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name);
+        
         if (null == nameClaim)
         {
             _logger.LogError("No name claim found in the user's claims.");
-            throw new InvalidOperationException("No name claim!");
+            throw new InvalidOperationException("No name claim.");
         }
 
-        var name = nameClaim.Value;
-        return name;
+        return nameClaim.Value;
     }
 
     /// <summary>
@@ -70,17 +64,18 @@ public class AuthorizationService : IAuthorizationService
     /// <returns>True if the request is made by an application, false otherwise.</returns>
     public bool IsAppMakingRequest(HttpContext context)
     {
-        // Check if the "idtyp" claim exists
-        if (context.User.Claims.Any(c => c.Type == "idtyp"))
+        // Check for the presence of the "idtyp" claim to determine if the request is from an application
+        var isAppTypeClaimPresent = context.User.Claims.Any(c => c.Type == "idtyp" && c.Value == "app");
+        if (isAppTypeClaimPresent)
         {
-            // Check if the "idtyp" claim has the value "app"
-            return context.User.Claims.Any(c => c.Type == "idtyp" && c.Value == "app");
+            return true;
         }
-        else
-        {
-            // Check if the "roles" claim exists and the "scp" claim does not exist
-            return context.User.Claims.Any(c => c.Type == "roles") && !context.User.Claims.Any(c => c.Type == "scp");
-        }
+
+        // If "idtyp" claim is not present, check for "roles" claim without "scp" claim as an indicator of an application request
+        var hasRolesClaim = context.User.Claims.Any(c => c.Type == "roles");
+        var lacksScpClaim = !context.User.Claims.Any(c => c.Type == "scp");
+
+        return hasRolesClaim && lacksScpClaim;
     }
 
     /// <summary>
