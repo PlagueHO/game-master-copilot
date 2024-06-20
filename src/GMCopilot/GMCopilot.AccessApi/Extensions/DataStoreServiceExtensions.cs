@@ -44,7 +44,7 @@ public static class DataStoreServiceExtensions
             return new CosmosDbContext<Account>(cosmosClient, "gmcopilot", "accounts");
         });
 
-        builder.Services.AddScoped<AccountRepository>((service) =>
+        builder.Services.AddScoped<IAccountRepository, AccountRepository>((service) =>
         {
             var accountStorageContext = service.GetService<CosmosDbContext<Account>>();
             if (accountStorageContext == null)
@@ -68,7 +68,7 @@ public static class DataStoreServiceExtensions
         });
 
 
-        builder.Services.AddScoped<TenantRepository>((service) =>
+        builder.Services.AddScoped<ITenantRepository, TenantRepository>((service) =>
         {
             var tenantStorageContext = service.GetService<CosmosDbContext<Tenant>>();
             if (tenantStorageContext == null)

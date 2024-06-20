@@ -24,7 +24,7 @@ public class Program
             .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("EntraId"));
 
         // Add the AuthorizationService to provide authorization services to the API controllers
-        builder.Services.AddScoped<AuthorizationService>();
+        builder.Services.AddScoped<IAuthorizationService, AuthorizationService>();
 
         // Add Health Check
         builder.Services.AddHealthChecks()
