@@ -252,6 +252,10 @@ public class AccountController : ControllerBase
 
     /// <summary>
     /// Gets the account of a specific user.
+    /// Can be called by an application or the user themselves.
+    /// If called by an application then any user's account can be accessed
+    /// as long as they have the GMCopilot.Read.All permission.
+    /// If called by a user then they can only access their own account.
     /// </summary>
     /// <param name="id">The Id of the user to get the account for.</param>
     /// <returns>The account record of the user.</returns>
@@ -261,18 +265,28 @@ public class AccountController : ControllerBase
     {
         try
         {
-            var account = await _accountRepository.FindByIdAsync(id);
+            if (!_authorizationService.RequestCanAccessUser(HttpContext, id))
+            {
+                return Unauthorized("Access to another user's account not permitted.");
+            }
+
+            Account? account = null;
+            await _accountRepository.TryFindByIdAsync(id, (Account? a) => account = a);
             return (account == null ? NotFound() : Ok(account));
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error getting account by id.");
+            _logger.LogError(ex, "Error getting account by Id.");
             return StatusCode(500);
         }
     }
 
     /// <summary>
     /// Update the account of a specific user.
+    /// Can be called by an application or the user themselves.
+    /// If called by an application then any user's account can be updated
+    /// as long as they have the GMCopilot.ReadWrite.All permission.
+    /// If called by a user then they can only access their own account.
     /// </summary>
     /// <param name="id">The Id of the user to update the account for.</param>
     /// <param name="account">The account to update.</param>
@@ -299,7 +313,7 @@ public class AccountController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error updating account.");
+            _logger.LogError(ex, "Error updating account by Id.");
             return StatusCode(500);
         }
     }

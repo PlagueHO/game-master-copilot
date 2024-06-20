@@ -8,6 +8,7 @@ using GMCopilot.Core.Models;
 using GMCopilot.Data.Repositories;
 using GMCopilot.ApiCore.Services;
 using System.Security.Claims;
+using FluentAssertions;
 
 namespace Tests.Unit.GMCopilot.AccessApi.Test
 {
@@ -435,6 +436,81 @@ namespace Tests.Unit.GMCopilot.AccessApi.Test
             var unauthorizedResult = result as UnauthorizedObjectResult;
             Assert.IsNotNull(unauthorizedResult);
             Assert.AreEqual("Application request not permitted.", unauthorizedResult.Value);
+        }
+
+        // GetAccountById tests
+        [TestMethod]
+        public async Task GetAccountById_UserHasAccess_ReturnsOkWithAccount()
+        {
+            // Arrange
+            var accountId = Guid.NewGuid();
+            var account = new Account(accountId, "TestUser", new List<AccountTenantRole>());
+            _authorizationServiceMock.Setup(x => x.RequestCanAccessUser(It.IsAny<HttpContext>(), accountId))
+                .Returns(true);
+            _accountRepositoryMock.Setup(x => x.TryFindByIdAsync(accountId, It.IsAny<Action<Account?>>()))
+                .Callback<Guid, Action<Account?>>((id, callback) => callback(account));
+
+            // Act
+            var result = await _controller.GetAccountById(accountId);
+
+            // Assert
+            result.Result.Should().BeOfType<OkObjectResult>();
+            var okResult = result.Result as OkObjectResult;
+            okResult.Value.Should().BeEquivalentTo(account);
+        }
+
+        [TestMethod]
+        public async Task GetAccountById_UserHasNoAccess_ReturnsUnauthorized()
+        {
+            // Arrange
+            var accountId = Guid.NewGuid();
+            _authorizationServiceMock.Setup(x => x.RequestCanAccessUser(It.IsAny<HttpContext>(), accountId))
+                .Returns(false);
+
+            // Act
+            var result = await _controller.GetAccountById(accountId);
+
+            // Assert
+            result.Result.Should().BeOfType<UnauthorizedObjectResult>();
+        }
+
+        [TestMethod]
+        public async Task GetAccountById_AccountNotFound_ReturnsNotFound()
+        {
+            // Arrange
+            var accountId = Guid.NewGuid();
+            _authorizationServiceMock.Setup(x => x.RequestCanAccessUser(It.IsAny<HttpContext>(), accountId))
+                .Returns(true);
+            _accountRepositoryMock.Setup(x => x.TryFindByIdAsync(accountId, It.IsAny<Action<Account?>>()))
+                .Callback<Guid, Action<Account?>>((id, callback) => callback(null));
+
+            // Act
+            var result = await _controller.GetAccountById(accountId);
+
+            // Assert
+            result.Result.Should().BeOfType<NotFoundResult>();
+        }
+
+        [TestMethod]
+        public async Task GetAccountById_ApplicationHasAccess_ReturnsOkWithAccount()
+        {
+            // Arrange
+            var accountId = Guid.NewGuid();
+            var account = new Account(accountId, "TestUser", new List<AccountTenantRole>());
+            _authorizationServiceMock.Setup(x => x.RequestCanAccessUser(It.IsAny<HttpContext>(), accountId))
+                .Returns(true);
+            _authorizationServiceMock.Setup(x => x.IsAppMakingRequest(It.IsAny<HttpContext>()))
+                .Returns(true);
+            _accountRepositoryMock.Setup(x => x.TryFindByIdAsync(accountId, It.IsAny<Action<Account?>>()))
+                .Callback<Guid, Action<Account?>>((id, callback) => callback(account));
+
+            // Act
+            var result = await _controller.GetAccountById(accountId);
+
+            // Assert
+            result.Result.Should().BeOfType<OkObjectResult>();
+            var okResult = result.Result as OkObjectResult;
+            okResult.Value.Should().BeEquivalentTo(account);
         }
     }
 }
