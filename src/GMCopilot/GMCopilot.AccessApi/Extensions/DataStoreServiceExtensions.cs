@@ -17,19 +17,6 @@ public static class DataStoreServiceExtensions
             configureSettings: settings => settings.DisableTracing = false,
             configureClientOptions: clientOptions => {
                 clientOptions.ApplicationName = "game-master-copilot-access-api";
-                // TODO: This skips SSL certification check so that Cosmos DB emulator can work.
-                // This is not recommended for production.
-                clientOptions.HttpClientFactory = () =>
-                {
-                    HttpMessageHandler httpMessageHandler = new HttpClientHandler()
-                    {
-                        ServerCertificateCustomValidationCallback = (req, cert, chain, errors) => true
-                    };
-
-                    return new HttpClient(httpMessageHandler);
-                };
-                clientOptions.ConnectionMode = ConnectionMode.Gateway;
-                clientOptions.LimitToEndpoint = true;
             });
 
         // Create the Account context and repository

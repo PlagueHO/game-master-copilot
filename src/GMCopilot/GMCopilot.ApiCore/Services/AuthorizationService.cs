@@ -12,6 +12,7 @@ public class AuthorizationService(ILogger<AuthorizationService> logger) : IAutho
     private ILogger<AuthorizationService> _logger => logger;
 
     private const string _oidClaimType = "http://schemas.microsoft.com/identity/claims/objectidentifier";
+    private const string _nameClaimType = "name";
 
     /// <summary>
     /// Extracts the User Id from the claims provided in an HTTP request.
@@ -46,7 +47,7 @@ public class AuthorizationService(ILogger<AuthorizationService> logger) : IAutho
     /// <exception cref="InvalidOperationException"></exception>
     public string GetUserName(HttpContext context)
     {
-        var nameClaim = context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name);
+        var nameClaim = context.User.Claims.FirstOrDefault(c => c.Type == _nameClaimType);
         
         if (null == nameClaim)
         {

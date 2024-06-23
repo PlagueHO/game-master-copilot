@@ -14,6 +14,8 @@ namespace Tests.Unit.GMCopilot.ApiCore.Services
         private AuthorizationService _authorizationService;
         private Mock<HttpContext> _httpContextMock;
         private ClaimsPrincipal _user;
+        private const string _oidClaimType = "http://schemas.microsoft.com/identity/claims/objectidentifier";
+        private const string _nameClaimType = "name";
 
         [TestInitialize]
         public void SetUp()
@@ -31,7 +33,7 @@ namespace Tests.Unit.GMCopilot.ApiCore.Services
         {
             // Arrange
             var expectedUserId = Guid.NewGuid();
-            _user.AddIdentity(new(new Claim[] { new("http://schemas.microsoft.com/identity/claims/objectidentifier", expectedUserId.ToString()) }));
+            _user.AddIdentity(new(new Claim[] { new(_oidClaimType, expectedUserId.ToString()) }));
 
             // Act
             var result = _authorizationService.GetUserId(_httpContextMock.Object);
@@ -57,7 +59,7 @@ namespace Tests.Unit.GMCopilot.ApiCore.Services
         public void GetUserId_InvalidOidClaim_ThrowsInvalidOperationException()
         {
             // Arrange
-            _user.AddIdentity(new(new Claim[] { new("http://schemas.microsoft.com/identity/claims/objectidentifier", "invalidoidclaim") }));
+            _user.AddIdentity(new(new Claim[] { new(_oidClaimType, "invalidoidclaim") }));
 
             // Act
             Action act = () => _authorizationService.GetUserId(_httpContextMock.Object);
@@ -72,7 +74,7 @@ namespace Tests.Unit.GMCopilot.ApiCore.Services
         {
             // Arrange
             var expectedUserName = "TestUser";
-            _user.AddIdentity(new(new Claim[] { new(ClaimTypes.Name, expectedUserName) }));
+            _user.AddIdentity(new(new Claim[] { new(_nameClaimType, expectedUserName) }));
 
             // Act
             var result = _authorizationService.GetUserName(_httpContextMock.Object);
