@@ -512,5 +512,84 @@ namespace Tests.Unit.GMCopilot.AccessApi.Test
             var okResult = result.Result as OkObjectResult;
             okResult.Value.Should().BeEquivalentTo(account);
         }
+
+        // UpdateAccountById tests
+        // TODO
+
+        // DeleteAccountById tests
+        [TestMethod]
+        public async Task DeleteAccountById_UserHasAccess_ReturnsOk()
+        {
+            // Arrange
+            var accountId = Guid.NewGuid();
+            var account = new Account(accountId, "TestUser", new List<AccountTenantRole>());
+            _authorizationServiceMock.Setup(x => x.RequestCanAccessUser(It.IsAny<HttpContext>(), accountId))
+                .Returns(true);
+            _accountRepositoryMock.Setup(x => x.TryFindByIdAsync(accountId, It.IsAny<Action<Account?>>()))
+                .Callback<Guid, Action<Account?>>((id, callback) => callback(account));
+            _accountRepositoryMock.Setup(x => x.DeleteAsync(account))
+                .Returns(Task.CompletedTask);
+
+            // Act
+            var result = await _controller.DeleteAccountById(accountId);
+
+            // Assert
+            result.Should().BeOfType<OkResult>();
+        }
+
+        [TestMethod]
+        public async Task DeleteAccountById_UserHasNoAccess_ReturnsUnauthorized()
+        {
+            // Arrange
+            var accountId = Guid.NewGuid();
+            _authorizationServiceMock.Setup(x => x.RequestCanAccessUser(It.IsAny<HttpContext>(), accountId))
+                .Returns(false);
+
+            // Act
+            var result = await _controller.DeleteAccountById(accountId);
+
+            // Assert
+            result.Should().BeOfType<UnauthorizedObjectResult>();
+        }
+
+        [TestMethod]
+        public async Task DeleteAccountById_AccountNotFound_ReturnsNotFound()
+        {
+            // Arrange
+            var accountId = Guid.NewGuid();
+            _authorizationServiceMock.Setup(x => x.RequestCanAccessUser(It.IsAny<HttpContext>(), accountId))
+                .Returns(true);
+            _accountRepositoryMock.Setup(x => x.TryFindByIdAsync(accountId, It.IsAny<Action<Account?>>()))
+                .Callback<Guid, Action<Account?>>((id, callback) => callback(null));
+
+            // Act
+            var result = await _controller.DeleteAccountById(accountId);
+
+            // Assert
+            result.Should().BeOfType<NotFoundResult>();
+        }
+
+        [TestMethod]
+        public async Task DeleteAccountById_ApplicationHasAccess_ReturnsOk()
+        {
+            // Arrange
+            var accountId = Guid.NewGuid();
+            var account = new Account(accountId, "TestUser", new List<AccountTenantRole>());
+            _authorizationServiceMock.Setup(x => x.RequestCanAccessUser(It.IsAny<HttpContext>(), accountId))
+                .Returns(true);
+            _authorizationServiceMock.Setup(x => x.IsAppMakingRequest(It.IsAny<HttpContext>()))
+                .Returns(true);
+            _accountRepositoryMock.Setup(x => x.TryFindByIdAsync(accountId, It.IsAny<Action<Account?>>()))
+                .Callback<Guid, Action<Account?>>((id, callback) => callback(account));
+            _accountRepositoryMock.Setup(x => x.DeleteAsync(account))
+                .Returns(Task.CompletedTask);
+
+            // Act
+            var result = await _controller.DeleteAccountById(accountId);
+
+            // Assert
+            result.Should().BeOfType<OkResult>();
+
+        }
     }
 }

@@ -267,7 +267,7 @@ public class AccountController : ControllerBase
         {
             if (!_authorizationService.RequestCanAccessUser(HttpContext, id))
             {
-                return Unauthorized("Access to another user's account not permitted.");
+                return Unauthorized("Getting another user's account not permitted.");
             }
 
             Account? account = null;
@@ -325,11 +325,23 @@ public class AccountController : ControllerBase
     /// <returns>An HTTP result code.</returns>
     [HttpDelete("{id}", Name = "DeleteAccountById")]
     [RequiredScopeOrAppPermission(["GMCopilot.ReadWrite.All"], ["GMCopilot.ReadWrite"])]
-    public async Task<ActionResult> DeleteAccount(Guid id)
+    public async Task<ActionResult> DeleteAccountById(Guid id)
     {
         try
         {
-            var account = await _accountRepository.FindByIdAsync(id);
+            if (!_authorizationService.RequestCanAccessUser(HttpContext, id))
+            {
+                return Unauthorized("Deleting another user's account not permitted.");
+            }
+
+            Account? account = null;
+            await _accountRepository.TryFindByIdAsync(id, (Account? a) => account = a);
+
+            if (account == null)
+            {
+                return NotFound();
+            }
+
             await _accountRepository.DeleteAsync(account);
             return Ok();
         }
