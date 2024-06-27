@@ -100,152 +100,37 @@ public class AccountController : ControllerBase
     }
 
     /// <summary>
-    /// Gets the account of the currently logged in user.
-    /// </summary>
-    /// <returns>The account record of the user.</returns>
-    [HttpGet(Name = "GetAccount")]
-    [RequiredScope(["GMCopilot.Read"])]
-    public async Task<ActionResult<Account>> GetAccount()
-    {
-        try
-        {
-            if (_authorizationService.IsAppMakingRequest(HttpContext))
-            {
-                return Unauthorized("Application request not permitted.");
-            }
-
-            var userIdFromClaims = _authorizationService.GetUserId(HttpContext);
-
-            // Does the user account exist?
-            Account? account = null;
-            await _accountRepository.TryFindByIdAsync(userIdFromClaims, (Account? a) => account = a);
-
-            if (account == null)
-            {
-                _logger.LogInformation($"Account with ID {userIdFromClaims} not found.");
-                return NotFound($"Account with ID {userIdFromClaims} not found.");
-            }
-
-            return Ok(account);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error getting account.");
-            return StatusCode(500);
-        }
-    }
-
-    /// <summary>
-    /// Creates a new account for the currently logged in user.
+    /// Create an account for a user.
+    /// Can be called by an application or the user themselves.
+    /// If called by an application then any user's account can be created
+    /// as long as they have the GMCopilot.ReadWrite.All permission.
+    /// If called by a user then they can only create an account for themselves.
     /// </summary>
     /// <param name="account">The account to create.</param>
-    /// <returns>The account record of the user.</returns>
+    /// <returns>An HTTP result code.</returns>
     [HttpPost(Name = "CreateAccount")]
-    [RequiredScope(["GMCopilot.ReadWrite"])]
+    [RequiredScopeOrAppPermission(["GMCopilot.ReadWrite.All"], ["GMCopilot.ReadWrite"])]
     public async Task<ActionResult> CreateAccount(Account account)
     {
         try
         {
             if (account == null)
             {
-                return BadRequest("Account is not specified.");
+                return BadRequest();
             }
 
-            if (_authorizationService.IsAppMakingRequest(HttpContext))
+            if (!_authorizationService.RequestCanAccessUser(HttpContext, account.Id))
             {
-                return Unauthorized("Application request not permitted.");
+                return Unauthorized("Creating account unauthorized by user.");
             }
 
-            var userIdFromClaims = _authorizationService.GetUserId(HttpContext);
-
-            if (account.Id != userIdFromClaims)
-            {
-                // Can't create an account for another user
-                return Unauthorized("Creating an account for another user not permitted.");
-            }
-            
             await _accountRepository.CreateAsync(account);
-            return Ok();
+
+            return CreatedAtRoute("GetAccountById", new { id = account.Id }, account);
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error creating account.");
-            return StatusCode(500);
-        }
-    }
-
-    /// <summary>
-    /// Updates the account of the currently logged in user.
-    /// </summary>
-    /// <param name="account">The account to update.</param>
-    /// <returns>An HTTP result code.</returns>
-    [HttpPut(Name = "UpdateAccount")]
-    [RequiredScope(["GMCopilot.ReadWrite"])]
-    public async Task<ActionResult> UpdateAccount(Account account)
-    {
-        try
-        {
-            if (account == null)
-            {
-                return BadRequest("Account is not specified.");
-            }
-
-            if (_authorizationService.IsAppMakingRequest(HttpContext))
-            {
-                return Unauthorized("Application request not permitted.");
-            }
-            
-            var userIdFromClaims = _authorizationService.GetUserId(HttpContext);
-
-            if (account.Id != userIdFromClaims)
-            {
-                // Can't change the account of another user
-                return Unauthorized("Updating the account of another user not permitted.");
-            }
-
-            await _accountRepository.UpsertAsync(account);
-            return Ok();
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error updating account.");
-            return StatusCode(500);
-        }
-    }
-
-    /// <summary>
-    /// Deletes the account of the currently logged in user.
-    /// </summary>
-    /// <returns>An HTTP result code.</returns>
-    [HttpDelete(Name = "DeleteAccount")]
-    [RequiredScope(["GMCopilot.ReadWrite"])]
-    public async Task<ActionResult> DeleteAccount()
-    {
-        try
-        {
-            if (_authorizationService.IsAppMakingRequest(HttpContext))
-            {
-                return Unauthorized("Application request not permitted.");
-            }
-
-            var userIdFromClaims = _authorizationService.GetUserId(HttpContext);
-
-            // Get the account for the current user
-            Account? account = null;
-            await _accountRepository.TryFindByIdAsync(userIdFromClaims, (Account? a) => account = a);
-
-            if (account == null)
-            {
-                _logger.LogInformation("Account with ID {userIdFromClaims} not found.", userIdFromClaims);
-                return NotFound($"Account with ID {userIdFromClaims} not found.");
-            }
-
-            await _accountRepository.DeleteAsync(account);
-            return Ok();
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error deleting account.");
             return StatusCode(500);
         }
     }
@@ -267,7 +152,7 @@ public class AccountController : ControllerBase
         {
             if (!_authorizationService.RequestCanAccessUser(HttpContext, id))
             {
-                return Unauthorized("Getting another user's account not permitted.");
+                return Unauthorized("Getting account unauthorized by user.");
             }
 
             Account? account = null;
@@ -276,24 +161,25 @@ public class AccountController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error getting account by Id.");
+            _logger.LogError(ex, "Error getting account.");
             return StatusCode(500);
         }
     }
 
     /// <summary>
-    /// Update the account of a specific user.
+    /// Update the account of a specific user by Id.
     /// Can be called by an application or the user themselves.
     /// If called by an application then any user's account can be updated
     /// as long as they have the GMCopilot.ReadWrite.All permission.
     /// If called by a user then they can only access their own account.
+    /// If the account already exists, it will be updated.
     /// </summary>
     /// <param name="id">The Id of the user to update the account for.</param>
     /// <param name="account">The account to update.</param>
     /// <returns>An HTTP result code.</returns>
     [HttpPut("{id}", Name = "UpdateAccountById")]
     [RequiredScopeOrAppPermission(["GMCopilot.ReadWrite.All"], ["GMCopilot.ReadWrite"])]
-    public async Task<ActionResult> UpdateAccount(Guid id, Account account)
+    public async Task<ActionResult> UpdateAccountById(Guid id, Account account)
     {
         try
         {
@@ -302,24 +188,28 @@ public class AccountController : ControllerBase
                 return BadRequest();
             }
 
-            if (account.Id != id)
+            if (!_authorizationService.RequestCanAccessUser(HttpContext, id))
             {
-                // Can't change the account of another user without 
-                return Unauthorized();
+                return Unauthorized("Updating account unauthorized by user.");
             }
 
             await _accountRepository.UpsertAsync(account);
+
             return Ok();
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error updating account by Id.");
+            _logger.LogError(ex, "Error updating account.");
             return StatusCode(500);
         }
     }
 
     /// <summary>
-    /// Deletes the account of a specific user.
+    /// Deletes the account of a specific user by Id.
+    /// Can be called by an application or the user themselves.
+    /// If called by an application then any user's account can be deleted
+    /// as long as they have the GMCopilot.ReadWrite.All permission.
+    /// If called by a user then they can only access their own account.
     /// </summary>
     /// <param name="id"></param>
     /// <returns>An HTTP result code.</returns>
@@ -331,7 +221,7 @@ public class AccountController : ControllerBase
         {
             if (!_authorizationService.RequestCanAccessUser(HttpContext, id))
             {
-                return Unauthorized("Deleting another user's account not permitted.");
+                return Unauthorized("Deleting account unauthorized by user.");
             }
 
             Account? account = null;
