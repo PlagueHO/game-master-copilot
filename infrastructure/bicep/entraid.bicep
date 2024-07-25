@@ -115,7 +115,7 @@ resource apiApplication 'Microsoft.Graph/applications@v1.0' = {
           adminConsentDisplayName: 'Read and write Game Master Copilot data for the user'
           id: 'c1c32cf0-1329-4662-bb0f-cdfc06807bf8'
           isEnabled: true
-          origin: 'Application'
+          // origin: 'Application'
           type: 'User'
           userConsentDescription: 'Allow the app to read and write your Game Master Copilot data.'
           userConsentDisplayName: 'Read and write your Game Master Copilot data'
@@ -126,7 +126,7 @@ resource apiApplication 'Microsoft.Graph/applications@v1.0' = {
           adminConsentDisplayName: 'Read Game Master Copilot data for the user'
           id: 'a60075de-c430-41df-b7d6-9c98540bc6b6'
           isEnabled: true
-          origin: 'Application'
+          // origin: 'Application'
           type: 'User'
           userConsentDescription: 'Allow the app to read your Game Master Copilot data.'
           userConsentDisplayName: 'Read your Game Master Copilot data'
