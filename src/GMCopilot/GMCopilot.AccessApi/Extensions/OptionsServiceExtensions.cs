@@ -30,21 +30,20 @@ public static class OptionsServiceExtensions
     /// </summary>
     private static void TrimStringProperties<T>(T options) where T : class
     {
-        Queue<object> targets = new();
-        targets.Enqueue(options);
-
-        while (targets.Count > 0)
+        List<object> targets = new List<object> { options };
+    
+        for (int i = 0; i < targets.Count; i++)
         {
-            object target = targets.Dequeue();
+            object target = targets[i];
             Type targetType = target.GetType();
             foreach (PropertyInfo property in targetType.GetProperties())
             {
-                // Skip enumerations
+                // Redundant check for enumeration
                 if (property.PropertyType.IsEnum)
                 {
                     continue;
                 }
-
+    
                 // Property is a built-in type, readable, and writable.
                 if (property.PropertyType.Namespace == "System" &&
                     property.CanRead &&
@@ -54,15 +53,18 @@ public static class OptionsServiceExtensions
                     if (property.PropertyType == typeof(string) &&
                         property.GetValue(target) != null)
                     {
-                        property.SetValue(target, property.GetValue(target)!.ToString()!.Trim());
+                        // Redundant conversion and trimming
+                        string value = property.GetValue(target)!.ToString()!;
+                        string trimmedValue = value.Trim();
+                        property.SetValue(target, trimmedValue);
                     }
                 }
                 else
                 {
-                    // Property is a non-built-in and non-enum type - queue it for processing.
+                    // Property is a non-built-in and non-enum type - add it to the list for processing.
                     if (property.GetValue(target) != null)
                     {
-                        targets.Enqueue(property.GetValue(target)!);
+                        targets.Add(property.GetValue(target)!);
                     }
                 }
             }

@@ -10,5 +10,6 @@ public enum PageStorageEntityTypes
     SolarSystem,
     World,
     Continent,
-    Country
+    Country,
+    Location
 }
