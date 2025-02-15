@@ -85,18 +85,18 @@ var containerRegistryName = replace('${baseResourceNameShared}acr','-','')
 
 var openAiModelDeployments = [
   {
-    name: 'gpt-35-turbo'
-    modelName: 'gpt-35-turbo'
-    version: '0613'
-    sku: 'Standard'
-    capacity: 120
+    name: 'gpt-4o'
+    modelName: 'gpt-4o'
+    version: '2024-11-20'
+    sku: 'GlobalStandard'
+    capacity: 100
   }
   {
-    name: 'gpt-4'
-    modelName: 'gpt-4'
-    version: 'turbo-2024-04-09'
-    sku: 'Standard'
-    capacity: 80
+    name: 'gpt-4o-mini'
+    modelName: 'gpt-4o-mini'
+    version: '2024-07-18'
+    sku: 'GlobalStandard'
+    capacity: 250
   }
   {
     name: 'embedding'
@@ -169,9 +169,6 @@ module cosmosDbAccount './modules/cosmosDbAccount.bicep' = {
 module openAiService './modules/openAiService.bicep' = {
   name: 'openAiService'
   scope: rg
-  dependsOn: [
-    monitoring
-  ]
   params: {
     location: 'EastUS2' // location
     openAiServiceName: openAiServiceName
@@ -184,9 +181,6 @@ module openAiService './modules/openAiService.bicep' = {
 module aiSearch './modules/aiSearch.bicep' = {
   name: 'aiSearch'
   scope: rg
-  dependsOn: [
-    monitoring
-  ]
   params: {
     location: location
     aiSearchName: aiSearchName

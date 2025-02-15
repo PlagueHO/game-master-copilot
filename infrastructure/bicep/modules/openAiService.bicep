@@ -21,7 +21,7 @@ param openAiModeldeployments array
 param logAnalyticsWorkspaceId string
 param logAnalyticsWorkspaceName string
 
-resource openAiService 'Microsoft.CognitiveServices/accounts@2023-05-01' = {
+resource openAiService 'Microsoft.CognitiveServices/accounts@2024-10-01' = {
   name: openAiServiceName
   location: location
   sku: {
@@ -39,7 +39,7 @@ resource openAiService 'Microsoft.CognitiveServices/accounts@2023-05-01' = {
 
 // Loop through the list of models and create a deployment for each
 @batchSize(1)
-resource openAiServiceDeployment 'Microsoft.CognitiveServices/accounts/deployments@2023-05-01' = [for (model, i) in openAiModeldeployments: {
+resource openAiServiceDeployment 'Microsoft.CognitiveServices/accounts/deployments@2024-10-01' = [for (model, i) in openAiModeldeployments: {
   name: model.name
   parent: openAiService
   sku: {
